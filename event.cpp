@@ -27,7 +27,11 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
             m_text = m_text.left(idxAccOpen) + m_text.mid(idxAccClose+2);
         }
     }
-    //qDebug() << "Event from " << m_msseStart << " to " << m_msseEnd << ": " << m_text;
+    m_text = m_text.trimmed();
+    while(m_text.startsWith("\n"))
+    {
+        m_text = m_text.mid(1);
+    }
 }
 
 qint64 Event::msseStart() const

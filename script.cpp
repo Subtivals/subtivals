@@ -1,5 +1,4 @@
 #include <QSettings>
-#include <QDebug>
 #include <QStringList>
 #include <QFile>
 
@@ -20,13 +19,10 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
     while (!file.atEnd()) {
         QString line = QString::fromUtf8(file.readLine());
         if (line.contains("[Script Info]")) {
-            qDebug() << "Parsing section 'Script Infos'";
             section = SECTION_INFOS;
         } else if (line.contains("[V4+ Styles]")) {
-            qDebug() << "Parsing section 'Styles'";
             section = SECTION_STYLES;
         } else if (line.contains("[Events]")) {
-            qDebug() << "Parsing section 'Events'";
             section = SECTION_EVENTS;
         } else {
             line = line.trimmed().replace("\n", "");
