@@ -16,6 +16,7 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
     }
     QSettings settings;
     settings.beginGroup("SubtitlesForm");
+    ui->screens->setCurrentIndex(settings.value("screen", 0).toInt());
     ui->x->setText(settings.value("x", 0).toString());
     ui->y->setText(settings.value("y", 0).toString());
     ui->w->setText(settings.value("w", 0).toString());
@@ -33,6 +34,7 @@ void ConfigDialog::saveConfig()
 {
     QSettings settings;
     settings.beginGroup("SubtitlesForm");
+    settings.setValue("screen", ui->screens->currentIndex());
     settings.setValue("x", ui->x->text());
     settings.setValue("y", ui->y->text());
     settings.setValue("w", ui->w->text());

@@ -42,6 +42,7 @@ void SubtitlesForm::applyConfig()
 {
     QSettings settings;
     settings.beginGroup("SubtitlesForm");
+    int screen = settings.value("screen", 0).toInt();
     int x = settings.value("x", 0).toInt();
     settings.setValue("x", x);
     int y = settings.value("y", 0).toInt();
@@ -51,7 +52,8 @@ void SubtitlesForm::applyConfig()
     int h = settings.value("h", 300).toInt();
     settings.setValue("h", h);
     settings.endGroup();
-    setGeometry(x, y, w, h);
+    QRect geom = QApplication::desktop()->screenGeometry(screen);
+    setGeometry(x + geom.x(), y + geom.y(), w, h);
 }
 
 void SubtitlesForm::paintEvent(QPaintEvent*)
