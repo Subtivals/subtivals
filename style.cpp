@@ -7,9 +7,9 @@ Style::Style(const QString &p_line, QObject *p_parent) :
     m_name = subparts[0];
     m_font = QFont(subparts[1], subparts[2].toInt());
     QString c = subparts[3].right(6);
-    m_primaryColour.setRed(c.mid(0, 2).toInt(0, 16));
+    m_primaryColour.setBlue(c.mid(0, 2).toInt(0, 16));
     m_primaryColour.setGreen(c.mid(2, 2).toInt(0, 16));
-    m_primaryColour.setBlue(c.mid(4, 2).toInt(0, 16));
+    m_primaryColour.setRed(c.mid(4, 2).toInt(0, 16));
 }
 
 const QString &Style::name() const {
