@@ -22,8 +22,11 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::actionOpen() {
+    // Ask the user for an *.ass file
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open subtitles"), QString::null, tr("Subtitle Files (*.ass)"));
+    // Ass file selected ?
     if (!fileName.isEmpty()) {
+        // Clean-up previously allocated resources & reset GUI
         if(m_script != 0)
         {
             delete m_script;
@@ -33,9 +36,10 @@ void MainWindow::actionOpen() {
             m_timer.stop();
         }
         m_msseStartTime = 0;
+        m_userDelay = 0;
         m_lastEvents.clear();
         m_tableMapping.clear();
-
+        // Create the script & setup the GUI
         m_script = new Script(fileName, this);
         setWindowTitle(m_script->title());
         ui->tableWidget->setRowCount(m_script->eventsCount());
@@ -57,6 +61,8 @@ void MainWindow::actionOpen() {
         }
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(false);
+        ui->actionAdd1Sec->setEnabled(false);
+        ui->actionSub1Sec->setEnabled(false);
     }
 }
 
@@ -72,7 +78,10 @@ void MainWindow::actionPlay()
     }
     ui->actionPlay->setEnabled(false);
     ui->actionStop->setEnabled(true);
+    ui->actionAdd1Sec->setEnabled(true);
+    ui->actionSub1Sec->setEnabled(true);
     m_msseStartTime = QDateTime::currentMSecsSinceEpoch();
+    m_userDelay = 0;
     m_timer.start(100);
 }
 
@@ -88,6 +97,8 @@ void MainWindow::actionStop()
     }
     ui->actionPlay->setEnabled(true);
     ui->actionStop->setEnabled(false);
+    ui->actionAdd1Sec->setEnabled(false);
+    ui->actionSub1Sec->setEnabled(false);
     ui->timer->setText("-");
     m_timer.stop();
 }
@@ -100,6 +111,18 @@ void MainWindow::actionConfig()
     QObject::connect(d, SIGNAL(accepted()), this, SIGNAL(configChanged()));
 }
 
+void MainWindow::actionAdd1Sec()
+{
+    m_userDelay += 1000;
+    updateUserDelay();
+}
+
+void MainWindow::actionSub1Sec()
+{
+    m_userDelay -= 1000;
+    updateUserDelay();
+}
+
 void MainWindow::timeout()
 {
     if(m_script == 0)
@@ -107,7 +130,7 @@ void MainWindow::timeout()
         return;
     }
     qint64 msseCurrentTime = QDateTime::currentMSecsSinceEpoch();
-    qint64 msecsElapsed = msseCurrentTime - m_msseStartTime;
+    qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay;
 
     QList<Event *> currentEvents;
     QListIterator<Event *> i = m_script->events();
@@ -151,4 +174,14 @@ void MainWindow::timeout()
 void MainWindow::closeEvent(QCloseEvent *)
 {
     qApp->exit();
+}
+
+void MainWindow::updateUserDelay()
+{
+    if (m_userDelay >= 0)
+    {
+        ui->userDelay->setText("+" + QTime().addMSecs(m_userDelay).toString());
+    } else {
+        ui->userDelay->setText("-" + QTime().addMSecs(-m_userDelay).toString());
+    }
 }

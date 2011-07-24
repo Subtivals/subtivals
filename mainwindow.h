@@ -30,14 +30,18 @@ public slots:
     void actionPlay();
     void actionStop();
     void actionConfig();
+    void actionAdd1Sec();
+    void actionSub1Sec();
     void timeout();
 protected:
     void closeEvent(QCloseEvent *);
+    void updateUserDelay();
 private:
     Ui::MainWindow *ui;
     Script *m_script;
     QTimer m_timer;
     qint64 m_msseStartTime;
+    qint64 m_userDelay;
     QList<Event *> m_lastEvents;
     QMap<Event *, int> m_tableMapping;
 };
