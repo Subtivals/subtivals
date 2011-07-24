@@ -18,13 +18,13 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
         p = p_line.indexOf(",", p+1);
     }
     m_text = p_line.mid(p+1).replace("\\N", QString('\n'));
-    int idxAccOpen = m_text.indexOf("{\\pos(");
+    int idxAccOpen = m_text.indexOf("{\\");
     if (idxAccOpen != -1)
     {
-        int idxAccClose = m_text.indexOf(")}", idxAccOpen);
+        int idxAccClose = m_text.indexOf("}", idxAccOpen);
         if (idxAccClose != -1)
         {
-            m_text = m_text.left(idxAccOpen) + m_text.mid(idxAccClose+2);
+            m_text = m_text.left(idxAccOpen) + m_text.mid(idxAccClose+1);
         }
     }
     m_text = m_text.trimmed();
