@@ -11,7 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     m_script = 0;
+    m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    setState(NODATA);
 }
 
 MainWindow::~MainWindow()
@@ -57,53 +59,32 @@ void MainWindow::actionOpen() {
             ui->tableWidget->setItem(row, 3, textItem);
             row++;
         }
-        ui->actionPlay->setEnabled(true);
-        ui->actionStop->setEnabled(false);
-        ui->actionAdd1Sec->setEnabled(false);
-        ui->actionSub1Sec->setEnabled(false);
+        setState(STOPPED);
     }
 }
 
 void MainWindow::actionPlay()
 {
-    // Sanity checks
-    if(m_script == 0)
+    switch(m_state)
     {
-        return;
+    case STOPPED:
+        setState(PLAYING);
+        m_msseStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_userDelay = 0;
+        m_timer.start(100);
+        break;
+    case PAUSED:
+        setState(PLAYING);
+        m_pauseTotal += QDateTime::currentMSecsSinceEpoch() - m_pauseStart;
+        m_timer.start(100);
+        break;
     }
-    if(m_timer.isActive())
-    {
-        return;
-    }
-    // Update the GUI
-    ui->actionPlay->setEnabled(false);
-    ui->actionStop->setEnabled(true);
-    ui->actionAdd1Sec->setEnabled(true);
-    ui->actionSub1Sec->setEnabled(true);
-    // Start the timer
-    m_msseStartTime = QDateTime::currentMSecsSinceEpoch();
-    m_userDelay = 0;
-    m_timer.start(100);
+
 }
 
 void MainWindow::actionStop()
 {
-    // Sanity check
-    if (m_script == 0)
-    {
-        return;
-    }
-    if(!m_timer.isActive())
-    {
-        return;
-    }
-    // Update the GUI
-    ui->actionPlay->setEnabled(true);
-    ui->actionStop->setEnabled(false);
-    ui->actionAdd1Sec->setEnabled(false);
-    ui->actionSub1Sec->setEnabled(false);
-    ui->timer->setText("-");
-    ui->userDelay->setText("-");
+    setState(STOPPED);
     // Stop the timer
     m_timer.stop();
 }
@@ -132,6 +113,13 @@ void MainWindow::actionSub1Sec()
     updateUserDelay();
 }
 
+void MainWindow::actionPause()
+{
+    setState(PAUSED);
+    m_pauseStart = QDateTime::currentMSecsSinceEpoch();
+    m_timer.stop();
+}
+
 void MainWindow::timeout()
 {
     // Sanity check
@@ -141,7 +129,7 @@ void MainWindow::timeout()
     }
     // Gets the elapsed time in milliseconds
     qint64 msseCurrentTime = QDateTime::currentMSecsSinceEpoch();
-    qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay;
+    qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
     // Find events that match elapsed time
     QList<Event *> currentEvents;
     QListIterator<Event *> i = m_script->events();
@@ -199,5 +187,41 @@ void MainWindow::updateUserDelay()
         ui->userDelay->setText("+" + QTime().addMSecs(m_userDelay).toString());
     } else {
         ui->userDelay->setText("-" + QTime().addMSecs(-m_userDelay).toString());
+    }
+}
+
+void MainWindow::setState(State p_state)
+{
+    m_state = p_state;
+    switch(m_state)
+    {
+    case NODATA:
+        ui->actionPlay->setEnabled(false);
+        ui->actionStop->setEnabled(false);
+        ui->actionPause->setEnabled(false);
+        ui->actionAdd1Sec->setEnabled(false);
+        ui->actionSub1Sec->setEnabled(false);
+        break;
+    case STOPPED:
+        ui->actionPlay->setEnabled(true);
+        ui->actionStop->setEnabled(false);
+        ui->actionPause->setEnabled(false);
+        ui->actionAdd1Sec->setEnabled(false);
+        ui->actionSub1Sec->setEnabled(false);
+        break;
+    case PLAYING:
+        ui->actionPlay->setEnabled(false);
+        ui->actionStop->setEnabled(true);
+        ui->actionPause->setEnabled(true);
+        ui->actionAdd1Sec->setEnabled(true);
+        ui->actionSub1Sec->setEnabled(true);
+        break;
+    case PAUSED:
+        ui->actionPlay->setEnabled(true);
+        ui->actionStop->setEnabled(false);
+        ui->actionPause->setEnabled(false);
+        ui->actionAdd1Sec->setEnabled(false);
+        ui->actionSub1Sec->setEnabled(false);
+        break;
     }
 }

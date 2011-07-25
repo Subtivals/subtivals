@@ -136,6 +136,7 @@
    <addaction name="actionOpen"/>
    <addaction name="actionPlay"/>
    <addaction name="actionStop"/>
+   <addaction name="actionPause"/>
    <addaction name="actionAdd1Sec"/>
    <addaction name="actionSub1Sec"/>
   </widget>
@@ -188,6 +189,14 @@
    </property>
    <property name="text">
     <string>-1 sec</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Pause</string>
    </property>
   </action>
  </widget>
@@ -306,6 +315,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionPause</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionPause()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -316,5 +341,6 @@
   <slot>actionConfig()</slot>
   <slot>actionAdd1Sec()</slot>
   <slot>actionSub1Sec()</slot>
+  <slot>actionPause()</slot>
  </slots>
 </ui>

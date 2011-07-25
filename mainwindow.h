@@ -14,6 +14,8 @@ namespace Ui {
     class MainWindow;
 }
 
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -21,6 +23,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    enum State { NODATA, STOPPED, PLAYING, PAUSED};
 signals:
     void eventStart(Event *p_event);
     void eventEnd(Event *p_event);
@@ -32,15 +35,20 @@ public slots:
     void actionConfig();
     void actionAdd1Sec();
     void actionSub1Sec();
+    void actionPause();
     void timeout();
 protected:
     void closeEvent(QCloseEvent *);
     void updateUserDelay();
+    void setState(State p_state);
 private:
+    State m_state;
     Ui::MainWindow *ui;
     Script *m_script;
     QTimer m_timer;
     qint64 m_msseStartTime;
+    qint64 m_pauseStart;
+    qint64 m_pauseTotal;
     qint64 m_userDelay;
     QList<Event *> m_lastEvents;
     QMap<Event *, int> m_tableMapping;
