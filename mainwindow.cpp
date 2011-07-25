@@ -71,6 +71,7 @@ void MainWindow::actionPlay()
         setState(PLAYING);
         m_msseStartTime = QDateTime::currentMSecsSinceEpoch();
         m_userDelay = 0;
+        m_pauseTotal = 0;
         m_timer.start(100);
         break;
     case PAUSED:
@@ -85,8 +86,9 @@ void MainWindow::actionPlay()
 void MainWindow::actionStop()
 {
     setState(STOPPED);
-    // Stop the timer
     m_timer.stop();
+    ui->timer->setText("-");
+    ui->userDelay->setText("-");
 }
 
 void MainWindow::actionConfig()
@@ -103,14 +105,12 @@ void MainWindow::actionAdd1Sec()
 {
     // Add 1000 msecs
     m_userDelay += 1000;
-    updateUserDelay();
 }
 
 void MainWindow::actionSub1Sec()
 {
     // Sub 100 msecs
     m_userDelay -= 1000;
-    updateUserDelay();
 }
 
 void MainWindow::actionPause()
@@ -166,7 +166,8 @@ void MainWindow::timeout()
     }
     // Update the GUI
     m_lastEvents = currentEvents;
-    ui->timer->setText(QTime().addMSecs(msecsElapsed).toString());
+    ui->timer->setText(ts2tc(msecsElapsed));
+    ui->userDelay->setText(ts2tc(m_userDelay));
     if(currentEvents.size() > 0)
     {
         ui->tableWidget->selectRow(m_tableMapping[currentEvents.last()]);
@@ -179,14 +180,13 @@ void MainWindow::closeEvent(QCloseEvent *)
     qApp->exit();
 }
 
-void MainWindow::updateUserDelay()
+QString MainWindow::ts2tc(qint64 p_ts)
 {
-    // "Pretty" set the user delay in the GUI
-    if (m_userDelay >= 0)
+    if (p_ts >= 0)
     {
-        ui->userDelay->setText("+" + QTime().addMSecs(m_userDelay).toString());
+        return "+" + QTime().addMSecs(p_ts).toString();
     } else {
-        ui->userDelay->setText("-" + QTime().addMSecs(-m_userDelay).toString());
+        return "-" + QTime().addMSecs(-p_ts).toString();
     }
 }
 

@@ -7,14 +7,13 @@
 #include <QTime>
 #include <QMap>
 #include <QTableWidget>
+#include <QString>
 
 #include "script.h"
 
 namespace Ui {
     class MainWindow;
 }
-
-
 
 class MainWindow : public QMainWindow
 {
@@ -39,7 +38,7 @@ public slots:
     void timeout();
 protected:
     void closeEvent(QCloseEvent *);
-    void updateUserDelay();
+    QString ts2tc(qint64 p_timestamp);
     void setState(State p_state);
 private:
     State m_state;
