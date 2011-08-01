@@ -125,12 +125,12 @@ void MainWindow::actionPause()
 void MainWindow::actionEventSelected(QModelIndex index)
 {
     m_timer.stop();
-    QTableWidgetItem * item = ui->tableWidget->item(index.row(), COLUMN_START);
-    QTime start = QTime::fromString(item->text());
-    qint64 start_mss = 200 + (start.hour()*3600 + start.minute()*60 + start.second()) * 1000;
-    m_msseStartTime = QDateTime::currentMSecsSinceEpoch() - start_mss;
-    updateCurrentEvent(start_mss);
-    m_timer.start(100);
+    qint64 start_mss = m_script->eventAt(index.row())->msseStart();
+    updateCurrentEvent(start_mss + 1);
+    if (m_state == PLAYING) {
+        m_msseStartTime = QDateTime::currentMSecsSinceEpoch() - start_mss;
+        m_timer.start(100);
+    }
 }
 
 void MainWindow::timeout()
