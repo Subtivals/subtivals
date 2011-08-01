@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtGlobal>
 #include <QFileDialog>
+#include <QDebug>
 
 #include "configdialog.h"
 
@@ -50,13 +52,13 @@ void MainWindow::actionOpen() {
             Event *event = i.next();
             m_tableMapping[event] = row;
             QTableWidgetItem *startItem = new QTableWidgetItem(QTime().addMSecs(event->msseStart()).toString());
-            ui->tableWidget->setItem(row, 0, startItem);
+            ui->tableWidget->setItem(row, COLUMN_START, startItem);
             QTableWidgetItem *endItem = new QTableWidgetItem(QTime().addMSecs(event->msseEnd()).toString());
-            ui->tableWidget->setItem(row, 1, endItem);
+            ui->tableWidget->setItem(row, COLUMN_END, endItem);
             QTableWidgetItem *styleItem = new QTableWidgetItem(event->style()->name());
-            ui->tableWidget->setItem(row, 2, styleItem);
+            ui->tableWidget->setItem(row, COLUMN_STYLE, styleItem);
             QTableWidgetItem *textItem = new QTableWidgetItem(event->text());
-            ui->tableWidget->setItem(row, 3, textItem);
+            ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
             row++;
         }
         setState(STOPPED);
@@ -120,16 +122,31 @@ void MainWindow::actionPause()
     m_timer.stop();
 }
 
+void MainWindow::actionEventSelected(QModelIndex index)
+{
+    m_timer.stop();
+    QTableWidgetItem * item = ui->tableWidget->item(index.row(), COLUMN_START);
+    QTime start = QTime::fromString(item->text());
+    qint64 start_mss = 200 + (start.hour()*3600 + start.minute()*60 + start.second()) * 1000;
+    m_msseStartTime = QDateTime::currentMSecsSinceEpoch() - start_mss;
+    updateCurrentEvent(start_mss);
+    m_timer.start(100);
+}
+
 void MainWindow::timeout()
 {
+    // Gets the elapsed time in milliseconds
+    qint64 msseCurrentTime = QDateTime::currentMSecsSinceEpoch();
+    qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
+    updateCurrentEvent(msecsElapsed);
+}
+
+void MainWindow::updateCurrentEvent(qint64 msecsElapsed) {
     // Sanity check
     if(m_script == 0)
     {
         return;
     }
-    // Gets the elapsed time in milliseconds
-    qint64 msseCurrentTime = QDateTime::currentMSecsSinceEpoch();
-    qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
     // Find events that match elapsed time
     QList<Event *> currentEvents;
     QListIterator<Event *> i = m_script->events();
