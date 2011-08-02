@@ -124,7 +124,6 @@ void MainWindow::actionPause()
 
 void MainWindow::actionNext()
 {
-    qDebug() << ui->tableWidget->currentRow();
     updateCurrentEventAt(ui->tableWidget->currentRow() + 1);
 }
 
