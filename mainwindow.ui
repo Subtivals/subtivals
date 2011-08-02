@@ -143,9 +143,11 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionOpen"/>
+   <addaction name="separator"/>
    <addaction name="actionPlay"/>
-   <addaction name="actionStop"/>
    <addaction name="actionPause"/>
+   <addaction name="actionStop"/>
+   <addaction name="separator"/>
    <addaction name="actionAdd1Sec"/>
    <addaction name="actionSub1Sec"/>
   </widget>
@@ -342,7 +344,7 @@
   </connection>
   <connection>
    <sender>tableWidget</sender>
-   <signal>clicked(QModelIndex)</signal>
+   <signal>doubleClicked(QModelIndex)</signal>
    <receiver>MainWindow</receiver>
    <slot>actionEventSelected(QModelIndex)</slot>
    <hints>

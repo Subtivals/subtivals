@@ -127,10 +127,17 @@ void MainWindow::actionEventSelected(QModelIndex index)
     m_timer.stop();
     qint64 start_mss = m_script->eventAt(index.row())->msseStart();
     updateCurrentEvent(start_mss + 1);
-    if (m_state == PLAYING) {
-        m_msseStartTime = QDateTime::currentMSecsSinceEpoch() - start_mss;
+    m_msseStartTime = QDateTime::currentMSecsSinceEpoch() - start_mss;
+    switch(m_state)
+    {
+    case PLAYING:
         m_timer.start(100);
-    }
+        break;
+    case PAUSED:
+        m_pauseTotal = 0;
+        m_pauseStart = QDateTime::currentMSecsSinceEpoch();
+        break;
+    }    
 }
 
 void MainWindow::timeout()
