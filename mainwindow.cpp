@@ -127,6 +127,11 @@ void MainWindow::actionNext()
     updateCurrentEventAt(ui->tableWidget->currentRow() + 1);
 }
 
+void MainWindow::actionToggleHide(bool state)
+{
+    emit toggleHide(state);
+}
+
 void MainWindow::actionEventSelected(QModelIndex index)
 {
     updateCurrentEventAt(index.row());

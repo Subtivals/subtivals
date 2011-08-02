@@ -35,6 +35,7 @@ signals:
     void eventStart(Event *p_event);
     void eventEnd(Event *p_event);
     void configChanged();
+    void toggleHide(bool state);
 public slots:
     void actionOpen();
     void actionPlay();
@@ -44,6 +45,7 @@ public slots:
     void actionSub1Sec();
     void actionPause();
     void actionNext();
+    void actionToggleHide(bool);
     void timeout();
     void actionEventSelected(QModelIndex);
     void updateCurrentEvent(qint64);

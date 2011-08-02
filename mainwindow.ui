@@ -151,6 +151,8 @@
    <addaction name="separator"/>
    <addaction name="actionAdd1Sec"/>
    <addaction name="actionSub1Sec"/>
+   <addaction name="separator"/>
+   <addaction name="actionHide"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
@@ -220,6 +222,17 @@
    </property>
    <property name="shortcut">
     <string>Space</string>
+   </property>
+  </action>
+  <action name="actionHide">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Hide</string>
+   </property>
+   <property name="shortcut">
+    <string>H</string>
    </property>
   </action>
  </widget>
@@ -377,12 +390,28 @@
    <slot>actionNext()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>235</x>
-     <y>43</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>652</x>
      <y>326</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionHide</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionToggleHide(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>249</y>
     </hint>
    </hints>
   </connection>
@@ -399,5 +428,6 @@
   <slot>actionPause()</slot>
   <slot>actionEventSelected(QModelIndex)</slot>
   <slot>actionNext()</slot>
+  <slot>actionToggleHide(bool)</slot>
  </slots>
 </ui>
