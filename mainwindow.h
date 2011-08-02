@@ -43,9 +43,11 @@ public slots:
     void actionAdd1Sec();
     void actionSub1Sec();
     void actionPause();
+    void actionNext();
     void timeout();
     void actionEventSelected(QModelIndex);
     void updateCurrentEvent(qint64);
+    void updateCurrentEventAt(int);
 protected:
     void closeEvent(QCloseEvent *);
     QString ts2tc(qint64 p_timestamp);

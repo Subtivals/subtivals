@@ -122,11 +122,32 @@ void MainWindow::actionPause()
     m_timer.stop();
 }
 
+void MainWindow::actionNext()
+{
+    qDebug() << ui->tableWidget->currentRow();
+    updateCurrentEventAt(ui->tableWidget->currentRow() + 1);
+}
+
 void MainWindow::actionEventSelected(QModelIndex index)
 {
+    updateCurrentEventAt(index.row());
+}
+
+void MainWindow::timeout()
+{
+    // Gets the elapsed time in milliseconds
+    qint64 msseCurrentTime = QDateTime::currentMSecsSinceEpoch();
+    qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
+    updateCurrentEvent(msecsElapsed);
+}
+
+void MainWindow::updateCurrentEventAt(int i) {
+    // Get event in script
     m_timer.stop();
-    qint64 start_mss = m_script->eventAt(index.row())->msseStart();
+    qint64 start_mss = m_script->eventAt(i)->msseStart();
+    // Show it !
     updateCurrentEvent(start_mss + 1);
+    // Continuous play, even while pause
     m_msseStartTime = QDateTime::currentMSecsSinceEpoch() - start_mss;
     switch(m_state)
     {
@@ -137,15 +158,7 @@ void MainWindow::actionEventSelected(QModelIndex index)
         m_pauseTotal = 0;
         m_pauseStart = QDateTime::currentMSecsSinceEpoch();
         break;
-    }    
-}
-
-void MainWindow::timeout()
-{
-    // Gets the elapsed time in milliseconds
-    qint64 msseCurrentTime = QDateTime::currentMSecsSinceEpoch();
-    qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
-    updateCurrentEvent(msecsElapsed);
+    }
 }
 
 void MainWindow::updateCurrentEvent(qint64 msecsElapsed) {
@@ -223,6 +236,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(false);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
+        ui->actionNext->setEnabled(false);
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
         break;
@@ -230,6 +244,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
+        ui->actionNext->setEnabled(false);
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
         break;
@@ -237,6 +252,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(false);
         ui->actionStop->setEnabled(true);
         ui->actionPause->setEnabled(true);
+        ui->actionNext->setEnabled(true);
         ui->actionAdd1Sec->setEnabled(true);
         ui->actionSub1Sec->setEnabled(true);
         break;
@@ -244,6 +260,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
+        ui->actionNext->setEnabled(true);
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
         break;

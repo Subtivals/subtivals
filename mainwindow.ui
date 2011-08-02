@@ -146,6 +146,7 @@
    <addaction name="separator"/>
    <addaction name="actionPlay"/>
    <addaction name="actionPause"/>
+   <addaction name="actionNext"/>
    <addaction name="actionStop"/>
    <addaction name="separator"/>
    <addaction name="actionAdd1Sec"/>
@@ -208,6 +209,17 @@
    </property>
    <property name="text">
     <string>Pause</string>
+   </property>
+  </action>
+  <action name="actionNext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Next</string>
+   </property>
+   <property name="shortcut">
+    <string>Space</string>
    </property>
   </action>
  </widget>
@@ -358,6 +370,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionNext</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionNext()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>235</x>
+     <y>43</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>652</x>
+     <y>326</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -370,5 +398,6 @@
   <slot>actionSub1Sec()</slot>
   <slot>actionPause()</slot>
   <slot>actionEventSelected(QModelIndex)</slot>
+  <slot>actionNext()</slot>
  </slots>
 </ui>
