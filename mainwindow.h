@@ -31,6 +31,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     enum State { NODATA, STOPPED, PLAYING, PAUSED};
+    void openFile (const QString &p_fileName);
 signals:
     void eventStart(Event *p_event);
     void eventEnd(Event *p_event);

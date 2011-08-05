@@ -23,45 +23,52 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::actionOpen() {
+void MainWindow::openFile (const QString &p_fileName)
+{
+    // Clean-up previously allocated resources & reset GUI
+    if(m_script != 0)
+    {
+        delete m_script;
+    }
+    if(m_timer.isActive())
+    {
+        m_timer.stop();
+    }
+    m_msseStartTime = 0;
+    m_userDelay = 0;
+    m_lastEvents.clear();
+    m_tableMapping.clear();
+    // Create the script & setup the GUI
+    m_script = new Script(p_fileName, this);
+    setWindowTitle(m_script->title());
+    ui->tableWidget->setRowCount(m_script->eventsCount());
+    QListIterator<Event *> i = m_script->events();
+    int row = 0;
+    while (i.hasNext())
+    {
+        Event *event = i.next();
+        m_tableMapping[event] = row;
+        QTableWidgetItem *startItem = new QTableWidgetItem(QTime().addMSecs(event->msseStart()).toString());
+        ui->tableWidget->setItem(row, COLUMN_START, startItem);
+        QTableWidgetItem *endItem = new QTableWidgetItem(QTime().addMSecs(event->msseEnd()).toString());
+        ui->tableWidget->setItem(row, COLUMN_END, endItem);
+        QTableWidgetItem *styleItem = new QTableWidgetItem(event->style()->name());
+        ui->tableWidget->setItem(row, COLUMN_STYLE, styleItem);
+        QTableWidgetItem *textItem = new QTableWidgetItem(event->text());
+        ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
+        row++;
+    }
+    setState(STOPPED);
+}
+
+void MainWindow::actionOpen()
+{
     // Ask the user for an *.ass file
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open subtitles"), QString::null, tr("Subtitle Files (*.ass)"));
     // Ass file selected ?
-    if (!fileName.isEmpty()) {
-        // Clean-up previously allocated resources & reset GUI
-        if(m_script != 0)
-        {
-            delete m_script;
-        }
-        if(m_timer.isActive())
-        {
-            m_timer.stop();
-        }
-        m_msseStartTime = 0;
-        m_userDelay = 0;
-        m_lastEvents.clear();
-        m_tableMapping.clear();
-        // Create the script & setup the GUI
-        m_script = new Script(fileName, this);
-        setWindowTitle(m_script->title());
-        ui->tableWidget->setRowCount(m_script->eventsCount());
-        QListIterator<Event *> i = m_script->events();
-        int row = 0;
-        while (i.hasNext())
-        {
-            Event *event = i.next();
-            m_tableMapping[event] = row;
-            QTableWidgetItem *startItem = new QTableWidgetItem(QTime().addMSecs(event->msseStart()).toString());
-            ui->tableWidget->setItem(row, COLUMN_START, startItem);
-            QTableWidgetItem *endItem = new QTableWidgetItem(QTime().addMSecs(event->msseEnd()).toString());
-            ui->tableWidget->setItem(row, COLUMN_END, endItem);
-            QTableWidgetItem *styleItem = new QTableWidgetItem(event->style()->name());
-            ui->tableWidget->setItem(row, COLUMN_STYLE, styleItem);
-            QTableWidgetItem *textItem = new QTableWidgetItem(event->text());
-            ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
-            row++;
-        }
-        setState(STOPPED);
+    if (!fileName.isEmpty())
+    {
+        openFile(fileName);
     }
 }
 
@@ -147,7 +154,8 @@ void MainWindow::timeout()
     updateCurrentEvent(msecsElapsed);
 }
 
-void MainWindow::updateCurrentEventAt(int i) {
+void MainWindow::updateCurrentEventAt(int i)
+{
     // Get event in script
     m_timer.stop();
     qint64 start_mss = m_script->eventAt(i)->msseStart();
@@ -167,7 +175,8 @@ void MainWindow::updateCurrentEventAt(int i) {
     }
 }
 
-void MainWindow::updateCurrentEvent(qint64 msecsElapsed) {
+void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
+{
     // Sanity check
     if(m_script == 0)
     {
