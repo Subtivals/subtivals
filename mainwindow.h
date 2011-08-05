@@ -7,9 +7,17 @@
 #include <QTime>
 #include <QMap>
 #include <QTableWidget>
+#include <QModelIndex>
 #include <QString>
 
 #include "script.h"
+
+
+#define COLUMN_START    0
+#define COLUMN_END      1
+#define COLUMN_STYLE    2
+#define COLUMN_TEXT     3
+
 
 namespace Ui {
     class MainWindow;
@@ -27,6 +35,7 @@ signals:
     void eventStart(Event *p_event);
     void eventEnd(Event *p_event);
     void configChanged();
+    void toggleHide(bool state);
 public slots:
     void actionOpen();
     void actionPlay();
@@ -35,7 +44,12 @@ public slots:
     void actionAdd1Sec();
     void actionSub1Sec();
     void actionPause();
+    void actionNext();
+    void actionToggleHide(bool);
     void timeout();
+    void actionEventSelected(QModelIndex);
+    void updateCurrentEvent(qint64);
+    void updateCurrentEventAt(int);
 protected:
     void closeEvent(QCloseEvent *);
     QString ts2tc(qint64 p_timestamp);

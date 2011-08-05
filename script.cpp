@@ -85,3 +85,7 @@ const QListIterator<Event *> Script::events() const
 {
     return QListIterator<Event *>(m_events);
 }
+const Event *Script::eventAt(int i) const
+{
+    return m_events[i];
+}

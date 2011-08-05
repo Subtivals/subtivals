@@ -40,6 +40,10 @@ public:
      * Returns an iterator on the events of the script.
      */
     const QListIterator<Event *> events() const;
+    /*
+     * Returns the event at the given index.
+     */
+    const Event * eventAt(int i) const;
 private:
     /*
      * Script ASS file name.
