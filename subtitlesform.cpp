@@ -11,7 +11,8 @@
 SubtitlesForm::SubtitlesForm(QWidget *parent) :
     QWidget(parent, Qt::FramelessWindowHint),
     ui(new Ui::SubtitlesForm),
-    m_maxEvents(2)
+    m_maxEvents(2),
+    m_visible(true)
 {
     ui->setupUi(this);
     applyConfig();
@@ -35,6 +36,12 @@ void SubtitlesForm::addEvent(Event *p_event)
 void SubtitlesForm::remEvent(Event *p_event)
 {
     m_currentEvents.removeOne(p_event);
+    repaint();
+}
+
+void SubtitlesForm::toggleHide(bool state)
+{
+    m_visible = !state;
     repaint();
 }
 
@@ -62,6 +69,10 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     QPainter p(this);
     // Black background
     p.fillRect(bounds, Qt::black);
+    // Draw text only if visible
+    if (!m_visible){
+        return;
+    }
     int lineHeight = height() / m_maxEvents;
     for(int i = 0; i < m_maxEvents && i < m_currentEvents.size(); i++)
     {

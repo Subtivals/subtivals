@@ -20,6 +20,7 @@ public:
 public slots:
     void addEvent(Event *p_event);
     void remEvent(Event *p_event);
+    void toggleHide(bool state);
     void applyConfig();
 protected:
     void paintEvent(QPaintEvent* p_event);
@@ -27,6 +28,7 @@ private:
     Ui::SubtitlesForm *ui;
     int m_maxEvents;
     QList<Event *> m_currentEvents;
+    bool m_visible;
 };
 
 #endif // SUBTITLESFORM_H
