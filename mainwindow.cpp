@@ -125,6 +125,7 @@ void MainWindow::actionPause()
 void MainWindow::actionNext()
 {
     updateCurrentEventAt(ui->tableWidget->currentRow() + 1);
+    ui->actionHide->setChecked(false);
 }
 
 void MainWindow::actionToggleHide(bool state)
@@ -135,6 +136,7 @@ void MainWindow::actionToggleHide(bool state)
 void MainWindow::actionEventSelected(QModelIndex index)
 {
     updateCurrentEventAt(index.row());
+    ui->actionHide->setChecked(false);
 }
 
 void MainWindow::timeout()
