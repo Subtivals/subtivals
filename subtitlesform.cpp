@@ -1,7 +1,6 @@
 #include "subtitlesform.h"
 #include "ui_subtitlesform.h"
 
-#include <QDebug>
 #include <QPainter>
 #include <QSettings>
 #include <QDesktopWidget>
@@ -9,7 +8,7 @@
 #include "style.h"
 
 SubtitlesForm::SubtitlesForm(QWidget *parent) :
-    QWidget(parent, Qt::FramelessWindowHint),
+        QWidget(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ),
     ui(new Ui::SubtitlesForm),
     m_maxEvents(2),
     m_visible(true)
