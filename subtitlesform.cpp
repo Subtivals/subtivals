@@ -72,13 +72,9 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     if (!m_visible){
         return;
     }
-    int lineHeight = height() / m_maxEvents;
     for(int i = 0; i < m_maxEvents && i < m_currentEvents.size(); i++)
     {
         Event *e = m_currentEvents.at(i);
-        p.setFont(e->style()->font());
-        p.setPen(e->style()->primaryColour());
-        QRect x(0, lineHeight*i, width(), lineHeight);
-        p.drawText(x, e->text(), QTextOption(Qt::AlignHCenter|Qt::AlignVCenter));
+        e->style()->drawEvent(&p, *e, bounds);
     }
 }

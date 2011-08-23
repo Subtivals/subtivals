@@ -12,6 +12,16 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
     m_msseStart = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
     m_msseEnd = QTime().msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
     m_style = p_script->style(subparts[3].trimmed());
+
+    // Check if style is overridden in event
+    int marginL = subparts[5].toInt();
+    int marginR = subparts[6].toInt();
+    int marginV = subparts[7].toInt();
+    if (marginL || marginR || marginV) {
+        // Clone only if necessary
+        m_style = new Style(*m_style, marginL, marginR, marginV);
+    }
+
     int p = p_line.indexOf(",");
     for (int i = 0; i < 8; i++)
     {
