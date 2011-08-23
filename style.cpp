@@ -25,7 +25,7 @@ Style::Style(const QString &p_line, QObject *p_parent) :
     int alignment = subparts[18].right(1).toInt();
     if (alignment <= 3)
         m_alignment = Qt::AlignBottom;
-    if (alignment >= 6)
+    if (alignment >= 7)
         m_alignment = Qt::AlignTop;
     if (alignment % 3 == 0)
         m_alignment |= Qt::AlignRight;
