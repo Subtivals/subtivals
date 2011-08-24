@@ -116,7 +116,7 @@
      <x>0</x>
      <y>0</y>
      <width>654</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -415,6 +415,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tableWidget</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionEventClic(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>286</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -429,5 +445,6 @@
   <slot>actionEventSelected(QModelIndex)</slot>
   <slot>actionNext()</slot>
   <slot>actionToggleHide(bool)</slot>
+  <slot>actionEventClic(QModelIndex)</slot>
  </slots>
 </ui>

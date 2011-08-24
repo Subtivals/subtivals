@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_selectEvent = true;
     m_script = 0;
     m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
@@ -140,6 +141,19 @@ void MainWindow::actionToggleHide(bool state)
     emit toggleHide(state);
 }
 
+void MainWindow::enableEventSelection()
+{
+    m_selectEvent = true;
+}
+
+void MainWindow::actionEventClic(QModelIndex)
+{
+    // Disable selection of events for some time
+    // in order to let the user perform a double-clic
+    m_selectEvent = false;
+    QTimer::singleShot(500, this, SLOT(enableEventSelection()));
+}
+
 void MainWindow::actionEventSelected(QModelIndex index)
 {
     updateCurrentEventAt(index.row());
@@ -220,7 +234,7 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     m_lastEvents = currentEvents;
     ui->timer->setText(ts2tc(msecsElapsed));
     ui->userDelay->setText(ts2tc(m_userDelay));
-    if(currentEvents.size() > 0)
+    if(m_selectEvent && currentEvents.size() > 0)
     {
         ui->tableWidget->selectRow(m_tableMapping[currentEvents.last()]);
     }
