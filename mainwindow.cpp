@@ -151,7 +151,7 @@ void MainWindow::actionEventClic(QModelIndex)
     // Disable selection of events for some time
     // in order to let the user perform a double-clic
     m_selectEvent = false;
-    QTimer::singleShot(500, this, SLOT(enableEventSelection()));
+    QTimer::singleShot(750, this, SLOT(enableEventSelection()));
 }
 
 void MainWindow::actionEventSelected(QModelIndex index)
