@@ -132,8 +132,11 @@ void MainWindow::actionPause()
 
 void MainWindow::actionNext()
 {
-    updateCurrentEventAt(ui->tableWidget->currentRow() + 1);
-    ui->actionHide->setChecked(false);
+    int i = ui->tableWidget->currentRow();
+    if (i < ui->tableWidget->rowCount() - 1){
+        updateCurrentEventAt(i + 1);
+        ui->actionHide->setChecked(false);
+    }
 }
 
 void MainWindow::actionToggleHide(bool state)
@@ -151,7 +154,7 @@ void MainWindow::actionEventClic(QModelIndex)
     // Disable selection of events for some time
     // in order to let the user perform a double-clic
     m_selectEvent = false;
-    QTimer::singleShot(750, this, SLOT(enableEventSelection()));
+    QTimer::singleShot(1000, this, SLOT(enableEventSelection()));
 }
 
 void MainWindow::actionEventSelected(QModelIndex index)
