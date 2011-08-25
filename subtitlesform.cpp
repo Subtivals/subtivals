@@ -2,6 +2,7 @@
 #include "ui_subtitlesform.h"
 
 #include <QPainter>
+#include <QCursor>
 #include <QSettings>
 #include <QDesktopWidget>
 
@@ -14,6 +15,7 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
     m_visible(true)
 {
     ui->setupUi(this);
+    setCursor(QCursor(Qt::BlankCursor));
     applyConfig();
 }
 
