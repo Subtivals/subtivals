@@ -46,6 +46,7 @@ public slots:
     void actionSub1Sec();
     void actionPause();
     void actionNext();
+    void actionPrevious();
     void actionToggleHide(bool);
     void timeout();
     void actionEventClic(QModelIndex);

@@ -146,6 +146,7 @@
    <addaction name="separator"/>
    <addaction name="actionPlay"/>
    <addaction name="actionPause"/>
+   <addaction name="actionPrevious"/>
    <addaction name="actionNext"/>
    <addaction name="actionStop"/>
    <addaction name="separator"/>
@@ -233,6 +234,17 @@
    </property>
    <property name="shortcut">
     <string>H</string>
+   </property>
+  </action>
+  <action name="actionPrevious">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Previous</string>
+   </property>
+   <property name="toolTip">
+    <string>Previous</string>
    </property>
   </action>
  </widget>
@@ -431,6 +443,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionPrevious</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionPrevious()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -446,5 +474,6 @@
   <slot>actionNext()</slot>
   <slot>actionToggleHide(bool)</slot>
   <slot>actionEventClic(QModelIndex)</slot>
+  <slot>actionPrevious()</slot>
  </slots>
 </ui>

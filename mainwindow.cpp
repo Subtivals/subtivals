@@ -130,6 +130,15 @@ void MainWindow::actionPause()
     m_timer.stop();
 }
 
+void MainWindow::actionPrevious()
+{
+    int i = ui->tableWidget->currentRow();
+    if (i > 0){
+        updateCurrentEventAt(i - 1);
+        ui->actionHide->setChecked(false);
+    }
+}
+
 void MainWindow::actionNext()
 {
     int i = ui->tableWidget->currentRow();
@@ -268,6 +277,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(false);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
+        ui->actionPrevious->setEnabled(false);
         ui->actionNext->setEnabled(false);
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
@@ -276,6 +286,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
+        ui->actionPrevious->setEnabled(false);
         ui->actionNext->setEnabled(false);
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
@@ -284,6 +295,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(false);
         ui->actionStop->setEnabled(true);
         ui->actionPause->setEnabled(true);
+        ui->actionPrevious->setEnabled(true);
         ui->actionNext->setEnabled(true);
         ui->actionAdd1Sec->setEnabled(true);
         ui->actionSub1Sec->setEnabled(true);
@@ -292,6 +304,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
+        ui->actionPrevious->setEnabled(true);
         ui->actionNext->setEnabled(true);
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
