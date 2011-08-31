@@ -96,9 +96,9 @@ void MainWindow::reloadScript()
     if (ret != QMessageBox::Yes)
         return;
 
-    // Store current subtitle text
-    int selected = ui->tableWidget->currentRow();
-    QString text = m_script->eventAt(selected)->text();
+    // Store current position
+    qint64 msseStartTime = m_msseStartTime;
+    qint64 userDelay = m_userDelay;
     // Store current playing state
     State previous = m_state;
     // Hide current subtitles
@@ -107,20 +107,15 @@ void MainWindow::reloadScript()
         emit eventEnd(it.next());
 
     // Reload file path
-    openFile(m_script->fileName());
+    openFile(QString(m_script->fileName())); //force copy
 
     // Restore state
     setState(previous);
-    // Restore subtitle if still present
-    int newselected = 0;
-    it = m_script->events();
-    while (it.hasNext()) {
-        if (text == it.next()->text())
-            break;
-        ++newselected;
-    }
-    if (newselected < m_script->eventsCount())
-        updateCurrentEventAt(newselected);
+    // Restore position
+    m_msseStartTime = msseStartTime;
+    m_userDelay = userDelay;
+    if (m_state == PLAYING)
+        m_timer.start(100);
 }
 
 void MainWindow::actionOpen()
