@@ -116,7 +116,7 @@
      <x>0</x>
      <y>0</y>
      <width>654</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -161,10 +161,19 @@
    <property name="text">
     <string>Open</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionPlay">
@@ -177,6 +186,9 @@
    <property name="toolTip">
     <string>Play</string>
    </property>
+   <property name="shortcut">
+    <string>Space</string>
+   </property>
   </action>
   <action name="actionStop">
    <property name="enabled">
@@ -185,10 +197,16 @@
    <property name="text">
     <string>Stop</string>
    </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
   </action>
   <action name="actionPreferences">
    <property name="text">
     <string>Preferences</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
   <action name="actionAdd1Sec">
@@ -198,6 +216,9 @@
    <property name="text">
     <string>+1 sec</string>
    </property>
+   <property name="shortcut">
+    <string>+</string>
+   </property>
   </action>
   <action name="actionSub1Sec">
    <property name="enabled">
@@ -206,6 +227,9 @@
    <property name="text">
     <string>-1 sec</string>
    </property>
+   <property name="shortcut">
+    <string>-</string>
+   </property>
   </action>
   <action name="actionPause">
    <property name="enabled">
@@ -213,6 +237,9 @@
    </property>
    <property name="text">
     <string>Pause</string>
+   </property>
+   <property name="shortcut">
+    <string>Space</string>
    </property>
   </action>
   <action name="actionNext">
@@ -223,7 +250,7 @@
     <string>Next</string>
    </property>
    <property name="shortcut">
-    <string>Space</string>
+    <string>PgDown</string>
    </property>
   </action>
   <action name="actionHide">
@@ -246,6 +273,9 @@
    </property>
    <property name="toolTip">
     <string>Previous</string>
+   </property>
+   <property name="shortcut">
+    <string>PgUp</string>
    </property>
   </action>
   <action name="actionEnableReload">
