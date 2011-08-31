@@ -4,18 +4,21 @@
 #include <QtGlobal>
 #include <QFileDialog>
 #include <QDebug>
+#include <QMessageBox>
 
 #include "configdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_filewatcher(new QFileSystemWatcher)
 {
     ui->setupUi(this);
     m_script = 0;
     m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
+    connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -28,6 +31,7 @@ void MainWindow::openFile (const QString &p_fileName)
     // Clean-up previously allocated resources & reset GUI
     if(m_script != 0)
     {
+        m_filewatcher->removePath(m_script->fileName());
         delete m_script;
     }
     if(m_timer.isActive())
@@ -40,6 +44,7 @@ void MainWindow::openFile (const QString &p_fileName)
     m_tableMapping.clear();
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);
+    m_filewatcher->addPath(p_fileName);
     setWindowTitle(m_script->title());
     ui->tableWidget->setRowCount(m_script->eventsCount());
     QListIterator<Event *> i = m_script->events();
@@ -59,6 +64,48 @@ void MainWindow::openFile (const QString &p_fileName)
         row++;
     }
     setState(STOPPED);
+}
+
+void MainWindow::fileChanged(QString path)
+{
+    // Script file has changed, warn user
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(tr("Warning"));
+    msgBox.setText(tr("The subtitle file has been modified."));
+    msgBox.setInformativeText("Do you want to reload it?");
+    msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    // Reload if user accepts
+    int ret = msgBox.exec();
+    if (ret != QMessageBox::Yes)
+        return;
+
+    // Store current subtitle text
+    int selected = ui->tableWidget->currentRow();
+    QString text = m_script->eventAt(selected)->text();
+    // Store current playing state
+    State previous = m_state;
+    // Hide current subtitles
+    QListIterator<Event*> it(m_lastEvents);
+    while(it.hasNext())
+        emit eventEnd(it.next());
+
+    // Reload file path
+    openFile(path);
+
+    // Restore state
+    setState(previous);
+    // Restore subtitle if still present
+    int newselected = 0;
+    it = m_script->events();
+    while (it.hasNext()) {
+        if (text == it.next()->text())
+            break;
+        ++newselected;
+    }
+    if (newselected < m_script->eventsCount())
+        updateCurrentEventAt(newselected);
 }
 
 void MainWindow::actionOpen()
