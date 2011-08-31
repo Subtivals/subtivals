@@ -50,6 +50,7 @@ public slots:
     void actionPrevious();
     void actionToggleHide(bool);
     void timeout();
+    void actionEnableReload(bool);
     void fileChanged(QString path);
     void reloadScript();
     void actionEventClic(QModelIndex);
@@ -73,6 +74,7 @@ private:
     QList<Event *> m_lastEvents;
     QMap<Event *, int> m_tableMapping;
     bool m_selectEvent;
+    bool m_reloadEnabled;
     QFileSystemWatcher* m_filewatcher;
     QTimer m_timerFileChange;
 };

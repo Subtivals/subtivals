@@ -4,7 +4,7 @@
 #include <QtGlobal>
 #include <QFileDialog>
 #include <QDebug>
-#include <QMessageBox>
+#include <QSettings>
 
 #include "configdialog.h"
 
@@ -19,6 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
+
+    // Restore settings
+    QSettings settings;
+    m_reloadEnabled = settings.value("MainWindow/reloadEnabled", false).toBool();
+    ui->actionEnableReload->setChecked(m_reloadEnabled);
+
     // Script file watching :
     connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
     m_timerFileChange.setSingleShot(true);
@@ -70,11 +76,18 @@ void MainWindow::openFile (const QString &p_fileName)
     setState(STOPPED);
 }
 
+void MainWindow::actionEnableReload(bool state)
+{
+    m_reloadEnabled = state;
+    if (!state)
+        m_timerFileChange.stop();
+}
+
 void MainWindow::fileChanged(QString path)
 {
     // Script file is being modified.
     // Wait that no change is made during 1sec before warning the user.
-    if (path == m_script->fileName() && QFile(path).exists())
+    if (m_reloadEnabled && path == m_script->fileName() && QFile(path).exists())
         m_timerFileChange.start(1000);
     else
         m_timerFileChange.stop();
@@ -82,20 +95,7 @@ void MainWindow::fileChanged(QString path)
 
 void MainWindow::reloadScript()
 {
-    // Script file has changed, warn user
-    QMessageBox msgBox;
-    msgBox.setWindowTitle(tr("Warning"));
-    msgBox.setIcon(QMessageBox::Question);
-    msgBox.setText(tr("The subtitle file has been modified."));
-    msgBox.setInformativeText("Do you want to reload it?");
-    msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-    msgBox.setDefaultButton(QMessageBox::No);
-
-    // Reload if user accepts
-    int ret = msgBox.exec();
-    if (ret != QMessageBox::Yes)
-        return;
-
+    // Script file has changed, reload.
     // Store current position
     qint64 msseStartTime = m_msseStartTime;
     qint64 userDelay = m_userDelay;
@@ -108,6 +108,7 @@ void MainWindow::reloadScript()
 
     // Reload file path
     openFile(QString(m_script->fileName())); //force copy
+    statusBar()->showMessage(tr("Subtitle file reloaded."), 5000);
 
     // Restore state
     setState(previous);
@@ -310,6 +311,11 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
 
 void MainWindow::closeEvent(QCloseEvent *)
 {
+    // Restore settings
+    QSettings settings;
+    settings.beginGroup("MainWindow");
+    settings.setValue("reloadEnabled", m_reloadEnabled);
+    settings.endGroup();
     // When the main window is close : end of the app
     qApp->exit();
 }
