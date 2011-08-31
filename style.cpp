@@ -2,6 +2,8 @@
 
 #include <event.h>
 #include <QPainter>
+#include <QtGui/QTextDocument>
+#include <QAbstractTextDocumentLayout>
 
 Style::Style(const QString &p_line, QObject *p_parent) :
     QObject(p_parent),
@@ -61,19 +63,37 @@ const QColor &Style::primaryColour() const {
     return m_primaryColour;
 }
 
-void Style::drawEvent(QPainter *painter, const Event &event, const QRectF &area) const
+void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds) const
 {
-    qreal top_margin = 0;
-    qreal sub_margin = 0;
-    if (m_alignment & Qt::AlignBottom)
-        sub_margin = m_marginV;
-    if (m_alignment & Qt::AlignTop)
-        top_margin = m_marginV;
-    QRectF placement = area.adjusted(m_marginL,
-                                     top_margin,
-                                     -m_marginR,
-                                     -sub_margin);
+    int firstHeightThird = bounds.height() / 3;
+    int secondHeightThird = (bounds.height() / 3) * 2;
+    QRect final(bounds);
+    if (m_alignment & Qt::AlignTop) {
+        final.setBottom(firstHeightThird);
+    } else if (m_alignment & Qt::AlignBottom) {
+        final.setTop(secondHeightThird);
+    }
+    QString html;
+    if (m_alignment & Qt::AlignLeft) {
+        html = "<p align=\"left\">";
+    } else if (m_alignment & Qt::AlignRight) {
+        html = "<p align=\"right\">";
+    } else {
+        html = "<p align=\"center\">";
+    }
+    html = html.append(event.text());
+    html = html.append("</p>");
     painter->setFont(m_font);
     painter->setPen(m_primaryColour);
-    painter->drawText(placement, event.text(), QTextOption(m_alignment));
+    QTextDocument doc;
+    doc.setHtml(html);
+    doc.setDefaultFont(m_font);
+    doc.setPageSize(QSize(final.width(), final.height()));
+    QAbstractTextDocumentLayout* layout = doc.documentLayout();
+    QAbstractTextDocumentLayout::PaintContext context;
+    context.palette.setColor(QPalette::Text, painter->pen().color());
+    painter->save();
+    painter->translate(final.x(), final.y());
+    layout->draw(painter, context);
+    painter->restore();
 }

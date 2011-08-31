@@ -27,7 +27,13 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
     {
         p = p_line.indexOf(",", p+1);
     }
-    m_text = p_line.mid(p+1).replace("\\N", QString('\n'));
+    // Transform the hints in the text into HTML:
+    // New ligne HTML-ification
+    m_text = p_line.mid(p+1).replace("\\N", " "); // Multi-lines not supported now, so no <br/>
+    // Italic HTML-ification
+    m_text = m_text.replace("{\\i1}", "<i>");
+    m_text = m_text.replace("{\\i0}", "</i>");
+    // Drop others hints that cannot be transleted in HTML
     int idxAccOpen = m_text.indexOf("{\\");
     if (idxAccOpen != -1)
     {

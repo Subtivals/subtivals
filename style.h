@@ -6,7 +6,7 @@
 #include <QFont>
 #include <QColor>
 #include <QRect>
-
+#include <QTextDocument>
 
 class Event;
 
@@ -41,7 +41,7 @@ public:
     /*
      * Draws an Event with this style within the specified area.
      */
-    void drawEvent(QPainter*, const Event&, const QRectF&) const;
+    void drawEvent(QPainter*, const Event&, const QRect&) const;
 private:
     /*
      * Style name.
