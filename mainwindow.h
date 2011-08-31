@@ -9,6 +9,7 @@
 #include <QTableWidget>
 #include <QModelIndex>
 #include <QString>
+#include <QFileSystemWatcher>
 
 #include "script.h"
 
@@ -48,6 +49,7 @@ public slots:
     void actionNext();
     void actionToggleHide(bool);
     void timeout();
+    void fileChanged(QString path);
     void actionEventSelected(QModelIndex);
     void updateCurrentEvent(qint64);
     void updateCurrentEventAt(int);
@@ -66,6 +68,7 @@ private:
     qint64 m_userDelay;
     QList<Event *> m_lastEvents;
     QMap<Event *, int> m_tableMapping;
+    QFileSystemWatcher* m_filewatcher;
 };
 
 #endif // MAINWINDOW_H
