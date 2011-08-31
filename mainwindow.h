@@ -46,11 +46,14 @@ public slots:
     void actionSub1Sec();
     void actionPause();
     void actionNext();
+    void actionPrevious();
     void actionToggleHide(bool);
     void timeout();
+    void actionEventClic(QModelIndex);
     void actionEventSelected(QModelIndex);
     void updateCurrentEvent(qint64);
     void updateCurrentEventAt(int);
+    void enableEventSelection();
 protected:
     void closeEvent(QCloseEvent *);
     QString ts2tc(qint64 p_timestamp);
@@ -66,6 +69,7 @@ private:
     qint64 m_userDelay;
     QList<Event *> m_lastEvents;
     QMap<Event *, int> m_tableMapping;
+    bool m_selectEvent;
 };
 
 #endif // MAINWINDOW_H

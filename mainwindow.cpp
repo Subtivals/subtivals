@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_selectEvent = true;
     m_script = 0;
     m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
@@ -129,15 +130,40 @@ void MainWindow::actionPause()
     m_timer.stop();
 }
 
+void MainWindow::actionPrevious()
+{
+    int i = ui->tableWidget->currentRow();
+    if (i > 0){
+        updateCurrentEventAt(i - 1);
+        ui->actionHide->setChecked(false);
+    }
+}
+
 void MainWindow::actionNext()
 {
-    updateCurrentEventAt(ui->tableWidget->currentRow() + 1);
-    ui->actionHide->setChecked(false);
+    int i = ui->tableWidget->currentRow();
+    if (i < ui->tableWidget->rowCount() - 1){
+        updateCurrentEventAt(i + 1);
+        ui->actionHide->setChecked(false);
+    }
 }
 
 void MainWindow::actionToggleHide(bool state)
 {
     emit toggleHide(state);
+}
+
+void MainWindow::enableEventSelection()
+{
+    m_selectEvent = true;
+}
+
+void MainWindow::actionEventClic(QModelIndex)
+{
+    // Disable selection of events for some time
+    // in order to let the user perform a double-clic
+    m_selectEvent = false;
+    QTimer::singleShot(1000, this, SLOT(enableEventSelection()));
 }
 
 void MainWindow::actionEventSelected(QModelIndex index)
@@ -220,7 +246,7 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     m_lastEvents = currentEvents;
     ui->timer->setText(ts2tc(msecsElapsed));
     ui->userDelay->setText(ts2tc(m_userDelay));
-    if(currentEvents.size() > 0)
+    if(m_selectEvent && currentEvents.size() > 0)
     {
         ui->tableWidget->selectRow(m_tableMapping[currentEvents.last()]);
     }
@@ -251,6 +277,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(false);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
+        ui->actionPrevious->setEnabled(false);
         ui->actionNext->setEnabled(false);
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
@@ -259,6 +286,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
+        ui->actionPrevious->setEnabled(false);
         ui->actionNext->setEnabled(false);
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
@@ -267,6 +295,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(false);
         ui->actionStop->setEnabled(true);
         ui->actionPause->setEnabled(true);
+        ui->actionPrevious->setEnabled(true);
         ui->actionNext->setEnabled(true);
         ui->actionAdd1Sec->setEnabled(true);
         ui->actionSub1Sec->setEnabled(true);
@@ -275,6 +304,7 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
+        ui->actionPrevious->setEnabled(true);
         ui->actionNext->setEnabled(true);
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
