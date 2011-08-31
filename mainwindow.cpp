@@ -19,7 +19,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
+    // Script file watching :
     connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
+    m_timerFileChange.setSingleShot(true);
+    connect(&m_timerFileChange, SIGNAL(timeout()), this, SLOT(reloadScript()));
 }
 
 MainWindow::~MainWindow()
@@ -69,9 +72,20 @@ void MainWindow::openFile (const QString &p_fileName)
 
 void MainWindow::fileChanged(QString path)
 {
+    // Script file is being modified.
+    // Wait that no change is made during 1sec before warning the user.
+    if (path == m_script->fileName() && QFile(path).exists())
+        m_timerFileChange.start(1000);
+    else
+        m_timerFileChange.stop();
+}
+
+void MainWindow::reloadScript()
+{
     // Script file has changed, warn user
     QMessageBox msgBox;
     msgBox.setWindowTitle(tr("Warning"));
+    msgBox.setIcon(QMessageBox::Question);
     msgBox.setText(tr("The subtitle file has been modified."));
     msgBox.setInformativeText("Do you want to reload it?");
     msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
@@ -93,7 +107,7 @@ void MainWindow::fileChanged(QString path)
         emit eventEnd(it.next());
 
     // Reload file path
-    openFile(path);
+    openFile(m_script->fileName());
 
     // Restore state
     setState(previous);

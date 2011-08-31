@@ -51,6 +51,7 @@ public slots:
     void actionToggleHide(bool);
     void timeout();
     void fileChanged(QString path);
+    void reloadScript();
     void actionEventClic(QModelIndex);
     void actionEventSelected(QModelIndex);
     void updateCurrentEvent(qint64);
@@ -73,6 +74,7 @@ private:
     QMap<Event *, int> m_tableMapping;
     bool m_selectEvent;
     QFileSystemWatcher* m_filewatcher;
+    QTimer m_timerFileChange;
 };
 
 #endif // MAINWINDOW_H
