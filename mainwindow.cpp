@@ -4,12 +4,14 @@
 #include <QtGlobal>
 #include <QFileDialog>
 #include <QDebug>
+#include <QSettings>
 
 #include "configdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_filewatcher(new QFileSystemWatcher)
 {
     ui->setupUi(this);
     m_selectEvent = true;
@@ -17,6 +19,16 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
+
+    // Restore settings
+    QSettings settings;
+    m_reloadEnabled = settings.value("MainWindow/reloadEnabled", false).toBool();
+    ui->actionEnableReload->setChecked(m_reloadEnabled);
+
+    // Script file watching :
+    connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
+    m_timerFileChange.setSingleShot(true);
+    connect(&m_timerFileChange, SIGNAL(timeout()), this, SLOT(reloadScript()));
 }
 
 MainWindow::~MainWindow()
@@ -29,6 +41,7 @@ void MainWindow::openFile (const QString &p_fileName)
     // Clean-up previously allocated resources & reset GUI
     if(m_script != 0)
     {
+        m_filewatcher->removePath(m_script->fileName());
         delete m_script;
     }
     if(m_timer.isActive())
@@ -41,6 +54,7 @@ void MainWindow::openFile (const QString &p_fileName)
     m_tableMapping.clear();
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);
+    m_filewatcher->addPath(p_fileName);
     setWindowTitle(m_script->title());
     ui->tableWidget->setRowCount(m_script->eventsCount());
     QListIterator<Event *> i = m_script->events();
@@ -60,6 +74,49 @@ void MainWindow::openFile (const QString &p_fileName)
         row++;
     }
     setState(STOPPED);
+}
+
+void MainWindow::actionEnableReload(bool state)
+{
+    m_reloadEnabled = state;
+    if (!state)
+        m_timerFileChange.stop();
+}
+
+void MainWindow::fileChanged(QString path)
+{
+    // Script file is being modified.
+    // Wait that no change is made during 1sec before warning the user.
+    if (m_reloadEnabled && path == m_script->fileName() && QFile(path).exists())
+        m_timerFileChange.start(1000);
+    else
+        m_timerFileChange.stop();
+}
+
+void MainWindow::reloadScript()
+{
+    // Script file has changed, reload.
+    // Store current position
+    qint64 msseStartTime = m_msseStartTime;
+    qint64 userDelay = m_userDelay;
+    // Store current playing state
+    State previous = m_state;
+    // Hide current subtitles
+    QListIterator<Event*> it(m_lastEvents);
+    while(it.hasNext())
+        emit eventEnd(it.next());
+
+    // Reload file path
+    openFile(QString(m_script->fileName())); //force copy
+    statusBar()->showMessage(tr("Subtitle file reloaded."), 5000);
+
+    // Restore state
+    setState(previous);
+    // Restore position
+    m_msseStartTime = msseStartTime;
+    m_userDelay = userDelay;
+    if (m_state == PLAYING)
+        m_timer.start(100);
 }
 
 void MainWindow::actionOpen()
@@ -254,6 +311,11 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
 
 void MainWindow::closeEvent(QCloseEvent *)
 {
+    // Restore settings
+    QSettings settings;
+    settings.beginGroup("MainWindow");
+    settings.setValue("reloadEnabled", m_reloadEnabled);
+    settings.endGroup();
     // When the main window is close : end of the app
     qApp->exit();
 }

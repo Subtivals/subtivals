@@ -124,6 +124,7 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionEnableReload"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -275,6 +276,14 @@
    </property>
    <property name="shortcut">
     <string>PgUp</string>
+   </property>
+  </action>
+  <action name="actionEnableReload">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auto reload</string>
    </property>
   </action>
  </widget>
@@ -489,6 +498,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionEnableReload</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionEnableReload(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -505,5 +530,6 @@
   <slot>actionToggleHide(bool)</slot>
   <slot>actionEventClic(QModelIndex)</slot>
   <slot>actionPrevious()</slot>
+  <slot>actionEnableReload(bool)</slot>
  </slots>
 </ui>
