@@ -162,7 +162,7 @@ void MainWindow::updateCurrentEventAt(int i)
     // Show it !
     updateCurrentEvent(start_mss + 1);
     // Continuous play, even while pause
-    m_msseStartTime = QDateTime::currentMSecsSinceEpoch() - start_mss;
+    m_msseStartTime = QDateTime::currentMSecsSinceEpoch() - start_mss - m_pauseTotal;
     switch(m_state)
     {
     case PLAYING:
