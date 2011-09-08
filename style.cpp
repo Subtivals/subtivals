@@ -1,9 +1,9 @@
-#include "style.h"
-
-#include <event.h>
-#include <QPainter>
+#include <QtGui/QPainter>
 #include <QtGui/QTextDocument>
-#include <QAbstractTextDocumentLayout>
+#include <QtGui/QAbstractTextDocumentLayout>
+
+#include "style.h"
+#include "event.h"
 
 Style::Style(const QString &p_line, QObject *p_parent) :
     QObject(p_parent),

@@ -1,6 +1,6 @@
-#include <QSettings>
-#include <QStringList>
-#include <QFile>
+#include <QtCore/QSettings>
+#include <QtCore/QStringList>
+#include <QtCore/QFile>
 
 #include "script.h"
 

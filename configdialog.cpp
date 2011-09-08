@@ -1,8 +1,8 @@
+#include <QtCore/QSettings>
+#include <QtGui/QDesktopWidget>
+
 #include "configdialog.h"
 #include "ui_configdialog.h"
-
-#include <QDesktopWidget>
-#include <QSettings>
 
 ConfigDialog::ConfigDialog(QWidget *parent) :
     QDialog(parent),

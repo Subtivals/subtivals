@@ -1,11 +1,10 @@
+#include <QtCore/QSettings>
+#include <QtGui/QPainter>
+#include <QtGui/QCursor>
+#include <QtGui/QDesktopWidget>
+
 #include "subtitlesform.h"
 #include "ui_subtitlesform.h"
-
-#include <QPainter>
-#include <QCursor>
-#include <QSettings>
-#include <QDesktopWidget>
-
 #include "style.h"
 
 SubtitlesForm::SubtitlesForm(QWidget *parent) :

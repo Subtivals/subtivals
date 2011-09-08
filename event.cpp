@@ -1,9 +1,7 @@
+#include <QtCore/QStringList>
+
 #include "event.h"
-
 #include "script.h"
-
-#include <QDebug>
-#include <QStringList>
 
 Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
     QObject(p_parent)
@@ -43,9 +41,7 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
             if (idxAccCloseColor != -1)
             {
                 QString htmlColor = "<font color=\"#" + m_text.mid(idxAccOpenColor + 6 + 4, 2) + m_text.mid(idxAccOpenColor + 6 + 2, 2) + m_text.mid(idxAccOpenColor + 6, 2) + "\">";
-                qDebug() << "html color=" << htmlColor;
                 m_text = m_text.left(idxAccOpenColor) + htmlColor + m_text.mid(idxAccCloseColor+1) + "</font>";
-                qDebug() << "final text" << m_text;
             }
             idxAccOpenColor = m_text.indexOf("{\\1c&H");
         }

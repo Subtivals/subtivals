@@ -1,11 +1,9 @@
+#include <QtCore/QtGlobal>
+#include <QtCore/QSettings>
+#include <QtGui/QFileDialog>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-#include <QtGlobal>
-#include <QFileDialog>
-#include <QDebug>
-#include <QSettings>
-
 #include "configdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
