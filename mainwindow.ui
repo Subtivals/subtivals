@@ -187,7 +187,7 @@
     <string>Play</string>
    </property>
    <property name="shortcut">
-    <string>Space</string>
+    <string>L</string>
    </property>
   </action>
   <action name="actionStop">
@@ -239,7 +239,7 @@
     <string>Pause</string>
    </property>
    <property name="shortcut">
-    <string>Space</string>
+    <string>P</string>
    </property>
   </action>
   <action name="actionNext">
@@ -250,7 +250,7 @@
     <string>Next</string>
    </property>
    <property name="shortcut">
-    <string>PgDown</string>
+    <string>Space</string>
    </property>
   </action>
   <action name="actionHide">
