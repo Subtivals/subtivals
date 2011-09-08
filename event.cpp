@@ -29,18 +29,38 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
     }
     // Transform the hints in the text into HTML:
     // New ligne HTML-ification
-    m_text = p_line.mid(p+1).replace("\\N", " "); // Multi-lines not supported now, so no <br/>
+    m_text = p_line.mid(p+1).replace("\\N", "<br/>");
     // Italic HTML-ification
     m_text = m_text.replace("{\\i1}", "<i>");
     m_text = m_text.replace("{\\i0}", "</i>");
-    // Drop others hints that cannot be transleted in HTML
-    int idxAccOpen = m_text.indexOf("{\\");
-    if (idxAccOpen != -1)
+    // Color HTML-ification
     {
-        int idxAccClose = m_text.indexOf("}", idxAccOpen);
-        if (idxAccClose != -1)
+        int idxAccOpenColor = m_text.indexOf("{\\1c&H");
+        while (idxAccOpenColor != -1)
         {
-            m_text = m_text.left(idxAccOpen) + m_text.mid(idxAccClose+1);
+
+            int idxAccCloseColor = m_text.indexOf("}", idxAccOpenColor);
+            if (idxAccCloseColor != -1)
+            {
+                QString htmlColor = "<font color=\"#" + m_text.mid(idxAccOpenColor + 6 + 4, 2) + m_text.mid(idxAccOpenColor + 6 + 2, 2) + m_text.mid(idxAccOpenColor + 6, 2) + "\">";
+                qDebug() << "html color=" << htmlColor;
+                m_text = m_text.left(idxAccOpenColor) + htmlColor + m_text.mid(idxAccCloseColor+1) + "</font>";
+                qDebug() << "final text" << m_text;
+            }
+            idxAccOpenColor = m_text.indexOf("{\\1c&H");
+        }
+    }
+    // Drop others hints that cannot be translated in HTML
+    {
+        int idxAccOpenDrop = m_text.indexOf("{\\");
+        while (idxAccOpenDrop != -1)
+        {
+            int idxAccCloseDrop = m_text.indexOf("}", idxAccOpenDrop);
+            if (idxAccCloseDrop != -1)
+            {
+                m_text = m_text.left(idxAccOpenDrop) + m_text.mid(idxAccCloseDrop+1);
+            }
+            idxAccOpenDrop = m_text.indexOf("{\\");
         }
     }
     m_text = m_text.trimmed();
