@@ -144,6 +144,9 @@ void MainWindow::actionPlay()
         m_pauseTotal += QDateTime::currentMSecsSinceEpoch() - m_pauseStart;
         m_timer.start(100);
         break;
+    case NODATA:
+    case PLAYING:
+        break;
     }
 
 }
@@ -252,6 +255,9 @@ void MainWindow::updateCurrentEventAt(int i)
     case PAUSED:
         m_pauseTotal = 0;
         m_pauseStart = QDateTime::currentMSecsSinceEpoch();
+        break;
+    case NODATA:
+    case STOPPED:
         break;
     }
 }

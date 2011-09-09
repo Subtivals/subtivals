@@ -37,7 +37,9 @@ Style::Style(const QString &p_line, QObject *p_parent) :
         m_alignment |= Qt::AlignHCenter;
 }
 
-Style::Style(const Style &s, int marginL, int marginR, int marginV) {
+Style::Style(const Style &s, int marginL, int marginR, int marginV, QObject *p_parent):
+    QObject(p_parent)
+{
     // Explicit clone : Shallow copy could have been enough
     this->m_name = s.m_name;
     this->m_font = s.m_font;
@@ -65,14 +67,6 @@ const QColor &Style::primaryColour() const {
 
 void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds) const
 {
-    int firstHeightThird = bounds.height() / 3;
-    int secondHeightThird = (bounds.height() / 3) * 2;
-    QRect final(bounds);
-    if (m_alignment & Qt::AlignTop) {
-        final.setBottom(firstHeightThird);
-    } else if (m_alignment & Qt::AlignBottom) {
-        final.setTop(secondHeightThird);
-    }
     QString html;
     if (m_alignment & Qt::AlignLeft) {
         html = "<p align=\"left\">";
@@ -88,8 +82,15 @@ void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds
     QTextDocument doc;
     doc.setHtml(html);
     doc.setDefaultFont(m_font);
-    doc.setPageSize(QSize(final.width(), final.height()));
     QAbstractTextDocumentLayout* layout = doc.documentLayout();
+    int htmlHeight = layout->documentSize().height() + 4;
+    QRect final(bounds);
+    if (m_alignment & Qt::AlignTop) {
+        final.setBottom(htmlHeight);
+    } else if (m_alignment & Qt::AlignBottom) {
+        final.setTop(bounds.height() - htmlHeight);
+    }
+    doc.setPageSize(QSize(final.width(), final.height()));
     QAbstractTextDocumentLayout::PaintContext context;
     context.palette.setColor(QPalette::Text, painter->pen().color());
     painter->save();

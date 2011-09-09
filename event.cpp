@@ -17,7 +17,7 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
     int marginV = subparts[7].toInt();
     if (marginL || marginR || marginV) {
         // Clone only if necessary
-        m_style = new Style(*m_style, marginL, marginR, marginV);
+        m_style = new Style(*m_style, marginL, marginR, marginV, this);
     }
 
     int p = p_line.indexOf(",");

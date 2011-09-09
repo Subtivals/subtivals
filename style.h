@@ -20,11 +20,11 @@ public:
     /*
      * Constructs a style from an style line of an ASS file.
      */
-    explicit Style(const QString &p_line, QObject *p_parent = 0);
+    explicit Style(const QString &p_line, QObject *p_parent);
     /*
      * Copy constructor
      */
-    explicit Style(const Style &s, int marginL = 0, int marginR = 0, int marginV = 0);
+    explicit Style(const Style &s, int marginL, int marginR, int marginV, QObject *p_parent);
     /*
      * Returns the style name.
      */
