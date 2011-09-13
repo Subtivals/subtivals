@@ -25,10 +25,15 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
     {
         p = p_line.indexOf(",", p+1);
     }
+    m_prettyText = p_line.mid(p+1);
+    m_text = m_prettyText;
+
+    m_prettyText = m_prettyText.replace("\\N", " -- ");
+    m_prettyText = m_prettyText.replace("\\n", " -- ");
     // Transform the hints in the text into HTML:
     // New ligne HTML-ification
-    m_text = p_line.mid(p+1).replace("\\N", "<br/>");
-    m_text = p_line.mid(p+1).replace("\\n", "<br/>");
+    m_text = m_text.replace("\\N", "<br/>");
+    m_text = m_text.replace("\\n", "<br/>");
     // Italic HTML-ification
     m_text = m_text.replace("{\\i1}", "<i>");
     m_text = m_text.replace("{\\i0}", "</i>");
@@ -85,6 +90,11 @@ const Style *Event::style() const
 const QString &Event::text() const
 {
     return m_text;
+}
+
+const QString &Event::prettyText() const
+{
+    return m_prettyText;
 }
 
 bool Event::match(qint64 p_msecs) const

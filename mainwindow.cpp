@@ -67,7 +67,7 @@ void MainWindow::openFile (const QString &p_fileName)
         ui->tableWidget->setItem(row, COLUMN_END, endItem);
         QTableWidgetItem *styleItem = new QTableWidgetItem(event->style()->name());
         ui->tableWidget->setItem(row, COLUMN_STYLE, styleItem);
-        QTableWidgetItem *textItem = new QTableWidgetItem(event->text());
+        QTableWidgetItem *textItem = new QTableWidgetItem(event->prettyText());
         ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
         row++;
     }

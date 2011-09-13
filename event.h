@@ -17,6 +17,7 @@ public:
     qint64 msseEnd() const;
     const Style *style() const;
     const QString &text() const;
+    const QString &prettyText() const;
     bool match(qint64 msecs) const;
 signals:
 
@@ -26,6 +27,7 @@ private:
     qint64 m_msseEnd;
     const Style *m_style;
     QString m_text;
+    QString m_prettyText;
 };
 
 #endif // EVENT_H
