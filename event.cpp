@@ -30,6 +30,22 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
 
     m_prettyText = m_prettyText.replace("\\N", " -- ");
     m_prettyText = m_prettyText.replace("\\n", " -- ");
+    m_prettyText = m_prettyText.replace("{\\i1}", "**");
+    m_prettyText = m_prettyText.replace("{\\i0}", "**");
+    // Drop others hints that cannot be translated in HTML
+    {
+        int idxAccOpenDrop = m_prettyText.indexOf("{\\");
+        while (idxAccOpenDrop != -1)
+        {
+            int idxAccCloseDrop = m_prettyText.indexOf("}", idxAccOpenDrop);
+            if (idxAccCloseDrop != -1)
+            {
+                m_prettyText = m_prettyText.left(idxAccOpenDrop) + m_prettyText.mid(idxAccCloseDrop+1);
+            }
+            idxAccOpenDrop = m_prettyText.indexOf("{\\");
+        }
+    }
+
     // Transform the hints in the text into HTML:
     // New ligne HTML-ification
     m_text = m_text.replace("\\N", "<br/>");
