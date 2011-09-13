@@ -28,6 +28,7 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
     // Transform the hints in the text into HTML:
     // New ligne HTML-ification
     m_text = p_line.mid(p+1).replace("\\N", "<br/>");
+    m_text = p_line.mid(p+1).replace("\\n", "<br/>");
     // Italic HTML-ification
     m_text = m_text.replace("{\\i1}", "<i>");
     m_text = m_text.replace("{\\i0}", "</i>");
