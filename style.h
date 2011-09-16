@@ -24,7 +24,7 @@ public:
     /*
      * Copy constructor
      */
-    explicit Style(const Style &s, int marginL, int marginR, int marginV, QObject *p_parent);
+    explicit Style(const Style &p_oth, int p_marginL, int p_marginR, int p_marginV, QObject *p_parent);
     /*
      * Returns the style name.
      */

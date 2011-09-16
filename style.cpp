@@ -7,10 +7,7 @@
 
 Style::Style(const QString &p_line, QObject *p_parent) :
     QObject(p_parent),
-    m_alignment(Qt::AlignVCenter),
-    m_marginL(0),
-    m_marginR(0),
-    m_marginV(0)
+    m_alignment(Qt::AlignVCenter)
 {
     QList<QString> subparts = p_line.split(',');
     m_name = subparts[0];
@@ -37,20 +34,16 @@ Style::Style(const QString &p_line, QObject *p_parent) :
         m_alignment |= Qt::AlignHCenter;
 }
 
-Style::Style(const Style &s, int marginL, int marginR, int marginV, QObject *p_parent):
-    QObject(p_parent)
+Style::Style(const Style &p_oth, int p_marginL, int p_marginR, int p_marginV, QObject *p_parent):
+    QObject(p_parent),
+    m_name(p_oth.m_name),
+    m_font(p_oth.m_font),
+    m_primaryColour(p_oth.m_primaryColour),
+    m_alignment(p_oth.m_alignment),
+    m_marginL(p_oth.m_marginL + p_marginL),
+    m_marginR(p_oth.m_marginR + p_marginR),
+    m_marginV(p_oth.m_marginV + p_marginV)
 {
-    // Explicit clone : Shallow copy could have been enough
-    this->m_name = s.m_name;
-    this->m_font = s.m_font;
-    this->m_primaryColour = s.m_primaryColour;
-    this->m_alignment = s.m_alignment;
-    this->m_marginL = s.m_marginL;
-    if (marginL) this->m_marginL = marginL;
-    this->m_marginR = s.m_marginR;
-    if (marginR) this->m_marginR = marginR;
-    this->m_marginV = s.m_marginV;
-    if (marginV) this->m_marginV = marginV;
 }
 
 const QString &Style::name() const {
@@ -84,17 +77,7 @@ void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds
     doc.setDefaultFont(m_font);
     QAbstractTextDocumentLayout* layout = doc.documentLayout();
     QRect final(bounds);
-    int top_margin = 0;
-    int sub_margin = 0;
-    if (m_alignment & Qt::AlignBottom)
-    {
-        sub_margin = m_marginV;
-    }
-    if (m_alignment & Qt::AlignTop)
-    {
-        top_margin = m_marginV;
-    }
-    final = final.adjusted(m_marginL, top_margin, -m_marginR, -sub_margin);
+    final = final.adjusted(m_marginL, m_marginV, -m_marginR, m_marginV);
     doc.setPageSize(QSize(final.width(), final.height()));
     QAbstractTextDocumentLayout::PaintContext context;
     context.palette.setColor(QPalette::Text, painter->pen().color());
