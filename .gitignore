@@ -3,3 +3,4 @@ moc_*
 *.o
 ui_*.h
 Makefile
+subtivals

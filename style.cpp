@@ -83,14 +83,18 @@ void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds
     doc.setHtml(html);
     doc.setDefaultFont(m_font);
     QAbstractTextDocumentLayout* layout = doc.documentLayout();
-    int htmlHeight = layout->documentSize().height() + 4;
     QRect final(bounds);
-    if (m_alignment & Qt::AlignTop) {
-        final.setBottom(htmlHeight);
-    } else if (m_alignment & Qt::AlignBottom) {
-        final.setTop(bounds.height() - htmlHeight);
+    int top_margin = 0;
+    int sub_margin = 0;
+    if (m_alignment & Qt::AlignBottom)
+    {
+        sub_margin = m_marginV;
     }
-    final = final.adjusted(m_marginL, 0, -m_marginR, 0);
+    if (m_alignment & Qt::AlignTop)
+    {
+        top_margin = m_marginV;
+    }
+    final = final.adjusted(m_marginL, top_margin, -m_marginR, -sub_margin);
     doc.setPageSize(QSize(final.width(), final.height()));
     QAbstractTextDocumentLayout::PaintContext context;
     context.palette.setColor(QPalette::Text, painter->pen().color());
