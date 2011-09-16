@@ -62,6 +62,7 @@ protected:
     void closeEvent(QCloseEvent *);
     QString ts2tc(qint64 p_timestamp);
     void setState(State p_state);
+    qint64 tick();
 private:
     State m_state;
     Ui::MainWindow *ui;

@@ -134,14 +134,14 @@ void MainWindow::actionPlay()
     {
     case STOPPED:
         setState(PLAYING);
-        m_msseStartTime = QDateTime::currentDateTime().toTime_t();
+        m_msseStartTime = tick();
         m_userDelay = 0;
         m_pauseTotal = 0;
         m_timer.start(100);
         break;
     case PAUSED:
         setState(PLAYING);
-        m_pauseTotal += QDateTime::currentDateTime().toTime_t() - m_pauseStart;
+        m_pauseTotal += tick() - m_pauseStart;
         m_timer.start(100);
         break;
     case NODATA:
@@ -184,7 +184,7 @@ void MainWindow::actionSub1Sec()
 void MainWindow::actionPause()
 {
     setState(PAUSED);
-    m_pauseStart = QDateTime::currentDateTime().toTime_t();
+    m_pauseStart = tick();
     m_timer.stop();
 }
 
@@ -233,7 +233,7 @@ void MainWindow::actionEventSelected(QModelIndex index)
 void MainWindow::timeout()
 {
     // Gets the elapsed time in milliseconds
-    qint64 msseCurrentTime = QDateTime::currentDateTime().toTime_t();
+    qint64 msseCurrentTime = tick();
     qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
     updateCurrentEvent(msecsElapsed);
 }
@@ -246,7 +246,7 @@ void MainWindow::updateCurrentEventAt(int i)
     // Show it !
     updateCurrentEvent(start_mss + 1);
     // Continuous play, even while pause
-    m_msseStartTime = QDateTime::currentDateTime().toTime_t() - start_mss - m_pauseTotal;
+    m_msseStartTime = tick() - start_mss - m_pauseTotal;
     switch(m_state)
     {
     case PLAYING:
@@ -254,7 +254,7 @@ void MainWindow::updateCurrentEventAt(int i)
         break;
     case PAUSED:
         m_pauseTotal = 0;
-        m_pauseStart = QDateTime::currentDateTime().toTime_t();
+        m_pauseStart = tick();
         break;
     case NODATA:
     case STOPPED:
@@ -376,4 +376,12 @@ void MainWindow::setState(State p_state)
         ui->actionSub1Sec->setEnabled(false);
         break;
     }
+}
+
+qint64 MainWindow::tick()
+{
+    QDateTime dateTime = QDateTime::currentDateTime();
+    qint64 dt=dateTime.date().daysTo(QDate(1978, 9, 9));
+    QTime tt=dateTime.time();
+    return 86400000 * dt + 3600000 * tt.hour() + 60000 * tt.minute() + 1000 * tt.second() + tt.msec();
 }
