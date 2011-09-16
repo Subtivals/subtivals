@@ -134,14 +134,14 @@ void MainWindow::actionPlay()
     {
     case STOPPED:
         setState(PLAYING);
-        m_msseStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_msseStartTime = QDateTime::currentDateTime().toTime_t();
         m_userDelay = 0;
         m_pauseTotal = 0;
         m_timer.start(100);
         break;
     case PAUSED:
         setState(PLAYING);
-        m_pauseTotal += QDateTime::currentMSecsSinceEpoch() - m_pauseStart;
+        m_pauseTotal += QDateTime::currentDateTime().toTime_t() - m_pauseStart;
         m_timer.start(100);
         break;
     case NODATA:
@@ -184,7 +184,7 @@ void MainWindow::actionSub1Sec()
 void MainWindow::actionPause()
 {
     setState(PAUSED);
-    m_pauseStart = QDateTime::currentMSecsSinceEpoch();
+    m_pauseStart = QDateTime::currentDateTime().toTime_t();
     m_timer.stop();
 }
 
@@ -233,7 +233,7 @@ void MainWindow::actionEventSelected(QModelIndex index)
 void MainWindow::timeout()
 {
     // Gets the elapsed time in milliseconds
-    qint64 msseCurrentTime = QDateTime::currentMSecsSinceEpoch();
+    qint64 msseCurrentTime = QDateTime::currentDateTime().toTime_t();
     qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
     updateCurrentEvent(msecsElapsed);
 }
@@ -246,7 +246,7 @@ void MainWindow::updateCurrentEventAt(int i)
     // Show it !
     updateCurrentEvent(start_mss + 1);
     // Continuous play, even while pause
-    m_msseStartTime = QDateTime::currentMSecsSinceEpoch() - start_mss - m_pauseTotal;
+    m_msseStartTime = QDateTime::currentDateTime().toTime_t() - start_mss - m_pauseTotal;
     switch(m_state)
     {
     case PLAYING:
@@ -254,7 +254,7 @@ void MainWindow::updateCurrentEventAt(int i)
         break;
     case PAUSED:
         m_pauseTotal = 0;
-        m_pauseStart = QDateTime::currentMSecsSinceEpoch();
+        m_pauseStart = QDateTime::currentDateTime().toTime_t();
         break;
     case NODATA:
     case STOPPED:
