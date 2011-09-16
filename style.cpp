@@ -90,6 +90,7 @@ void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds
     } else if (m_alignment & Qt::AlignBottom) {
         final.setTop(bounds.height() - htmlHeight);
     }
+    final = final.adjusted(m_marginL, 0, -m_marginR, 0);
     doc.setPageSize(QSize(final.width(), final.height()));
     QAbstractTextDocumentLayout::PaintContext context;
     context.palette.setColor(QPalette::Text, painter->pen().color());
