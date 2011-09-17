@@ -201,7 +201,10 @@ void MainWindow::actionNext()
 {
     int i = ui->tableWidget->currentRow();
     if (i < ui->tableWidget->rowCount() - 1){
-        updateCurrentEventAt(i + 1);
+        if (elapsedTime() < m_script->eventAt(i)->msseStart())
+            updateCurrentEventAt(i);
+        else
+            updateCurrentEventAt(i + 1);
         ui->actionHide->setChecked(false);
     }
 }
@@ -232,10 +235,7 @@ void MainWindow::actionEventSelected(QModelIndex index)
 
 void MainWindow::timeout()
 {
-    // Gets the elapsed time in milliseconds
-    qint64 msseCurrentTime = tick();
-    qint64 msecsElapsed = (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
-    updateCurrentEvent(msecsElapsed);
+    updateCurrentEvent(elapsedTime());
 }
 
 void MainWindow::updateCurrentEventAt(int i)
@@ -384,4 +384,11 @@ qint64 MainWindow::tick()
     qint64 dt=dateTime.date().daysTo(QDate(1978, 9, 9));
     QTime tt=dateTime.time();
     return 86400000 * dt + 3600000 * tt.hour() + 60000 * tt.minute() + 1000 * tt.second() + tt.msec();
+}
+
+qint64 MainWindow::elapsedTime()
+{
+    // Gets the elapsed time in milliseconds
+    qint64 msseCurrentTime = tick();
+    return (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
 }
