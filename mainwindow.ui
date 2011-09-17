@@ -137,6 +137,9 @@
    <addaction name="menuEdit"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -152,13 +155,17 @@
    <addaction name="actionNext"/>
    <addaction name="actionStop"/>
    <addaction name="separator"/>
-   <addaction name="actionAdd1Sec"/>
    <addaction name="actionSub1Sec"/>
+   <addaction name="actionAdd1Sec"/>
    <addaction name="separator"/>
    <addaction name="actionHide"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
@@ -181,6 +188,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/media-playback-start.svg</normaloff>:/icons/media-playback-start.svg</iconset>
+   </property>
    <property name="text">
     <string>Play</string>
    </property>
@@ -195,6 +206,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/media-playback-stop.svg</normaloff>:/icons/media-playback-stop.svg</iconset>
+   </property>
    <property name="text">
     <string>Stop</string>
    </property>
@@ -203,6 +218,10 @@
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/preferences-desktop.svg</normaloff>:/icons/preferences-desktop.svg</iconset>
+   </property>
    <property name="text">
     <string>Preferences</string>
    </property>
@@ -213,6 +232,10 @@
   <action name="actionAdd1Sec">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/media-seek-forward.svg</normaloff>:/icons/media-seek-forward.svg</iconset>
    </property>
    <property name="text">
     <string>+1 sec</string>
@@ -225,6 +248,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/media-seek-backward.svg</normaloff>:/icons/media-seek-backward.svg</iconset>
+   </property>
    <property name="text">
     <string>-1 sec</string>
    </property>
@@ -235,6 +262,10 @@
   <action name="actionPause">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/media-playback-pause.svg</normaloff>:/icons/media-playback-pause.svg</iconset>
    </property>
    <property name="text">
     <string>Pause</string>
@@ -247,6 +278,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/media-skip-forward.svg</normaloff>:/icons/media-skip-forward.svg</iconset>
+   </property>
    <property name="text">
     <string>Next</string>
    </property>
@@ -258,6 +293,10 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/system-shutdown.svg</normaloff>:/icons/system-shutdown.svg</iconset>
+   </property>
    <property name="text">
     <string>Hide</string>
    </property>
@@ -268,6 +307,10 @@
   <action name="actionPrevious">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/media-skip-backward.svg</normaloff>:/icons/media-skip-backward.svg</iconset>
    </property>
    <property name="text">
     <string>Previous</string>
@@ -289,7 +332,9 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons/icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionOpen</sender>
