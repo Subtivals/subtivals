@@ -20,6 +20,7 @@ public:
 public slots:
     void addEvent(Event *p_event);
     void remEvent(Event *p_event);
+    void clearEvents();
     void toggleHide(bool state);
     void applyConfig();
 protected:

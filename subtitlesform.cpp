@@ -39,6 +39,12 @@ void SubtitlesForm::remEvent(Event *p_event)
     repaint();
 }
 
+void SubtitlesForm::clearEvents()
+{
+    m_currentEvents.clear();
+    repaint();
+}
+
 void SubtitlesForm::toggleHide(bool state)
 {
     m_visible = !state;

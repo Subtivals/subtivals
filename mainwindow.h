@@ -36,6 +36,7 @@ public:
 signals:
     void eventStart(Event *p_event);
     void eventEnd(Event *p_event);
+    void eventClear();
     void configChanged();
     void toggleHide(bool state);
 public slots:
@@ -63,6 +64,7 @@ protected:
     QString ts2tc(qint64 p_timestamp);
     void setState(State p_state);
     qint64 tick();
+    qint64 elapsedTime();
 private:
     State m_state;
     Ui::MainWindow *ui;
