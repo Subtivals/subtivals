@@ -36,6 +36,7 @@ public:
 signals:
     void eventStart(Event *p_event);
     void eventEnd(Event *p_event);
+    void eventClear();
     void configChanged();
     void toggleHide(bool state);
 public slots:

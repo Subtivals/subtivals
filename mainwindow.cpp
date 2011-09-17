@@ -36,6 +36,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::openFile (const QString &p_fileName)
 {
+    emit eventClear();
     // Clean-up previously allocated resources & reset GUI
     if(m_script != 0)
     {
@@ -71,6 +72,7 @@ void MainWindow::openFile (const QString &p_fileName)
         ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
         row++;
     }
+    ui->tableWidget->selectRow(0);
     setState(STOPPED);
 }
 
@@ -124,6 +126,7 @@ void MainWindow::actionOpen()
     // Ass file selected ?
     if (!fileName.isEmpty())
     {
+        actionStop();
         openFile(fileName);
     }
 }
