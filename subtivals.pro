@@ -28,3 +28,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     subtitlesform.ui \
     configdialog.ui
+
+RESOURCES += \
+    icons/icons.qrc
