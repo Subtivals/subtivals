@@ -191,25 +191,39 @@ void MainWindow::actionPause()
     m_timer.stop();
 }
 
+bool MainWindow::canPrevious()
+{
+    return ui->tableWidget->currentRow() > 0;
+}
+
 void MainWindow::actionPrevious()
 {
-    int i = ui->tableWidget->currentRow();
-    if (i > 0){
+    if (canPrevious()) {
+        int i = ui->tableWidget->currentRow();
         updateCurrentEventAt(i - 1);
         ui->actionHide->setChecked(false);
     }
+    ui->actionPrevious->setEnabled(canPrevious());
+    ui->actionNext->setEnabled(canNext());
+}
+
+bool MainWindow::canNext()
+{
+    return ui->tableWidget->currentRow() < ui->tableWidget->rowCount() - 1;
 }
 
 void MainWindow::actionNext()
 {
-    int i = ui->tableWidget->currentRow();
-    if (i < ui->tableWidget->rowCount() - 1){
+    if (canNext()){
+        int i = ui->tableWidget->currentRow();
         if (elapsedTime() < m_script->eventAt(i)->msseStart())
             updateCurrentEventAt(i);
         else
             updateCurrentEventAt(i + 1);
         ui->actionHide->setChecked(false);
     }
+    ui->actionPrevious->setEnabled(canPrevious());
+    ui->actionNext->setEnabled(canNext());
 }
 
 void MainWindow::actionToggleHide(bool state)
@@ -355,8 +369,8 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
-        ui->actionPrevious->setEnabled(false);
-        ui->actionNext->setEnabled(false);
+        ui->actionPrevious->setEnabled(canPrevious());
+        ui->actionNext->setEnabled(canNext());
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
         break;
@@ -364,17 +378,17 @@ void MainWindow::setState(State p_state)
         ui->actionPlay->setEnabled(false);
         ui->actionStop->setEnabled(true);
         ui->actionPause->setEnabled(true);
-        ui->actionPrevious->setEnabled(true);
-        ui->actionNext->setEnabled(true);
+        ui->actionPrevious->setEnabled(canPrevious());
+        ui->actionNext->setEnabled(canNext());
         ui->actionAdd1Sec->setEnabled(true);
         ui->actionSub1Sec->setEnabled(true);
         break;
     case PAUSED:
         ui->actionPlay->setEnabled(true);
-        ui->actionStop->setEnabled(false);
+        ui->actionStop->setEnabled(true);
         ui->actionPause->setEnabled(false);
-        ui->actionPrevious->setEnabled(true);
-        ui->actionNext->setEnabled(true);
+        ui->actionPrevious->setEnabled(canPrevious());
+        ui->actionNext->setEnabled(canNext());
         ui->actionAdd1Sec->setEnabled(false);
         ui->actionSub1Sec->setEnabled(false);
         break;
