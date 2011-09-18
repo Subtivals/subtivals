@@ -84,6 +84,9 @@
         <attribute name="horizontalHeaderStretchLastSection">
          <bool>true</bool>
         </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
         <column>
          <property name="text">
           <string>Start</string>
@@ -116,7 +119,7 @@
      <x>0</x>
      <y>0</y>
      <width>654</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -155,8 +158,8 @@
    <addaction name="actionNext"/>
    <addaction name="actionStop"/>
    <addaction name="separator"/>
-   <addaction name="actionSub1Sec"/>
-   <addaction name="actionAdd1Sec"/>
+   <addaction name="actionSubDelay"/>
+   <addaction name="actionAddDelay"/>
    <addaction name="separator"/>
    <addaction name="actionHide"/>
   </widget>
@@ -229,7 +232,7 @@
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="actionAdd1Sec">
+  <action name="actionAddDelay">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -238,13 +241,16 @@
      <normaloff>:/icons/media-seek-forward.svg</normaloff>:/icons/media-seek-forward.svg</iconset>
    </property>
    <property name="text">
-    <string>+1 sec</string>
+    <string>+1/4 sec</string>
+   </property>
+   <property name="toolTip">
+    <string>+1/4 sec</string>
    </property>
    <property name="shortcut">
     <string>+</string>
    </property>
   </action>
-  <action name="actionSub1Sec">
+  <action name="actionSubDelay">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -253,7 +259,10 @@
      <normaloff>:/icons/media-seek-backward.svg</normaloff>:/icons/media-seek-backward.svg</iconset>
    </property>
    <property name="text">
-    <string>-1 sec</string>
+    <string>-1/4 sec</string>
+   </property>
+   <property name="toolTip">
+    <string>-1/4 sec</string>
    </property>
    <property name="shortcut">
     <string>-</string>
@@ -417,10 +426,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionAdd1Sec</sender>
+   <sender>actionAddDelay</sender>
    <signal>activated()</signal>
    <receiver>MainWindow</receiver>
-   <slot>actionAdd1Sec()</slot>
+   <slot>actionAddDelay()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -433,10 +442,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionSub1Sec</sender>
+   <sender>actionSubDelay</sender>
    <signal>activated()</signal>
    <receiver>MainWindow</receiver>
-   <slot>actionSub1Sec()</slot>
+   <slot>actionSubDelay()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -568,8 +577,6 @@
   <slot>actionStop()</slot>
   <slot>actionExit()</slot>
   <slot>actionConfig()</slot>
-  <slot>actionAdd1Sec()</slot>
-  <slot>actionSub1Sec()</slot>
   <slot>actionPause()</slot>
   <slot>actionEventSelected(QModelIndex)</slot>
   <slot>actionNext()</slot>
@@ -577,5 +584,7 @@
   <slot>actionEventClic(QModelIndex)</slot>
   <slot>actionPrevious()</slot>
   <slot>actionEnableReload(bool)</slot>
+  <slot>actionAddDelay()</slot>
+  <slot>actionSubDelay()</slot>
  </slots>
 </ui>

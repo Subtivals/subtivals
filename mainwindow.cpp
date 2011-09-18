@@ -172,16 +172,16 @@ void MainWindow::actionConfig()
     QObject::connect(d, SIGNAL(accepted()), this, SIGNAL(configChanged()));
 }
 
-void MainWindow::actionAdd1Sec()
+void MainWindow::actionAddDelay()
 {
-    // Add 1000 msecs
-    m_userDelay += 1000;
+    // Add 250 msecs
+    m_userDelay += 250;
 }
 
-void MainWindow::actionSub1Sec()
+void MainWindow::actionSubDelay()
 {
-    // Sub 100 msecs
-    m_userDelay -= 1000;
+    // Sub 250 msecs
+    m_userDelay -= 250;
 }
 
 void MainWindow::actionPause()
@@ -345,9 +345,9 @@ QString MainWindow::ts2tc(qint64 p_ts)
 {
     if (p_ts >= 0)
     {
-        return "+" + QTime().addMSecs(p_ts).toString();
+        return "+" + QTime().addMSecs(p_ts).toString("hh:mm:ss.zzz");
     } else {
-        return "-" + QTime().addMSecs(-p_ts).toString();
+        return "-" + QTime().addMSecs(-p_ts).toString("hh:mm:ss.zzz");
     }
 }
 
@@ -362,8 +362,8 @@ void MainWindow::setState(State p_state)
         ui->actionPause->setEnabled(false);
         ui->actionPrevious->setEnabled(false);
         ui->actionNext->setEnabled(false);
-        ui->actionAdd1Sec->setEnabled(false);
-        ui->actionSub1Sec->setEnabled(false);
+        ui->actionAddDelay->setEnabled(false);
+        ui->actionSubDelay->setEnabled(false);
         break;
     case STOPPED:
         ui->actionPlay->setEnabled(true);
@@ -371,8 +371,8 @@ void MainWindow::setState(State p_state)
         ui->actionPause->setEnabled(false);
         ui->actionPrevious->setEnabled(canPrevious());
         ui->actionNext->setEnabled(canNext());
-        ui->actionAdd1Sec->setEnabled(false);
-        ui->actionSub1Sec->setEnabled(false);
+        ui->actionAddDelay->setEnabled(false);
+        ui->actionSubDelay->setEnabled(false);
         break;
     case PLAYING:
         ui->actionPlay->setEnabled(false);
@@ -380,8 +380,8 @@ void MainWindow::setState(State p_state)
         ui->actionPause->setEnabled(true);
         ui->actionPrevious->setEnabled(canPrevious());
         ui->actionNext->setEnabled(canNext());
-        ui->actionAdd1Sec->setEnabled(true);
-        ui->actionSub1Sec->setEnabled(true);
+        ui->actionAddDelay->setEnabled(true);
+        ui->actionSubDelay->setEnabled(true);
         break;
     case PAUSED:
         ui->actionPlay->setEnabled(true);
@@ -389,8 +389,8 @@ void MainWindow::setState(State p_state)
         ui->actionPause->setEnabled(false);
         ui->actionPrevious->setEnabled(canPrevious());
         ui->actionNext->setEnabled(canNext());
-        ui->actionAdd1Sec->setEnabled(false);
-        ui->actionSub1Sec->setEnabled(false);
+        ui->actionAddDelay->setEnabled(false);
+        ui->actionSubDelay->setEnabled(false);
         break;
     }
 }
