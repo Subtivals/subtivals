@@ -60,6 +60,8 @@ public slots:
     void updateCurrentEventAt(int);
     void enableEventSelection();
 protected:
+    bool canNext();
+    bool canPrevious();
     void closeEvent(QCloseEvent *);
     QString ts2tc(qint64 p_timestamp);
     void setState(State p_state);
