@@ -72,8 +72,7 @@ void MainWindow::openFile (const QString &p_fileName)
         ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
         row++;
     }
-    ui->tableWidget->selectRow(0);
-    setState(STOPPED);
+    actionStop();
 }
 
 void MainWindow::actionEnableReload(bool state)
@@ -137,7 +136,7 @@ void MainWindow::actionPlay()
     {
     case STOPPED:
         setState(PLAYING);
-        m_msseStartTime = tick();
+        if (!m_msseStartTime) m_msseStartTime = tick();
         m_userDelay = 0;
         m_pauseTotal = 0;
         m_timer.start(100);
@@ -160,6 +159,8 @@ void MainWindow::actionStop()
     m_timer.stop();
     ui->timer->setText("-");
     ui->userDelay->setText("-");
+    m_msseStartTime = 0;
+    ui->tableWidget->selectRow(0);
 }
 
 void MainWindow::actionConfig()
