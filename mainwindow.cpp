@@ -200,6 +200,7 @@ bool MainWindow::canPrevious()
 void MainWindow::actionPrevious()
 {
     if (canPrevious()) {
+        m_userDelay = 0;
         int i = ui->tableWidget->currentRow();
         updateCurrentEventAt(i - 1);
         ui->actionHide->setChecked(false);
@@ -216,6 +217,7 @@ bool MainWindow::canNext()
 void MainWindow::actionNext()
 {
     if (canNext()){
+        m_userDelay = 0;
         int i = ui->tableWidget->currentRow();
         if (elapsedTime() < m_script->eventAt(i)->msseStart())
             updateCurrentEventAt(i);
