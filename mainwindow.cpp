@@ -330,6 +330,8 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     if(m_selectEvent && currentEvents.size() > 0)
     {
         ui->tableWidget->selectRow(m_tableMapping[currentEvents.last()]);
+        ui->tableWidget->scrollTo(ui->tableWidget->currentIndex(),
+                                  QAbstractItemView::PositionAtCenter);
     }
 }
 
