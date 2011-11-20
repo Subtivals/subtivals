@@ -16,18 +16,36 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
     }
     QSettings settings;
     settings.beginGroup("SubtitlesForm");
-    ui->screens->setCurrentIndex(settings.value("screen", 0).toInt());
-    ui->x->setText(settings.value("x", 0).toString());
-    ui->y->setText(settings.value("y", 0).toString());
-    ui->w->setText(settings.value("w", 0).toString());
-    ui->h->setText(settings.value("h", 0).toString());
+    m_screen = settings.value("screen", 0).toInt();
+    m_rect.setX(settings.value("x", 0).toInt());
+    m_rect.setY(settings.value("y", 0).toInt());
+    m_rect.setWidth(settings.value("w", 0).toInt());
+    m_rect.setHeight(settings.value("h", 0).toInt());
     settings.endGroup();
-
+    resetConfig();
 }
 
 ConfigDialog::~ConfigDialog()
 {
     delete ui;
+}
+
+void ConfigDialog::buttonClicked(QAbstractButton* btn)
+{
+    if (QDialogButtonBox::ApplyRole == ui->buttonBox->buttonRole(btn))
+        saveConfig();
+    if (QDialogButtonBox::RejectRole == ui->buttonBox->buttonRole(btn))
+        resetConfig();
+}
+
+void ConfigDialog::resetConfig()
+{
+    ui->screens->setCurrentIndex(m_screen);
+    ui->x->setText(QString("%1").arg(m_rect.x()));
+    ui->y->setText(QString("%1").arg(m_rect.y()));
+    ui->w->setText(QString("%1").arg(m_rect.width()));
+    ui->h->setText(QString("%1").arg(m_rect.height()));
+    saveConfig();
 }
 
 void ConfigDialog::saveConfig()
@@ -40,4 +58,5 @@ void ConfigDialog::saveConfig()
     settings.setValue("w", ui->w->text());
     settings.setValue("h", ui->h->text());
     settings.endGroup();
+    emit configChanged();
 }

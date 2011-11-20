@@ -184,7 +184,7 @@ void MainWindow::actionConfig()
     d->setModal(true);
     d->show();
     // Config changed, emit signal
-    QObject::connect(d, SIGNAL(accepted()), this, SIGNAL(configChanged()));
+    QObject::connect(d, SIGNAL(configChanged()), this, SIGNAL(configChanged()));
 }
 
 void MainWindow::actionAddDelay()
