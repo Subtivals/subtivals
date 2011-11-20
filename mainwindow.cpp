@@ -1,6 +1,7 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QSettings>
 #include <QtGui/QFileDialog>
+#include <QKeyEvent>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -12,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_filewatcher(new QFileSystemWatcher)
 {
     ui->setupUi(this);
+    ui->tableWidget->installEventFilter(this);
     m_selectEvent = true;
     m_script = 0;
     m_pauseTotal = 0;
@@ -163,6 +165,18 @@ void MainWindow::actionStop()
     ui->tableWidget->selectRow(0);
 }
 
+bool MainWindow::eventFilter(QObject *object, QEvent *event)
+{
+    if (object == ui->tableWidget && event->type() == QEvent::KeyPress) {
+		// With key Up/Down : behave the way single mouse clics do.
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        if (keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down) {
+            actionEventClic(ui->tableWidget->currentIndex());
+        }
+    }
+    return false;
+}
+
 void MainWindow::actionConfig()
 {
     // Show the config dialog
@@ -219,10 +233,12 @@ void MainWindow::actionNext()
     if (canNext()){
         m_userDelay = 0;
         int i = ui->tableWidget->currentRow();
-        if (elapsedTime() < m_script->eventAt(i)->msseStart())
-            updateCurrentEventAt(i);
-        else
+        // Jump next if selected is being viewed. Otherwise activate it.
+        if (elapsedTime() >= m_script->eventAt(i)->msseStart() &&
+            elapsedTime() <= m_script->eventAt(i)->msseEnd())
             updateCurrentEventAt(i + 1);
+        else
+            updateCurrentEventAt(i);
         ui->actionHide->setChecked(false);
     }
     ui->actionPrevious->setEnabled(canPrevious());

@@ -33,6 +33,7 @@ public:
     ~MainWindow();
     enum State { NODATA, STOPPED, PLAYING, PAUSED};
     void openFile (const QString &p_fileName);
+    bool eventFilter(QObject*, QEvent*);
 signals:
     void eventStart(Event *p_event);
     void eventEnd(Event *p_event);
