@@ -41,10 +41,10 @@ void ConfigDialog::buttonClicked(QAbstractButton* btn)
 void ConfigDialog::resetConfig()
 {
     ui->screens->setCurrentIndex(m_screen);
-    ui->x->setText(QString("%1").arg(m_rect.x()));
-    ui->y->setText(QString("%1").arg(m_rect.y()));
-    ui->w->setText(QString("%1").arg(m_rect.width()));
-    ui->h->setText(QString("%1").arg(m_rect.height()));
+    ui->x->setValue(m_rect.x());
+    ui->y->setValue(m_rect.y());
+    ui->w->setValue(m_rect.width());
+    ui->h->setValue(m_rect.height());
     saveConfig();
 }
 
