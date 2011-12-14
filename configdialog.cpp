@@ -23,6 +23,12 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
     m_rect.setHeight(settings.value("h", 0).toInt());
     settings.endGroup();
     resetConfig();
+    // Connect value changing to apply (live preview)
+    connect(ui->x, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
+    connect(ui->y, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
+    connect(ui->w, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
+    connect(ui->h, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
+    connect(ui->screens, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 }
 
 ConfigDialog::~ConfigDialog()

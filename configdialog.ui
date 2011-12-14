@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>285</width>
-    <height>138</height>
+    <width>286</width>
+    <height>144</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,6 +36,9 @@
      <property name="maximum">
       <number>9999</number>
      </property>
+     <property name="singleStep">
+      <number>5</number>
+     </property>
     </widget>
    </item>
    <item row="1" column="3">
@@ -49,6 +52,9 @@
     <widget class="QSpinBox" name="w">
      <property name="maximum">
       <number>9999</number>
+     </property>
+     <property name="singleStep">
+      <number>5</number>
      </property>
     </widget>
    </item>
@@ -64,6 +70,9 @@
      <property name="maximum">
       <number>9999</number>
      </property>
+     <property name="singleStep">
+      <number>5</number>
+     </property>
     </widget>
    </item>
    <item row="2" column="3">
@@ -77,6 +86,9 @@
     <widget class="QSpinBox" name="h">
      <property name="maximum">
       <number>9999</number>
+     </property>
+     <property name="singleStep">
+      <number>5</number>
      </property>
     </widget>
    </item>
@@ -181,86 +193,6 @@
     <hint type="destinationlabel">
      <x>272</x>
      <y>145</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>x</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
-   <slot>saveConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>83</x>
-     <y>52</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>142</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>y</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
-   <slot>saveConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>83</x>
-     <y>83</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>142</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>w</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
-   <slot>saveConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>249</x>
-     <y>52</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>142</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>h</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
-   <slot>saveConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>249</x>
-     <y>83</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>142</x>
-     <y>68</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>screens</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
-   <slot>saveConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>166</x>
-     <y>21</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>142</x>
-     <y>68</y>
     </hint>
    </hints>
   </connection>
