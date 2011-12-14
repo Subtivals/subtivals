@@ -71,9 +71,14 @@ const QString &Script::title() const
     return m_title;
 }
 
-const Style *Script::style(const QString &p_name) const
+Style *Script::style(const QString &p_name) const
 {
     return m_styles[p_name];
+}
+
+QList<Style *> Script::styles() const
+{
+    return m_styles.values();
 }
 
 int Script::eventsCount() const
