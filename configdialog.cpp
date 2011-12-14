@@ -4,11 +4,19 @@
 #include "configdialog.h"
 #include "ui_configdialog.h"
 
-ConfigDialog::ConfigDialog(QWidget *parent) :
+#include "script.h"
+#include "styleeditor.h"
+
+
+ConfigDialog::ConfigDialog(Script* script, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ConfigDialog)
+    ui(new Ui::ConfigDialog),
+    m_styleEditor(new StyleEditor(script))
 {
     ui->setupUi(this);
+    ui->tabStyles->setLayout(m_styleEditor->layout());
+    adjustSize();
+
     QDesktopWidget *dw = QApplication::desktop();
     for(int i = 0; i < dw->screenCount(); i++)
     {
@@ -33,6 +41,7 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 
 ConfigDialog::~ConfigDialog()
 {
+    delete m_styleEditor;
     delete ui;
 }
 
@@ -46,6 +55,7 @@ void ConfigDialog::buttonClicked(QAbstractButton* btn)
 
 void ConfigDialog::resetConfig()
 {
+    m_styleEditor->reset();
     ui->screens->setCurrentIndex(m_screen);
     ui->x->setValue(m_rect.x());
     ui->y->setValue(m_rect.y());
@@ -56,6 +66,7 @@ void ConfigDialog::resetConfig()
 
 void ConfigDialog::saveConfig()
 {
+    m_styleEditor->apply();
     QSettings settings;
     settings.beginGroup("SubtitlesForm");
     settings.setValue("screen", ui->screens->currentIndex());
