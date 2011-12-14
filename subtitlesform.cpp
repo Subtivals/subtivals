@@ -76,7 +76,7 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     // Black background
     p.fillRect(bounds, Qt::black);
     // Draw text only if visible
-    if (!m_visible){
+    if (!m_visible) {
         return;
     }
     for(int i = 0; i < m_maxEvents && i < m_currentEvents.size(); i++)
@@ -84,4 +84,17 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
         Event *e = m_currentEvents.at(i);
         e->style()->drawEvent(&p, *e, bounds);
     }
+}
+
+void SubtitlesForm::mousePressEvent(QMouseEvent* e)
+{
+    m_mouseOffset = e->pos() - geometry().topLeft();
+}
+
+void SubtitlesForm::mouseMoveEvent(QMouseEvent* e)
+{
+    QRect current = geometry();
+    QPoint moveTo = e->globalPos() - m_mouseOffset;
+    current.moveTopLeft(moveTo);
+    setGeometry(current);
 }

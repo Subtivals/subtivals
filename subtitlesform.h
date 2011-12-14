@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QList>
+#include <QMouseEvent>
 
 #include "event.h"
 
@@ -17,6 +18,7 @@ class SubtitlesForm : public QWidget
 public:
     explicit SubtitlesForm(QWidget *parent = 0);
     ~SubtitlesForm();
+
 public slots:
     void addEvent(Event *p_event);
     void remEvent(Event *p_event);
@@ -25,11 +27,14 @@ public slots:
     void applyConfig();
 protected:
     void paintEvent(QPaintEvent* p_event);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
 private:
     Ui::SubtitlesForm *ui;
     int m_maxEvents;
     QList<Event *> m_currentEvents;
     bool m_visible;
+    QPoint m_mouseOffset;
 };
 
 #endif // SUBTITLESFORM_H
