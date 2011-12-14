@@ -16,18 +16,21 @@ SOURCES += main.cpp\
     style.cpp \
     event.cpp \
     subtitlesform.cpp \
-    configdialog.cpp
+    configdialog.cpp \
+    styleeditor.cpp
 
 HEADERS  += mainwindow.h \
     script.h \
     style.h \
     event.h \
     subtitlesform.h \
-    configdialog.h
+    configdialog.h \
+    styleeditor.h
 
 FORMS    += mainwindow.ui \
     subtitlesform.ui \
-    configdialog.ui
+    configdialog.ui \
+    styleeditor.ui
 
 RESOURCES += \
     icons/icons.qrc

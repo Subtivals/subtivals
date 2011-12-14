@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StyleEditor</class>
+ <widget class="QWidget" name="StyleEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>383</width>
+    <height>249</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupStyles">
+     <property name="title">
+      <string>Styles</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QListWidget" name="stylesNames"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupFont">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Apparence</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Font</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QFontComboBox" name="fontName"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QSpinBox" name="fontSize">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>999</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>stylesNames</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>StyleEditor</receiver>
+   <slot>styleSelected(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>195</x>
+     <y>96</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>191</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fontName</sender>
+   <signal>currentFontChanged(QFont)</signal>
+   <receiver>StyleEditor</receiver>
+   <slot>saveStyle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>164</x>
+     <y>215</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>191</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fontSize</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>StyleEditor</receiver>
+   <slot>saveStyle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>335</x>
+     <y>215</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>191</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>styleSelected(int)</slot>
+  <slot>saveStyle()</slot>
+ </slots>
+</ui>
