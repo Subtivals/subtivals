@@ -29,7 +29,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupFont">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="title">
       <string>Apparence</string>
@@ -89,7 +89,7 @@
    <sender>fontName</sender>
    <signal>currentFontChanged(QFont)</signal>
    <receiver>StyleEditor</receiver>
-   <slot>saveStyle()</slot>
+   <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>164</x>
@@ -105,7 +105,7 @@
    <sender>fontSize</sender>
    <signal>valueChanged(int)</signal>
    <receiver>StyleEditor</receiver>
-   <slot>saveStyle()</slot>
+   <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>335</x>
@@ -120,6 +120,6 @@
  </connections>
  <slots>
   <slot>styleSelected(int)</slot>
-  <slot>saveStyle()</slot>
+  <slot>apply()</slot>
  </slots>
 </ui>
