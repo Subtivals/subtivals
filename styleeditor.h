@@ -22,13 +22,16 @@ public slots:
     void apply();
     void reset();
     void styleSelected(int);
+    void chooseColour();
 
 protected:
     void initComponents();
+    void fillButtonColour();
 
 private:
     Script* m_script;
     QList<Style*> m_styles;
+    QColor m_colour;
     Ui::StyleEditor *ui;
 };
 

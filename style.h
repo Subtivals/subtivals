@@ -40,6 +40,7 @@ public:
      * Others colours from the ASS file are ignored.
      */
     const QColor &primaryColour() const;
+    void setPrimaryColour(const QColor &c);
     /*
      * Draws an Event with this style within the specified area.
      */

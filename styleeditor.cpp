@@ -2,6 +2,8 @@
 #include "ui_styleeditor.h"
 
 #include <QListWidgetItem>
+#include <QColorDialog>
+#include <QPainter>
 
 #include "script.h"
 #include "style.h"
@@ -49,6 +51,8 @@ void StyleEditor::styleSelected(int row)
     Style* style = m_script->style(stylename);
     QFont font(style->font());
     font.setPointSize(12);  // fixed size in combo
+    m_colour = style->primaryColour();
+    fillButtonColour();
 
     // Block signals to avoid apply() to be called.
     ui->fontName->blockSignals(true);
@@ -71,6 +75,7 @@ void StyleEditor::apply()
     font.setPointSize(ui->fontSize->value());
     Style* style = m_script->style(stylename);
     style->setFont(font);
+    style->setPrimaryColour(m_colour);
 }
 
 void StyleEditor::reset()
@@ -79,9 +84,35 @@ void StyleEditor::reset()
     foreach(Style* original, m_styles) {
         Style* style = m_script->style(original->name());
         style->setFont(original->font());
+        style->setPrimaryColour(original->primaryColour());
         delete original;
     }
     m_styles.clear();
     // Reinit UI
     initComponents();
+}
+
+void StyleEditor::chooseColour()
+{
+    // Show color chooser
+    QColor chosen = QColorDialog::getColor(m_colour, this
+    #if (QT_VERSION >= QT_VERSION_CHECK(4, 5, 0))
+        , tr("Select Color"), QColorDialog::ShowAlphaChannel
+    #endif
+        );
+    if (chosen.isValid()) {
+        m_colour = chosen;
+        fillButtonColour();
+        apply();
+    }
+}
+
+void StyleEditor::fillButtonColour()
+{
+    QPixmap pm(24, 24);
+    QPainter p(&pm);
+    p.setPen(m_colour);
+    p.setBrush(m_colour);
+    p.drawRect(0, 0, 24, 24);
+    ui->btnColor->setIcon(pm);
 }

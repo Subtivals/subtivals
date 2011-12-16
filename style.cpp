@@ -74,6 +74,11 @@ const QColor &Style::primaryColour() const {
     return m_primaryColour;
 }
 
+void Style::setPrimaryColour(const QColor &c)
+{
+    m_primaryColour = c;
+}
+
 void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds) const
 {
     QString html;
@@ -102,3 +107,4 @@ void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds
     layout->draw(painter, context);
     painter->restore();
 }
+
