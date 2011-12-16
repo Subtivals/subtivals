@@ -95,11 +95,15 @@ void SubtitlesForm::mouseMoveEvent(QMouseEvent* e)
 {
     if (m_mouseOffset.isNull())
         return;
+
     // Simply move the window on mouse drag
     QRect current = geometry();
     QPoint moveTo = e->globalPos() - m_mouseOffset;
     current.moveTopLeft(moveTo);
-    // Prevent to exceed screen width
+
+    // Allow the user to resize easily by moving the window and double-click on it.
+
+    // Crop window if exceeds width
     if (current.left() < m_screenGeom.left()) {
         int diff = current.left() - m_screenGeom.left();
         m_mouseOffset.setX(m_mouseOffset.x() + diff);
@@ -107,6 +111,13 @@ void SubtitlesForm::mouseMoveEvent(QMouseEvent* e)
     }
     if (current.right() > m_screenGeom.right())
         current.setRight(m_screenGeom.right());
+    // Same for top
+    if (current.top() < m_screenGeom.top()) {
+        int diff = current.top() - m_screenGeom.top();
+        m_mouseOffset.setY(m_mouseOffset.y() + diff);
+        current.setTop(m_screenGeom.top());
+    }
+
     setGeometry(current);
 }
 
@@ -117,9 +128,17 @@ void SubtitlesForm::mouseReleaseEvent(QMouseEvent*)
 
 void SubtitlesForm::mouseDoubleClickEvent(QMouseEvent*)
 {
-    // Fit screen width on double-click
+    // Fit screen on double-click
     QRect current = geometry();
-    current.setLeft(m_screenGeom.left());
-    current.setRight(m_screenGeom.right());
+    if (current.left() != m_screenGeom.left() ||
+        current.right() != m_screenGeom.right()) {
+        // First fits width
+        current.setLeft(m_screenGeom.left());
+        current.setRight(m_screenGeom.right());
+    }
+    else {
+        // Second fits top
+        current.setTop(m_screenGeom.top());
+    }
     setGeometry(current);
 }
