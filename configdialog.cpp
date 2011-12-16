@@ -45,14 +45,6 @@ ConfigDialog::~ConfigDialog()
     delete ui;
 }
 
-void ConfigDialog::buttonClicked(QAbstractButton* btn)
-{
-    if (QDialogButtonBox::ApplyRole == ui->buttonBox->buttonRole(btn))
-        saveConfig();
-    if (QDialogButtonBox::RejectRole == ui->buttonBox->buttonRole(btn))
-        resetConfig();
-}
-
 void ConfigDialog::resetConfig()
 {
     m_styleEditor->reset();

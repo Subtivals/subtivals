@@ -23,7 +23,6 @@ signals:
 private slots:
     void saveConfig();
     void resetConfig();
-    void buttonClicked(QAbstractButton*);
 private:
     Ui::ConfigDialog *ui;
     int m_screen;
