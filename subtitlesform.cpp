@@ -57,16 +57,24 @@ void SubtitlesForm::applyConfig()
     settings.beginGroup("SubtitlesForm");
     int screen = settings.value("screen", 0).toInt();
     int x = settings.value("x", 0).toInt();
-    settings.setValue("x", x);
     int y = settings.value("y", 0).toInt();
-    settings.setValue("y", y);
     int w = settings.value("w", qApp->desktop()->screen(qApp->desktop()->primaryScreen())->width()).toInt();
-    settings.setValue("w", w);
     int h = settings.value("h", 300).toInt();
-    settings.setValue("h", h);
     settings.endGroup();
     m_screenGeom = QApplication::desktop()->screenGeometry(screen);
     setGeometry(x + m_screenGeom.x(), y + m_screenGeom.y(), w, h);
+    saveConfig(QRect(x, y, w, h));
+}
+
+void SubtitlesForm::saveConfig(const QRect& r)
+{
+    QSettings settings;
+    settings.beginGroup("SubtitlesForm");
+    settings.setValue("x", r.x());
+    settings.setValue("y", r.y());
+    settings.setValue("w", r.width());
+    settings.setValue("h", r.height());
+    settings.endGroup();
 }
 
 void SubtitlesForm::paintEvent(QPaintEvent*)
@@ -119,6 +127,7 @@ void SubtitlesForm::mouseMoveEvent(QMouseEvent* e)
     }
 
     setGeometry(current);
+    saveConfig(current);
 }
 
 void SubtitlesForm::mouseReleaseEvent(QMouseEvent*)
@@ -141,4 +150,5 @@ void SubtitlesForm::mouseDoubleClickEvent(QMouseEvent*)
         current.setTop(m_screenGeom.top());
     }
     setGeometry(current);
+    saveConfig(current);
 }

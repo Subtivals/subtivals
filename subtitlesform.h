@@ -26,6 +26,7 @@ public slots:
     void toggleHide(bool state);
     void applyConfig();
 protected:
+    void saveConfig(const QRect& r);
     void paintEvent(QPaintEvent* p_event);
     void mouseMoveEvent(QMouseEvent *e);
     void mousePressEvent(QMouseEvent *e);
