@@ -152,3 +152,20 @@ void SubtitlesForm::mouseDoubleClickEvent(QMouseEvent*)
     setGeometry(current);
     saveConfig(current);
 }
+
+void SubtitlesForm::wheelEvent(QWheelEvent* event)
+{
+    QRect current = geometry();
+    int factor = event->delta() / 60;
+    if (event->orientation() == Qt::Horizontal ||
+        event->modifiers().testFlag(Qt::ControlModifier)) {
+        current.moveTop(current.top() - factor/2);
+        current.setHeight(current.height() + factor);
+    } else {
+        current.moveLeft(current.left() - factor/2);
+        current.setWidth(current.width() + factor);
+    }
+    setGeometry(current);
+    saveConfig(current);
+    event->accept();
+}

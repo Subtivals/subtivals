@@ -32,6 +32,7 @@ protected:
     void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
     void mouseDoubleClickEvent(QMouseEvent *e);
+    void wheelEvent(QWheelEvent *e);
 private:
     Ui::SubtitlesForm *ui;
     int m_maxEvents;
