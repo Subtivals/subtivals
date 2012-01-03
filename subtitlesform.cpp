@@ -109,23 +109,6 @@ void SubtitlesForm::mouseMoveEvent(QMouseEvent* e)
     QPoint moveTo = e->globalPos() - m_mouseOffset;
     current.moveTopLeft(moveTo);
 
-    // Allow the user to resize easily by moving the window and double-click on it.
-
-    // Crop window if exceeds width
-    if (current.left() < m_screenGeom.left()) {
-        int diff = current.left() - m_screenGeom.left();
-        m_mouseOffset.setX(m_mouseOffset.x() + diff);
-        current.setLeft(m_screenGeom.left());
-    }
-    if (current.right() > m_screenGeom.right())
-        current.setRight(m_screenGeom.right());
-    // Same for top
-    if (current.top() < m_screenGeom.top()) {
-        int diff = current.top() - m_screenGeom.top();
-        m_mouseOffset.setY(m_mouseOffset.y() + diff);
-        current.setTop(m_screenGeom.top());
-    }
-
     setGeometry(current);
     saveConfig(current);
 }
