@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
+    ui->tableWidget->setFocus();
 
     // Restore settings
     QSettings settings;
@@ -80,6 +81,9 @@ void MainWindow::openFile (const QString &p_fileName)
         row++;
     }
     actionStop();
+    // Reset search field
+    ui->searchField->setEnabled(row > 0);
+    ui->searchField->setText("");
 }
 
 void MainWindow::actionEnableReload(bool state)
@@ -173,11 +177,13 @@ void MainWindow::actionStop()
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
     if (object == ui->tableWidget && event->type() == QEvent::KeyPress) {
-		// With key Up/Down : behave the way single mouse clics do.
+        // With key Up/Down : behave the way single mouse clics do.
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         if (keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down) {
             actionEventClic(ui->tableWidget->currentIndex());
         }
+        if (keyEvent->key() == Qt::Key_F3)
+            search();
     }
     return false;
 }
@@ -434,4 +440,37 @@ qint64 MainWindow::elapsedTime()
     // Gets the elapsed time in milliseconds
     qint64 msseCurrentTime = tick();
     return (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
+}
+
+void MainWindow::search()
+{
+    QString search = ui->searchField->text();
+    int found = -1;
+
+    // Loop over the whole list, start from current
+    int nb = m_script->eventsCount();
+    int i = ui->tableWidget->currentRow() + 1;
+    int max = i + nb;
+    for (; i < max; i++) {
+        const Event* e = m_script->eventAt(i % nb);
+        if (e->text().contains(search, Qt::CaseInsensitive)) {
+            found = i % nb;
+            break;
+        }
+    }
+    // Select the event in the list
+    if (found < 0) {
+        ui->searchField->setStyleSheet("QLineEdit {color: red;}");
+    }
+    else {
+        ui->tableWidget->selectRow(found);
+        ui->tableWidget->setFocus();
+        actionEventClic(QModelIndex());
+    }
+}
+
+void MainWindow::searchTextChanged(QString)
+{
+    ui->searchField->setStyleSheet("");
+    ui->searchButton->setEnabled(!ui->searchField->text().isEmpty());
 }
