@@ -1,6 +1,7 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QSettings>
 #include <QtGui/QFileDialog>
+#include <QKeyEvent>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -12,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_filewatcher(new QFileSystemWatcher)
 {
     ui->setupUi(this);
+    ui->tableWidget->installEventFilter(this);
     m_selectEvent = true;
     m_script = 0;
     m_pauseTotal = 0;
@@ -22,6 +24,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QSettings settings;
     m_reloadEnabled = settings.value("MainWindow/reloadEnabled", false).toBool();
     ui->actionEnableReload->setChecked(m_reloadEnabled);
+
+    // Selection timer (disables event highlighting for a while)
+    m_timerSelection.setSingleShot(true);
+    m_timerSelection.setInterval(1000);
+    connect(&m_timerSelection, SIGNAL(timeout()), this, SLOT(enableEventSelection()));
 
     // Script file watching :
     connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
@@ -163,6 +170,18 @@ void MainWindow::actionStop()
     ui->tableWidget->selectRow(0);
 }
 
+bool MainWindow::eventFilter(QObject *object, QEvent *event)
+{
+    if (object == ui->tableWidget && event->type() == QEvent::KeyPress) {
+		// With key Up/Down : behave the way single mouse clics do.
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        if (keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down) {
+            actionEventClic(ui->tableWidget->currentIndex());
+        }
+    }
+    return false;
+}
+
 void MainWindow::actionConfig()
 {
     // Show the config dialog
@@ -170,7 +189,7 @@ void MainWindow::actionConfig()
     d->setModal(true);
     d->show();
     // Config changed, emit signal
-    QObject::connect(d, SIGNAL(accepted()), this, SIGNAL(configChanged()));
+    QObject::connect(d, SIGNAL(configChanged()), this, SIGNAL(configChanged()));
 }
 
 void MainWindow::actionAddDelay()
@@ -219,10 +238,12 @@ void MainWindow::actionNext()
     if (canNext()){
         m_userDelay = 0;
         int i = ui->tableWidget->currentRow();
-        if (elapsedTime() < m_script->eventAt(i)->msseStart())
-            updateCurrentEventAt(i);
-        else
+        // Jump next if selected is being viewed. Otherwise activate it.
+        if (elapsedTime() >= m_script->eventAt(i)->msseStart() &&
+            elapsedTime() <= m_script->eventAt(i)->msseEnd())
             updateCurrentEventAt(i + 1);
+        else
+            updateCurrentEventAt(i);
         ui->actionHide->setChecked(false);
     }
     ui->actionPrevious->setEnabled(canPrevious());
@@ -244,7 +265,7 @@ void MainWindow::actionEventClic(QModelIndex)
     // Disable selection of events for some time
     // in order to let the user perform a double-clic
     m_selectEvent = false;
-    QTimer::singleShot(1000, this, SLOT(enableEventSelection()));
+    m_timerSelection.start();
 }
 
 void MainWindow::actionEventSelected(QModelIndex index)
