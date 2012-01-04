@@ -80,6 +80,7 @@ private:
     QList<Event *> m_lastEvents;
     QMap<Event *, int> m_tableMapping;
     bool m_selectEvent;
+    QTimer m_timerSelection;
     bool m_reloadEnabled;
     QFileSystemWatcher* m_filewatcher;
     QTimer m_timerFileChange;

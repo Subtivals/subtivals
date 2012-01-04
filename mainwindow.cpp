@@ -25,6 +25,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_reloadEnabled = settings.value("MainWindow/reloadEnabled", false).toBool();
     ui->actionEnableReload->setChecked(m_reloadEnabled);
 
+    // Selection timer (disables event highlighting for a while)
+    m_timerSelection.setSingleShot(true);
+    m_timerSelection.setInterval(1000);
+    connect(&m_timerSelection, SIGNAL(timeout()), this, SLOT(enableEventSelection()));
+
     // Script file watching :
     connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
     m_timerFileChange.setSingleShot(true);
@@ -260,7 +265,7 @@ void MainWindow::actionEventClic(QModelIndex)
     // Disable selection of events for some time
     // in order to let the user perform a double-clic
     m_selectEvent = false;
-    QTimer::singleShot(1000, this, SLOT(enableEventSelection()));
+    m_timerSelection.start();
 }
 
 void MainWindow::actionEventSelected(QModelIndex index)
