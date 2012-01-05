@@ -185,7 +185,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 void MainWindow::actionConfig()
 {
     // Show the config dialog
-    ConfigDialog *d = new ConfigDialog(this);
+    ConfigDialog *d = new ConfigDialog(m_script, this);
     d->setModal(true);
     d->show();
     // Config changed, emit signal
