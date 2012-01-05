@@ -16,18 +16,42 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
     }
     QSettings settings;
     settings.beginGroup("SubtitlesForm");
-    ui->screens->setCurrentIndex(settings.value("screen", 0).toInt());
-    ui->x->setText(settings.value("x", 0).toString());
-    ui->y->setText(settings.value("y", 0).toString());
-    ui->w->setText(settings.value("w", 0).toString());
-    ui->h->setText(settings.value("h", 0).toString());
+    m_screen = settings.value("screen", 0).toInt();
+    m_rect.setX(settings.value("x", 0).toInt());
+    m_rect.setY(settings.value("y", 0).toInt());
+    m_rect.setWidth(settings.value("w", 0).toInt());
+    m_rect.setHeight(settings.value("h", 0).toInt());
     settings.endGroup();
-
+    resetConfig();
+    // Connect value changing to apply (live preview)
+    connect(ui->x, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
+    connect(ui->y, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
+    connect(ui->w, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
+    connect(ui->h, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
+    connect(ui->screens, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 }
 
 ConfigDialog::~ConfigDialog()
 {
     delete ui;
+}
+
+void ConfigDialog::buttonClicked(QAbstractButton* btn)
+{
+    if (QDialogButtonBox::ApplyRole == ui->buttonBox->buttonRole(btn))
+        saveConfig();
+    if (QDialogButtonBox::RejectRole == ui->buttonBox->buttonRole(btn))
+        resetConfig();
+}
+
+void ConfigDialog::resetConfig()
+{
+    ui->screens->setCurrentIndex(m_screen);
+    ui->x->setValue(m_rect.x());
+    ui->y->setValue(m_rect.y());
+    ui->w->setValue(m_rect.width());
+    ui->h->setValue(m_rect.height());
+    saveConfig();
 }
 
 void ConfigDialog::saveConfig()
@@ -40,4 +64,5 @@ void ConfigDialog::saveConfig()
     settings.setValue("w", ui->w->text());
     settings.setValue("h", ui->h->text());
     settings.endGroup();
+    emit configChanged();
 }
