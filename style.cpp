@@ -46,6 +46,18 @@ Style::Style(const Style &p_oth, int p_marginL, int p_marginR, int p_marginV, QO
 {
 }
 
+Style::Style(const Style &p_oth, const QFont& f, QObject *p_parent):
+    QObject(p_parent),
+    m_name(p_oth.m_name),
+    m_font(f),
+    m_primaryColour(p_oth.m_primaryColour),
+    m_alignment(p_oth.m_alignment),
+    m_marginL(p_oth.m_marginL),
+    m_marginR(p_oth.m_marginR),
+    m_marginV(p_oth.m_marginV)
+{
+}
+
 const QString &Style::name() const {
     return m_name;
 }
@@ -54,8 +66,17 @@ const QFont &Style::font() const {
     return m_font;
 }
 
+void Style::setFont(const QFont& f) {
+    m_font = f;
+}
+
 const QColor &Style::primaryColour() const {
     return m_primaryColour;
+}
+
+void Style::setPrimaryColour(const QColor &c)
+{
+    m_primaryColour = c;
 }
 
 void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds) const
@@ -86,3 +107,4 @@ void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds
     layout->draw(painter, context);
     painter->restore();
 }
+

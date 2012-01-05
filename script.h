@@ -31,7 +31,11 @@ public:
     /*
      * Returns a style from its name.
      */
-    const Style *style(const QString &p_name) const;
+    Style *style(const QString &p_name) const;
+    /*
+     * Returns the list of styles
+     */
+    QList<Style*> styles() const;
     /*
      * Return the number of events in the script.
      */

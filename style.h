@@ -22,9 +22,10 @@ public:
      */
     explicit Style(const QString &p_line, QObject *p_parent);
     /*
-     * Copy constructor
+     * Copy constructors
      */
-    explicit Style(const Style &p_oth, int p_marginL, int p_marginR, int p_marginV, QObject *p_parent);
+    explicit Style(const Style &p_oth, int p_marginL, int p_marginR, int p_marginV, QObject *p_parent = 0);
+    explicit Style(const Style &p_oth, const QFont& f, QObject *p_parent = 0);
     /*
      * Returns the style name.
      */
@@ -33,11 +34,13 @@ public:
      * Returns the style font.
      */
     const QFont &font() const;
+    void setFont(const QFont &f);
     /*
      * Returns the style primary colou.
      * Others colours from the ASS file are ignored.
      */
     const QColor &primaryColour() const;
+    void setPrimaryColour(const QColor &c);
     /*
      * Draws an Event with this style within the specified area.
      */
