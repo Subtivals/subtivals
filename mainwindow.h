@@ -60,6 +60,8 @@ public slots:
     void updateCurrentEvent(qint64);
     void updateCurrentEventAt(int);
     void enableEventSelection();
+    void search();
+    void searchTextChanged(QString);
 protected:
     bool canNext();
     bool canPrevious();
