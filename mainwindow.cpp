@@ -424,7 +424,7 @@ void MainWindow::setState(State p_state)
 qint64 MainWindow::tick()
 {
     QDateTime dateTime = QDateTime::currentDateTime();
-    qint64 dt=dateTime.date().daysTo(QDate(1978, 9, 9));
+    qint64 dt=QDate(1982, 5, 8).daysTo(dateTime.date());
     QTime tt=dateTime.time();
     return 86400000 * dt + 3600000 * tt.hour() + 60000 * tt.minute() + 1000 * tt.second() + tt.msec();
 }
