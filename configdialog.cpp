@@ -9,11 +9,12 @@
 
 
 ConfigDialog::ConfigDialog(Script* script, QWidget *parent) :
-    QDialog(parent),
+    QDockWidget(parent),
     ui(new Ui::ConfigDialog),
     m_styleEditor(new StyleEditor(script))
 {
     ui->setupUi(this);
+    setFeatures(ConfigDialog::NoDockWidgetFeatures);
     ui->tabStyles->setLayout(m_styleEditor->layout());
     adjustSize();
 

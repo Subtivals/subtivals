@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->installEventFilter(this);
     m_selectEvent = true;
     m_script = 0;
+    m_preferences = 0;
     m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
@@ -191,11 +192,16 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 void MainWindow::actionConfig(bool state)
 {
     // Show the config dialog
-    ConfigDialog *d = new ConfigDialog(m_script, this);
-    d->setModal(true);
-    d->show();
-    // Config changed, emit signal
-    QObject::connect(d, SIGNAL(configChanged()), this, SIGNAL(configChanged()));
+    if (state) {
+        m_preferences = new ConfigDialog(m_script, this);
+        addDockWidget(Qt::RightDockWidgetArea, m_preferences);
+        // Config changed, emit signal
+        QObject::connect(m_preferences, SIGNAL(configChanged()), this, SIGNAL(configChanged()));
+    }
+    else {
+        removeDockWidget(m_preferences);
+        delete m_preferences;
+    }
 }
 
 void MainWindow::actionAddDelay()

@@ -1,7 +1,7 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
-#include <QDialog>
+#include <QDockWidget>
 #include <QAbstractButton>
 
 namespace Ui {
@@ -11,7 +11,7 @@ namespace Ui {
 class Script;
 class StyleEditor;
 
-class ConfigDialog : public QDialog
+class ConfigDialog : public QDockWidget
 {
     Q_OBJECT
 
