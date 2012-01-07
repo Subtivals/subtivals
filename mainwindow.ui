@@ -284,6 +284,9 @@
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="icons/icons.qrc">
      <normaloff>:/icons/preferences-desktop.svg</normaloff>:/icons/preferences-desktop.svg</iconset>
@@ -474,9 +477,9 @@
   </connection>
   <connection>
    <sender>actionPreferences</sender>
-   <signal>activated()</signal>
+   <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
-   <slot>actionConfig()</slot>
+   <slot>actionConfig(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -687,7 +690,7 @@
   <slot>actionPlay()</slot>
   <slot>actionStop()</slot>
   <slot>actionExit()</slot>
-  <slot>actionConfig()</slot>
+  <slot>actionConfig(bool)</slot>
   <slot>actionPause()</slot>
   <slot>actionEventSelected(QModelIndex)</slot>
   <slot>actionNext()</slot>

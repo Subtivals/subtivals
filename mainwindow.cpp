@@ -188,7 +188,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
     return false;
 }
 
-void MainWindow::actionConfig()
+void MainWindow::actionConfig(bool state)
 {
     // Show the config dialog
     ConfigDialog *d = new ConfigDialog(m_script, this);

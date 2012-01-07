@@ -44,7 +44,7 @@ public slots:
     void actionOpen();
     void actionPlay();
     void actionStop();
-    void actionConfig();
+    void actionConfig(bool);
     void actionAddDelay();
     void actionSubDelay();
     void actionPause();
