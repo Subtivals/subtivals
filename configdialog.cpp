@@ -23,15 +23,7 @@ ConfigDialog::ConfigDialog(Script* script, QWidget *parent) :
     {
         ui->screens->addItem(QString("Screen %1").arg(i));
     }
-    QSettings settings;
-    settings.beginGroup("SubtitlesForm");
-    m_screen = settings.value("screen", 0).toInt();
-    m_rect.setX(settings.value("x", 0).toInt());
-    m_rect.setY(settings.value("y", 0).toInt());
-    m_rect.setWidth(settings.value("w", 0).toInt());
-    m_rect.setHeight(settings.value("h", 0).toInt());
-    settings.endGroup();
-    resetConfig();
+    reloadConfig();
     // Connect value changing to apply (live preview)
     connect(ui->x, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
     connect(ui->y, SIGNAL(valueChanged(int)), this, SLOT(saveConfig()));
@@ -44,6 +36,19 @@ ConfigDialog::~ConfigDialog()
 {
     delete m_styleEditor;
     delete ui;
+}
+
+void ConfigDialog::reloadConfig()
+{
+    QSettings settings;
+    settings.beginGroup("SubtitlesForm");
+    m_screen = settings.value("screen", 0).toInt();
+    m_rect.setX(settings.value("x", 0).toInt());
+    m_rect.setY(settings.value("y", 0).toInt());
+    m_rect.setWidth(settings.value("w", 0).toInt());
+    m_rect.setHeight(settings.value("h", 0).toInt());
+    settings.endGroup();
+    resetConfig();
 }
 
 void ConfigDialog::resetConfig()

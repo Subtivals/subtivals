@@ -20,9 +20,10 @@ public:
     ~ConfigDialog();
 signals:
     void configChanged();
-private slots:
+public slots:
     void saveConfig();
     void resetConfig();
+    void reloadConfig();
 private:
     Ui::ConfigDialog *ui;
     int m_screen;

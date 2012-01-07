@@ -111,6 +111,7 @@ void SubtitlesForm::mouseMoveEvent(QMouseEvent* e)
 
     setGeometry(current);
     saveConfig(current);
+    emit configChanged();
 }
 
 void SubtitlesForm::mouseReleaseEvent(QMouseEvent*)
@@ -133,7 +134,8 @@ void SubtitlesForm::mouseDoubleClickEvent(QMouseEvent*)
         current.setTop(m_screenGeom.top());
     }
     setGeometry(current);
-    saveConfig(current);
+    saveConfig(current);    
+    emit configChanged();
 }
 
 void SubtitlesForm::wheelEvent(QWheelEvent* event)
@@ -149,6 +151,6 @@ void SubtitlesForm::wheelEvent(QWheelEvent* event)
         current.setWidth(current.width() + factor);
     }
     setGeometry(current);
-    saveConfig(current);
-    event->accept();
+    saveConfig(current);    
+    emit configChanged();
 }

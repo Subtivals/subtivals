@@ -480,3 +480,9 @@ void MainWindow::searchTextChanged(QString)
     ui->searchField->setStyleSheet("");
     ui->searchButton->setEnabled(!ui->searchField->text().isEmpty());
 }
+
+void MainWindow::onConfigChanged()
+{
+    if (m_preferences)
+        m_preferences->reloadConfig();
+}

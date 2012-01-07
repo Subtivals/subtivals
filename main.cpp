@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     QObject::connect(&w, SIGNAL(eventEnd(Event*)), &f, SLOT(remEvent(Event*)));
     QObject::connect(&w, SIGNAL(eventClear()), &f, SLOT(clearEvents()));
     QObject::connect(&w, SIGNAL(configChanged()), &f, SLOT(applyConfig()));
+    QObject::connect(&f, SIGNAL(configChanged()), &w, SLOT(onConfigChanged()));
     QObject::connect(&w, SIGNAL(toggleHide(bool)), &f, SLOT(toggleHide(bool)));
     f.show();
     w.show();

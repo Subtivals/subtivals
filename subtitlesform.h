@@ -18,7 +18,8 @@ class SubtitlesForm : public QWidget
 public:
     explicit SubtitlesForm(QWidget *parent = 0);
     ~SubtitlesForm();
-
+signals:
+    void configChanged();
 public slots:
     void addEvent(Event *p_event);
     void remEvent(Event *p_event);

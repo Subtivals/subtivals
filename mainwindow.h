@@ -63,6 +63,7 @@ public slots:
     void enableEventSelection();
     void search();
     void searchTextChanged(QString);
+    void onConfigChanged();
 protected:
     bool canNext();
     bool canPrevious();
