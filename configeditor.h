@@ -5,19 +5,19 @@
 #include <QAbstractButton>
 
 namespace Ui {
-    class ConfigDialog;
+    class ConfigEditor;
 }
 
 class Script;
 class StyleEditor;
 
-class ConfigDialog : public QDockWidget
+class ConfigEditor : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    explicit ConfigDialog(QWidget *parent = 0);
-    ~ConfigDialog();
+    explicit ConfigEditor(QWidget *parent = 0);
+    ~ConfigEditor();
     void setScript(Script* script);
 signals:
     void changeScreen(int, QRect);
@@ -29,7 +29,7 @@ public slots:
     void save();
     void onClicked(QAbstractButton*);
 private:
-    Ui::ConfigDialog *ui;
+    Ui::ConfigEditor *ui;
     StyleEditor* m_styleEditor;
 };
 

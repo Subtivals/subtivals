@@ -5,12 +5,12 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "configdialog.h"
+#include "configeditor.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_preferences(new ConfigDialog(this)),
+    m_preferences(new ConfigEditor(this)),
     m_filewatcher(new QFileSystemWatcher)
 {
     ui->setupUi(this);
@@ -52,7 +52,7 @@ void MainWindow::showEvent(QShowEvent *)
     m_preferences->reset();
 }
 
-const ConfigDialog* MainWindow::configEditor()
+const ConfigEditor* MainWindow::configEditor()
 {
     return m_preferences;
 }

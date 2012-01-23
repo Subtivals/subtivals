@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ConfigDialog</class>
- <widget class="QDockWidget" name="ConfigDialog">
+ <class>ConfigEditor</class>
+ <widget class="QDockWidget" name="ConfigEditor">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -203,7 +203,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>x</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
+   <receiver>ConfigEditor</receiver>
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -219,7 +219,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>y</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
+   <receiver>ConfigEditor</receiver>
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -233,25 +233,9 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
-   <sender>w</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
-   <slot>apply()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>263</x>
-     <y>120</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>144</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>h</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
+   <receiver>ConfigEditor</receiver>
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -267,7 +251,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>screens</sender>
    <signal>currentIndexChanged(int)</signal>
-   <receiver>ConfigDialog</receiver>
+   <receiver>ConfigEditor</receiver>
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -283,7 +267,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>buttonBox</sender>
    <signal>clicked(QAbstractButton*)</signal>
-   <receiver>ConfigDialog</receiver>
+   <receiver>ConfigEditor</receiver>
    <slot>onClicked(QAbstractButton*)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -293,6 +277,22 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>157</x>
      <y>144</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>w</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ConfigEditor</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>

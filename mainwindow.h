@@ -19,7 +19,7 @@
 #define COLUMN_STYLE    2
 #define COLUMN_TEXT     3
 
-class ConfigDialog;
+class ConfigEditor;
 
 namespace Ui {
     class MainWindow;
@@ -35,7 +35,7 @@ public:
     enum State { NODATA, STOPPED, PLAYING, PAUSED};
     void openFile (const QString &p_fileName);
     bool eventFilter(QObject*, QEvent*);
-    const ConfigDialog * configEditor();
+    const ConfigEditor * configEditor();
     void showEvent(QShowEvent *);
 signals:
     void eventStart(Event *p_event);
@@ -77,7 +77,7 @@ private:
     State m_state;
     Ui::MainWindow *ui;
     Script *m_script;
-    ConfigDialog* m_preferences;
+    ConfigEditor* m_preferences;
     QTimer m_timer;
     qint64 m_msseStartTime;
     qint64 m_pauseStart;

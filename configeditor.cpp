@@ -1,20 +1,20 @@
 #include <QtCore/QSettings>
 #include <QtGui/QDesktopWidget>
 
-#include "configdialog.h"
-#include "ui_configdialog.h"
+#include "configeditor.h"
+#include "ui_configeditor.h"
 
 #include "script.h"
 #include "styleeditor.h"
 
 
-ConfigDialog::ConfigDialog(QWidget *parent) :
+ConfigEditor::ConfigEditor(QWidget *parent) :
     QDockWidget(parent),
-    ui(new Ui::ConfigDialog),
+    ui(new Ui::ConfigEditor),
     m_styleEditor(new StyleEditor())
 {
     ui->setupUi(this);
-    setFeatures(ConfigDialog::NoDockWidgetFeatures);
+    setFeatures(ConfigEditor::NoDockWidgetFeatures);
     ui->tabStyles->setLayout(m_styleEditor->layout());
     adjustSize();
 
@@ -25,18 +25,18 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
     }
 }
 
-void ConfigDialog::setScript(Script* script)
+void ConfigEditor::setScript(Script* script)
 {
     m_styleEditor->setScript(script);
 }
 
-ConfigDialog::~ConfigDialog()
+ConfigEditor::~ConfigEditor()
 {
     delete m_styleEditor;
     delete ui;
 }
 
-void ConfigDialog::screenChanged(const QRect& r)
+void ConfigEditor::screenChanged(const QRect& r)
 {
     // Show values in form
     ui->x->setValue(r.x());
@@ -45,7 +45,7 @@ void ConfigDialog::screenChanged(const QRect& r)
     ui->h->setValue(r.height());
 }
 
-void ConfigDialog::restore()
+void ConfigEditor::restore()
 {
     // Apply default screen size
     QSettings settings;
@@ -53,7 +53,7 @@ void ConfigDialog::restore()
     reset();
 }
 
-void ConfigDialog::reset()
+void ConfigEditor::reset()
 {
     // Reload from settings
     QSettings settings;
@@ -70,7 +70,7 @@ void ConfigDialog::reset()
     m_styleEditor->reset();
 }
 
-void ConfigDialog::save()
+void ConfigEditor::save()
 {
     // Save settings
     QSettings settings;
@@ -84,7 +84,7 @@ void ConfigDialog::save()
     m_styleEditor->save();
 }
 
-void ConfigDialog::apply()
+void ConfigEditor::apply()
 {
     int screen = ui->screens->currentIndex();
     QRect r(ui->x->text().toInt(),
@@ -95,7 +95,7 @@ void ConfigDialog::apply()
     m_styleEditor->apply();
 }
 
-void ConfigDialog::onClicked(QAbstractButton* btn)
+void ConfigEditor::onClicked(QAbstractButton* btn)
 {
     if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->ResetRole) {
         restore();  // ResetRole == RestoreDefaults button (sic)

@@ -3,7 +3,7 @@
 
 #include "mainwindow.h"
 #include "subtitlesform.h"
-#include "configdialog.h"
+#include "configeditor.h"
 
 int main(int argc, char *argv[])
 {
