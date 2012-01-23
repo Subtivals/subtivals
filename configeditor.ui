@@ -53,9 +53,6 @@
           <property name="maximum">
            <number>9999</number>
           </property>
-          <property name="singleStep">
-           <number>5</number>
-          </property>
          </widget>
         </item>
         <item row="1" column="2">
@@ -83,9 +80,6 @@
           <property name="maximum">
            <number>9999</number>
           </property>
-          <property name="singleStep">
-           <number>5</number>
-          </property>
          </widget>
         </item>
         <item row="2" column="0">
@@ -102,9 +96,6 @@
           </property>
           <property name="maximum">
            <number>9999</number>
-          </property>
-          <property name="singleStep">
-           <number>5</number>
           </property>
          </widget>
         </item>
@@ -132,9 +123,6 @@
          <widget class="QSpinBox" name="h">
           <property name="maximum">
            <number>9999</number>
-          </property>
-          <property name="singleStep">
-           <number>5</number>
           </property>
          </widget>
         </item>
