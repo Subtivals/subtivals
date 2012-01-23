@@ -18,8 +18,10 @@ public:
     explicit StyleEditor(Script* script = 0, QWidget *parent = 0);
     ~StyleEditor();
     void setScript(Script*);
-
+signals:
+    void styleChanged();
 public slots:
+    void restore() { /* TODO: issue #67 */ }
     void save() { /* TODO: issue #67 */ }
     void apply();
     void reset();

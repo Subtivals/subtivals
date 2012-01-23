@@ -82,6 +82,7 @@ void StyleEditor::apply()
     Style* style = m_script->style(stylename);
     style->setFont(font);
     style->setPrimaryColour(m_colour);
+    emit styleChanged();
 }
 
 void StyleEditor::reset()
@@ -93,6 +94,7 @@ void StyleEditor::reset()
         style->setPrimaryColour(original->primaryColour());
         delete original;
     }
+    emit styleChanged();
     m_styles.clear();
     // Reinit UI
     initComponents();

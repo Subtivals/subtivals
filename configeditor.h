@@ -21,6 +21,7 @@ public:
     void setScript(Script* script);
 signals:
     void changeScreen(int, QRect);
+    void styleChanged();
 public slots:
     void screenChanged(const QRect& r);
     void restore();

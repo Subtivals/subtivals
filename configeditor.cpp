@@ -16,6 +16,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     ui->setupUi(this);
     setFeatures(ConfigEditor::NoDockWidgetFeatures);
     ui->tabStyles->setLayout(m_styleEditor->layout());
+    connect(m_styleEditor, SIGNAL(styleChanged()), this, SIGNAL(styleChanged()));
     adjustSize();
 
     QDesktopWidget *dw = QApplication::desktop();
@@ -50,6 +51,7 @@ void ConfigEditor::restore()
     // Apply default screen size
     QSettings settings;
     settings.remove("SubtitlesForm");
+    m_styleEditor->restore();
     reset();
 }
 
