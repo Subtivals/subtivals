@@ -43,7 +43,6 @@ void ConfigDialog::screenChanged(const QRect& r)
     ui->y->setValue(r.y());
     ui->w->setValue(r.width());
     ui->h->setValue(r.height());
-    save();
 }
 
 void ConfigDialog::restore()
@@ -94,4 +93,17 @@ void ConfigDialog::apply()
             ui->h->text().toInt());
     emit changeScreen(screen, r);
     m_styleEditor->apply();
+}
+
+void ConfigDialog::onClicked(QAbstractButton* btn)
+{
+    if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->ResetRole) {
+        restore();  // ResetRole == RestoreDefaults button (sic)
+    }
+    else if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->AcceptRole) {
+        save();
+    }
+    else if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->RejectRole) {
+        reset();
+    }
 }

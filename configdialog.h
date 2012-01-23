@@ -30,8 +30,6 @@ public slots:
     void onClicked(QAbstractButton*);
 private:
     Ui::ConfigDialog *ui;
-    int m_screen;
-    QRect m_rect;
     StyleEditor* m_styleEditor;
 };
 

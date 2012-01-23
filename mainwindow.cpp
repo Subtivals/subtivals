@@ -208,6 +208,7 @@ void MainWindow::actionConfig(bool state)
 {
     // Show the config dialog
     m_preferences->setVisible(state);
+    emit screenResizable(state);
 }
 
 void MainWindow::actionAddDelay()

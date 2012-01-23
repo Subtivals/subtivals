@@ -20,7 +20,7 @@ public:
     void setScript(Script*);
 
 public slots:
-    void save() {}
+    void save() { /* TODO: issue #67 */ }
     void apply();
     void reset();
     void styleSelected(int);

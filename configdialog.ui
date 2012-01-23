@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>315</width>
-    <height>289</height>
+    <width>323</width>
+    <height>306</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -47,6 +47,9 @@
         </item>
         <item row="1" column="1">
          <widget class="QSpinBox" name="x">
+          <property name="minimum">
+           <number>-9999</number>
+          </property>
           <property name="maximum">
            <number>9999</number>
           </property>
@@ -94,6 +97,9 @@
         </item>
         <item row="2" column="1">
          <widget class="QSpinBox" name="y">
+          <property name="minimum">
+           <number>-9999</number>
+          </property>
           <property name="maximum">
            <number>9999</number>
           </property>
@@ -132,7 +138,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="2">
+        <item row="4" column="2">
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -144,6 +150,21 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="3" column="0" colspan="5">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Using the mouse:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;wheel&lt;/span&gt; : resize horizontally ;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-&lt;span style=&quot; font-weight:600;&quot;&gt; Ctrl + wheel&lt;/span&gt; : resize vertically ;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;first&lt;/span&gt; &lt;span style=&quot; font-weight:600;&quot;&gt;double-clic : &lt;/span&gt;expand horizontally ;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;second&lt;/span&gt; &lt;span style=&quot; font-weight:600;&quot;&gt;double-clic&lt;/span&gt; :  expand vertically to the top ;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -157,7 +178,7 @@
     <item row="1" column="0">
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="standardButtons">
-       <set>QDialogButtonBox::RestoreDefaults</set>
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::RestoreDefaults|QDialogButtonBox::Save</set>
       </property>
      </widget>
     </item>
@@ -252,6 +273,22 @@
     <hint type="sourcelabel">
      <x>189</x>
      <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>144</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>ConfigDialog</receiver>
+   <slot>onClicked(QAbstractButton*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>157</x>
+     <y>228</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>

@@ -42,6 +42,7 @@ signals:
     void eventEnd(Event *p_event);
     void eventClear();
     void toggleHide(bool state);
+    void screenResizable(bool state);
 public slots:
     void actionOpen();
     void actionPlay();

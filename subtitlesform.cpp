@@ -11,7 +11,8 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
         QWidget(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ),
     ui(new Ui::SubtitlesForm),
     m_maxEvents(2),
-    m_visible(true)
+    m_visible(true),
+    m_resizable(false)
 {
     ui->setupUi(this);
     setCursor(QCursor(Qt::BlankCursor));
@@ -89,6 +90,9 @@ void SubtitlesForm::mouseMoveEvent(QMouseEvent* e)
     if (m_mouseOffset.isNull())
         return;
 
+    if (!m_resizable)
+        return;
+
     // Simply move the window on mouse drag
     QRect current = geometry();
     QPoint moveTo = e->globalPos() - m_mouseOffset;
@@ -104,6 +108,8 @@ void SubtitlesForm::mouseReleaseEvent(QMouseEvent*)
 
 void SubtitlesForm::mouseDoubleClickEvent(QMouseEvent*)
 {
+    if (!m_resizable)
+        return;
     // Fit screen on double-click
     QRect current = geometry();
     if (current.left() != m_screenGeom.left() ||
@@ -121,6 +127,8 @@ void SubtitlesForm::mouseDoubleClickEvent(QMouseEvent*)
 
 void SubtitlesForm::wheelEvent(QWheelEvent* event)
 {
+    if (!m_resizable)
+        return;
     QRect current = geometry();
     int factor = event->delta() / 60;
     if (event->orientation() == Qt::Horizontal ||
@@ -132,5 +140,10 @@ void SubtitlesForm::wheelEvent(QWheelEvent* event)
         current.setWidth(current.width() + factor);
     }
     changeGeometry(current);
+}
+
+void SubtitlesForm::screenResizable(bool state)
+{
+    m_resizable = state;
 }
 

@@ -25,6 +25,7 @@ public slots:
     void remEvent(Event *p_event);
     void clearEvents();
     void toggleHide(bool state);
+    void screenResizable(bool state);
     void changeGeometry(int, const QRect&);
 protected:
     void changeGeometry(const QRect&);
@@ -41,6 +42,7 @@ private:
     bool m_visible;
     QPoint m_mouseOffset;
     QRect m_screenGeom;
+    bool m_resizable;
 };
 
 #endif // SUBTITLESFORM_H
