@@ -21,10 +21,10 @@ public:
 signals:
     void styleChanged();
 public slots:
-    void restore() { /* TODO: issue #67 */ }
+    void restore();
     void save() { /* TODO: issue #67 */ }
     void apply();
-    void reset();
+    void reset() { restore(); /* TODO: issue #67 */ }
     void styleSelected(int);
     void chooseColour();
 

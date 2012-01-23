@@ -85,7 +85,7 @@ void StyleEditor::apply()
     emit styleChanged();
 }
 
-void StyleEditor::reset()
+void StyleEditor::restore()
 {
     // Reapply properties from backup of styles
     foreach(Style* original, m_styles) {
