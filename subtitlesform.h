@@ -19,15 +19,15 @@ public:
     explicit SubtitlesForm(QWidget *parent = 0);
     ~SubtitlesForm();
 signals:
-    void configChanged();
+    void geometryChanged(QRect);
 public slots:
     void addEvent(Event *p_event);
     void remEvent(Event *p_event);
     void clearEvents();
     void toggleHide(bool state);
-    void applyConfig();
+    void changeGeometry(int, const QRect&);
 protected:
-    void saveConfig(const QRect& r);
+    void changeGeometry(const QRect&);
     void paintEvent(QPaintEvent* p_event);
     void mouseMoveEvent(QMouseEvent *e);
     void mousePressEvent(QMouseEvent *e);

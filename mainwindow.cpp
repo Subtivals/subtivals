@@ -10,17 +10,21 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    m_preferences(new ConfigDialog(this)),
     m_filewatcher(new QFileSystemWatcher)
 {
     ui->setupUi(this);
     ui->tableWidget->installEventFilter(this);
     m_selectEvent = true;
     m_script = 0;
-    m_preferences = 0;
     m_pauseTotal = 0;
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
     ui->tableWidget->setFocus();
+
+    // Add preferences dock
+    m_preferences->setVisible(false);
+    addDockWidget(Qt::RightDockWidgetArea, m_preferences);
 
     // Restore settings
     QSettings settings;
@@ -43,6 +47,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::showEvent(QShowEvent *)
+{
+    m_preferences->reset();
+}
+
+const ConfigDialog* MainWindow::configEditor()
+{
+    return m_preferences;
+}
+
 void MainWindow::openFile (const QString &p_fileName)
 {
     emit eventClear();
@@ -62,6 +76,7 @@ void MainWindow::openFile (const QString &p_fileName)
     m_tableMapping.clear();
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);
+    m_preferences->setScript(m_script);
     m_filewatcher->addPath(p_fileName);
     setWindowTitle(m_script->title());
     ui->tableWidget->setRowCount(m_script->eventsCount());
@@ -192,16 +207,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 void MainWindow::actionConfig(bool state)
 {
     // Show the config dialog
-    if (state) {
-        m_preferences = new ConfigDialog(m_script, this);
-        addDockWidget(Qt::RightDockWidgetArea, m_preferences);
-        // Config changed, emit signal
-        QObject::connect(m_preferences, SIGNAL(configChanged()), this, SIGNAL(configChanged()));
-    }
-    else {
-        removeDockWidget(m_preferences);
-        delete m_preferences;
-    }
+    m_preferences->setVisible(state);
 }
 
 void MainWindow::actionAddDelay()
@@ -479,10 +485,4 @@ void MainWindow::searchTextChanged(QString)
 {
     ui->searchField->setStyleSheet("");
     ui->searchButton->setEnabled(!ui->searchField->text().isEmpty());
-}
-
-void MainWindow::onConfigChanged()
-{
-    if (m_preferences)
-        m_preferences->reloadConfig();
 }

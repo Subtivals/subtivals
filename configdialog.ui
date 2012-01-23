@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>372</width>
+    <width>315</width>
     <height>289</height>
    </rect>
   </property>
@@ -31,7 +31,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Screen:</string>
+           <string>Monitor:</string>
           </property>
          </widget>
         </item>
@@ -178,10 +178,90 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>x</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ConfigDialog</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>115</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>144</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>y</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ConfigDialog</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>115</x>
+     <y>153</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>144</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>w</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ConfigDialog</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>263</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>144</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>h</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ConfigDialog</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>263</x>
+     <y>153</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>144</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>screens</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>ConfigDialog</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>144</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
-  <slot>saveConfig()</slot>
-  <slot>buttonClicked(QAbstractButton*)</slot>
-  <slot>resetConfig()</slot>
+  <slot>apply()</slot>
+  <slot>onClicked(QAbstractButton*)</slot>
  </slots>
 </ui>

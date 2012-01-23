@@ -16,14 +16,18 @@ class ConfigDialog : public QDockWidget
     Q_OBJECT
 
 public:
-    explicit ConfigDialog(Script* script, QWidget *parent = 0);
+    explicit ConfigDialog(QWidget *parent = 0);
     ~ConfigDialog();
+    void setScript(Script* script);
 signals:
-    void configChanged();
+    void changeScreen(int, QRect);
 public slots:
-    void saveConfig();
-    void resetConfig();
-    void reloadConfig();
+    void screenChanged(const QRect& r);
+    void restore();
+    void reset();
+    void apply();
+    void save();
+    void onClicked(QAbstractButton*);
 private:
     Ui::ConfigDialog *ui;
     int m_screen;

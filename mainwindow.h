@@ -35,11 +35,12 @@ public:
     enum State { NODATA, STOPPED, PLAYING, PAUSED};
     void openFile (const QString &p_fileName);
     bool eventFilter(QObject*, QEvent*);
+    const ConfigDialog * configEditor();
+    void showEvent(QShowEvent *);
 signals:
     void eventStart(Event *p_event);
     void eventEnd(Event *p_event);
     void eventClear();
-    void configChanged();
     void toggleHide(bool state);
 public slots:
     void actionOpen();
@@ -63,7 +64,6 @@ public slots:
     void enableEventSelection();
     void search();
     void searchTextChanged(QString);
-    void onConfigChanged();
 protected:
     bool canNext();
     bool canPrevious();

@@ -15,7 +15,6 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
 {
     ui->setupUi(this);
     setCursor(QCursor(Qt::BlankCursor));
-    applyConfig();
 }
 
 SubtitlesForm::~SubtitlesForm()
@@ -51,30 +50,16 @@ void SubtitlesForm::toggleHide(bool state)
     repaint();
 }
 
-void SubtitlesForm::applyConfig()
+void SubtitlesForm::changeGeometry(int monitor, const QRect& r)
 {
-    QSettings settings;
-    settings.beginGroup("SubtitlesForm");
-    int screen = settings.value("screen", 0).toInt();
-    int x = settings.value("x", 0).toInt();
-    int y = settings.value("y", 0).toInt();
-    int w = settings.value("w", qApp->desktop()->screen(qApp->desktop()->primaryScreen())->width()).toInt();
-    int h = settings.value("h", 300).toInt();
-    settings.endGroup();
-    m_screenGeom = QApplication::desktop()->screenGeometry(screen);
-    setGeometry(x + m_screenGeom.x(), y + m_screenGeom.y(), w, h);
-    saveConfig(QRect(x, y, w, h));
+    m_screenGeom = QApplication::desktop()->screenGeometry(monitor);
+    setGeometry(r.x() + m_screenGeom.x(), r.y() + m_screenGeom.y(), r.width(), r.height());
 }
 
-void SubtitlesForm::saveConfig(const QRect& r)
+void SubtitlesForm::changeGeometry(const QRect& r)
 {
-    QSettings settings;
-    settings.beginGroup("SubtitlesForm");
-    settings.setValue("x", r.x());
-    settings.setValue("y", r.y());
-    settings.setValue("w", r.width());
-    settings.setValue("h", r.height());
-    settings.endGroup();
+    setGeometry(r);
+    emit geometryChanged(r);
 }
 
 void SubtitlesForm::paintEvent(QPaintEvent*)
@@ -109,9 +94,7 @@ void SubtitlesForm::mouseMoveEvent(QMouseEvent* e)
     QPoint moveTo = e->globalPos() - m_mouseOffset;
     current.moveTopLeft(moveTo);
 
-    setGeometry(current);
-    saveConfig(current);
-    emit configChanged();
+    changeGeometry(current);
 }
 
 void SubtitlesForm::mouseReleaseEvent(QMouseEvent*)
@@ -133,9 +116,7 @@ void SubtitlesForm::mouseDoubleClickEvent(QMouseEvent*)
         // Second fits top
         current.setTop(m_screenGeom.top());
     }
-    setGeometry(current);
-    saveConfig(current);    
-    emit configChanged();
+    changeGeometry(current);
 }
 
 void SubtitlesForm::wheelEvent(QWheelEvent* event)
@@ -150,7 +131,6 @@ void SubtitlesForm::wheelEvent(QWheelEvent* event)
         current.moveLeft(current.left() - factor/2);
         current.setWidth(current.width() + factor);
     }
-    setGeometry(current);
-    saveConfig(current);    
-    emit configChanged();
+    changeGeometry(current);
 }
+

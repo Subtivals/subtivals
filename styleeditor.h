@@ -15,10 +15,12 @@ class StyleEditor : public QWidget
     Q_OBJECT
 
 public:
-    explicit StyleEditor(Script* script, QWidget *parent = 0);
+    explicit StyleEditor(Script* script = 0, QWidget *parent = 0);
     ~StyleEditor();
+    void setScript(Script*);
 
 public slots:
+    void save() {}
     void apply();
     void reset();
     void styleSelected(int);

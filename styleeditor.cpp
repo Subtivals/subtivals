@@ -22,6 +22,12 @@ StyleEditor::~StyleEditor()
     delete ui;
 }
 
+void StyleEditor::setScript(Script* script)
+{
+    m_script = script;
+    initComponents();
+}
+
 void StyleEditor::initComponents()
 {
     ui->groupStyles->setEnabled(m_script);
@@ -116,3 +122,4 @@ void StyleEditor::fillButtonColour()
     p.drawRect(0, 0, 24, 24);
     ui->btnColor->setIcon(pm);
 }
+
