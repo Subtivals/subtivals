@@ -57,6 +57,12 @@ const ConfigEditor* MainWindow::configEditor()
     return m_preferences;
 }
 
+void MainWindow::actionShowCalibration()
+{
+    openFile(":/samples/M.ass");
+    updateCurrentEventAt(0);
+}
+
 void MainWindow::openFile (const QString &p_fileName)
 {
     emit eventClear();
@@ -77,7 +83,6 @@ void MainWindow::openFile (const QString &p_fileName)
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);
     m_preferences->setScript(m_script);
-    m_filewatcher->addPath(p_fileName);
     setWindowTitle(m_script->title());
     ui->tableWidget->setRowCount(m_script->eventsCount());
     QListIterator<Event *> i = m_script->events();
@@ -97,6 +102,9 @@ void MainWindow::openFile (const QString &p_fileName)
         row++;
     }
     actionStop();
+    // Watch file changes
+    if (!p_fileName.startsWith(":"))
+        m_filewatcher->addPath(p_fileName);
     // Reset search field
     ui->searchField->setEnabled(row > 0);
     ui->searchField->setText("");

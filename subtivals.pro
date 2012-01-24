@@ -33,4 +33,5 @@ FORMS    += mainwindow.ui \
     configeditor.ui
 
 RESOURCES += \
-    icons/icons.qrc
+    resources/icons.qrc \
+    resources/samples.qrc

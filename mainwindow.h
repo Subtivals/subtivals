@@ -44,6 +44,7 @@ signals:
     void toggleHide(bool state);
     void screenResizable(bool state);
 public slots:
+    void actionShowCalibration();
     void actionOpen();
     void actionPlay();
     void actionStop();
