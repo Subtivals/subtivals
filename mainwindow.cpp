@@ -1,7 +1,8 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QSettings>
 #include <QtGui/QFileDialog>
-#include <QKeyEvent>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QKeyEvent>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -28,8 +29,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Restore settings
     QSettings settings;
-    m_reloadEnabled = settings.value("MainWindow/reloadEnabled", false).toBool();
+    settings.beginGroup("MainWindow");
+    resize(settings.value("size", size()).toSize());
+    QPoint pos(0, qApp->desktop()->screenCount() > 1 ? 100 : 350);
+    move(settings.value("pos", pos).toPoint());
+    m_reloadEnabled = settings.value("reloadEnabled", false).toBool();
     ui->actionEnableReload->setChecked(m_reloadEnabled);
+    settings.endGroup();
 
     // Selection timer (disables event highlighting for a while)
     m_timerSelection.setSingleShot(true);
@@ -45,6 +51,19 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::closeEvent(QCloseEvent *)
+{
+    // Save settings
+    QSettings settings;
+    settings.beginGroup("MainWindow");
+    settings.setValue("size", size());
+    settings.setValue("pos", pos());
+    settings.setValue("reloadEnabled", m_reloadEnabled);
+    settings.endGroup();
+    // When the main window is close : end of the app
+    qApp->exit();
 }
 
 void MainWindow::showEvent(QShowEvent *)
@@ -381,17 +400,6 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
         ui->tableWidget->scrollTo(ui->tableWidget->currentIndex(),
                                   QAbstractItemView::PositionAtCenter);
     }
-}
-
-void MainWindow::closeEvent(QCloseEvent *)
-{
-    // Restore settings
-    QSettings settings;
-    settings.beginGroup("MainWindow");
-    settings.setValue("reloadEnabled", m_reloadEnabled);
-    settings.endGroup();
-    // When the main window is close : end of the app
-    qApp->exit();
 }
 
 QString MainWindow::ts2tc(qint64 p_ts)
