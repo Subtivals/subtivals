@@ -234,9 +234,11 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 
 void MainWindow::actionConfig(bool state)
 {
-    // Show the config dialog
+    // Show/Hide the config dialog
     m_preferences->setVisible(state);
     emit screenResizable(state);
+    // Save when user hides it
+    if (!state) m_preferences->save();
 }
 
 void MainWindow::actionAddDelay()
