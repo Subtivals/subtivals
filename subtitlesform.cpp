@@ -133,10 +133,9 @@ void SubtitlesForm::wheelEvent(QWheelEvent* event)
     int factor = event->delta() / 60;
     if (event->orientation() == Qt::Horizontal ||
         event->modifiers().testFlag(Qt::ControlModifier)) {
-        current.moveTop(current.top() - factor/2);
         current.setHeight(current.height() + factor);
     } else {
-        current.moveLeft(current.left() - factor/2);
+        current.moveLeft(current.left() - factor/2);  // Keep centered
         current.setWidth(current.width() + factor);
     }
     changeGeometry(current);
