@@ -26,8 +26,6 @@ int main(int argc, char *argv[])
 
     f.show();
     w.show();
-    // By default, show the calibration file
-    w.actionShowCalibration();
     // If more than one arg and last arg is a file, open it
     if( argc > 1)
     {
