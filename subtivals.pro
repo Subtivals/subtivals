@@ -35,3 +35,7 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     resources/icons.qrc \
     resources/samples.qrc
+
+TRANSLATIONS = locale/fr_FR.ts \
+    locale/es_ES.ts \
+    locale/ca_ES.ts

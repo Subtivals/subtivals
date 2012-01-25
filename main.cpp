@@ -1,5 +1,6 @@
 #include <QtGui/QApplication>
 #include <QtCore/QFileInfo>
+#include <QTranslator>
 
 #include "mainwindow.h"
 #include "subtitlesform.h"
@@ -12,6 +13,14 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("gedial.com");
     QCoreApplication::setApplicationName("Subtivals");
     a.setQuitOnLastWindowClosed(true);
+
+    // Load translations (i18n) from system locale
+    QString locale = QLocale::system().name();
+    QTranslator translator;
+    if (translator.load(locale, "locale")) {
+        a.installTranslator(&translator);
+    }
+
     SubtitlesForm f;
     MainWindow w;
 
