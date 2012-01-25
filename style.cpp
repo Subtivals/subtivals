@@ -34,18 +34,6 @@ Style::Style(const QString &p_line, QObject *p_parent) :
         m_alignment |= Qt::AlignHCenter;
 }
 
-Style::Style(const Style &p_oth, int p_marginL, int p_marginR, int p_marginV, QObject *p_parent):
-    QObject(p_parent),
-    m_name(p_oth.m_name),
-    m_font(p_oth.m_font),
-    m_primaryColour(p_oth.m_primaryColour),
-    m_alignment(p_oth.m_alignment),
-    m_marginL(p_oth.m_marginL + p_marginL),
-    m_marginR(p_oth.m_marginR + p_marginR),
-    m_marginV(p_oth.m_marginV + p_marginV)
-{
-}
-
 Style::Style(const Style &p_oth, const QFont& f, QObject *p_parent):
     QObject(p_parent),
     m_name(p_oth.m_name),
@@ -98,7 +86,10 @@ void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds
     doc.setDefaultFont(m_font);
     QAbstractTextDocumentLayout* layout = doc.documentLayout();
     QRect final(bounds);
-    final = final.adjusted(m_marginL, m_marginV, -m_marginR, m_marginV);
+    int marginL = m_marginL + event.marginL();
+    int marginR = m_marginL + event.marginR();
+    int marginV = m_marginL + event.marginV();
+    final = final.adjusted(marginL, marginV, -marginR, marginV);
     doc.setPageSize(QSize(final.width(), final.height()));
     QAbstractTextDocumentLayout::PaintContext context;
     context.palette.setColor(QPalette::Text, painter->pen().color());

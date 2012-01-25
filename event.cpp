@@ -12,13 +12,9 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
     m_style = p_script->style(subparts[3].trimmed());
 
     // Check if style is overridden in event
-    int marginL = subparts[5].toInt();
-    int marginR = subparts[6].toInt();
-    int marginV = subparts[7].toInt();
-    if (marginL || marginR || marginV) {
-        // Clone only if necessary
-        m_style = new Style(*m_style, marginL, marginR, marginV, this);
-    }
+    m_marginL = subparts[5].toInt();
+    m_marginR = subparts[6].toInt();
+    m_marginV = subparts[7].toInt();
 
     int p = p_line.indexOf(",");
     for (int i = 0; i < 8; i++)
@@ -116,4 +112,19 @@ const QString &Event::prettyText() const
 bool Event::match(qint64 p_msecs) const
 {
     return m_msseStart <= p_msecs && m_msseEnd >= p_msecs;
+}
+
+int Event::marginL() const
+{
+    return m_marginL;
+}
+
+int Event::marginR() const
+{
+    return m_marginR;
+}
+
+int Event::marginV() const
+{
+    return m_marginV;
 }

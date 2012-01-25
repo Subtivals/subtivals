@@ -19,6 +19,9 @@ public:
     const QString &text() const;
     const QString &prettyText() const;
     bool match(qint64 msecs) const;
+    int marginL() const;
+    int marginR() const;
+    int marginV() const;
 signals:
 
 public slots:
@@ -28,6 +31,9 @@ private:
     const Style *m_style;
     QString m_text;
     QString m_prettyText;
+    int m_marginL;
+    int m_marginR;
+    int m_marginV;
 };
 
 #endif // EVENT_H

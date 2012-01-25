@@ -22,9 +22,8 @@ public:
      */
     explicit Style(const QString &p_line, QObject *p_parent);
     /*
-     * Copy constructors
+     * Copy constructor
      */
-    explicit Style(const Style &p_oth, int p_marginL, int p_marginR, int p_marginV, QObject *p_parent = 0);
     explicit Style(const Style &p_oth, const QFont& f, QObject *p_parent = 0);
     /*
      * Returns the style name.
