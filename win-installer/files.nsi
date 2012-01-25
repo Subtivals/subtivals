@@ -13,5 +13,7 @@ File /a "/oname=$INSTDIR\iconengines\QSVGICON4.DLL" "${qtdirdesktop}\plugins\ico
 CreateDirectory "$INSTDIR\imageformats"
 File /a "/oname=$INSTDIR\imageformats\QSVG4.DLL" "${qtdirdesktop}\plugins\imageformats\QSVG4.DLL"
 
-;CreateDirectory "$INSTDIR\locale"
-;File /a "/oname=$INSTDIR\locale\subtivals-fr.qm" "${srcdir}\..\..\locale\subtivals-fr.qm"
+CreateDirectory "$INSTDIR\locale"
+File /a "/oname=$INSTDIR\locale\fr_FR.qm" "..\locale\fr_FR.qm"
+File /a "/oname=$INSTDIR\locale\es_ES.qm" "..\locale\es_ES.qm"
+File /a "/oname=$INSTDIR\locale\ca_ES.qm" "..\locale\ca_ES.qm"
