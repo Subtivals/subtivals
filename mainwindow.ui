@@ -182,7 +182,7 @@
      <x>0</x>
      <y>0</y>
      <width>654</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -200,8 +200,16 @@
     </property>
     <addaction name="actionPreferences"/>
    </widget>
+   <widget class="QMenu" name="menuAide">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuAide"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="toolButtonStyle">
@@ -412,6 +420,11 @@
    </property>
    <property name="toolTip">
     <string>Show calibration</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About Subtivals...</string>
    </property>
   </action>
  </widget>
@@ -708,6 +721,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAbout</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionAbout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -728,5 +757,6 @@
   <slot>search()</slot>
   <slot>searchTextChanged(QString)</slot>
   <slot>actionShowCalibration()</slot>
+  <slot>actionAbout()</slot>
  </slots>
 </ui>

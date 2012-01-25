@@ -3,6 +3,7 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -502,4 +503,16 @@ void MainWindow::searchTextChanged(QString)
 {
     ui->searchField->setStyleSheet("");
     ui->searchButton->setEnabled(!ui->searchField->text().isEmpty());
+}
+
+void MainWindow::actionAbout()
+{
+    QMessageBox::about(this,
+                       tr("About Subtivals"),
+                       tr("<h1>Subtivals</h1>"
+                          "<p>Subtivals, a program to project *.ass subtitles.</p>"
+                          "<h2>Authors</h2>"
+                          "<li>Lilian Lefranc</li>"
+                          "<li>Arnaud Rolly</li>"
+                          "<li>Mathieu Leplatre</li>"));
 }
