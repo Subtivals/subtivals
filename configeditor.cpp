@@ -1,5 +1,6 @@
 #include <QtCore/QSettings>
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QPushButton>
 
 #include "configeditor.h"
 #include "ui_configeditor.h"
@@ -53,6 +54,10 @@ void ConfigEditor::restore()
     settings.remove("SubtitlesForm");
     m_styleEditor->restore();
     reset();
+
+    ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
+    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
 }
 
 void ConfigEditor::reset()
@@ -70,6 +75,9 @@ void ConfigEditor::reset()
     ui->screens->setCurrentIndex(screen);
     screenChanged(QRect(x, y, w, h));
     m_styleEditor->reset();
+
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
+    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
 }
 
 void ConfigEditor::save()
@@ -84,6 +92,10 @@ void ConfigEditor::save()
     settings.setValue("h", ui->h->text());
     settings.endGroup();
     m_styleEditor->save();
+
+    ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
+    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
 }
 
 void ConfigEditor::apply()
@@ -95,6 +107,10 @@ void ConfigEditor::apply()
             ui->h->text().toInt());
     emit changeScreen(screen, r);
     m_styleEditor->apply();
+
+    ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(true);
+    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(true);
 }
 
 void ConfigEditor::onClicked(QAbstractButton* btn)
