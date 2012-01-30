@@ -31,6 +31,7 @@ void StyleEditor::setScript(Script* script)
 void StyleEditor::initComponents()
 {
     ui->groupStyles->setEnabled(m_script);
+    ui->groupFont->setEnabled(false);
     if (!m_script)
         return;
 
@@ -43,7 +44,6 @@ void StyleEditor::initComponents()
         ui->stylesNames->addItem(item);
     }
     ui->stylesNames->setCurrentRow(-1);
-    ui->groupFont->setEnabled(false);
 }
 
 void StyleEditor::styleSelected(int row)
