@@ -270,6 +270,7 @@ void MainWindow::actionPrevious()
     if (canPrevious()) {
         m_userDelay = 0;
         int i = ui->tableWidget->currentRow();
+        m_selectEvent = true;
         updateCurrentEventAt(i - 1);
         ui->actionHide->setChecked(false);
     }
@@ -287,6 +288,7 @@ void MainWindow::actionNext()
     if (canNext()){
         m_userDelay = 0;
         int i = ui->tableWidget->currentRow();
+        m_selectEvent = true;
         // Jump next if selected is being viewed. Otherwise activate it.
         if (elapsedTime() >= m_script->eventAt(i)->msseStart() &&
             elapsedTime() <= m_script->eventAt(i)->msseEnd())
