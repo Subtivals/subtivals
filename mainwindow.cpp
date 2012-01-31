@@ -210,6 +210,7 @@ void MainWindow::actionPlay()
 
 void MainWindow::actionStop()
 {
+    emit eventClear();
     setState(STOPPED);
     m_timer.stop();
     ui->timer->setText("-");
