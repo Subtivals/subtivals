@@ -324,6 +324,8 @@ void MainWindow::actionEventSelected(QModelIndex index)
 {
     updateCurrentEventAt(index.row());
     ui->actionHide->setChecked(false);
+    ui->actionPrevious->setEnabled(canPrevious());
+    ui->actionNext->setEnabled(canNext());
 }
 
 void MainWindow::timeout()
