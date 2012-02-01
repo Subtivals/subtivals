@@ -22,9 +22,9 @@ signals:
     void styleChanged();
 public slots:
     void restore();
-    void save() { /* TODO: issue #67 */ }
+    void save();
     void apply();
-    void reset() { restore(); /* TODO: issue #67 */ }
+    void reset();
     void styleSelected(int);
     void chooseColour();
 
@@ -34,7 +34,8 @@ protected:
 
 private:
     Script* m_script;
-    QList<Style*> m_styles;
+    QList<Style*> m_backup;
+    QList<Style*> m_overidden;
     QColor m_colour;
     Ui::StyleEditor *ui;
 };

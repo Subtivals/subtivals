@@ -4,6 +4,7 @@
 #include <QListWidgetItem>
 #include <QColorDialog>
 #include <QPainter>
+#include <QSettings>
 
 #include "script.h"
 #include "style.h"
@@ -25,7 +26,14 @@ StyleEditor::~StyleEditor()
 void StyleEditor::setScript(Script* script)
 {
     m_script = script;
+    foreach(Style* style, m_backup)
+        delete style;
+    m_backup.clear();
+    foreach(Style* style, m_script->styles()) {
+        m_backup.append(new Style(*style, style->font()));
+    }
     initComponents();
+    reset();
 }
 
 void StyleEditor::initComponents()
@@ -37,8 +45,6 @@ void StyleEditor::initComponents()
 
     ui->stylesNames->clear();
     foreach(Style* style, m_script->styles()) {
-        // Backup for reset
-        m_styles.append(new Style(*style, style->font()));
         // Add to the list
         QListWidgetItem *item = new QListWidgetItem(style->name());
         ui->stylesNames->addItem(item);
@@ -70,14 +76,55 @@ void StyleEditor::styleSelected(int row)
     ui->fontSize->blockSignals(false);
 }
 
+void StyleEditor::save()
+{
+    QSettings settings;
+    settings.beginGroup("Styles");
+    // Save overidden styles into settings
+    QString line;
+    foreach(Style* style, m_overidden) {
+        line = QString("%1/%2/%3").arg(style->font().family())
+                                  .arg(style->font().pointSize())
+                                  .arg(style->primaryColour().name());
+        settings.setValue(style->name(), line);
+    }
+    settings.endGroup();
+}
+
+void StyleEditor::reset()
+{
+    // Reload styles from backup and apply overidden styles from settings
+    m_overidden.clear();
+    QSettings settings;
+    settings.beginGroup("Styles");
+    for(int i = 0; i < m_backup.size(); i++) {
+        Style* original = m_backup.at(i);
+        Style* style = m_script->style(original->name());
+
+        QStringList overriden = settings.value(style->name(), "").toString().split("/");
+        if (overriden.size() == 3) {
+            QFont f(overriden[0]);
+            f.setPointSize(overriden.at(1).toInt());
+            style->setFont(f);
+            style->setPrimaryColour(QColor(overriden[2]));
+            m_overidden.append(style);
+            ui->stylesNames->item(i)->setForeground(qApp->palette().highlight());
+        }
+        else {
+            style->setFont(original->font());
+            style->setPrimaryColour(original->primaryColour());
+            ui->stylesNames->item(i)->setForeground(QBrush());
+        }
+    }
+    settings.endGroup();
+    emit styleChanged();
+}
+
 void StyleEditor::apply()
 {
     int row = ui->stylesNames->currentRow();
     if (row < 0)
         return;
-
-    // Distinct apperence of overidden item in list
-    ui->stylesNames->item(row)->setForeground(qApp->palette().highlight());
 
     // Style properties were edited, store a copy
     QString stylename = ui->stylesNames->item(row)->text();
@@ -87,21 +134,23 @@ void StyleEditor::apply()
     style->setFont(font);
     style->setPrimaryColour(m_colour);
     emit styleChanged();
+
+    // Distinct apparence of overidden item in list
+    ui->stylesNames->item(row)->setForeground(qApp->palette().highlight());
+    m_overidden.append(style);
 }
 
 void StyleEditor::restore()
 {
-    // Reapply properties from backup of styles
-    foreach(Style* original, m_styles) {
-        Style* style = m_script->style(original->name());
-        style->setFont(original->font());
-        style->setPrimaryColour(original->primaryColour());
-        delete original;
+    // Remove all styles from settings
+    QSettings settings;
+    settings.beginGroup("Styles");
+    foreach(QString key, settings.allKeys()) {
+        settings.remove(key);
     }
-    emit styleChanged();
-    m_styles.clear();
-    // Reinit UI
-    initComponents();
+    settings.endGroup();
+    m_overidden.clear();
+    reset();
 }
 
 void StyleEditor::chooseColour()
