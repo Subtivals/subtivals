@@ -3,7 +3,7 @@
 #include "event.h"
 #include "script.h"
 
-Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
+Event::Event(const QString &p_line, const Script *p_script, int p_index, QObject *p_parent) :
     QObject(p_parent)
 {
     QList<QString> subparts = p_line.split(',');
@@ -15,6 +15,12 @@ Event::Event(const QString &p_line, const Script *p_script, QObject *p_parent) :
     m_marginL = subparts[5].toInt();
     m_marginR = subparts[6].toInt();
     m_marginV = subparts[7].toInt();
+
+    // Check if no timecode is specified
+    if (m_msseStart == 0 && m_msseStart == m_msseEnd) {
+        m_msseStart = 1000 * p_index;
+        m_msseEnd = m_msseStart + 500;
+    }
 
     int p = p_line.indexOf(",");
     for (int i = 0; i < 8; i++)

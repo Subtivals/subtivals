@@ -52,7 +52,7 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
                         QString key = parts[0].trimmed().toLower();
                         QString value = line.mid(key.length() + 1).trimmed();
                         if (key == "dialogue") {
-                            m_events.append(new Event(value, this));
+                            m_events.append(new Event(value, this, m_events.size()));
                         }
                     }
                 }
@@ -90,6 +90,7 @@ const QListIterator<Event *> Script::events() const
 {
     return QListIterator<Event *>(m_events);
 }
+
 const Event *Script::eventAt(int i) const
 {
     return m_events[i];

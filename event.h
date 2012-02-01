@@ -12,7 +12,7 @@ class Event : public QObject
 {
     Q_OBJECT
 public:
-    explicit Event(const QString &p_line, const Script *p_script, QObject *p_parent = 0);
+    explicit Event(const QString &p_line, const Script *p_script, int p_index, QObject *p_parent = 0);
     qint64 msseStart() const;
     qint64 msseEnd() const;
     const Style *style() const;
