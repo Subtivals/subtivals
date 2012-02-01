@@ -75,6 +75,10 @@ void StyleEditor::apply()
     int row = ui->stylesNames->currentRow();
     if (row < 0)
         return;
+
+    // Distinct apperence of overidden item in list
+    ui->stylesNames->item(row)->setForeground(qApp->palette().highlight());
+
     // Style properties were edited, store a copy
     QString stylename = ui->stylesNames->item(row)->text();
     QFont font = ui->fontName->currentFont();
