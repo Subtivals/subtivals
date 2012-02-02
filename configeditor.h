@@ -29,6 +29,8 @@ public slots:
     void apply();
     void save();
     void onClicked(QAbstractButton*);
+protected slots:
+    void enableButtonBox(bool restore = true, bool cancel = true, bool save = true);
 private:
     Ui::ConfigEditor *ui;
     StyleEditor* m_styleEditor;

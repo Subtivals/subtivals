@@ -18,6 +18,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     setFeatures(ConfigEditor::NoDockWidgetFeatures);
     ui->tabStyles->setLayout(m_styleEditor->layout());
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SIGNAL(styleChanged()));
+    //connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
     adjustSize();
 
     QDesktopWidget *dw = QApplication::desktop();
@@ -30,6 +31,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
 void ConfigEditor::setScript(Script* script)
 {
     m_styleEditor->setScript(script);
+    enableButtonBox(true, false, false);
 }
 
 ConfigEditor::~ConfigEditor()
@@ -54,10 +56,7 @@ void ConfigEditor::restore()
     settings.remove("SubtitlesForm");
     m_styleEditor->restore();
     reset();
-
-    ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(false);
-    ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
-    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
+    enableButtonBox(false, false, false);
 }
 
 void ConfigEditor::reset()
@@ -75,9 +74,7 @@ void ConfigEditor::reset()
     ui->screens->setCurrentIndex(screen);
     screenChanged(QRect(x, y, w, h));
     m_styleEditor->reset();
-
-    ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
-    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
+    enableButtonBox(true, false, false);
 }
 
 void ConfigEditor::save()
@@ -93,9 +90,7 @@ void ConfigEditor::save()
     settings.endGroup();
     m_styleEditor->save();
 
-    ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
-    ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
-    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
+    enableButtonBox(true, false, false);
 }
 
 void ConfigEditor::apply()
@@ -107,10 +102,7 @@ void ConfigEditor::apply()
             ui->h->text().toInt());
     emit changeScreen(screen, r);
     m_styleEditor->apply();
-
-    ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(true);
-    ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(true);
-    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(true);
+    enableButtonBox(true, true, true);
 }
 
 void ConfigEditor::onClicked(QAbstractButton* btn)
@@ -124,4 +116,11 @@ void ConfigEditor::onClicked(QAbstractButton* btn)
     else if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->RejectRole) {
         reset();
     }
+}
+
+void ConfigEditor::enableButtonBox(bool restore, bool cancel, bool save)
+{
+    ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(restore);
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(cancel);
+    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(save);
 }
