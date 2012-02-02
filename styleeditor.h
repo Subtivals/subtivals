@@ -31,6 +31,7 @@ public slots:
 protected:
     void initComponents();
     void fillButtonColour();
+    void setStyleNameBold(int, bool);
 
 private:
     Script* m_script;

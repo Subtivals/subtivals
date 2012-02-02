@@ -18,7 +18,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     setFeatures(ConfigEditor::NoDockWidgetFeatures);
     ui->tabStyles->setLayout(m_styleEditor->layout());
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SIGNAL(styleChanged()));
-    //connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
+    connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
     adjustSize();
 
     QDesktopWidget *dw = QApplication::desktop();
@@ -31,7 +31,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
 void ConfigEditor::setScript(Script* script)
 {
     m_styleEditor->setScript(script);
-    enableButtonBox(true, false, false);
+    reset();
 }
 
 ConfigEditor::~ConfigEditor()

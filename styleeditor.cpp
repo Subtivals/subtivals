@@ -33,7 +33,6 @@ void StyleEditor::setScript(Script* script)
         m_backup.append(new Style(*style, style->font()));
     }
     initComponents();
-    reset();
 }
 
 void StyleEditor::initComponents()
@@ -108,12 +107,12 @@ void StyleEditor::reset()
             style->setFont(f);
             style->setPrimaryColour(QColor(overriden[2]));
             m_overidden.append(style);
-            ui->stylesNames->item(i)->setForeground(qApp->palette().highlight());
+            setStyleNameBold(i, true);
         }
         else {
             style->setFont(original->font());
             style->setPrimaryColour(original->primaryColour());
-            ui->stylesNames->item(i)->setForeground(QBrush());
+            setStyleNameBold(i, false);
         }
     }
     settings.endGroup();
@@ -133,11 +132,10 @@ void StyleEditor::apply()
     Style* style = m_script->style(stylename);
     style->setFont(font);
     style->setPrimaryColour(m_colour);
-    emit styleChanged();
-
-    // Distinct apparence of overidden item in list
-    ui->stylesNames->item(row)->setForeground(qApp->palette().highlight());
     m_overidden.append(style);
+    setStyleNameBold(row, true);
+
+    emit styleChanged();
 }
 
 void StyleEditor::restore()
@@ -178,3 +176,10 @@ void StyleEditor::fillButtonColour()
     ui->btnColor->setIcon(pm);
 }
 
+void StyleEditor::setStyleNameBold(int row, bool bold)
+{
+    QListWidgetItem* item = ui->stylesNames->item(row);
+    QFont f = item->font();
+    f.setBold(bold);
+    item->setFont(f);
+}
