@@ -60,7 +60,9 @@ void SubtitlesForm::changeGeometry(int monitor, const QRect& r)
 void SubtitlesForm::changeGeometry(const QRect& r)
 {
     setGeometry(r);
-    emit geometryChanged(r);
+    emit geometryChanged(QRect(r.x() - m_screenGeom.x(),
+                               r.y() - m_screenGeom.y(),
+                               r.width(), r.height()));
 }
 
 void SubtitlesForm::paintEvent(QPaintEvent*)

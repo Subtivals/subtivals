@@ -66,9 +66,11 @@ void ConfigEditor::reset()
     QSettings settings;
     settings.beginGroup("SubtitlesForm");
     int screen = settings.value("screen", 0).toInt();
+    int width = QApplication::desktop()->screenGeometry(screen).width();
+
     int x = settings.value("x", 0).toInt();
     int y = settings.value("y", 0).toInt();
-    int w = settings.value("w", qApp->desktop()->screen(qApp->desktop()->primaryScreen())->width()).toInt();
+    int w = settings.value("w", width).toInt();
     int h = settings.value("h", 300).toInt();
     settings.endGroup();
 
