@@ -288,14 +288,18 @@ void MainWindow::actionNext()
 {
     if (canNext()){
         m_userDelay = 0;
-        int i = ui->tableWidget->currentRow();
-        m_selectEvent = true;
+        int row = ui->tableWidget->currentRow();
+        bool isRowDisplayed = false;
+        foreach(Event* e, m_lastEvents)
+            if (m_tableMapping[e] == row)
+                isRowDisplayed = true;
+
         // Jump next if selected is being viewed. Otherwise activate it.
-        if (elapsedTime() >= m_script->eventAt(i)->msseStart() &&
-            elapsedTime() <= m_script->eventAt(i)->msseEnd())
-            updateCurrentEventAt(i + 1);
+        m_selectEvent = true;
+        if (isRowDisplayed)
+            updateCurrentEventAt(row + 1);
         else
-            updateCurrentEventAt(i);
+            updateCurrentEventAt(row);
         ui->actionHide->setChecked(false);
     }
     ui->actionPrevious->setEnabled(canPrevious());
