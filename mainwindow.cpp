@@ -69,7 +69,7 @@ void MainWindow::closeEvent(QCloseEvent *)
 
 void MainWindow::showEvent(QShowEvent *)
 {
-    m_preferences->reset();
+    m_preferences->apply();
 }
 
 const ConfigEditor* MainWindow::configEditor()

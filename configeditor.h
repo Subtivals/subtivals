@@ -23,6 +23,7 @@ signals:
     void changeScreen(int, QRect);
     void styleChanged();
 public slots:
+    void presetChanged(int);
     void screenChanged(const QRect& r);
     void restore();
     void reset();
@@ -34,6 +35,7 @@ protected slots:
 private:
     Ui::ConfigEditor *ui;
     StyleEditor* m_styleEditor;
+    int m_preset;
 };
 
 #endif // CONFIGDIALOG_H

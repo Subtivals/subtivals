@@ -9,10 +9,14 @@
 #include "styleeditor.h"
 
 
+#define NB_PRESETS 6
+
+
 ConfigEditor::ConfigEditor(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::ConfigEditor),
-    m_styleEditor(new StyleEditor())
+    m_styleEditor(new StyleEditor()),
+    m_preset(-1)
 {
     ui->setupUi(this);
     setFeatures(ConfigEditor::NoDockWidgetFeatures);
@@ -26,6 +30,23 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     {
         ui->screens->addItem(QString(tr("Monitor %1")).arg(i));
     }
+
+    for(int i = 1; i <= NB_PRESETS; i++)
+    {
+        ui->presets->addItem(QString(tr("Preset %1")).arg(i));
+    }
+    // Use last preset, this will trigger presetChanged()
+    QSettings settings;
+    ui->presets->setCurrentIndex(settings.value("preset", 0).toInt());
+}
+
+ConfigEditor::~ConfigEditor()
+{
+    // Save last preset
+    QSettings settings;
+    settings.setValue("preset", m_preset);
+    delete m_styleEditor;
+    delete ui;
 }
 
 void ConfigEditor::setScript(Script* script)
@@ -34,10 +55,13 @@ void ConfigEditor::setScript(Script* script)
     reset();
 }
 
-ConfigEditor::~ConfigEditor()
+void ConfigEditor::presetChanged(int p_preset)
 {
-    delete m_styleEditor;
-    delete ui;
+    if (m_preset >= 0)  // Do not save while constructing
+        save();
+    m_styleEditor->setPreset(p_preset);
+    m_preset = p_preset;
+    reset();
 }
 
 void ConfigEditor::screenChanged(const QRect& r)
@@ -53,7 +77,7 @@ void ConfigEditor::restore()
 {
     // Apply default screen size
     QSettings settings;
-    settings.remove("SubtitlesForm");
+    settings.remove(QString("ScreenGeometry-%1").arg(m_preset));
     m_styleEditor->restore();
     reset();
     enableButtonBox(false, false, false);
@@ -63,7 +87,7 @@ void ConfigEditor::reset()
 {
     // Reload from settings
     QSettings settings;
-    settings.beginGroup("SubtitlesForm");
+    settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
     int screen = settings.value("screen", 0).toInt();
     int width = QApplication::desktop()->screenGeometry(screen).width();
 
@@ -83,7 +107,7 @@ void ConfigEditor::save()
 {
     // Save settings
     QSettings settings;
-    settings.beginGroup("SubtitlesForm");
+    settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
     settings.setValue("screen", ui->screens->currentIndex());
     settings.setValue("x", ui->x->text());
     settings.setValue("y", ui->y->text());

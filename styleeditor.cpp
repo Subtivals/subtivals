@@ -13,6 +13,7 @@
 StyleEditor::StyleEditor(Script* script, QWidget *parent) :
     QWidget(parent),
     m_script(script),
+    m_preset(-1),
     ui(new Ui::StyleEditor)
 {
     ui->setupUi(this);
@@ -21,6 +22,11 @@ StyleEditor::StyleEditor(Script* script, QWidget *parent) :
 StyleEditor::~StyleEditor()
 {
     delete ui;
+}
+
+void StyleEditor::setPreset(int p_preset)
+{
+    m_preset = p_preset;
 }
 
 void StyleEditor::setScript(Script* script)
@@ -48,7 +54,6 @@ void StyleEditor::initComponents()
         QListWidgetItem *item = new QListWidgetItem(style->name());
         ui->stylesNames->addItem(item);
     }
-    ui->stylesNames->setCurrentRow(-1);
 }
 
 void StyleEditor::styleSelected(int row)
@@ -78,7 +83,7 @@ void StyleEditor::styleSelected(int row)
 void StyleEditor::save()
 {
     QSettings settings;
-    settings.beginGroup("Styles");
+    settings.beginGroup(QString("Styles-%1").arg(m_preset));
     // Save overidden styles into settings
     QString line;
     foreach(Style* style, m_overidden) {
@@ -93,9 +98,10 @@ void StyleEditor::save()
 void StyleEditor::reset()
 {
     // Reload styles from backup and apply overidden styles from settings
+    ui->stylesNames->setCurrentRow(-1);
     m_overidden.clear();
     QSettings settings;
-    settings.beginGroup("Styles");
+    settings.beginGroup(QString("Styles-%1").arg(m_preset));
     for(int i = 0; i < m_backup.size(); i++) {
         Style* original = m_backup.at(i);
         Style* style = m_script->style(original->name());
@@ -142,7 +148,7 @@ void StyleEditor::restore()
 {
     // Remove all styles from settings
     QSettings settings;
-    settings.beginGroup("Styles");
+    settings.beginGroup(QString("Styles-%1").arg(m_preset));
     foreach(QString key, settings.allKeys()) {
         settings.remove(key);
     }

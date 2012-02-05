@@ -27,7 +27,7 @@ public slots:
     void reset();
     void styleSelected(int);
     void chooseColour();
-
+    void setPreset(int);
 protected:
     void initComponents();
     void fillButtonColour();
@@ -38,6 +38,7 @@ private:
     QList<Style*> m_backup;
     QList<Style*> m_overidden;
     QColor m_colour;
+    int m_preset;
     Ui::StyleEditor *ui;
 };
 

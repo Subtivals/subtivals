@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>323</width>
-    <height>306</height>
+    <height>373</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QTabWidget" name="tabs">
       <property name="enabled">
        <bool>true</bool>
@@ -163,14 +163,14 @@ p, li { white-space: pre-wrap; }
       </widget>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="2" column="0">
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="standardButtons">
        <set>QDialogButtonBox::Cancel|QDialogButtonBox::RestoreDefaults|QDialogButtonBox::Save</set>
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
+    <item row="3" column="0">
      <spacer name="verticalSpacer_2">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -182,6 +182,22 @@ p, li { white-space: pre-wrap; }
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="0" column="0">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Saved presets:</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <widget class="QComboBox" name="presets">
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -284,9 +300,26 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>presets</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>ConfigEditor</receiver>
+   <slot>presetChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>194</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>169</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>apply()</slot>
   <slot>onClicked(QAbstractButton*)</slot>
+  <slot>presetChanged(int)</slot>
  </slots>
 </ui>
