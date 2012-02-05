@@ -67,6 +67,7 @@ public slots:
     void enableEventSelection();
     void search();
     void searchTextChanged(QString);
+    void actionAutoHideEnded(bool);
 protected:
     bool canNext();
     bool canPrevious();
@@ -92,6 +93,8 @@ private:
     bool m_reloadEnabled;
     QFileSystemWatcher* m_filewatcher;
     QTimer m_timerFileChange;
+    bool m_autoHideEnabled;
+    QTimer m_timerAutoHide;
 };
 
 #endif // MAINWINDOW_H

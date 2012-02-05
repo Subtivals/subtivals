@@ -36,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     move(settings.value("pos", pos).toPoint());
     m_reloadEnabled = settings.value("reloadEnabled", false).toBool();
     ui->actionEnableReload->setChecked(m_reloadEnabled);
+    m_autoHideEnabled = settings.value("autoHideEnabled", false).toBool();
+    ui->actionAutoHideEnded->setChecked(m_autoHideEnabled);
     settings.endGroup();
 
     // Selection timer (disables event highlighting for a while)
@@ -47,6 +49,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
     m_timerFileChange.setSingleShot(true);
     connect(&m_timerFileChange, SIGNAL(timeout()), this, SLOT(reloadScript()));
+
+    // Timer for auto-hiding ended events
+    m_timerAutoHide.setSingleShot(true);
+    connect(&m_timerAutoHide, SIGNAL(timeout()), this, SIGNAL(eventClear()));
 }
 
 MainWindow::~MainWindow()
@@ -62,6 +68,7 @@ void MainWindow::closeEvent(QCloseEvent *)
     settings.setValue("size", size());
     settings.setValue("pos", pos());
     settings.setValue("reloadEnabled", m_reloadEnabled);
+    settings.setValue("autoHideEnabled", m_autoHideEnabled);
     settings.endGroup();
     // When the main window is close : end of the app
     qApp->exit();
@@ -137,6 +144,11 @@ void MainWindow::actionEnableReload(bool state)
         m_timerFileChange.stop();
 }
 
+void MainWindow::actionAutoHideEnded(bool p_state)
+{
+    m_autoHideEnabled = p_state;
+}
+
 void MainWindow::fileChanged(QString path)
 {
     // Script file is being modified.
@@ -187,6 +199,7 @@ void MainWindow::actionOpen()
 
 void MainWindow::actionPlay()
 {
+    m_timerAutoHide.stop();
     switch(m_state)
     {
     case STOPPED:
@@ -205,7 +218,6 @@ void MainWindow::actionPlay()
     case PLAYING:
         break;
     }
-
 }
 
 void MainWindow::actionStop()
@@ -354,9 +366,12 @@ void MainWindow::updateCurrentEventAt(int i)
     case PAUSED:
         m_pauseTotal = 0;
         m_pauseStart = tick();
-        break;
-    case NODATA:
     case STOPPED:
+        if (m_autoHideEnabled) {
+            m_timerAutoHide.setInterval(m_script->eventAt(i)->duration());
+            m_timerAutoHide.start();
+        }
+    case NODATA:
         break;
     }
 }
@@ -437,6 +452,7 @@ void MainWindow::setState(State p_state)
         ui->actionNext->setEnabled(false);
         ui->actionAddDelay->setEnabled(false);
         ui->actionSubDelay->setEnabled(false);
+        ui->actionAutoHideEnded->setEnabled(false);
         break;
     case STOPPED:
         ui->actionPlay->setEnabled(true);
@@ -446,6 +462,7 @@ void MainWindow::setState(State p_state)
         ui->actionNext->setEnabled(canNext());
         ui->actionAddDelay->setEnabled(false);
         ui->actionSubDelay->setEnabled(false);
+        ui->actionAutoHideEnded->setEnabled(true);
         break;
     case PLAYING:
         ui->actionPlay->setEnabled(false);
@@ -455,6 +472,7 @@ void MainWindow::setState(State p_state)
         ui->actionNext->setEnabled(canNext());
         ui->actionAddDelay->setEnabled(true);
         ui->actionSubDelay->setEnabled(true);
+        ui->actionAutoHideEnded->setEnabled(false);
         break;
     case PAUSED:
         ui->actionPlay->setEnabled(true);
@@ -464,6 +482,7 @@ void MainWindow::setState(State p_state)
         ui->actionNext->setEnabled(canNext());
         ui->actionAddDelay->setEnabled(false);
         ui->actionSubDelay->setEnabled(false);
+        ui->actionAutoHideEnded->setEnabled(true);
         break;
     }
 }

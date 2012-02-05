@@ -182,7 +182,7 @@
      <x>0</x>
      <y>0</y>
      <width>654</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -198,6 +198,7 @@
     <property name="title">
      <string>Edit</string>
     </property>
+    <addaction name="actionAutoHideEnded"/>
     <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuAide">
@@ -425,6 +426,14 @@
   <action name="actionAbout">
    <property name="text">
     <string>About Subtivals...</string>
+   </property>
+  </action>
+  <action name="actionAutoHideEnded">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auto hide ended events</string>
    </property>
   </action>
  </widget>
@@ -737,6 +746,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAutoHideEnded</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionAutoHideEnded(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -758,5 +783,6 @@
   <slot>searchTextChanged(QString)</slot>
   <slot>actionShowCalibration()</slot>
   <slot>actionAbout()</slot>
+  <slot>actionAutoHideEnded(bool)</slot>
  </slots>
 </ui>
