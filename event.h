@@ -15,6 +15,7 @@ public:
     explicit Event(const QString &p_line, const Script *p_script, int p_index, QObject *p_parent = 0);
     qint64 msseStart() const;
     qint64 msseEnd() const;
+    qint64 duration(bool p_auto = false) const;
     const Style *style() const;
     const QString &text() const;
     const QString &prettyText() const;
@@ -22,9 +23,6 @@ public:
     int marginL() const;
     int marginR() const;
     int marginV() const;
-signals:
-
-public slots:
 private:
     qint64 m_msseStart;
     qint64 m_msseEnd;
