@@ -94,7 +94,7 @@ void ConfigEditor::reset()
     int x = settings.value("x", 0).toInt();
     int y = settings.value("y", 0).toInt();
     int w = settings.value("w", width).toInt();
-    int h = settings.value("h", 300).toInt();
+    int h = settings.value("h", 200).toInt();
     settings.endGroup();
 
     ui->screens->setCurrentIndex(screen);
