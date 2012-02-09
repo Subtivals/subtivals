@@ -132,7 +132,10 @@ void SubtitlesForm::wheelEvent(QWheelEvent* event)
     if (!m_resizable)
         return;
     QRect current = geometry();
-    int factor = event->delta() / 60;
+    int step = 24;
+    if (event->modifiers().testFlag(Qt::ShiftModifier))
+        step = 60;
+    int factor = event->delta() / step;
     if (event->orientation() == Qt::Horizontal ||
         event->modifiers().testFlag(Qt::ControlModifier)) {
         current.setHeight(current.height() + factor);
