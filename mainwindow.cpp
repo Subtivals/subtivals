@@ -96,6 +96,7 @@ void MainWindow::openFile (const QString &p_fileName)
     // Clean-up previously allocated resources & reset GUI
     if(m_script != 0)
     {
+	m_preferences->save();
         m_filewatcher->removePath(m_script->fileName());
         delete m_script;
     }
@@ -109,7 +110,7 @@ void MainWindow::openFile (const QString &p_fileName)
     m_tableMapping.clear();
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);
-    m_preferences->setScript(m_script);
+    m_preferences->setScript(m_script);  // will reset()
     setWindowTitle(m_script->title());
     ui->tableWidget->setRowCount(m_script->eventsCount());
     QListIterator<Event *> i = m_script->events();
