@@ -54,7 +54,7 @@ public slots:
     void actionPause();
     void actionNext();
     void actionPrevious();
-    void actionToggleHide(bool);
+    void actionToggleHide(bool state = true);
     void actionAbout();
     void timeout();
     void actionEnableReload(bool);

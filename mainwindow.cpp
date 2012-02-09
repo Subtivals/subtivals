@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Timer for auto-hiding ended events
     m_timerAutoHide.setSingleShot(true);
-    connect(&m_timerAutoHide, SIGNAL(timeout()), this, SIGNAL(eventClear()));
+    connect(&m_timerAutoHide, SIGNAL(timeout()), this, SLOT(actionToggleHide()));
 }
 
 MainWindow::~MainWindow()
@@ -321,6 +321,8 @@ void MainWindow::actionNext()
 
 void MainWindow::actionToggleHide(bool state)
 {
+    if(QObject::sender() != ui->actionHide)
+        ui->actionHide->setChecked(state);
     emit toggleHide(state);
 }
 
