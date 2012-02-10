@@ -200,14 +200,19 @@ void MainWindow::actionOpen()
 
 void MainWindow::actionPlay()
 {
+    int row = ui->tableWidget->currentRow();
     m_timerAutoHide.stop();
     switch(m_state)
     {
     case STOPPED:
         setState(PLAYING);
-        if (!m_msseStartTime) m_msseStartTime = tick();
         m_userDelay = 0;
         m_pauseTotal = 0;
+        if (!m_msseStartTime) m_msseStartTime = tick();
+        if (row > 0) {
+            updateCurrentEventAt(row);
+        }
+        actionToggleHide(false);
         m_timer.start(100);
         break;
     case PAUSED:
