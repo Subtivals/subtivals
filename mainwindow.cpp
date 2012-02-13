@@ -522,7 +522,7 @@ void MainWindow::setSpeedFactor(double p_factor)
 
 void MainWindow::enableSpeedFactor(bool p_state)
 {
-    if (!p_state) m_speedFactor = 1.0;
+    if (!p_state) ui->speedFactor->setValue(100.0);
 }
 
 void MainWindow::search()
