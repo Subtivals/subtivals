@@ -68,6 +68,8 @@ public slots:
     void search();
     void searchTextChanged(QString);
     void actionAutoHideEnded(bool);
+    void setSpeedFactor(double);
+    void enableSpeedFactor(bool);
 protected:
     bool canNext();
     bool canPrevious();
@@ -76,12 +78,14 @@ protected:
     void setState(State p_state);
     qint64 tick();
     qint64 elapsedTime();
+    void setElapsedTime(qint64);
 private:
     State m_state;
     Ui::MainWindow *ui;
     Script *m_script;
     ConfigEditor* m_preferences;
     QTimer m_timer;
+    double m_speedFactor;
     qint64 m_msseStartTime;
     qint64 m_pauseStart;
     qint64 m_pauseTotal;

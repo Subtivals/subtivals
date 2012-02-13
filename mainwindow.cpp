@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
     ui->tableWidget->setFocus();
+    enableSpeedFactor(false);
 
     // Add preferences dock
     m_preferences->setVisible(false);
@@ -362,10 +363,10 @@ void MainWindow::updateCurrentEventAt(int i)
     // Get event in script
     m_timer.stop();
     qint64 start_mss = m_script->eventAt(i)->msseStart();
+    setElapsedTime(start_mss);
     // Show it !
     updateCurrentEvent(start_mss + 1);
     // Continuous play, even while pause
-    m_msseStartTime = tick() - start_mss - m_pauseTotal;
     switch(m_state)
     {
     case PLAYING:
@@ -503,11 +504,25 @@ qint64 MainWindow::tick()
     return 86400000 * dt + 3600000 * tt.hour() + 60000 * tt.minute() + 1000 * tt.second() + tt.msec();
 }
 
+void MainWindow::setElapsedTime(qint64 p_elapsed)
+{
+    m_msseStartTime = tick() - p_elapsed/m_speedFactor + m_userDelay - m_pauseTotal;
+}
+
 qint64 MainWindow::elapsedTime()
 {
     // Gets the elapsed time in milliseconds
-    qint64 msseCurrentTime = tick();
-    return (msseCurrentTime - m_msseStartTime) + m_userDelay - m_pauseTotal;
+    return (tick() - m_msseStartTime + m_userDelay - m_pauseTotal) * m_speedFactor;
+}
+
+void MainWindow::setSpeedFactor(double p_factor)
+{
+    m_speedFactor = p_factor/100.0;
+}
+
+void MainWindow::enableSpeedFactor(bool p_state)
+{
+    if (!p_state) m_speedFactor = 1.0;
 }
 
 void MainWindow::search()
