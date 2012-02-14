@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_preferences(new ConfigEditor(this)),
+    m_speedFactor(1.0),
     m_filewatcher(new QFileSystemWatcher)
 {
     ui->setupUi(this);
@@ -23,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
     ui->tableWidget->setFocus();
-    enableSpeedFactor(false);
 
     // Add preferences dock
     m_preferences->setVisible(false);
@@ -522,7 +522,10 @@ void MainWindow::setSpeedFactor(double p_factor)
 
 void MainWindow::enableSpeedFactor(bool p_state)
 {
-    if (!p_state) ui->speedFactor->setValue(100.0);
+    if (!p_state) {
+        ui->speedFactor->setValue(100.0);
+        updateCurrentEventAt(ui->tableWidget->currentRow());
+    }
 }
 
 void MainWindow::search()
