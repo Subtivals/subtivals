@@ -83,6 +83,7 @@ private:
     State m_state;
     Ui::MainWindow *ui;
     Script *m_script;
+    QString m_lastFolder;
     ConfigEditor* m_preferences;
     QTimer m_timer;
     double m_speedFactor;

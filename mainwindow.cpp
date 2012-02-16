@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Restore settings
     QSettings settings;
     settings.beginGroup("MainWindow");
+    m_lastFolder = settings.value("lastFolder", "").toString();
     resize(settings.value("size", size()).toSize());
     QPoint pos(0, qApp->desktop()->screenCount() > 1 ? 100 : 350);
     move(settings.value("pos", pos).toPoint());
@@ -67,6 +68,7 @@ void MainWindow::closeEvent(QCloseEvent *)
     // Save settings
     QSettings settings;
     settings.beginGroup("MainWindow");
+    settings.setValue("lastFolder", m_lastFolder);
     settings.setValue("size", size());
     settings.setValue("pos", pos());
     settings.setValue("reloadEnabled", m_reloadEnabled);
@@ -193,10 +195,11 @@ void MainWindow::reloadScript()
 void MainWindow::actionOpen()
 {
     // Ask the user for an *.ass file
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open subtitles"), QString::null, tr("Subtitle Files (*.ass)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open subtitles"), m_lastFolder, tr("Subtitle Files (*.ass)"));
     // Ass file selected ?
     if (!fileName.isEmpty())
     {
+        m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();
         actionStop();
         openFile(fileName);
     }
