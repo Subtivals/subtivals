@@ -466,7 +466,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Auto hide ended events</string>
+    <string>Hide timeout events</string>
    </property>
   </action>
  </widget>
