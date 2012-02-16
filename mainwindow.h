@@ -87,6 +87,7 @@ private:
     ConfigEditor* m_preferences;
     QTimer m_timer;
     double m_speedFactor;
+    bool m_speedFactorEnabled;
     qint64 m_msseStartTime;
     qint64 m_pauseStart;
     qint64 m_pauseTotal;

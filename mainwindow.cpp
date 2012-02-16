@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_preferences(new ConfigEditor(this)),
     m_speedFactor(1.0),
+    m_speedFactorEnabled(false),
     m_filewatcher(new QFileSystemWatcher)
 {
     ui->setupUi(this);
@@ -512,13 +513,15 @@ qint64 MainWindow::tick()
 
 void MainWindow::setElapsedTime(qint64 p_elapsed)
 {
-    m_msseStartTime = tick() - p_elapsed/m_speedFactor + m_userDelay - m_pauseTotal;
+    double factor = m_speedFactorEnabled ? m_speedFactor : 1.0;
+    m_msseStartTime = tick() - p_elapsed/factor + m_userDelay - m_pauseTotal;
 }
 
 qint64 MainWindow::elapsedTime()
 {
     // Gets the elapsed time in milliseconds
-    return (tick() - m_msseStartTime + m_userDelay - m_pauseTotal) * m_speedFactor;
+    double factor = m_speedFactorEnabled ? m_speedFactor : 1.0;
+    return (tick() - m_msseStartTime + m_userDelay - m_pauseTotal) * factor;
 }
 
 void MainWindow::setSpeedFactor(double p_factor)
@@ -528,10 +531,8 @@ void MainWindow::setSpeedFactor(double p_factor)
 
 void MainWindow::enableSpeedFactor(bool p_state)
 {
-    if (!p_state) {
-        ui->speedFactor->setValue(100.0);
-        updateCurrentEventAt(ui->tableWidget->currentRow());
-    }
+    m_speedFactorEnabled = p_state;
+    updateCurrentEventAt(ui->tableWidget->currentRow());
 }
 
 void MainWindow::search()
