@@ -39,3 +39,5 @@ RESOURCES += \
 TRANSLATIONS = locale/fr_FR.ts \
     locale/es_ES.ts \
     locale/ca_ES.ts
+
+RC_FILE = resources/subtivals.rc

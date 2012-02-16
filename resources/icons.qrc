@@ -11,5 +11,6 @@
         <file>preferences-desktop.svg</file>
         <file>system-shutdown.svg</file>
         <file>search.svg</file>
+        <file>subtivals.svg</file>
     </qresource>
 </RCC>
