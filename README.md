@@ -1,3 +1,5 @@
+![screenshot](http://mathieu-leplatre.info/media/subtivals/subtivals.png)
+
 Subtivals, a program to project *.ass subtitles.
 
 Subtivals goals are the projection and the control of subtitles on a cinema screen; for festivals that targets the hard of hearing.
