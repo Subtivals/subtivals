@@ -94,10 +94,11 @@ void MainWindow::actionShowCalibration()
 void MainWindow::openFile (const QString &p_fileName)
 {
     emit eventClear();
+    // Save on load file
+    m_preferences->save();
     // Clean-up previously allocated resources & reset GUI
     if(m_script != 0)
     {
-	m_preferences->save();
         m_filewatcher->removePath(m_script->fileName());
         delete m_script;
     }

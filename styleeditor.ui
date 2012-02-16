@@ -32,7 +32,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupFont">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="title">
       <string>Apparence</string>
