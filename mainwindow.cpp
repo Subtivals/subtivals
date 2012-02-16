@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionEnableReload->setChecked(m_reloadEnabled);
     m_autoHideEnabled = settings.value("autoHideEnabled", false).toBool();
     ui->actionAutoHideEnded->setChecked(m_autoHideEnabled);
+    ui->actionPreferences->setChecked(settings.value("showPreferences", false).toBool());
     settings.endGroup();
 
     // Selection timer (disables event highlighting for a while)
@@ -70,6 +71,7 @@ void MainWindow::closeEvent(QCloseEvent *)
     settings.setValue("pos", pos());
     settings.setValue("reloadEnabled", m_reloadEnabled);
     settings.setValue("autoHideEnabled", m_autoHideEnabled);
+    settings.setValue("showPreferences", ui->actionPreferences->isChecked());
     settings.endGroup();
     // When the main window is close : end of the app
     qApp->exit();
