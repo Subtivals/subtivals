@@ -76,9 +76,13 @@ void ConfigEditor::screenChanged(const QRect& r)
 void ConfigEditor::restore()
 {
     // Apply default screen size
-    QSettings settings;
-    settings.remove(QString("ScreenGeometry-%1").arg(m_preset));
-    m_styleEditor->restore();
+    if (ui->tabs->currentWidget() == ui->tabScreen) {
+        QSettings settings;
+        settings.remove(QString("ScreenGeometry-%1").arg(m_preset));
+    }
+    else {
+        m_styleEditor->restore();
+    }
     reset();
     enableButtonBox(false, false, false);
 }
