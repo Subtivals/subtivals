@@ -531,8 +531,9 @@ void MainWindow::setSpeedFactor(double p_factor)
 
 void MainWindow::enableSpeedFactor(bool p_state)
 {
+    qint64 elapsed = elapsedTime();
     m_speedFactorEnabled = p_state;
-    updateCurrentEventAt(ui->tableWidget->currentRow());
+    setElapsedTime(elapsed);
 }
 
 void MainWindow::search()
