@@ -538,6 +538,9 @@ void MainWindow::enableSpeedFactor(bool p_state)
 
 void MainWindow::search()
 {
+    if (!m_script)
+        return;
+
     QString search = ui->searchField->text();
     int found = -1;
 
