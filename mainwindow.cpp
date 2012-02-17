@@ -30,20 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_preferences->setVisible(false);
     addDockWidget(Qt::RightDockWidgetArea, m_preferences);
 
-    // Restore settings
-    QSettings settings;
-    settings.beginGroup("MainWindow");
-    m_lastFolder = settings.value("lastFolder", "").toString();
-    resize(settings.value("size", size()).toSize());
-    QPoint pos(0, qApp->desktop()->screenCount() > 1 ? 100 : 350);
-    move(settings.value("pos", pos).toPoint());
-    m_reloadEnabled = settings.value("reloadEnabled", false).toBool();
-    ui->actionEnableReload->setChecked(m_reloadEnabled);
-    m_autoHideEnabled = settings.value("autoHideEnabled", false).toBool();
-    ui->actionAutoHideEnded->setChecked(m_autoHideEnabled);
-    ui->actionPreferences->setChecked(settings.value("showPreferences", false).toBool());
-    settings.endGroup();
-
     // Selection timer (disables event highlighting for a while)
     m_timerSelection.setSingleShot(true);
     m_timerSelection.setInterval(1000);
@@ -82,6 +68,20 @@ void MainWindow::closeEvent(QCloseEvent *)
 
 void MainWindow::showEvent(QShowEvent *)
 {
+    // Restore settings
+    QSettings settings;
+    settings.beginGroup("MainWindow");
+    m_lastFolder = settings.value("lastFolder", "").toString();
+    resize(settings.value("size", size()).toSize());
+    QPoint pos(0, qApp->desktop()->screenCount() > 1 ? 100 : 350);
+    move(settings.value("pos", pos).toPoint());
+    m_reloadEnabled = settings.value("reloadEnabled", false).toBool();
+    ui->actionEnableReload->setChecked(m_reloadEnabled);
+    m_autoHideEnabled = settings.value("autoHideEnabled", false).toBool();
+    ui->actionAutoHideEnded->setChecked(m_autoHideEnabled);
+    ui->actionPreferences->setChecked(settings.value("showPreferences", false).toBool());
+    settings.endGroup();
+
     m_preferences->apply();
 }
 
