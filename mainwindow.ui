@@ -239,6 +239,7 @@
      <string>Help</string>
     </property>
     <addaction name="separator"/>
+    <addaction name="actionShowHelp"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
@@ -276,6 +277,9 @@
      <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
    </property>
    <property name="text">
+    <string>Open...</string>
+   </property>
+   <property name="toolTip">
     <string>Open</string>
    </property>
    <property name="shortcut">
@@ -467,6 +471,11 @@
    </property>
    <property name="text">
     <string>Hide timeout events</string>
+   </property>
+  </action>
+  <action name="actionShowHelp">
+   <property name="text">
+    <string>Online help...</string>
    </property>
   </action>
  </widget>
@@ -843,6 +852,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionShowHelp</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionShowHelp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -867,5 +892,6 @@
   <slot>actionAutoHideEnded(bool)</slot>
   <slot>setSpeedFactor(double)</slot>
   <slot>enableSpeedFactor(bool)</slot>
+  <slot>actionShowHelp()</slot>
  </slots>
 </ui>

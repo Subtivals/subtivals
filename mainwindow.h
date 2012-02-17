@@ -56,6 +56,7 @@ public slots:
     void actionPrevious();
     void actionToggleHide(bool state = true);
     void actionAbout();
+    void actionShowHelp();
     void timeout();
     void actionEnableReload(bool);
     void fileChanged(QString path);

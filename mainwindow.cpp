@@ -1,9 +1,11 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QSettings>
+#include <QtCore/QUrl>
 #include <QtGui/QFileDialog>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMessageBox>
+#include <QtGui/QDesktopServices>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -582,4 +584,9 @@ void MainWindow::actionAbout()
                           "<li>Lilian Lefranc</li>"
                           "<li>Arnaud Rolly</li>"
                           "<li>Mathieu Leplatre</li>"));
+}
+
+void MainWindow::actionShowHelp()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/traxtech/subtivals/wiki/User-Manual"));
 }
