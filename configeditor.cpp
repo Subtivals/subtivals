@@ -99,10 +99,12 @@ void ConfigEditor::reset()
     int y = settings.value("y", 0).toInt();
     int w = settings.value("w", width).toInt();
     int h = settings.value("h", 200).toInt();
+    double rotation = settings.value("rotation", 0).toDouble();
     settings.endGroup();
 
     ui->screens->setCurrentIndex(screen);
     screenChanged(QRect(x, y, w, h));
+    ui->rotation->setValue(rotation);
     m_styleEditor->reset();
     enableButtonBox(true, false, false);
 }
@@ -117,6 +119,7 @@ void ConfigEditor::save()
     settings.setValue("y", ui->y->text());
     settings.setValue("w", ui->w->text());
     settings.setValue("h", ui->h->text());
+    settings.setValue("rotation", ui->rotation->text());
     settings.endGroup();
     m_styleEditor->save();
 
@@ -131,6 +134,7 @@ void ConfigEditor::apply()
             ui->w->text().toInt(),
             ui->h->text().toInt());
     emit changeScreen(screen, r);
+    emit rotate(ui->rotation->value());
     m_styleEditor->apply();
     enableButtonBox(true, true, true);
 }

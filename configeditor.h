@@ -21,6 +21,7 @@ public:
     void setScript(Script* script);
 signals:
     void changeScreen(int, QRect);
+    void rotate(double);
     void styleChanged();
 public slots:
     void presetChanged(int);

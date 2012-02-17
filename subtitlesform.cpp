@@ -12,7 +12,8 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
     ui(new Ui::SubtitlesForm),
     m_maxEvents(2),
     m_visible(true),
-    m_resizable(false)
+    m_resizable(false),
+    m_rotation(0)
 {
     ui->setupUi(this);
     setCursor(QCursor(Qt::BlankCursor));
@@ -75,6 +76,7 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     if (!m_visible) {
         return;
     }
+    p.rotate(m_rotation);
     for(int i = 0; i < m_maxEvents && i < m_currentEvents.size(); i++)
     {
         Event *e = m_currentEvents.at(i);
@@ -149,5 +151,11 @@ void SubtitlesForm::wheelEvent(QWheelEvent* event)
 void SubtitlesForm::screenResizable(bool state)
 {
     m_resizable = state;
+}
+
+void SubtitlesForm::rotate(double p_rotation)
+{
+    m_rotation = p_rotation;
+    repaint();
 }
 
