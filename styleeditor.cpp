@@ -122,6 +122,8 @@ void StyleEditor::reset()
         }
     }
     settings.endGroup();
+    if (ui->stylesNames->count() > 0)
+        ui->stylesNames->setCurrentRow(0);
     emit styleChanged();
 }
 
