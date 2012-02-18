@@ -255,8 +255,19 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         if (keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down) {
             actionEventClic(ui->tableWidget->currentIndex());
         }
-        if (keyEvent->key() == Qt::Key_F3)
+        //TODO: move to event(QEvent*) ?
+        if (keyEvent->key() == Qt::Key_F3) {
             search();
+        }
+        if (ui->enableSpeedFactor->isChecked()) {
+            int factor = 10;
+            if (keyEvent->modifiers().testFlag(Qt::ShiftModifier))
+                factor = 1;
+            if (keyEvent->key() == Qt::Key_Right)
+                ui->speedFactor->stepBy(factor);
+            if (keyEvent->key() == Qt::Key_Left)
+                ui->speedFactor->stepBy(-factor);
+        }
     }
     return false;
 }
