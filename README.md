@@ -11,7 +11,9 @@ Main features
 * Switch between several modes : timecode based, semi-automatic or fully manual
 * Ass styles (italic, positions, colors)
 * Override styles (color and font size)
+* Easily adjust position and size of screen window with the mouse
 * Configure presets for screen positions and overriden styles
+* Support of screen rotation
 * Support for subtitles without timecodes (fixes duration automatically)
 * Support for dual head (Xinerama) setup
 * Reload subtitles file if modified while playing
