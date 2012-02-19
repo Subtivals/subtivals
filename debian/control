@@ -1,0 +1,21 @@
+Source: subtivals
+Section: user/multimedia
+Priority: optional
+Maintainer: Mathieu Leplatre <contact@mathieu-leplatre.info>
+Build-Depends: debhelper (>> 3.0.0), libqt4-dev
+Standards-Version: 3.8.0
+
+Package: subtivals
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: A program to project *.ass subtitles
+ Subtivals goals are the projection and the control of subtitles on a cinema screen; 
+ for festivals that targets the hard of hearing.
+
+Package: subtivals-dbg
+Section: text
+Architecture: any
+Depends: subtivals (= ${binary:Version})
+Description: A program to project *.ass subtitles
+ Subtivals goals are the projection and the control of subtitles on a cinema screen; 
+ for festivals that targets the hard of hearing.

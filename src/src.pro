@@ -33,11 +33,12 @@ FORMS    += mainwindow.ui \
     configeditor.ui
 
 RESOURCES += \
-    resources/icons.qrc \
-    resources/samples.qrc
+    ../resources/icons.qrc \
+    ../resources/samples.qrc
 
-TRANSLATIONS = locale/fr_FR.ts \
-    locale/es_ES.ts \
-    locale/ca_ES.ts
+TRANSLATIONS = ../locale/fr_FR.ts \
+    ../locale/es_ES.ts \
+    ../locale/ca_ES.ts
 
-RC_FILE = resources/subtivals.rc
+RC_FILE = ../resources/subtivals.rc
+
