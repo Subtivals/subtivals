@@ -2,6 +2,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QCursor>
 #include <QtGui/QDesktopWidget>
+#include <QtCore/qmath.h>
 
 #include "subtitlesform.h"
 #include "ui_subtitlesform.h"
@@ -76,7 +77,13 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     if (!m_visible) {
         return;
     }
+    // Rotate from center
+    p.translate(geometry().center());
     p.rotate(m_rotation);
+    p.translate(QPoint() - geometry().center());
+    // Move down to avoid text overflow on top
+    p.translate(QPoint(0, qAbs(width()/2 * sin(m_rotation*3.14158/180))));
+
     for(int i = 0; i < m_maxEvents && i < m_currentEvents.size(); i++)
     {
         Event *e = m_currentEvents.at(i);
