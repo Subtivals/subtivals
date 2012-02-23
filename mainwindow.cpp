@@ -96,6 +96,8 @@ void MainWindow::actionShowCalibration()
 {
     openFile(":/samples/M.ass");
     updateCurrentEventAt(0);
+    m_timerAutoHide.stop(); // disable auto-hide for calibration
+    actionToggleHide(false);
 }
 
 void MainWindow::openFile (const QString &p_fileName)
@@ -145,6 +147,7 @@ void MainWindow::openFile (const QString &p_fileName)
     // Reset search field
     ui->searchField->setEnabled(row > 0);
     ui->searchField->setText("");
+    m_timerAutoHide.stop();
 }
 
 void MainWindow::actionEnableReload(bool state)
