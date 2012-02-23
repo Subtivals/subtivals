@@ -77,12 +77,16 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     if (!m_visible) {
         return;
     }
-    // Rotate from center
-    p.translate(geometry().center());
-    p.rotate(m_rotation);
-    p.translate(QPoint() - geometry().center());
-    // Move down to avoid text overflow on top
-    p.translate(QPoint(0, qAbs(width()/2 * sin(m_rotation*3.14158/180))));
+    // Rotate from top left or top right
+    if (m_rotation < 0) {
+        QPoint topRight(geometry().width(), 0);
+        p.translate(topRight);
+        p.rotate(m_rotation);
+        p.translate(QPoint() - topRight);
+    }
+    else {
+        p.rotate(m_rotation);
+    }
 
     for(int i = 0; i < m_maxEvents && i < m_currentEvents.size(); i++)
     {
