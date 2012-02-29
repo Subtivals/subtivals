@@ -26,7 +26,7 @@ RequestExecutionLevel admin
 !define setup "subtivals-setup-preview.exe"
 
 ; change this to wherever the files to be packaged reside
-!define srcdir "..\..\subtivals-build\release"
+!define srcdir "..\subtivals-build-desktop\release"
 
 !define prodname "Subtivals"
 !define exec "subtivals.exe"
