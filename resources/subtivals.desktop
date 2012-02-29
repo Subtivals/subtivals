@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Subtivals
+GenericName=Subtivals
+Comment=Project *.ass subtitles
+Exec=subtivals %U
+Terminal=false
+Type=Application
+StartupNotify=true
+MimeType=text/x-ssa;
+Icon=subtivals
+Categories=AudioVideoEditing;

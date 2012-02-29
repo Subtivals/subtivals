@@ -8,7 +8,7 @@ QT       += core gui
 
 TARGET = subtivals
 TEMPLATE = app
-
+CONFIG += qt debug
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -42,3 +42,20 @@ TRANSLATIONS = ../locale/fr_FR.ts \
 
 RC_FILE = ../resources/subtivals.rc
 
+unix {
+    isEmpty(PREFIX) {
+        PREFIX = /usr
+    }
+    BINDIR = $$PREFIX/bin
+    DATADIR =$$PREFIX/share
+
+    INSTALLS += target desktop icon
+
+    target.path = $$BINDIR
+    
+    desktop.path = $$DATADIR/applications
+    desktop.files += ../resources/$${TARGET}.desktop
+
+    icon.path = $$DATADIR/icons/hicolor/scalable/apps
+    icon.files += ../resources/$${TARGET}.svg
+}
