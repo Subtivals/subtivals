@@ -2,6 +2,7 @@ moc_*
 qrc_*
 *.pro.user*
 *.o
+*.qm
 ui_*.h
 Makefile
 subtivals
