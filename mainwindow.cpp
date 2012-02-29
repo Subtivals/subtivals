@@ -542,7 +542,9 @@ qint64 MainWindow::elapsedTime()
 
 void MainWindow::setSpeedFactor(double p_factor)
 {
+    qint64 elapsed = elapsedTime();
     m_speedFactor = p_factor/100.0;
+    setElapsedTime(elapsed);
 }
 
 void MainWindow::enableSpeedFactor(bool p_state)
