@@ -46,16 +46,28 @@ unix {
     isEmpty(PREFIX) {
         PREFIX = /usr
     }
-    BINDIR = $$PREFIX/bin
-    DATADIR =$$PREFIX/share
+    BINDIR = $${PREFIX}/bin
+    DATADIR =$${PREFIX}/share
+    SHAREDIR = $${DATADIR}/$${TARGET}
+    TRANSLATIONS_PATH = $${SHAREDIR}/translations
 
-    INSTALLS += target desktop icon
+    INSTALLS += target desktop icon translations
 
-    target.path = $$BINDIR
+    target.path = $${BINDIR}
     
-    desktop.path = $$DATADIR/applications
+    desktop.path = $${DATADIR}/applications
     desktop.files += ../resources/$${TARGET}.desktop
 
-    icon.path = $$DATADIR/icons/hicolor/scalable/apps
+    icon.path = $${DATADIR}/icons/hicolor/scalable/apps
     icon.files += ../resources/$${TARGET}.svg
+    
+    translations.path = $${TRANSLATIONS_PATH}
+    translations.files = ../locale/*.qm
 }
+
+win32 {
+    TRANSLATIONS_PATH = locale
+}
+
+TRANSLATIONS_PATH_STR = '\\"$${TRANSLATIONS_PATH}\\"'
+DEFINES += TRANSLATIONS_PATH=\"$${TRANSLATIONS_PATH_STR}\"

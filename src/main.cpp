@@ -6,6 +6,7 @@
 #include "subtitlesform.h"
 #include "configeditor.h"
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -17,7 +18,7 @@ int main(int argc, char *argv[])
     // Load translations (i18n) from system locale
     QString locale = QLocale::system().name();
     QTranslator translator;
-    if (translator.load(locale, "locale")) {
+    if (translator.load(locale, TRANSLATIONS_PATH)) {
         a.installTranslator(&translator);
     }
 
