@@ -3,11 +3,11 @@ Section: video
 Priority: optional
 Maintainer: Mathieu Leplatre <contact@mathieu-leplatre.info>
 Build-Depends: debhelper (>> 3.0.0), libqt4-dev
-Standards-Version: 3.8.0
+Standards-Version: 3.9.2
 
 Package: subtivals
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: A program to project Advanced SubStation Alpha subtitles (ASS, *.ass) subtitles.
  Subtivals goals are the projection and the control of subtitles on a cinema screen; 
  for festivals that targets the hard of hearing.
