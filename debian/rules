@@ -19,14 +19,13 @@ build-stamp:
 clean:
 	dh_testdir
 	dh_testroot
-	-$(MAKE) distclean
 	dh_clean
 	rm -f build-stamp configure-stamp
 
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	# Add here commands to install the package into debian/subtivals.
