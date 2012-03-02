@@ -90,6 +90,10 @@ public slots:
 protected:
     bool canNext();
     bool canPrevious();
+    void dragEnterEvent(QDragEnterEvent* event);
+    void dragMoveEvent(QDragMoveEvent* event);
+    void dragLeaveEvent(QDragLeaveEvent* event);
+    void dropEvent(QDropEvent* event);
     void closeEvent(QCloseEvent *);
     QString ts2tc(qint64 p_timestamp);
     void setState(State p_state);

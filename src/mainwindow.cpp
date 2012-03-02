@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
     ui->tableWidget->setFocus();
+    setAcceptDrops(true);
 
     // Add preferences dock
     m_preferences->setVisible(false);
@@ -68,6 +69,39 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent* event) {
+    event->acceptProposedAction();
+}
+
+void MainWindow::dragMoveEvent(QDragMoveEvent* event)
+{
+    event->acceptProposedAction();
+}
+
+void MainWindow::dragLeaveEvent(QDragLeaveEvent* event)
+{
+    event->accept();
+}
+
+void MainWindow::dropEvent(QDropEvent* event)
+{
+    const QMimeData* mimeData = event->mimeData();
+    // check for our needed mime type, here a file or a list of files
+    if (mimeData->hasUrls()) {
+        QStringList pathList;
+        QList<QUrl> urlList = mimeData->urls();
+        // extract the local paths of the files
+        for (int i = 0; i < urlList.size() && i < 32; ++i) {
+            QString fileName = urlList.at(i).toLocalFile();
+            QFileInfo fileInfo = QFileInfo(fileName);
+            if(fileInfo.isFile() && fileInfo.isReadable() && fileInfo.suffix().toLower() == "ass") {
+                openFile(fileName);
+                return;
+            }
+        }
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *)
