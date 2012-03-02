@@ -57,10 +57,7 @@ int main(int argc, char *argv[])
     if( argc > 1) {
         QFileInfo fileInfo(argv[argc - 1]);
         if (fileInfo.exists() && fileInfo.isReadable())
-        {
            w.openFile(fileInfo.absoluteFilePath());
-        }
-
     }
     return a.exec();
 }
