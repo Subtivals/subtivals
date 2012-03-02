@@ -8,7 +8,7 @@ QT       += core gui
 
 TARGET = subtivals
 TEMPLATE = app
-CONFIG += qt debug
+CONFIG += qt
 
 SOURCES += main.cpp\
         mainwindow.cpp \
