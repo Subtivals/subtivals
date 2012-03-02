@@ -46,6 +46,18 @@ Subtivals is written in C++/Qt and has no other external dependencies.
 
 ![screenshot](http://mathieu-leplatre.info/media/subtivals/subtivals-preview.png)
 
+
+Installation
+============
+
+Subtivals is available for *Ubuntu*, and can be installed by adding the
+following PPA to your Software Sources:
+
+    sudo add-apt-repository ppa:mathieu.leplatre/subtivals
+    sudo apt-get update && sudo apt-get install subtivals
+
+For *Windows* and *Mac OS* installers, contact us by email !
+
 Authors
 =======
 
