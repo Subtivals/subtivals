@@ -54,8 +54,7 @@ int main(int argc, char *argv[])
     f.show();
     w.show();
     // If more than one arg and last arg is a file, open it
-    if( argc > 1)
-    {
+    if( argc > 1) {
         QFileInfo fileInfo(argv[argc - 1]);
         if (fileInfo.exists() && fileInfo.isReadable())
         {

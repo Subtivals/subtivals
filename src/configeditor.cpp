@@ -26,7 +26,7 @@
 
 
 #define NB_PRESETS 6
-
+#define DEFAULT_HEIGHT 200
 
 ConfigEditor::ConfigEditor(QWidget *parent) :
     QDockWidget(parent),
@@ -42,13 +42,11 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     adjustSize();
 
     QDesktopWidget *dw = QApplication::desktop();
-    for(int i = 0; i < dw->screenCount(); i++)
-    {
+    for(int i = 0; i < dw->screenCount(); i++) {
         ui->screens->addItem(QString(tr("Monitor %1")).arg(i));
     }
 
-    for(int i = 1; i <= NB_PRESETS; i++)
-    {
+    for(int i = 1; i <= NB_PRESETS; i++) {
         ui->presets->addItem(QString(tr("Preset %1")).arg(i));
     }
     // Use last preset, this will trigger presetChanged()
@@ -95,8 +93,7 @@ void ConfigEditor::restore()
     if (ui->tabs->currentWidget() == ui->tabScreen) {
         QSettings settings;
         settings.remove(QString("ScreenGeometry-%1").arg(m_preset));
-    }
-    else {
+    } else {
         m_styleEditor->restore();
     }
     reset();
@@ -110,14 +107,13 @@ void ConfigEditor::reset()
     settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
     int screen = settings.value("screen", 0).toInt();
     int width = QApplication::desktop()->screenGeometry(screen).width();
-
     int x = settings.value("x", 0).toInt();
     int y = settings.value("y", 0).toInt();
     int w = settings.value("w", width).toInt();
-    int h = settings.value("h", 200).toInt();
+    int h = settings.value("h", DEFAULT_HEIGHT).toInt();
     double rotation = settings.value("rotation", 0).toDouble();
     settings.endGroup();
-
+    // Update the UI with the reloaded settings
     ui->screens->setCurrentIndex(screen);
     screenChanged(QRect(x, y, w, h));
     ui->rotation->setValue(rotation);
@@ -138,7 +134,7 @@ void ConfigEditor::save()
     settings.setValue("rotation", ui->rotation->text());
     settings.endGroup();
     m_styleEditor->save();
-
+    // Settings saved, update the UI
     enableButtonBox(true, false, false);
 }
 
@@ -159,11 +155,9 @@ void ConfigEditor::onClicked(QAbstractButton* btn)
 {
     if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->ResetRole) {
         restore();  // ResetRole == RestoreDefaults button (sic)
-    }
-    else if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->AcceptRole) {
+    } else if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->AcceptRole) {
         save();
-    }
-    else if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->RejectRole) {
+    } else if (ui->buttonBox->buttonRole(btn) == ui->buttonBox->RejectRole) {
         reset();
     }
 }

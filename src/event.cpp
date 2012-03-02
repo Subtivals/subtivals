@@ -39,8 +39,7 @@ Event::Event(const QString &p_line, const Script *p_script, int p_index, QObject
     m_marginV = subparts[7].toInt();
 
     int p = p_line.indexOf(",");
-    for (int i = 0; i < 8; i++)
-    {
+    for (int i = 0; i < 8; i++) {
         p = p_line.indexOf(",", p+1);
     }
     m_prettyText = p_line.mid(p+1);

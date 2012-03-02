@@ -27,6 +27,8 @@
 #include "ui_mainwindow.h"
 #include "configeditor.h"
 
+#define DELAY_OFFSET 250
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -122,13 +124,11 @@ void MainWindow::openFile (const QString &p_fileName)
     // Save on load file
     m_preferences->save();
     // Clean-up previously allocated resources & reset GUI
-    if(m_script != 0)
-    {
+    if(m_script != 0) {
         m_filewatcher->removePath(m_script->fileName());
         delete m_script;
     }
-    if(m_timer.isActive())
-    {
+    if(m_timer.isActive()) {
         m_timer.stop();
     }
     m_msseStartTime = 0;
@@ -142,8 +142,7 @@ void MainWindow::openFile (const QString &p_fileName)
     ui->tableWidget->setRowCount(m_script->eventsCount());
     QListIterator<Event *> i = m_script->events();
     int row = 0;
-    while (i.hasNext())
-    {
+    while (i.hasNext()) {
         Event *event = i.next();
         m_tableMapping[event] = row;
         QTableWidgetItem *startItem = new QTableWidgetItem(QTime().addMSecs(event->msseStart()).toString());
@@ -219,8 +218,7 @@ void MainWindow::actionOpen()
     // Ask the user for an *.ass file
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open subtitles"), m_lastFolder, tr("Subtitle Files (*.ass)"));
     // Ass file selected ?
-    if (!fileName.isEmpty())
-    {
+    if (!fileName.isEmpty()) {
         m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();
         actionStop();
         openFile(fileName);
@@ -231,8 +229,7 @@ void MainWindow::actionPlay()
 {
     int row = ui->tableWidget->currentRow();
     m_timerAutoHide.stop();
-    switch(m_state)
-    {
+    switch(m_state) {
     case STOPPED:
         setState(PLAYING);
         m_userDelay = 0;
@@ -303,13 +300,13 @@ void MainWindow::actionConfig(bool state)
 void MainWindow::actionAddDelay()
 {
     // Add 250 msecs
-    m_userDelay += 250;
+    m_userDelay += DELAY_OFFSET;
 }
 
 void MainWindow::actionSubDelay()
 {
     // Sub 250 msecs
-    m_userDelay -= 250;
+    m_userDelay -= DELAY_OFFSET;
 }
 
 void MainWindow::actionPause()
@@ -406,8 +403,7 @@ void MainWindow::updateCurrentEventAt(int i)
     // Show it !
     updateCurrentEvent(start_mss + 1);
     // Continuous play, even while pause
-    switch(m_state)
-    {
+    switch(m_state) {
     case PLAYING:
         m_timer.start(100);
         break;
@@ -428,9 +424,7 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
 {
     // Sanity check
     if(m_script == 0)
-    {
         return;
-    }
     // Find events that match elapsed time
     QList<Event *> currentEvents;
     QListIterator<Event *> i = m_script->events();
@@ -438,39 +432,29 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     {
         Event *e = i.next();
         if(e->match(msecsElapsed))
-        {
             currentEvents.append(e);
-        }
-
     }
     // Compare events that match elapsed time with events that matched elapsed time last
     // time the timer was fired to find the differences
     i = QListIterator<Event *>(m_lastEvents);
-    while (i.hasNext())
-    {
+    while (i.hasNext()) {
         // Events that where presents and that are no more presents : suppress
         Event *e = i.next();
         if(!currentEvents.contains(e))
-        {
             emit eventEnd(e);
-        }
     }
     i = QListIterator<Event *>(currentEvents);
-    while(i.hasNext())
-    {
+    while(i.hasNext()) {
         // Events that are presents and that were not presents : add
         Event *e = i.next();
         if(!m_lastEvents.contains(e))
-        {
             emit eventStart(e);
-        }
     }
     // Update the GUI
     m_lastEvents = currentEvents;
     ui->timer->setText(ts2tc(msecsElapsed));
     ui->userDelay->setText(ts2tc(m_userDelay));
-    if(m_selectEvent && currentEvents.size() > 0)
-    {
+    if(m_selectEvent && currentEvents.size() > 0) {
         ui->tableWidget->selectRow(m_tableMapping[currentEvents.last()]);
         ui->tableWidget->scrollTo(ui->tableWidget->currentIndex(),
                                   QAbstractItemView::PositionAtCenter);
@@ -480,18 +464,15 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
 QString MainWindow::ts2tc(qint64 p_ts)
 {
     if (p_ts >= 0)
-    {
         return "+" + QTime().addMSecs(p_ts).toString("hh:mm:ss.zzz");
-    } else {
+    else
         return "-" + QTime().addMSecs(-p_ts).toString("hh:mm:ss.zzz");
-    }
 }
 
 void MainWindow::setState(State p_state)
 {
     m_state = p_state;
-    switch(m_state)
-    {
+    switch(m_state) {
     case NODATA:
         ui->actionPlay->setEnabled(false);
         ui->actionStop->setEnabled(false);
@@ -592,8 +573,7 @@ void MainWindow::search()
     // Select the event in the list
     if (found < 0) {
         ui->searchField->setStyleSheet("QLineEdit {color: red;}");
-    }
-    else {
+    } else {
         ui->tableWidget->selectRow(found);
         ui->tableWidget->setFocus();
         actionEventClic(QModelIndex());
