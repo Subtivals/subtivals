@@ -172,7 +172,13 @@ void MainWindow::openFile (const QString &p_fileName)
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);
     m_preferences->setScript(m_script);  // will reset()
-    setWindowTitle(m_script->title());
+    // Set the window title from the file name, withour the ASS extention
+    QString winTitle = QFileInfo(p_fileName).fileName();
+    if (winTitle.endsWith(".ASS") || winTitle.endsWith(".ass")) {
+        winTitle = winTitle.left(winTitle.length() - 4);
+    }
+    setWindowTitle(winTitle);
+    // Update the table
     ui->tableWidget->setRowCount(m_script->eventsCount());
     QListIterator<Event *> i = m_script->events();
     int row = 0;
