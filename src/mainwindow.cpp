@@ -423,7 +423,11 @@ void MainWindow::actionEventClic(QModelIndex)
 
 void MainWindow::actionEventSelected(QModelIndex index)
 {
+    // Reset user delay
+    m_userDelay = 0;
+    // Switch to the selected event
     updateCurrentEventAt(index.row());
+    // Update the UI
     ui->actionHide->setChecked(false);
     ui->actionPrevious->setEnabled(canPrevious());
     ui->actionNext->setEnabled(canNext());
