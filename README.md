@@ -64,4 +64,4 @@ Authors
 * Arnaud Rolly ([Gedial](http://www.gedial.com))
 * Mathieu Leplatre ([@leplatrem](http://mathieu-leplatre.info))
 * Lilian Lefranc ([st2l](http://st2l.fr))
-
+* Emmanuel Digiaro ([@mallox](http://twitter.com/mallox))
