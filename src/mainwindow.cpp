@@ -639,7 +639,8 @@ void MainWindow::actionAbout()
                           "<h2>Authors</h2>"
                           "<li>Lilian Lefranc</li>"
                           "<li>Arnaud Rolly</li>"
-                          "<li>Mathieu Leplatre</li>"));
+                          "<li>Mathieu Leplatre</li>"
+                          "<li>Emmanuel Digiaro</li>"));
 }
 
 void MainWindow::actionShowHelp()
