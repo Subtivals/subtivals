@@ -69,5 +69,8 @@ win32 {
     TRANSLATIONS_PATH = locale
 }
 
+#mac {
+#    ICON = ../resources/subtivals.icns
+#}
 TRANSLATIONS_PATH_STR = '\\"$${TRANSLATIONS_PATH}\\"'
 DEFINES += TRANSLATIONS_PATH=\"$${TRANSLATIONS_PATH_STR}\"
