@@ -6,3 +6,6 @@ qrc_*
 ui_*.h
 Makefile
 subtivals
+
+.DS_Store
+
