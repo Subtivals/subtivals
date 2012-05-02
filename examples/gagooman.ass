@@ -15,7 +15,7 @@ Style: FILA13,Verdana,14,&H00FFFF00,&H000000FF,&H00000000,&H00000000,0,0,0,0,100
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 0,0:00:00.00,0:00:00.84,FILA13,,0000,0000,0000,,
-Dialogue: 0,0:00:01.04,0:00:04.07,FILA13,,0000,0000,0000,,"Au nom de Dieu"
+Dialogue: 0,0:00:01.04,0:00:04.07,FILA1,,0000,0000,0000,,"Au nom de Dieu"
 Dialogue: 0,0:00:05.52,0:00:12.66,FILA13,,0000,0000,0000,,"Tous les événements, personnages\net noms dans ce film sont réels."
 Dialogue: 0,0:00:14.65,0:00:19.71,FILA13,,0000,0000,0000,,GAGOOMAN\n(Le crépuscule)
 Dialogue: 0,0:00:20.09,0:00:24.61,FILA13,,0000,0000,0000,,

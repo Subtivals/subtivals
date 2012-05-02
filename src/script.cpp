@@ -89,6 +89,9 @@ const QString &Script::title() const
 
 Style *Script::style(const QString &p_name) const
 {
+    // If style is unknown, return first one.
+    if (!m_styles.contains(p_name))
+        return m_styles[m_styles.keys().at(0)];
     return m_styles[p_name];
 }
 
