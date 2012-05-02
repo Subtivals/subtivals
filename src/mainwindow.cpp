@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Add preferences dock
     m_preferences->setVisible(false);
-    addDockWidget(Qt::RightDockWidgetArea, m_preferences);
+    ui->mainLayout->addWidget(m_preferences);
 
     // Selection timer (disables event highlighting for a while)
     m_timerSelection.setSingleShot(true);

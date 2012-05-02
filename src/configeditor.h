@@ -27,7 +27,7 @@ namespace Ui {
 class Script;
 class StyleEditor;
 
-class ConfigEditor : public QDockWidget
+class ConfigEditor : public QWidget
 {
     Q_OBJECT
 

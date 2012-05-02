@@ -29,17 +29,17 @@
 #define DEFAULT_HEIGHT 200
 
 ConfigEditor::ConfigEditor(QWidget *parent) :
-    QDockWidget(parent),
+    QWidget(parent),
     ui(new Ui::ConfigEditor),
     m_styleEditor(new StyleEditor()),
     m_preset(-1)
 {
     ui->setupUi(this);
-    setFeatures(ConfigEditor::NoDockWidgetFeatures);
     ui->tabStyles->setLayout(m_styleEditor->layout());
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SIGNAL(styleChanged()));
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
     adjustSize();
+    setMaximumSize(size());
 
     QDesktopWidget *dw = QApplication::desktop();
     for(int i = 0; i < dw->screenCount(); i++) {

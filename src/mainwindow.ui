@@ -165,7 +165,7 @@
      </layout>
     </item>
     <item row="1" column="0" colspan="3">
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QHBoxLayout" name="mainLayout">
       <item>
        <widget class="QTableWidget" name="tableWidget">
         <property name="editTriggers">
