@@ -117,6 +117,7 @@ private:
     QMap<Event *, int> m_tableMapping;
     bool m_selectEvent;
     QTimer m_timerSelection;
+    bool m_rowChanged;
     bool m_reloadEnabled;
     QFileSystemWatcher* m_filewatcher;
     QTimer m_timerFileChange;

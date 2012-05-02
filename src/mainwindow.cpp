@@ -35,7 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_preferences(new ConfigEditor(this)),
     m_speedFactor(1.0),
     m_speedFactorEnabled(false),
-    m_filewatcher(new QFileSystemWatcher)
+    m_filewatcher(new QFileSystemWatcher),
+    m_rowChanged(false)
 {
     ui->setupUi(this);
     ui->tableWidget->installEventFilter(this);
@@ -391,7 +392,7 @@ void MainWindow::actionNext()
 
         // Jump next if selected is being viewed. Otherwise activate it.
         m_selectEvent = true;
-        if (isRowDisplayed)
+        if (isRowDisplayed && !m_rowChanged)
             updateCurrentEventAt(row + 1);
         else
             updateCurrentEventAt(row);
@@ -419,6 +420,7 @@ void MainWindow::actionEventClic(QModelIndex)
     // in order to let the user perform a double-clic
     m_selectEvent = false;
     m_timerSelection.start();
+    m_rowChanged = true;
 }
 
 void MainWindow::actionEventSelected(QModelIndex index)
@@ -503,6 +505,7 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
         ui->tableWidget->scrollTo(ui->tableWidget->currentIndex(),
                                   QAbstractItemView::PositionAtCenter);
     }
+    m_rowChanged = false;
 }
 
 QString MainWindow::ts2tc(qint64 p_ts)
