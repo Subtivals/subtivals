@@ -26,6 +26,7 @@
 #include <QModelIndex>
 #include <QString>
 #include <QFileSystemWatcher>
+#include <QLabel>
 
 #include "script.h"
 
@@ -123,6 +124,7 @@ private:
     QTimer m_timerFileChange;
     bool m_autoHideEnabled;
     QTimer m_timerAutoHide;
+    QLabel* m_scriptProperties;
 };
 
 #endif // MAINWINDOW_H

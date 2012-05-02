@@ -36,7 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_speedFactor(1.0),
     m_speedFactorEnabled(false),
     m_filewatcher(new QFileSystemWatcher),
-    m_rowChanged(false)
+    m_rowChanged(false),
+    m_scriptProperties(new QLabel(this))
 {
     ui->setupUi(this);
     ui->tableWidget->installEventFilter(this);
@@ -51,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Add preferences dock
     m_preferences->setVisible(false);
     ui->mainLayout->addWidget(m_preferences);
+    ui->statusBar->addPermanentWidget(m_scriptProperties);
 
     // Selection timer (disables event highlighting for a while)
     m_timerSelection.setSingleShot(true);
@@ -179,8 +181,18 @@ void MainWindow::openFile (const QString &p_fileName)
         winTitle = winTitle.left(winTitle.length() - 4);
     }
     setWindowTitle(winTitle);
+
+    // Show script properties
+    qlonglong count = m_script->eventsCount();
+    m_scriptProperties->setText("");
+    if (count > 0) {
+        QString firsttime = QTime().addMSecs(m_script->eventAt(0)->msseStart()).toString();
+        QString lasttime = QTime().addMSecs(m_script->eventAt(count-1)->msseStart()).toString();
+        m_scriptProperties->setText(tr("%1 events, %2 - %3").arg(count).arg(firsttime).arg(lasttime));
+    }
+
     // Update the table
-    ui->tableWidget->setRowCount(m_script->eventsCount());
+    ui->tableWidget->setRowCount(count);
     QListIterator<Event *> i = m_script->events();
     int row = 0;
     while (i.hasNext()) {
