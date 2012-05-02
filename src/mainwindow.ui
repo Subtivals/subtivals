@@ -14,7 +14,7 @@
    <string>Subtivals</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources/icons.qrc">
+   <iconset resource="../resources/icons.qrc">
     <normaloff>:/icons/subtivals.svg</normaloff>:/icons/subtivals.svg</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -151,7 +151,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="resources/icons.qrc">
+         <iconset resource="../resources/icons.qrc">
           <normaloff>:/icons/search.svg</normaloff>:/icons/search.svg</iconset>
         </property>
         <property name="iconSize">
@@ -298,7 +298,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
    </property>
    <property name="text">
@@ -327,7 +327,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/media-playback-start.svg</normaloff>:/icons/media-playback-start.svg</iconset>
    </property>
    <property name="text">
@@ -345,7 +345,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/media-playback-stop.svg</normaloff>:/icons/media-playback-stop.svg</iconset>
    </property>
    <property name="text">
@@ -360,7 +360,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/preferences-desktop.svg</normaloff>:/icons/preferences-desktop.svg</iconset>
    </property>
    <property name="text">
@@ -375,7 +375,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/media-seek-forward.svg</normaloff>:/icons/media-seek-forward.svg</iconset>
    </property>
    <property name="text">
@@ -393,7 +393,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/media-seek-backward.svg</normaloff>:/icons/media-seek-backward.svg</iconset>
    </property>
    <property name="text">
@@ -411,7 +411,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/media-playback-pause.svg</normaloff>:/icons/media-playback-pause.svg</iconset>
    </property>
    <property name="text">
@@ -426,7 +426,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/media-skip-forward.svg</normaloff>:/icons/media-skip-forward.svg</iconset>
    </property>
    <property name="text">
@@ -441,7 +441,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/system-shutdown.svg</normaloff>:/icons/system-shutdown.svg</iconset>
    </property>
    <property name="text">
@@ -456,7 +456,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/media-skip-backward.svg</normaloff>:/icons/media-skip-backward.svg</iconset>
    </property>
    <property name="text">
@@ -479,7 +479,7 @@
   </action>
   <action name="actionShowCalibration">
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/show-calibration.svg</normaloff>:/icons/show-calibration.svg</iconset>
    </property>
    <property name="text">
@@ -499,7 +499,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources/icons.qrc">
+    <iconset resource="../resources/icons.qrc">
      <normaloff>:/icons/auto-hide.svg</normaloff>:/icons/auto-hide.svg</iconset>
    </property>
    <property name="text">
@@ -517,7 +517,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="resources/icons.qrc"/>
+  <include location="../resources/icons.qrc"/>
  </resources>
  <connections>
   <connection>
