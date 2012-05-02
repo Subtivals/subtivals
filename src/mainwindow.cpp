@@ -502,8 +502,9 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     ui->userDelay->setText(ts2tc(m_userDelay));
     if(m_selectEvent && currentEvents.size() > 0) {
         ui->tableWidget->selectRow(m_tableMapping[currentEvents.last()]);
-        ui->tableWidget->scrollTo(ui->tableWidget->currentIndex(),
-                                  QAbstractItemView::PositionAtCenter);
+        int row = ui->tableWidget->currentRow() - 2;
+        ui->tableWidget->scrollTo(ui->tableWidget->currentIndex().sibling(row, 0),
+                                  QAbstractItemView::PositionAtTop);
     }
     m_rowChanged = false;
 }
