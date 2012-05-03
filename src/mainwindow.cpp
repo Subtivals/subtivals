@@ -35,8 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_preferences(new ConfigEditor(this)),
     m_speedFactor(1.0),
     m_speedFactorEnabled(false),
-    m_filewatcher(new QFileSystemWatcher),
     m_rowChanged(false),
+    m_filewatcher(new QFileSystemWatcher),
     m_scriptProperties(new QLabel(this))
 {
     ui->setupUi(this);
@@ -498,6 +498,7 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     while (i.hasNext()) {
         // Events that where presents and that are no more presents : suppress
         Event *e = i.next();
+        setEventBold(m_tableMapping[e], false);
         if(!currentEvents.contains(e))
             emit eventEnd(e);
     }
@@ -505,6 +506,7 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     while(i.hasNext()) {
         // Events that are presents and that were not presents : add
         Event *e = i.next();
+        setEventBold(m_tableMapping[e], true);
         if(!m_lastEvents.contains(e))
             emit eventStart(e);
     }
@@ -519,6 +521,16 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
                                   QAbstractItemView::PositionAtTop);
     }
     m_rowChanged = false;
+}
+
+void MainWindow::setEventBold(int row, bool bold)
+{
+    for (int col=0; col<ui->tableWidget->columnCount(); col++) {
+        QTableWidgetItem* item = ui->tableWidget->item(row, col);
+        QFont f = item->font();
+        f.setBold(bold);
+        item->setFont(f);
+    }
 }
 
 QString MainWindow::ts2tc(qint64 p_ts)
