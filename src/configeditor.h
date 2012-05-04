@@ -19,6 +19,7 @@
 
 #include <QDockWidget>
 #include <QAbstractButton>
+#include <QColor>
 
 namespace Ui {
     class ConfigEditor;
@@ -38,6 +39,7 @@ public:
 signals:
     void changeScreen(int, QRect);
     void rotate(double);
+    void color(QColor);
     void styleChanged();
 public slots:
     void presetChanged(int);
@@ -47,12 +49,15 @@ public slots:
     void apply();
     void save();
     void onClicked(QAbstractButton*);
+    void chooseColor();
 protected slots:
     void enableButtonBox(bool restore = true, bool cancel = true, bool save = true);
+    void setColor(const QColor&);
 private:
     Ui::ConfigEditor *ui;
     StyleEditor* m_styleEditor;
     int m_preset;
+    QColor m_color;
 };
 
 #endif // CONFIGDIALOG_H

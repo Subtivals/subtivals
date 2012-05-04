@@ -20,6 +20,7 @@
 #include <QWidget>
 #include <QList>
 #include <QMouseEvent>
+#include <QColor>
 
 #include "event.h"
 
@@ -44,6 +45,7 @@ public slots:
     void screenResizable(bool state);
     void changeGeometry(int, const QRect&);
     void rotate(double);
+    void color(QColor);
 protected:
     void changeGeometry(const QRect&);
     void paintEvent(QPaintEvent* p_event);
@@ -61,6 +63,7 @@ private:
     QRect m_screenGeom;
     bool m_resizable;
     qreal m_rotation;
+    QColor m_color;
 };
 
 #endif // SUBTITLESFORM_H

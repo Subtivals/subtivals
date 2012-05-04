@@ -30,7 +30,8 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
     m_maxEvents(2),
     m_visible(true),
     m_resizable(false),
-    m_rotation(0)
+    m_rotation(0),
+    m_color(Qt::black)
 {
     ui->setupUi(this);
     setCursor(QCursor(Qt::BlankCursor));
@@ -88,7 +89,7 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     QRect bounds(0, 0, width(), height());
     QPainter p(this);
     // Black background
-    p.fillRect(bounds, Qt::black);
+    p.fillRect(bounds, m_color);
     // Draw text only if visible
     if (!m_visible)
         return;
@@ -183,3 +184,8 @@ void SubtitlesForm::rotate(double p_rotation)
     repaint();
 }
 
+void SubtitlesForm::color(QColor c)
+{
+    m_color = c;
+    repaint();
+}

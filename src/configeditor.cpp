@@ -17,6 +17,8 @@
 #include <QtCore/QSettings>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QPushButton>
+#include <QtGui/QPainter>
+#include <QtGui/QColorDialog>
 
 #include "configeditor.h"
 #include "ui_configeditor.h"
@@ -27,6 +29,7 @@
 
 #define NB_PRESETS 6
 #define DEFAULT_HEIGHT 200
+#define DEFAULT_COLOR "#000000"
 
 ConfigEditor::ConfigEditor(QWidget *parent) :
     QWidget(parent),
@@ -87,6 +90,31 @@ void ConfigEditor::screenChanged(const QRect& r)
     ui->h->setValue(r.height());
 }
 
+void ConfigEditor::chooseColor()
+{
+    // Show color chooser
+    QColor chosen = QColorDialog::getColor(m_color, this
+    #if (QT_VERSION >= QT_VERSION_CHECK(4, 5, 0))
+        , tr("Select Color"), QColorDialog::ShowAlphaChannel
+    #endif
+        );
+    if (chosen.isValid()) {
+        setColor(chosen);
+        apply();
+    }
+}
+
+void ConfigEditor::setColor(const QColor& c)
+{
+    m_color = c;
+    QPixmap pm(24, 24);
+    QPainter p(&pm);
+    p.setPen(c);
+    p.setBrush(c);
+    p.drawRect(0, 0, 24, 24);
+    ui->btnColor->setIcon(pm);
+}
+
 void ConfigEditor::restore()
 {
     // Apply default screen size
@@ -112,11 +140,14 @@ void ConfigEditor::reset()
     int w = settings.value("w", width).toInt();
     int h = settings.value("h", DEFAULT_HEIGHT).toInt();
     double rotation = settings.value("rotation", 0).toDouble();
+    QColor color = QColor(settings.value("color", DEFAULT_COLOR).toString());
     settings.endGroup();
     // Update the UI with the reloaded settings
     ui->screens->setCurrentIndex(screen);
     screenChanged(QRect(x, y, w, h));
     ui->rotation->setValue(rotation);
+    setColor(color);
+    apply();
     m_styleEditor->reset();
     enableButtonBox(true, false, false);
 }
@@ -132,6 +163,7 @@ void ConfigEditor::save()
     settings.setValue("w", ui->w->text());
     settings.setValue("h", ui->h->text());
     settings.setValue("rotation", ui->rotation->text());
+    settings.setValue("color", m_color.name());
     settings.endGroup();
     m_styleEditor->save();
     // Settings saved, update the UI
@@ -147,6 +179,7 @@ void ConfigEditor::apply()
             ui->h->text().toInt());
     emit changeScreen(screen, r);
     emit rotate(ui->rotation->value());
+    emit color(m_color);
     m_styleEditor->apply();
     enableButtonBox(true, true, true);
 }
