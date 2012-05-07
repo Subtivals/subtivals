@@ -316,7 +316,6 @@ void MainWindow::actionStop()
     ui->timer->setText("-");
     ui->userDelay->setText("-");
     m_msseStartTime = 0;
-    ui->tableWidget->selectRow(0);
 }
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
