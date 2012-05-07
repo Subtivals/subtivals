@@ -105,12 +105,43 @@ int Script::eventsCount() const
     return m_events.size();
 }
 
-const QListIterator<Event *> Script::events() const
+const QList<Event *> Script::events() const
 {
-    return QListIterator<Event *>(m_events);
+    return QList<Event *>(m_events);
 }
 
 const Event *Script::eventAt(int i) const
 {
     return m_events[i];
+}
+
+const QList<Event *> Script::currentEvents(qlonglong elapsed) const
+{
+    QList<Event *> l;
+    foreach(Event* e, m_events) {
+        if (e->match(elapsed)) {
+            l.append(e);
+        }
+    }
+    return l;
+}
+
+const QList<Event *> Script::nextEvents(qlonglong elapsed) const
+{
+    // Look for the first event among next ones
+    int i=0;
+    for(; i<m_events.count(); i++) {
+        Event* e = m_events.at(i);
+        if (e->msseStart() >= elapsed) {
+            break;
+        }
+    }
+    // If not any, return empty
+    if (i >= m_events.count()) {
+        const QList<Event*> l;
+        return l;
+    }
+    // Return the list of events starting at this time
+    qlonglong nextStart = m_events.at(i)->msseStart();
+    return currentEvents(nextStart + 1);
 }

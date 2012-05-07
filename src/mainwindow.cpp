@@ -418,6 +418,7 @@ void MainWindow::actionToggleHide(bool state)
 {
     if(QObject::sender() != ui->actionHide)
         ui->actionHide->setChecked(state);
+    highlightEvents(elapsedTime());
     emit toggleHide(state);
 }
 
@@ -484,34 +485,24 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     if(m_script == 0)
         return;
     // Find events that match elapsed time
-    QList<Event *> currentEvents;
-    QListIterator<Event *> i = m_script->events();
-    while(i.hasNext())
-    {
-        Event *e = i.next();
-        if(e->match(msecsElapsed))
-            currentEvents.append(e);
-    }
+    QList<Event *> currentEvents = m_script->currentEvents(msecsElapsed);
+
     // Compare events that match elapsed time with events that matched elapsed time last
     // time the timer was fired to find the differences
-    i = QListIterator<Event *>(m_lastEvents);
-    while (i.hasNext()) {
+    foreach(Event *e, m_lastEvents) {
         // Events that where presents and that are no more presents : suppress
-        Event *e = i.next();
-        setEventBold(m_tableMapping[e], false);
         if(!currentEvents.contains(e))
             emit eventEnd(e);
     }
-    i = QListIterator<Event *>(currentEvents);
-    while(i.hasNext()) {
+    foreach(Event *e, currentEvents) {
         // Events that are presents and that were not presents : add
-        Event *e = i.next();
-        setEventBold(m_tableMapping[e], true);
         if(!m_lastEvents.contains(e))
             emit eventStart(e);
     }
+
     // Update the GUI
     m_lastEvents = currentEvents;
+    highlightEvents(msecsElapsed);
     ui->timer->setText(ts2tc(msecsElapsed));
     ui->userDelay->setText(ts2tc(m_userDelay));
     if(m_selectEvent && currentEvents.size() > 0) {
@@ -523,13 +514,41 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     m_rowChanged = false;
 }
 
-void MainWindow::setEventBold(int row, bool bold)
+void MainWindow::highlightEvents(qlonglong elapsed)
 {
-    for (int col=0; col<ui->tableWidget->columnCount(); col++) {
-        QTableWidgetItem* item = ui->tableWidget->item(row, col);
-        QFont f = item->font();
-        f.setBold(bold);
-        item->setFont(f);
+    QColor off = qApp->palette().color(QPalette::Base);
+    QColor on = qApp->palette().color(QPalette::Highlight).lighter(120);
+    QColor next = qApp->palette().color(QPalette::Highlight).lighter(160);
+
+    for(int row=0; row<ui->tableWidget->rowCount(); row++) {
+        for (int col=0; col<ui->tableWidget->columnCount(); col++) {
+            QTableWidgetItem* item = ui->tableWidget->item(row, col);
+            item->setBackgroundColor(off);
+            QFont f = item->font();
+            f.setBold(false);
+            item->setFont(f);
+        }
+    }
+
+    foreach(Event *e, m_lastEvents) {
+        int row = m_tableMapping[e];
+        for (int col=0; col<ui->tableWidget->columnCount(); col++) {
+            QTableWidgetItem* item = ui->tableWidget->item(row, col);
+            if (!ui->actionHide->isChecked()) {
+                QFont f = item->font();
+                f.setBold(true);
+                item->setFont(f);
+            }
+            item->setBackgroundColor(on);
+        }
+    }
+
+    foreach(Event *e, m_script->nextEvents(elapsed)) {
+        int row = m_tableMapping[e];
+        for (int col=0; col<ui->tableWidget->columnCount(); col++) {
+            QTableWidgetItem* item = ui->tableWidget->item(row, col);
+            item->setBackgroundColor(next);
+        }
     }
 }
 
@@ -604,6 +623,11 @@ void MainWindow::setElapsedTime(qint64 p_elapsed)
 
 qint64 MainWindow::elapsedTime()
 {
+    if (m_state != PLAYING) {
+        if (m_lastEvents.count() > 0) {
+            return m_lastEvents.last()->msseStart() + 1;
+        }
+    }
     // Gets the elapsed time in milliseconds
     double factor = m_speedFactorEnabled ? m_speedFactor : 1.0;
     return (tick() - m_msseStartTime + m_userDelay - m_pauseTotal) * factor;

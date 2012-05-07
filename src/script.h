@@ -59,11 +59,19 @@ public:
     /*
      * Returns an iterator on the events of the script.
      */
-    const QListIterator<Event *> events() const;
+    const QList<Event *> events() const;
     /*
      * Returns the event at the given index.
      */
     const Event * eventAt(int i) const;
+    /*
+     * Returns the events matching the specified elapsed time.
+     */
+    const QList<Event *> currentEvents(qlonglong elapsed) const;
+    /*
+     * Returns the list of the next events at this elapsed time.
+     */
+    const QList<Event *> nextEvents(qlonglong elapsed) const;
 private:
     /*
      * Script ASS file name.

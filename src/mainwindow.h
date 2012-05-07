@@ -96,7 +96,7 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent* event);
     void dropEvent(QDropEvent* event);
     void closeEvent(QCloseEvent *);
-    void setEventBold(int, bool);
+    void highlightEvents(qlonglong elapsed);
     QString ts2tc(qint64 p_timestamp);
     void setState(State p_state);
     qint64 tick();
