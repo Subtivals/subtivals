@@ -22,6 +22,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMessageBox>
 #include <QtGui/QDesktopServices>
+#include <QtGui/QScrollBar>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -37,13 +38,15 @@ MainWindow::MainWindow(QWidget *parent) :
     m_speedFactorEnabled(false),
     m_rowChanged(false),
     m_filewatcher(new QFileSystemWatcher),
-    m_scriptProperties(new QLabel(this))
+    m_scriptProperties(new QLabel(this)),
+    m_selectEvent(true),
+    m_script(0),
+    m_pauseTotal(0)
 {
     ui->setupUi(this);
     ui->tableWidget->installEventFilter(this);
-    m_selectEvent = true;
-    m_script = 0;
-    m_pauseTotal = 0;
+    connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(disableEventSelection()));
+
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     setState(NODATA);
     ui->tableWidget->setFocus();
@@ -422,6 +425,14 @@ void MainWindow::actionToggleHide(bool state)
     emit toggleHide(state);
 }
 
+void MainWindow::disableEventSelection()
+{
+    // Disable selection of events for some time
+    // in order to let the user perform a double-clic
+    m_selectEvent = false;
+    m_timerSelection.start(); // will timeout on enableEventSelection
+}
+
 void MainWindow::enableEventSelection()
 {
     m_selectEvent = true;
@@ -429,10 +440,7 @@ void MainWindow::enableEventSelection()
 
 void MainWindow::actionEventClic(QModelIndex)
 {
-    // Disable selection of events for some time
-    // in order to let the user perform a double-clic
-    m_selectEvent = false;
-    m_timerSelection.start();
+    disableEventSelection();
     m_rowChanged = true;
 }
 

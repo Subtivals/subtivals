@@ -83,6 +83,7 @@ public slots:
     void updateCurrentEvent(qint64);
     void updateCurrentEventAt(int);
     void enableEventSelection();
+    void disableEventSelection();
     void search();
     void searchTextChanged(QString);
     void actionAutoHideEnded(bool);
