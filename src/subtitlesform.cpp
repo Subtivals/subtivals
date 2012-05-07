@@ -135,25 +135,6 @@ void SubtitlesForm::mouseReleaseEvent(QMouseEvent*)
     m_mouseOffset = QPoint();
 }
 
-void SubtitlesForm::mouseDoubleClickEvent(QMouseEvent*)
-{
-    if (!m_resizable)
-        return;
-    // Fit screen on double-click
-    QRect current = geometry();
-    if (current.left() != m_screenGeom.left() ||
-        current.right() != m_screenGeom.right()) {
-        // First fits width
-        current.setLeft(m_screenGeom.left());
-        current.setRight(m_screenGeom.right());
-    }
-    else {
-        // Second fits top
-        current.setTop(m_screenGeom.top());
-    }
-    changeGeometry(current);
-}
-
 void SubtitlesForm::wheelEvent(QWheelEvent* event)
 {
     if (!m_resizable)
