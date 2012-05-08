@@ -437,10 +437,11 @@ void MainWindow::enableEventSelection()
     m_selectEvent = true;
 }
 
-void MainWindow::actionEventClic(QModelIndex)
+void MainWindow::actionEventClic(QModelIndex index)
 {
     disableEventSelection();
-    m_rowChanged = true;
+    if (index.row() != ui->tableWidget->currentRow())
+        m_rowChanged = true;
 }
 
 void MainWindow::actionEventSelected(QModelIndex index)
