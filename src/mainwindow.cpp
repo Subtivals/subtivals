@@ -121,6 +121,7 @@ void MainWindow::closeEvent(QCloseEvent *)
     settings.setValue("reloadEnabled", m_reloadEnabled);
     settings.setValue("autoHideEnabled", m_autoHideEnabled);
     settings.setValue("showPreferences", ui->actionPreferences->isChecked());
+    settings.setValue("durationCorrection", ui->actionDurationCorrection->isChecked());
     settings.endGroup();
     // When the main window is close : end of the app
     qApp->exit();
@@ -140,6 +141,7 @@ void MainWindow::showEvent(QShowEvent *)
     m_autoHideEnabled = settings.value("autoHideEnabled", false).toBool();
     ui->actionAutoHideEnded->setChecked(m_autoHideEnabled);
     ui->actionPreferences->setChecked(settings.value("showPreferences", false).toBool());
+    ui->actionDurationCorrection->setChecked(settings.value("durationCorrection", false).toBool());
     settings.endGroup();
 
     m_preferences->apply();
@@ -211,6 +213,8 @@ void MainWindow::openFile (const QString &p_fileName)
         ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
         row++;
     }
+    actionDurationCorrection(ui->actionDurationCorrection->isChecked());
+
     actionStop();
     // Watch file changes
     if (!p_fileName.startsWith(":"))
@@ -219,6 +223,27 @@ void MainWindow::openFile (const QString &p_fileName)
     ui->searchField->setEnabled(row > 0);
     ui->searchField->setText("");
     m_timerAutoHide.stop();
+}
+
+void MainWindow::refreshDurations()
+{
+    int row = 0;
+    foreach(Event *event, m_script->events()) {
+        QTableWidgetItem *endItem = ui->tableWidget->item(row, COLUMN_END);
+        endItem->setText(QTime().addMSecs(event->msseEnd()).toString());
+        QFont f = endItem->font();
+        f.setItalic(event->isCorrected());
+        endItem->setFont(f);
+        row++;
+    }
+}
+
+void MainWindow::actionDurationCorrection(bool state)
+{
+    if (!m_script)
+        return;
+    m_script->correctEventsDuration(state);
+    refreshDurations();
 }
 
 void MainWindow::actionEnableReload(bool state)

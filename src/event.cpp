@@ -26,7 +26,8 @@
 
 
 Event::Event(const QString &p_line, const Script *p_script, int p_index, QObject *p_parent) :
-    QObject(p_parent)
+    QObject(p_parent),
+    m_corrected(false)
 {
     QList<QString> subparts = p_line.split(',');
     m_msseStart = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
@@ -104,13 +105,17 @@ Event::Event(const QString &p_line, const Script *p_script, int p_index, QObject
         m_text = m_text.mid(1);
     }
 
+    // Auto duration
+    m_autoDuration = 1000 * text().size() / AUTO_CHARS_RATE;
+    if (m_autoDuration < AUTO_MIN_DURATION) m_autoDuration = AUTO_MIN_DURATION;
+
     // Check if no timecode is specified
-    if (m_msseStart == 0 && m_msseStart == m_msseEnd) {
+    if (m_msseStart == 0 || m_msseEnd == 0) {
         qint64 endPrevious = 0;
         if (p_index > 0)
             endPrevious = p_script->eventAt(p_index-1)->msseEnd() + AUTO_EVENT_INTERVAL;
         m_msseStart = endPrevious;
-        m_msseEnd = m_msseStart + duration(true);
+        m_msseEnd = m_msseStart + m_autoDuration;
     }
 }
 
@@ -121,17 +126,25 @@ qint64 Event::msseStart() const
 
 qint64 Event::msseEnd() const
 {
+    if (m_corrected) {
+        return m_msseStart + m_autoDuration;
+    }
     return m_msseEnd;
 }
 
-qint64 Event::duration(bool p_auto) const
+qint64 Event::duration() const
 {
-    if (p_auto) {
-        qint64 d = 1000 * text().size() / AUTO_CHARS_RATE;
-        if (d < AUTO_MIN_DURATION) d = AUTO_MIN_DURATION;
-        return d;
-    }
-    return m_msseEnd - m_msseStart;
+    return msseEnd() - msseStart();
+}
+
+bool Event::isCorrected() const
+{
+    return m_corrected;
+}
+
+void Event::correct(bool p_state)
+{
+    m_corrected = p_state && (m_autoDuration > (m_msseEnd - m_msseStart));
 }
 
 const Style *Event::style() const

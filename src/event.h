@@ -31,7 +31,7 @@ public:
     explicit Event(const QString &p_line, const Script *p_script, int p_index, QObject *p_parent = 0);
     qint64 msseStart() const;
     qint64 msseEnd() const;
-    qint64 duration(bool p_auto = false) const;
+    qint64 duration() const;
     const Style *style() const;
     const QString &text() const;
     const QString &prettyText() const;
@@ -39,15 +39,19 @@ public:
     int marginL() const;
     int marginR() const;
     int marginV() const;
+    bool isCorrected() const;
+    void correct(bool);
 private:
     qint64 m_msseStart;
     qint64 m_msseEnd;
+    qint64 m_autoDuration;
     const Style *m_style;
     QString m_text;
     QString m_prettyText;
     int m_marginL;
     int m_marginR;
     int m_marginV;
+    bool m_corrected;
 };
 
 #endif // EVENT_H

@@ -72,6 +72,11 @@ public:
      * Returns the list of the next events at this elapsed time.
      */
     const QList<Event *> nextEvents(qlonglong elapsed) const;
+public slots:
+    /*
+     * Activates duration correction of events.
+     */
+    void correctEventsDuration(bool p_state);
 private:
     /*
      * Script ASS file name.

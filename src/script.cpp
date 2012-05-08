@@ -145,3 +145,10 @@ const QList<Event *> Script::nextEvents(qlonglong elapsed) const
     qlonglong nextStart = m_events.at(i)->msseStart();
     return currentEvents(nextStart + 1);
 }
+
+void Script::correctEventsDuration(bool p_state)
+{
+    foreach(Event* e, m_events) {
+        e->correct(p_state);
+    }
+}

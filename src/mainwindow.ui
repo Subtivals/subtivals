@@ -234,7 +234,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -249,6 +249,7 @@
     <property name="title">
      <string>Edit</string>
     </property>
+    <addaction name="actionDurationCorrection"/>
     <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuAide">
@@ -512,6 +513,17 @@
   <action name="actionShowHelp">
    <property name="text">
     <string>Online help...</string>
+   </property>
+  </action>
+  <action name="actionDurationCorrection">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Duration correction</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>
@@ -904,6 +916,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDurationCorrection</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionDurationCorrection(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -929,5 +957,6 @@
   <slot>setSpeedFactor(double)</slot>
   <slot>enableSpeedFactor(bool)</slot>
   <slot>actionShowHelp()</slot>
+  <slot>actionDurationCorrection(bool)</slot>
  </slots>
 </ui>
