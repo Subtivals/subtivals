@@ -152,12 +152,23 @@ const ConfigEditor* MainWindow::configEditor()
     return m_preferences;
 }
 
-void MainWindow::actionShowCalibration()
+void MainWindow::actionShowCalibration(bool p_state)
 {
-    openFile(":/samples/M.ass");
-    updateCurrentEventAt(0);
-    m_timerAutoHide.stop(); // disable auto-hide for calibration
-    actionToggleHide(false);
+    if (p_state) {
+        if (m_script)
+            m_lastScript = m_script->fileName();
+        openFile(":/samples/M.ass");
+        updateCurrentEventAt(0);
+        m_timerAutoHide.stop(); // disable auto-hide for calibration
+        actionToggleHide(false);
+    }
+    else {
+        if (!m_lastScript.isEmpty())
+            openFile(m_lastScript);
+        else {
+            closeFile();
+        }
+    }
 }
 
 void MainWindow::openFile (const QString &p_fileName)
@@ -165,18 +176,8 @@ void MainWindow::openFile (const QString &p_fileName)
     emit eventClear();
     // Save on load file
     m_preferences->save();
-    // Clean-up previously allocated resources & reset GUI
-    if(m_script != 0) {
-        m_filewatcher->removePath(m_script->fileName());
-        delete m_script;
-    }
-    if(m_timer.isActive()) {
-        m_timer.stop();
-    }
-    m_msseStartTime = 0;
-    m_userDelay = 0;
-    m_lastEvents.clear();
-    m_tableMapping.clear();
+    closeFile();
+
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);
     m_preferences->setScript(m_script);  // will reset()
@@ -189,7 +190,6 @@ void MainWindow::openFile (const QString &p_fileName)
 
     // Show script properties
     qlonglong count = m_script->eventsCount();
-    m_scriptProperties->setText("");
     if (count > 0) {
         QString firsttime = QTime().addMSecs(m_script->eventAt(0)->msseStart()).toString();
         QString lasttime = QTime().addMSecs(m_script->eventAt(count-1)->msseStart()).toString();
@@ -215,7 +215,6 @@ void MainWindow::openFile (const QString &p_fileName)
     }
     actionDurationCorrection(ui->actionDurationCorrection->isChecked());
 
-    actionStop();
     // Watch file changes
     if (!p_fileName.startsWith(":"))
         m_filewatcher->addPath(p_fileName);
@@ -223,6 +222,30 @@ void MainWindow::openFile (const QString &p_fileName)
     ui->searchField->setEnabled(row > 0);
     ui->searchField->setText("");
     m_timerAutoHide.stop();
+}
+
+void MainWindow::closeFile()
+{
+    actionStop();
+
+    // Clean-up previously allocated resources & reset GUI
+    if(m_script != 0) {
+        m_filewatcher->removePath(m_script->fileName());
+        delete m_script;
+        m_script = 0;
+    }
+    if(m_timer.isActive()) {
+        m_timer.stop();
+    }
+    m_msseStartTime = 0;
+    m_userDelay = 0;
+    m_lastEvents.clear();
+    m_tableMapping.clear();
+
+    setWindowTitle(tr("Subtivals"));
+    m_scriptProperties->setText("");
+    //ui->tableWidget->clear();
+    ui->tableWidget->setRowCount(0);
 }
 
 void MainWindow::refreshDurations()
@@ -296,6 +319,7 @@ void MainWindow::reloadScript()
 
 void MainWindow::actionOpen()
 {
+    ui->actionShowCalibration->setChecked(false);
     // Ask the user for an *.ass file
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open subtitles"), m_lastFolder, tr("Subtitle Files (*.ass)"));
     // Ass file selected ?

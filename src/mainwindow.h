@@ -51,6 +51,7 @@ public:
     ~MainWindow();
     enum State { NODATA, STOPPED, PLAYING, PAUSED};
     void openFile (const QString &p_fileName);
+    void closeFile();
     bool eventFilter(QObject*, QEvent*);
     const ConfigEditor * configEditor();
     void showEvent(QShowEvent *);
@@ -63,7 +64,7 @@ signals:
 public slots:
     void refreshDurations();
     void actionDurationCorrection(bool);
-    void actionShowCalibration();
+    void actionShowCalibration(bool);
     void actionOpen();
     void actionPlay();
     void actionStop();
@@ -109,6 +110,7 @@ private:
     State m_state;
     Ui::MainWindow *ui;
     Script *m_script;
+    QString m_lastScript;
     QString m_lastFolder;
     ConfigEditor* m_preferences;
     QTimer m_timer;
