@@ -347,6 +347,7 @@ void MainWindow::actionPlay()
         }
         actionToggleHide(false);
         m_timer.start(100);
+        ui->actionDurationCorrection->setChecked(false);
         break;
     case PAUSED:
         setState(PLAYING);

@@ -234,7 +234,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -921,7 +921,7 @@
   </connection>
   <connection>
    <sender>actionDurationCorrection</sender>
-   <signal>triggered(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
    <slot>actionDurationCorrection(bool)</slot>
    <hints>
