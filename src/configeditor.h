@@ -58,6 +58,7 @@ private:
     StyleEditor* m_styleEditor;
     int m_preset;
     QColor m_color;
+    QWidget* m_parentWidget;
 };
 
 #endif // CONFIGDIALOG_H

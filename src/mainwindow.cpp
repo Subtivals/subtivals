@@ -137,8 +137,10 @@ void MainWindow::showEvent(QShowEvent *)
     settings.beginGroup("MainWindow");
     m_lastFolder = settings.value("lastFolder", "").toString();
     resize(settings.value("size", size()).toSize());
-    QPoint pos(0, qApp->desktop()->screenCount() > 1 ? 100 : 350);
+    QPoint pos(100, 100);
     move(settings.value("pos", pos).toPoint());
+    m_preferences->reset();
+
     m_reloadEnabled = settings.value("reloadEnabled", false).toBool();
     ui->actionEnableReload->setChecked(m_reloadEnabled);
     m_autoHideEnabled = settings.value("autoHideEnabled", false).toBool();
@@ -146,8 +148,6 @@ void MainWindow::showEvent(QShowEvent *)
     ui->actionPreferences->setChecked(settings.value("showPreferences", false).toBool());
     ui->actionDurationCorrection->setChecked(settings.value("durationCorrection", false).toBool());
     settings.endGroup();
-
-    m_preferences->apply();
 }
 
 const ConfigEditor* MainWindow::configEditor()

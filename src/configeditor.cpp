@@ -35,7 +35,8 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ConfigEditor),
     m_styleEditor(new StyleEditor()),
-    m_preset(-1)
+    m_preset(-1),
+    m_parentWidget(parent)
 {
     ui->setupUi(this);
     ui->tabStyles->setLayout(m_styleEditor->layout());
@@ -134,9 +135,24 @@ void ConfigEditor::reset()
     QSettings settings;
     settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
     int screen = settings.value("screen", 0).toInt();
-    int width = QApplication::desktop()->screenGeometry(screen).width();
-    int x = settings.value("x", 0).toInt();
-    int y = settings.value("y", 0).toInt();
+    QRect screenGeom = qApp->desktop()->screenGeometry(screen);
+    int width = screenGeom.width();
+    int left = 0;
+    int top = 0;
+
+    // If only one screen, make it less obstrusive
+    // place screen under the main window
+    if (qApp->desktop()->screenCount() == 1) {
+        left = m_parentWidget->geometry().left();
+        width = m_parentWidget->geometry().width() + 2;
+        top = m_parentWidget->geometry().bottom() + 5;
+        // Prevent exceeding bottom of desktop
+        if ((top + DEFAULT_HEIGHT) > screenGeom.height())
+            top = screenGeom.height() - DEFAULT_HEIGHT;
+    }
+
+    int x = settings.value("x", left).toInt();
+    int y = settings.value("y", top).toInt();
     int w = settings.value("w", width).toInt();
     int h = settings.value("h", DEFAULT_HEIGHT).toInt();
     double rotation = settings.value("rotation", 0).toDouble();
