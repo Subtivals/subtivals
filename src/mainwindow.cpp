@@ -373,6 +373,10 @@ void MainWindow::actionStop()
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
+    if (event->type() == QEvent::FocusOut) {
+        ui->tableWidget->clearSelection();
+    }
+
     if (event->type() == QEvent::KeyRelease) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         QKeySequence keySequence(keyEvent->key());
@@ -581,11 +585,16 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
     highlightEvents(msecsElapsed);
     ui->timer->setText(ts2tc(msecsElapsed));
     ui->userDelay->setText(ts2tc(m_userDelay));
-    if(m_selectEvent && currentEvents.size() > 0) {
-        ui->tableWidget->selectRow(m_tableMapping[currentEvents.last()]);
-        int row = ui->tableWidget->currentRow() - 2;
-        ui->tableWidget->scrollTo(ui->tableWidget->currentIndex().sibling(row, 0),
-                                  QAbstractItemView::PositionAtTop);
+    if(m_selectEvent) {
+        int eventRow = -1;
+        if (currentEvents.size() > 0) {
+            eventRow = m_tableMapping[currentEvents.last()];
+            int scrollRow = eventRow > 2 ? eventRow - 2 : 0;
+            ui->tableWidget->scrollTo(ui->tableWidget->currentIndex().sibling(scrollRow, 0),
+                                      QAbstractItemView::PositionAtTop);
+        }
+        if (ui->tableWidget->hasFocus())
+            ui->tableWidget->selectRow(eventRow);
     }
     m_rowChanged = false;
 }
