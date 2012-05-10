@@ -26,8 +26,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QCoreApplication::setOrganizationName("Gedial");
-    QCoreApplication::setOrganizationDomain("gedial.com");
+    QCoreApplication::setOrganizationName("Subtivals");
+    QCoreApplication::setOrganizationDomain("https://github.com/traxtech/subtivals/");
     QCoreApplication::setApplicationName("Subtivals");
     a.setQuitOnLastWindowClosed(true);
 
