@@ -45,6 +45,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tableWidget->installEventFilter(this);
+    ui->speedFactor->installEventFilter(this);
+    m_preferences->installEventFilter(this);
     connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(disableEventSelection()));
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
@@ -367,18 +369,35 @@ void MainWindow::actionStop()
     m_msseStartTime = 0;
 }
 
+#include <QDebug>
+
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
-    if (object == ui->tableWidget && event->type() == QEvent::KeyPress) {
-        // With key Up/Down : behave the way single mouse clics do.
+    if (event->type() == QEvent::KeyRelease) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        if (keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down) {
-            actionEventClic(ui->tableWidget->currentIndex());
+        QKeySequence keySequence(keyEvent->key());
+
+        // If key pressed matches any of the main window actions,
+        // trigger it ! (capture keys in all widgets with this filter)
+        QList<QAction*> allActions = this->findChildren<QAction*>();
+        foreach(QAction* action, allActions) {
+            if (!action->shortcut().isEmpty() &&
+                action->shortcut().matches(keySequence)) {
+                action->trigger();
+            }
         }
-        //TODO: move to event(QEvent*) ?
+
+        // With key Up/Down : behave the way single mouse clics do.
+        if (object == ui->tableWidget) {
+            if (keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down) {
+                actionEventClic(ui->tableWidget->currentIndex());
+            }
+        }
+
         if (keyEvent->key() == Qt::Key_F3) {
             search();
         }
+
         if (ui->enableSpeedFactor->isChecked()) {
             int factor = 10;
             if (keyEvent->modifiers().testFlag(Qt::ShiftModifier))
