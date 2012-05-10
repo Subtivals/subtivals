@@ -98,13 +98,14 @@ void MainWindow::dropEvent(QDropEvent* event)
     const QMimeData* mimeData = event->mimeData();
     // check for our needed mime type, here a file or a list of files
     if (mimeData->hasUrls()) {
-        QStringList pathList;
         QList<QUrl> urlList = mimeData->urls();
         // extract the local paths of the files
         for (int i = 0; i < urlList.size() && i < 32; ++i) {
             QString fileName = urlList.at(i).toLocalFile();
             QFileInfo fileInfo = QFileInfo(fileName);
-            if(fileInfo.isFile() && fileInfo.isReadable() && fileInfo.suffix().toLower() == "ass") {
+            if(fileInfo.isFile() && fileInfo.isReadable() &&
+                    (fileInfo.suffix().toLower() == "ass" ||
+                     fileInfo.suffix().toLower() == "srt")) {
                 openFile(fileName);
                 return;
             }
@@ -183,12 +184,8 @@ void MainWindow::openFile (const QString &p_fileName)
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);
     m_preferences->setScript(m_script);  // will reset()
-    // Set the window title from the file name, withour the ASS extention
-    QString winTitle = QFileInfo(p_fileName).fileName();
-    if (winTitle.endsWith(".ASS") || winTitle.endsWith(".ass")) {
-        winTitle = winTitle.left(winTitle.length() - 4);
-    }
-    setWindowTitle(winTitle);
+    // Set the window title from the file name, without extention
+    setWindowTitle(QFileInfo(p_fileName).baseName());
 
     // Show script properties
     qlonglong count = m_script->eventsCount();
@@ -322,9 +319,12 @@ void MainWindow::reloadScript()
 void MainWindow::actionOpen()
 {
     ui->actionShowCalibration->setChecked(false);
-    // Ask the user for an *.ass file
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open subtitles"), m_lastFolder, tr("Subtitle Files (*.ass)"));
-    // Ass file selected ?
+    // Ask the user for an subtitle file
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open subtitles"),
+                                                    m_lastFolder,
+                                                    tr("Subtitle Files (*.ass *.srt)"));
+    // Subtitle file selected ?
     if (!fileName.isEmpty()) {
         m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();
         actionStop();
@@ -772,7 +772,7 @@ void MainWindow::actionAbout()
     QMessageBox::about(this,
                        tr("About Subtivals"),
                        tr("<h1>Subtivals</h1>"
-                          "<p>Subtivals, a program to project *.ass subtitles.</p>"
+                          "<p>Subtivals, a program to project subtitles.</p>"
                           "<h2>Authors</h2>"
                           "<li>Lilian Lefranc</li>"
                           "<li>Arnaud Rolly</li>"

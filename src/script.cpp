@@ -17,6 +17,7 @@
 #include <QtCore/QSettings>
 #include <QtCore/QStringList>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 
 #include "script.h"
 
