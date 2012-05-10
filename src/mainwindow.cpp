@@ -33,15 +33,15 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    m_script(0),
     m_preferences(new ConfigEditor(this)),
     m_speedFactor(1.0),
     m_speedFactorEnabled(false),
+    m_pauseTotal(0),
+    m_selectEvent(true),
     m_rowChanged(false),
     m_filewatcher(new QFileSystemWatcher),
-    m_scriptProperties(new QLabel(this)),
-    m_selectEvent(true),
-    m_script(0),
-    m_pauseTotal(0)
+    m_scriptProperties(new QLabel(this))
 {
     ui->setupUi(this);
     ui->tableWidget->installEventFilter(this);
