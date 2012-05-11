@@ -382,13 +382,15 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         QKeySequence keySequence(keyEvent->key());
 
-        // If key pressed matches any of the main window actions,
-        // trigger it ! (capture keys in all widgets with this filter)
-        QList<QAction*> allActions = this->findChildren<QAction*>();
-        foreach(QAction* action, allActions) {
-            if (!action->shortcut().isEmpty() &&
-                action->shortcut().matches(keySequence)) {
-                action->trigger();
+        if (object == ui->speedFactor || object == m_preferences) {
+            // If key pressed matches any of the main window actions,
+            // trigger it ! (capture keys in all widgets with this filter)
+            QList<QAction*> allActions = this->findChildren<QAction*>();
+            foreach(QAction* action, allActions) {
+                if (!action->shortcut().isEmpty() &&
+                    action->shortcut().matches(keySequence)) {
+                    action->trigger();
+                }
             }
         }
 
