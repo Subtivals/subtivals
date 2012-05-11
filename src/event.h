@@ -32,6 +32,7 @@ public:
     qint64 msseStart() const;
     qint64 msseEnd() const;
     qint64 duration() const;
+    qint64 autoDuration() const;
     const Style *style() const;
     const QString &text() const;
     const QString &prettyText() const;

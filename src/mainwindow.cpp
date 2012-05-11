@@ -539,8 +539,9 @@ void MainWindow::timeout()
 void MainWindow::updateCurrentEventAt(int i)
 {
     // Get event in script
+    const Event *event = m_script->eventAt(i);
     m_timer.stop();
-    qint64 start_mss = m_script->eventAt(i)->msseStart();
+    qint64 start_mss = event->msseStart();
     setElapsedTime(start_mss);
     // Show it !
     updateCurrentEvent(start_mss + 1);
@@ -554,7 +555,10 @@ void MainWindow::updateCurrentEventAt(int i)
         m_pauseStart = tick();
     case STOPPED:
         if (m_autoHideEnabled) {
-            m_timerAutoHide.setInterval(m_script->eventAt(i)->duration());
+            qint64 d = event->duration();
+            if (event->autoDuration() > d)
+                d = event->autoDuration();
+            m_timerAutoHide.setInterval(d);
             m_timerAutoHide.start();
         }
     case NODATA:

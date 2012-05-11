@@ -137,6 +137,11 @@ qint64 Event::duration() const
     return msseEnd() - msseStart();
 }
 
+qint64 Event::autoDuration() const
+{
+    return m_autoDuration;
+}
+
 bool Event::isCorrected() const
 {
     return m_corrected;
