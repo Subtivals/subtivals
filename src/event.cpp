@@ -164,7 +164,7 @@ const QString &Event::prettyText() const
 
 bool Event::match(qint64 p_msecs) const
 {
-    return m_msseStart <= p_msecs && m_msseEnd >= p_msecs;
+    return msseStart() <= p_msecs && msseEnd() >= p_msecs;
 }
 
 int Event::marginL() const

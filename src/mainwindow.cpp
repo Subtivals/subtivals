@@ -616,6 +616,14 @@ void MainWindow::highlightEvents(qlonglong elapsed)
         }
     }
 
+    foreach(Event *e, m_script->nextEvents(elapsed)) {
+        int row = m_tableMapping[e];
+        for (int col=0; col<ui->tableWidget->columnCount(); col++) {
+            QTableWidgetItem* item = ui->tableWidget->item(row, col);
+            item->setBackgroundColor(next);
+        }
+    }
+
     foreach(Event *e, m_lastEvents) {
         int row = m_tableMapping[e];
         for (int col=0; col<ui->tableWidget->columnCount(); col++) {
@@ -626,14 +634,6 @@ void MainWindow::highlightEvents(qlonglong elapsed)
                 item->setFont(f);
             }
             item->setBackgroundColor(on);
-        }
-    }
-
-    foreach(Event *e, m_script->nextEvents(elapsed)) {
-        int row = m_tableMapping[e];
-        for (int col=0; col<ui->tableWidget->columnCount(); col++) {
-            QTableWidgetItem* item = ui->tableWidget->item(row, col);
-            item->setBackgroundColor(next);
         }
     }
 }
