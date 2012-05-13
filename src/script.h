@@ -77,6 +77,9 @@ public slots:
      * Activates duration correction of events.
      */
     void correctEventsDuration(bool p_state);
+protected:
+    void loadFromSrt(QStringList content);
+    void loadFromAss(QStringList content);
 private:
     /*
      * Script ASS file name.

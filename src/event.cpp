@@ -25,85 +25,16 @@
 #define  AUTO_MIN_DURATION    1000  // msec
 
 
-Event::Event(const QString &p_line, const Script *p_script, int p_index, QObject *p_parent) :
+Event::Event(int p_index, const QString &p_text, qint64 p_msseStart, qint64 p_msseEnd, const Script *p_script, QObject *p_parent) :
     QObject(p_parent),
+    m_index(p_index),
+    m_script(p_script),
+    m_msseStart(p_msseStart),
+    m_msseEnd(p_msseEnd),
+    m_style(0),
     m_corrected(false)
 {
-    QList<QString> subparts = p_line.split(',');
-    m_msseStart = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
-    m_msseEnd = QTime().msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
-    m_style = p_script->style(subparts[3].trimmed());
-
-    // Check if style is overridden in event
-    m_marginL = subparts[5].toInt();
-    m_marginR = subparts[6].toInt();
-    m_marginV = subparts[7].toInt();
-
-    int p = p_line.indexOf(",");
-    for (int i = 0; i < 8; i++) {
-        p = p_line.indexOf(",", p+1);
-    }
-    m_prettyText = p_line.mid(p+1);
-    m_text = m_prettyText;
-
-    m_prettyText = m_prettyText.replace("\\N", QString::fromUtf8(" # "));
-    m_prettyText = m_prettyText.replace("\\n", QString::fromUtf8(" # "));
-    m_prettyText = m_prettyText.replace("{\\i1}", "**");
-    m_prettyText = m_prettyText.replace("{\\i0}", "**");
-    // Drop others hints that cannot be translated in HTML
-    {
-        int idxAccOpenDrop = m_prettyText.indexOf("{\\");
-        while (idxAccOpenDrop != -1)
-        {
-            int idxAccCloseDrop = m_prettyText.indexOf("}", idxAccOpenDrop);
-            if (idxAccCloseDrop != -1)
-            {
-                m_prettyText = m_prettyText.left(idxAccOpenDrop) + m_prettyText.mid(idxAccCloseDrop+1);
-            }
-            idxAccOpenDrop = m_prettyText.indexOf("{\\");
-        }
-    }
-
-    // Transform the hints in the text into HTML:
-    // New ligne HTML-ification
-    m_text = m_text.replace("\\N", "<br/>");
-    m_text = m_text.replace("\\n", "<br/>");
-    // Italic HTML-ification
-    m_text = m_text.replace("{\\i1}", "<i>");
-    m_text = m_text.replace("{\\i0}", "</i>");
-    // Color HTML-ification
-    {
-        int idxAccOpenColor = m_text.indexOf("{\\1c&H");
-        while (idxAccOpenColor != -1)
-        {
-
-            int idxAccCloseColor = m_text.indexOf("}", idxAccOpenColor);
-            if (idxAccCloseColor != -1)
-            {
-                QString htmlColor = "<font color=\"#" + m_text.mid(idxAccOpenColor + 6 + 4, 2) + m_text.mid(idxAccOpenColor + 6 + 2, 2) + m_text.mid(idxAccOpenColor + 6, 2) + "\">";
-                m_text = m_text.left(idxAccOpenColor) + htmlColor + m_text.mid(idxAccCloseColor+1) + "</font>";
-            }
-            idxAccOpenColor = m_text.indexOf("{\\1c&H");
-        }
-    }
-    // Drop others hints that cannot be translated in HTML
-    {
-        int idxAccOpenDrop = m_text.indexOf("{\\");
-        while (idxAccOpenDrop != -1)
-        {
-            int idxAccCloseDrop = m_text.indexOf("}", idxAccOpenDrop);
-            if (idxAccCloseDrop != -1)
-            {
-                m_text = m_text.left(idxAccOpenDrop) + m_text.mid(idxAccCloseDrop+1);
-            }
-            idxAccOpenDrop = m_text.indexOf("{\\");
-        }
-    }
-    m_text = m_text.trimmed();
-    while(m_text.startsWith("\n"))
-    {
-        m_text = m_text.mid(1);
-    }
+    setText(p_text);
 
     // Auto duration
     m_autoDuration = 1000 * text().size() / AUTO_CHARS_RATE;
@@ -112,8 +43,8 @@ Event::Event(const QString &p_line, const Script *p_script, int p_index, QObject
     // Check if no timecode is specified
     if (m_msseStart == 0 || m_msseEnd == 0) {
         qint64 endPrevious = 0;
-        if (p_index > 0)
-            endPrevious = p_script->eventAt(p_index-1)->msseEnd() + AUTO_EVENT_INTERVAL;
+        if (m_index > 0)
+            endPrevious = m_script->eventAt(m_index-1)->msseEnd() + AUTO_EVENT_INTERVAL;
         m_msseStart = endPrevious;
         m_msseEnd = m_msseStart + m_autoDuration;
     }
@@ -152,9 +83,24 @@ void Event::correct(bool p_state)
     m_corrected = p_state && (m_autoDuration > (m_msseEnd - m_msseStart));
 }
 
+void Event::setStyle(Style *p_style)
+{
+    m_style = p_style;
+}
+
 const Style *Event::style() const
 {
     return m_style;
+}
+
+void Event::setText(const QString& p_text)
+{
+    m_text = p_text;
+
+    m_prettyText = QString(p_text);
+    m_prettyText = m_prettyText.replace(QRegExp("<br/>"), " # ");
+    m_prettyText = m_prettyText.replace(QRegExp("<i/?>"), "**");
+    m_prettyText = m_prettyText.replace(QRegExp("</?.+/?>"), "");
 }
 
 const QString &Event::text() const
@@ -170,6 +116,13 @@ const QString &Event::prettyText() const
 bool Event::match(qint64 p_msecs) const
 {
     return msseStart() <= p_msecs && msseEnd() >= p_msecs;
+}
+
+void Event::setMargins(int p_marginL, int p_marginR, int p_marginV)
+{
+    m_marginL = p_marginL;
+    m_marginR = p_marginR;
+    m_marginV = p_marginV;
 }
 
 int Event::marginL() const

@@ -24,59 +24,29 @@
 enum SectionType { SECTION_NONE, SECTION_INFOS, SECTION_STYLES, SECTION_EVENTS };
 
 Script::Script(const QString &p_fileName, QObject *p_parent) :
-    QObject(p_parent), m_fileName (p_fileName)
+    QObject(p_parent),
+    m_fileName (p_fileName)
 {
-    SectionType section = SECTION_NONE;
-
     // Read and process each line of the input file
-    QFile file(p_fileName);
+    QFile file(m_fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 
+    QStringList content;
     while (!file.atEnd()) {
-        QString line = QString::fromUtf8(file.readLine());
-        if (line.contains("[Script Info]")) {
-            section = SECTION_INFOS;
-        } else if (line.contains("[V4+ Styles]")) {
-            section = SECTION_STYLES;
-        } else if (line.contains("[Events]")) {
-            section = SECTION_EVENTS;
-        } else {
-            line = line.trimmed().replace("\n", "");
-            if (!line.startsWith(";") && !line.isEmpty()) {
-                if (section == SECTION_INFOS) {
-                    QList<QString> parts = line.split(':');
-                    if(parts.size() == 2) {
-                        QString key = parts[0].trimmed().toLower();
-                        QString value = parts[1].trimmed();
-                        if (key == "title") {
-                            m_title = value;
-                        }
-                    }
-                } else if (section == SECTION_STYLES) {
-                    QList<QString> parts = line.split(':');
-                    if(parts.size() == 2) {
-                        QString key = parts[0].trimmed().toLower();
-                        QString value = parts[1].trimmed();
-                        if (key == "style") {
-                            Style *style = new Style(value, this);
-                            m_styles[style->name()] = style;
-                        }
-                    }
-                } else if (section == SECTION_EVENTS) {
-                    QList<QString> parts = line.split(':');
-                    if(parts.size() > 1) {
-                        QString key = parts[0].trimmed().toLower();
-                        QString value = line.mid(key.length() + 1).trimmed();
-                        if (key == "dialogue") {
-                            m_events.append(new Event(value, this, m_events.size()));
-                        }
-                    }
-                }
-            }
-        }
+        content.append(QString::fromUtf8(file.readLine()));
+    }
+
+    QFileInfo fileInfo(p_fileName);
+    QString ext = fileInfo.suffix().toLower();
+    if (ext == "ass") {
+        loadFromAss(content);
+    }
+    else if (ext == "srt") {
+        loadFromSrt(content);
     }
 }
+
 
 const QString &Script::fileName() const
 {
@@ -152,4 +122,112 @@ void Script::correctEventsDuration(bool p_state)
     foreach(Event* e, m_events) {
         e->correct(p_state);
     }
+}
+
+void Script::loadFromAss(QStringList content)
+{
+    SectionType section = SECTION_NONE;
+
+    foreach(QString line, content) {
+        if (line.contains("[Script Info]")) {
+            section = SECTION_INFOS;
+        } else if (line.contains("[V4+ Styles]")) {
+            section = SECTION_STYLES;
+        } else if (line.contains("[Events]")) {
+            section = SECTION_EVENTS;
+        } else {
+            line = line.trimmed().replace("\n", "");
+            if (!line.startsWith(";") && !line.isEmpty()) {
+                if (section == SECTION_INFOS) {
+                    QList<QString> parts = line.split(':');
+                    if(parts.size() == 2) {
+                        QString key = parts[0].trimmed().toLower();
+                        QString value = parts[1].trimmed();
+                        if (key == "title") {
+                            m_title = value;
+                        }
+                    }
+                } else if (section == SECTION_STYLES) {
+                    QList<QString> parts = line.split(':');
+                    if(parts.size() == 2) {
+                        QString key = parts[0].trimmed().toLower();
+                        QString value = parts[1].trimmed();
+                        if (key == "style") {
+                            Style *style = new Style(value, this);
+                            m_styles[style->name()] = style;
+                        }
+                    }
+                } else if (section == SECTION_EVENTS) {
+                    QList<QString> parts = line.split(':');
+                    if(parts.size() > 1) {
+                        QString key = parts[0].trimmed().toLower();
+                        QString value = line.mid(key.length() + 1).trimmed();
+                        if (key == "dialogue") {
+
+                            QList<QString> subparts = value.split(',');
+                            qint64 start = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
+                            qint64 end = QTime().msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
+                            Style *style = this->style(subparts[3].trimmed());
+                            int marginL = subparts[5].toInt();
+                            int marginR = subparts[6].toInt();
+                            int marginV = subparts[7].toInt();
+
+                            int p = value.indexOf(",");
+                            for (int i = 0; i < 8; i++) {
+                                p = value.indexOf(",", p+1);
+                            }
+                            QString text = value.mid(p+1);
+
+                            // Transform the hints in the text into HTML:
+                            // New ligne HTML-ification
+                            text = text.replace("\\N", "<br/>");
+                            text = text.replace("\\n", "<br/>");
+                            // Italic HTML-ification
+                            text = text.replace("{\\i1}", "<i>");
+                            text = text.replace("{\\i0}", "</i>");
+                            // Color HTML-ification
+                            {
+                                int idxAccOpenColor = text.indexOf("{\\1c&H");
+                                while (idxAccOpenColor != -1) {
+                                    int idxAccCloseColor = text.indexOf("}", idxAccOpenColor);
+                                    if (idxAccCloseColor != -1) {
+                                        QString htmlColor = "<font color=\"#" + text.mid(idxAccOpenColor + 6 + 4, 2) + text.mid(idxAccOpenColor + 6 + 2, 2) + text.mid(idxAccOpenColor + 6, 2) + "\">";
+                                        text = text.left(idxAccOpenColor) + htmlColor + text.mid(idxAccCloseColor+1) + "</font>";
+                                    }
+                                    idxAccOpenColor = text.indexOf("{\\1c&H");
+                                }
+                            }
+                            // Drop others hints that cannot be translated in HTML
+                            {
+                                int idxAccOpenDrop = text.indexOf("{\\");
+                                while (idxAccOpenDrop != -1) {
+                                    int idxAccCloseDrop = text.indexOf("}", idxAccOpenDrop);
+                                    if (idxAccCloseDrop != -1) {
+                                        text = text.left(idxAccOpenDrop) + text.mid(idxAccCloseDrop+1);
+                                    }
+                                    idxAccOpenDrop = text.indexOf("{\\");
+                                }
+                            }
+                            text = text.trimmed();
+                            while(text.startsWith("\n"))
+                            {
+                                text = text.mid(1);
+                            }
+
+                            // Instantiate event !
+                            Event *event = new Event(m_events.size(), text, start, end, this);
+                            event->setStyle(style);
+                            event->setMargins(marginL, marginR, marginV);
+                            m_events.append(event);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Script::loadFromSrt(QStringList content)
+{
+
 }

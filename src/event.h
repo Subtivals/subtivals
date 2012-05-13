@@ -28,21 +28,26 @@ class Event : public QObject
 {
     Q_OBJECT
 public:
-    explicit Event(const QString &p_line, const Script *p_script, int p_index, QObject *p_parent = 0);
+    explicit Event(int p_index, const QString &p_text, qint64 p_msseStart, qint64 p_msseEnd, const Script *p_script, QObject *p_parent = 0);
     qint64 msseStart() const;
     qint64 msseEnd() const;
     qint64 duration() const;
     qint64 autoDuration() const;
+    void setStyle(Style *p_style);
     const Style *style() const;
+    void setText(const QString &p_text);
     const QString &text() const;
     const QString &prettyText() const;
     bool match(qint64 msecs) const;
+    void setMargins(int p_marginL, int p_marginR, int p_marginV);
     int marginL() const;
     int marginR() const;
     int marginV() const;
     bool isCorrected() const;
     void correct(bool);
 private:
+    int m_index;
+    const Script *m_script;
     qint64 m_msseStart;
     qint64 m_msseEnd;
     qint64 m_autoDuration;
