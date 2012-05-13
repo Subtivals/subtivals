@@ -158,7 +158,36 @@ void Script::loadFromAss(QStringList content)
                     QString key = parts[0].trimmed().toLower();
                     QString value = parts[1].trimmed();
                     if (key == "style") {
-                        Style *style = new Style(value, this);
+
+                        QList<QString> subparts = value.split(',');
+                        QString name = subparts[0];
+                        QFont font = QFont(subparts[1], subparts[2].toInt());
+                        QString c = subparts[3].right(6);
+                        QColor color;
+                        color.setBlue(c.mid(0, 2).toInt(0, 16));
+                        color.setGreen(c.mid(2, 2).toInt(0, 16));
+                        color.setRed(c.mid(4, 2).toInt(0, 16));
+                        int marginL = subparts[19].toInt();
+                        int marginR = subparts[20].toInt();
+                        int marginV = subparts[21].toInt();
+
+                        // Alignment after the layout of the numpad (1-3 sub, 4-6 mid, 7-9 top)
+                        Qt::Alignment position = Qt::AlignVCenter;
+                        int alignment = subparts[18].right(1).toInt();
+                        if (alignment <= 3)
+                            position = Qt::AlignBottom;
+                        if (alignment >= 7)
+                            position = Qt::AlignTop;
+                        if (alignment % 3 == 0)
+                            position |= Qt::AlignRight;
+                        if (alignment % 3 == 1)
+                            position |= Qt::AlignLeft;
+                        if (alignment % 3 == 2)
+                            position |= Qt::AlignHCenter;
+
+                        Style *style = new Style(name, font, color, this);
+                        style->setAlignment(position);
+                        style->setMargins(marginL, marginR, marginV);
                         m_styles[style->name()] = style;
                     }
                 }
@@ -222,7 +251,7 @@ void Script::loadFromAss(QStringList content)
                 }
 
                 // Instantiate event !
-                Event *event = new Event(m_events.size(), text, start, end, this);
+                Event *event = new Event(m_events.size(), text, start, end, this, this);
                 event->setStyle(style);
                 event->setMargins(marginL, marginR, marginV);
                 m_events.append(event);
@@ -235,7 +264,7 @@ void Script::loadFromSrt(QStringList content)
 {
     SectionType section = SECTION_NONE;
 
-    Style *style = new Style("Default,Sans,18,&H00FFFFFF,&H0000FFFF,&H000078B4,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,20,20,20,0", this);
+    Style *style = new Style(tr("Default"), QFont("Sans", 18), Qt::white, this);
     m_styles[style->name()] = style;
 
     QStringList text;
@@ -254,7 +283,7 @@ void Script::loadFromSrt(QStringList content)
         else if (section == SECTION_EVENTS) {
             if (line.isEmpty()) {
                 // Instantiate event !
-                Event *event = new Event(m_events.size(), text.join("<br/>"), start, end, this);
+                Event *event = new Event(m_events.size(), text.join("<br/>"), start, end, this, this);
                 event->setStyle(style);
                 m_events.append(event);
                 text.clear();

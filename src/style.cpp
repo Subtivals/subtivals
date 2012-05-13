@@ -21,33 +21,13 @@
 #include "style.h"
 #include "event.h"
 
-Style::Style(const QString &p_line, QObject *p_parent) :
+Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, QObject *p_parent) :
     QObject(p_parent),
-    m_alignment(Qt::AlignVCenter)
+    m_name(p_name),
+    m_font(p_font),
+    m_primaryColour(p_color),
+    m_alignment(Qt::AlignVCenter | Qt::AlignHCenter)
 {
-    QList<QString> subparts = p_line.split(',');
-    m_name = subparts[0];
-    m_font = QFont(subparts[1], subparts[2].toInt());
-    QString c = subparts[3].right(6);
-    m_primaryColour.setBlue(c.mid(0, 2).toInt(0, 16));
-    m_primaryColour.setGreen(c.mid(2, 2).toInt(0, 16));
-    m_primaryColour.setRed(c.mid(4, 2).toInt(0, 16));
-    m_marginL = subparts[19].toInt();
-    m_marginR = subparts[20].toInt();
-    m_marginV = subparts[21].toInt();
-
-    // Alignment after the layout of the numpad (1-3 sub, 4-6 mid, 7-9 top)
-    int alignment = subparts[18].right(1).toInt();
-    if (alignment <= 3)
-        m_alignment = Qt::AlignBottom;
-    if (alignment >= 7)
-        m_alignment = Qt::AlignTop;
-    if (alignment % 3 == 0)
-        m_alignment |= Qt::AlignRight;
-    if (alignment % 3 == 1)
-        m_alignment |= Qt::AlignLeft;
-    if (alignment % 3 == 2)
-        m_alignment |= Qt::AlignHCenter;
 }
 
 Style::Style(const Style &p_oth, const QFont& f, QObject *p_parent):
@@ -60,6 +40,18 @@ Style::Style(const Style &p_oth, const QFont& f, QObject *p_parent):
     m_marginR(p_oth.m_marginR),
     m_marginV(p_oth.m_marginV)
 {
+}
+
+void Style::setAlignment(Qt::Alignment p_alignment)
+{
+    m_alignment = p_alignment;
+}
+
+void Style::setMargins(int p_marginL, int p_marginR, int p_marginV)
+{
+    m_marginL = p_marginL;
+    m_marginR = p_marginR;
+    m_marginV = p_marginV;
 }
 
 const QString &Style::name() const {

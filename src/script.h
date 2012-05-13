@@ -26,18 +26,18 @@
 #include "event.h"
 
 /*
- * Scipts from an ASS file : union of events and styles.
+ * Scipts from a subtitle file : union of events and styles.
  */
 class Script : public QObject
 {
     Q_OBJECT
 public:
     /*
-     * Constructs a script from an ASS file.
+     * Constructs a script from an subtitle file.
      */
     explicit Script(const QString &p_fileName, QObject *parent = 0);
     /*
-     * Returns the name of the ASS file used to create the script.
+     * Returns the name of the subtitle file used to create the script.
      */
     const QString &fileName() const;
     /*

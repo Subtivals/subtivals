@@ -34,9 +34,9 @@ class Style : public QObject
     Q_OBJECT
 public:
     /*
-     * Constructs a style from an style line of an ASS file.
+     * Constructs a style.
      */
-    explicit Style(const QString &p_line, QObject *p_parent);
+    explicit Style(const QString &p_name, const QFont &p_font, const QColor &p_color, QObject *p_parent);
     /*
      * Copy constructor
      */
@@ -60,6 +60,8 @@ public:
      * Draws an Event with this style within the specified area.
      */
     void drawEvent(QPainter*, const Event&, const QRect&) const;
+    void setMargins(int p_marginL, int p_marginR, int p_marginV);
+    void setAlignment(Qt::Alignment p_alignment);
 private:
     /*
      * Style name.
