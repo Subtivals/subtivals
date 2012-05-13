@@ -51,8 +51,10 @@ void StyleEditor::setScript(Script* script)
     foreach(Style* style, m_backup)
         delete style;
     m_backup.clear();
-    foreach(Style* style, m_script->styles()) {
-        m_backup.append(new Style(*style, style->font()));
+    if (m_script) {
+        foreach(Style* style, m_script->styles()) {
+            m_backup.append(new Style(*style, style->font()));
+        }
     }
     initComponents();
 }
@@ -76,6 +78,8 @@ void StyleEditor::styleSelected(int row)
 {
     ui->groupFont->setEnabled(row >= 0);
     if (row < 0)
+        return;
+    if (!m_script)
         return;
 
     // Load style from script
@@ -147,6 +151,8 @@ void StyleEditor::apply()
 {
     int row = ui->stylesNames->currentRow();
     if (row < 0)
+        return;
+    if (!m_script)
         return;
 
     // Style properties were edited, store a copy

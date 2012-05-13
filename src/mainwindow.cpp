@@ -230,6 +230,7 @@ void MainWindow::closeFile()
     // Clean-up previously allocated resources & reset GUI
     if(m_script != 0) {
         m_filewatcher->removePath(m_script->fileName());
+        m_preferences->setScript(0);
         delete m_script;
         m_script = 0;
     }
