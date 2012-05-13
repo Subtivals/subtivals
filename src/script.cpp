@@ -34,7 +34,11 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
 
     QStringList content;
     while (!file.atEnd()) {
-        content.append(QString::fromUtf8(file.readLine()));
+        QString line = QString::fromUtf8(file.readLine());
+        line = line.trimmed().replace("\n", "");
+        if (!line.startsWith(";")) {
+            content.append(line);
+        }
     }
 
     QFileInfo fileInfo(p_fileName);
@@ -129,6 +133,8 @@ void Script::loadFromAss(QStringList content)
     SectionType section = SECTION_NONE;
 
     foreach(QString line, content) {
+        if (line.isEmpty())
+            continue;
         if (line.contains("[Script Info]")) {
             section = SECTION_INFOS;
         } else if (line.contains("[V4+ Styles]")) {
@@ -136,92 +142,90 @@ void Script::loadFromAss(QStringList content)
         } else if (line.contains("[Events]")) {
             section = SECTION_EVENTS;
         } else {
-            line = line.trimmed().replace("\n", "");
-            if (!line.startsWith(";") && !line.isEmpty()) {
-                if (section == SECTION_INFOS) {
-                    QList<QString> parts = line.split(':');
-                    if(parts.size() == 2) {
-                        QString key = parts[0].trimmed().toLower();
-                        QString value = parts[1].trimmed();
-                        if (key == "title") {
-                            m_title = value;
-                        }
-                    }
-                } else if (section == SECTION_STYLES) {
-                    QList<QString> parts = line.split(':');
-                    if(parts.size() == 2) {
-                        QString key = parts[0].trimmed().toLower();
-                        QString value = parts[1].trimmed();
-                        if (key == "style") {
-                            Style *style = new Style(value, this);
-                            m_styles[style->name()] = style;
-                        }
-                    }
-                } else if (section == SECTION_EVENTS) {
-                    QList<QString> parts = line.split(':');
-                    if(parts.size() > 1) {
-                        QString key = parts[0].trimmed().toLower();
-                        QString value = line.mid(key.length() + 1).trimmed();
-                        if (key == "dialogue") {
-
-                            QList<QString> subparts = value.split(',');
-                            qint64 start = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
-                            qint64 end = QTime().msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
-                            Style *style = this->style(subparts[3].trimmed());
-                            int marginL = subparts[5].toInt();
-                            int marginR = subparts[6].toInt();
-                            int marginV = subparts[7].toInt();
-
-                            int p = value.indexOf(",");
-                            for (int i = 0; i < 8; i++) {
-                                p = value.indexOf(",", p+1);
-                            }
-                            QString text = value.mid(p+1);
-
-                            // Transform the hints in the text into HTML:
-                            // New ligne HTML-ification
-                            text = text.replace("\\N", "<br/>");
-                            text = text.replace("\\n", "<br/>");
-                            // Italic HTML-ification
-                            text = text.replace("{\\i1}", "<i>");
-                            text = text.replace("{\\i0}", "</i>");
-                            // Color HTML-ification
-                            {
-                                int idxAccOpenColor = text.indexOf("{\\1c&H");
-                                while (idxAccOpenColor != -1) {
-                                    int idxAccCloseColor = text.indexOf("}", idxAccOpenColor);
-                                    if (idxAccCloseColor != -1) {
-                                        QString htmlColor = "<font color=\"#" + text.mid(idxAccOpenColor + 6 + 4, 2) + text.mid(idxAccOpenColor + 6 + 2, 2) + text.mid(idxAccOpenColor + 6, 2) + "\">";
-                                        text = text.left(idxAccOpenColor) + htmlColor + text.mid(idxAccCloseColor+1) + "</font>";
-                                    }
-                                    idxAccOpenColor = text.indexOf("{\\1c&H");
-                                }
-                            }
-                            // Drop others hints that cannot be translated in HTML
-                            {
-                                int idxAccOpenDrop = text.indexOf("{\\");
-                                while (idxAccOpenDrop != -1) {
-                                    int idxAccCloseDrop = text.indexOf("}", idxAccOpenDrop);
-                                    if (idxAccCloseDrop != -1) {
-                                        text = text.left(idxAccOpenDrop) + text.mid(idxAccCloseDrop+1);
-                                    }
-                                    idxAccOpenDrop = text.indexOf("{\\");
-                                }
-                            }
-                            text = text.trimmed();
-                            while(text.startsWith("\n"))
-                            {
-                                text = text.mid(1);
-                            }
-
-                            // Instantiate event !
-                            Event *event = new Event(m_events.size(), text, start, end, this);
-                            event->setStyle(style);
-                            event->setMargins(marginL, marginR, marginV);
-                            m_events.append(event);
-                        }
+             if (section == SECTION_INFOS) {
+                QList<QString> parts = line.split(':');
+                if(parts.size() == 2) {
+                    QString key = parts[0].trimmed().toLower();
+                    QString value = parts[1].trimmed();
+                    if (key == "title") {
+                        m_title = value;
                     }
                 }
+            }
+            else if (section == SECTION_STYLES) {
+                QList<QString> parts = line.split(':');
+                if(parts.size() == 2) {
+                    QString key = parts[0].trimmed().toLower();
+                    QString value = parts[1].trimmed();
+                    if (key == "style") {
+                        Style *style = new Style(value, this);
+                        m_styles[style->name()] = style;
+                    }
+                }
+            }
+            else if (section == SECTION_EVENTS) {
+                QList<QString> parts = line.split(':');
+                if(parts.size() <= 1)
+                    continue;
+                QString key = parts[0].trimmed().toLower();
+                QString value = line.mid(key.length() + 1).trimmed();
+                if (key != "dialogue")
+                    continue;
+
+                QList<QString> subparts = value.split(',');
+                qint64 start = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
+                qint64 end = QTime().msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
+                Style *style = this->style(subparts[3].trimmed());
+                int marginL = subparts[5].toInt();
+                int marginR = subparts[6].toInt();
+                int marginV = subparts[7].toInt();
+
+                int p = value.indexOf(",");
+                for (int i = 0; i < 8; i++) {
+                    p = value.indexOf(",", p+1);
+                }
+                QString text = value.mid(p+1);
+
+                // Transform the hints in the text into HTML:
+                // New ligne HTML-ification
+                text = text.replace("\\N", "<br/>");
+                text = text.replace("\\n", "<br/>");
+                // Italic HTML-ification
+                text = text.replace("{\\i1}", "<i>");
+                text = text.replace("{\\i0}", "</i>");
+                // Color HTML-ification
+                {
+                    int idxAccOpenColor = text.indexOf("{\\1c&H");
+                    while (idxAccOpenColor != -1) {
+                        int idxAccCloseColor = text.indexOf("}", idxAccOpenColor);
+                        if (idxAccCloseColor != -1) {
+                            QString htmlColor = "<font color=\"#" + text.mid(idxAccOpenColor + 6 + 4, 2) + text.mid(idxAccOpenColor + 6 + 2, 2) + text.mid(idxAccOpenColor + 6, 2) + "\">";
+                            text = text.left(idxAccOpenColor) + htmlColor + text.mid(idxAccCloseColor+1) + "</font>";
+                        }
+                        idxAccOpenColor = text.indexOf("{\\1c&H");
+                    }
+                }
+                // Drop others hints that cannot be translated in HTML
+                {
+                    int idxAccOpenDrop = text.indexOf("{\\");
+                    while (idxAccOpenDrop != -1) {
+                        int idxAccCloseDrop = text.indexOf("}", idxAccOpenDrop);
+                        if (idxAccCloseDrop != -1) {
+                            text = text.left(idxAccOpenDrop) + text.mid(idxAccCloseDrop+1);
+                        }
+                        idxAccOpenDrop = text.indexOf("{\\");
+                    }
+                }
+                text = text.trimmed();
+                while(text.startsWith("\n")) {
+                    text = text.mid(1);
+                }
+
+                // Instantiate event !
+                Event *event = new Event(m_events.size(), text, start, end, this);
+                event->setStyle(style);
+                event->setMargins(marginL, marginR, marginV);
+                m_events.append(event);
             }
         }
     }
@@ -229,5 +233,37 @@ void Script::loadFromAss(QStringList content)
 
 void Script::loadFromSrt(QStringList content)
 {
+    SectionType section = SECTION_NONE;
 
+    Style *style = new Style("Default,Sans,18,&H00FFFFFF,&H0000FFFF,&H000078B4,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,20,20,20,0", this);
+    m_styles[style->name()] = style;
+
+    QStringList text;
+    foreach(QString line, content) {
+        qint64 start = 0;
+        qint64 end = 0;
+        if (section == SECTION_NONE && QRegExp("^[0-9]+$").exactMatch(line)) {
+            section = SECTION_INFOS;
+        }
+        else if (section == SECTION_INFOS) {
+            QStringList subparts = line.split(" --> ");
+            start = QTime().msecsTo(QTime::fromString(subparts[0], "h:mm:ss.z"));
+            end = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
+            section = SECTION_EVENTS;
+        }
+        else if (section == SECTION_EVENTS) {
+            if (line.isEmpty()) {
+                // Instantiate event !
+                Event *event = new Event(m_events.size(), text.join("<br/>"), start, end, this);
+                event->setStyle(style);
+                m_events.append(event);
+                text.clear();
+
+                section = SECTION_NONE;
+            }
+            else {
+                text.append(line);
+            }
+        }
+    }
 }

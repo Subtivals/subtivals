@@ -32,6 +32,9 @@ Event::Event(int p_index, const QString &p_text, qint64 p_msseStart, qint64 p_ms
     m_msseStart(p_msseStart),
     m_msseEnd(p_msseEnd),
     m_style(0),
+    m_marginL(0),
+    m_marginR(0),
+    m_marginV(0),
     m_corrected(false)
 {
     setText(p_text);
