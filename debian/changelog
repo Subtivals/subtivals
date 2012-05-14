@@ -1,4 +1,22 @@
-subtivals (1.0.1-1) stable; urgency=low
+subtivals (1.1.0-1) stable; urgency=low
+
+  * SubRip (.srt) support
+  * Highlight current and next subtitles in main window
+  * Ability to change screen background color
+  * Reduced width of main window
+  * Drag-and-drop support
+  * Keyboard shortcuts working everywhere
+  * Stop shortcut
+  * Stop behaviour changed
+  * Toggle calibration
+  * Timeout now uses characters based duration
+  * Remove resize with double-clic
+  * Allow scrolling while playing
+  * + Bug fixes
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Thu, 14 May 2012 09:45:31 +0100
+ 
+ subtivals (1.0.1-1) stable; urgency=low
 
   * Bug fix release.
 
