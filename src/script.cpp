@@ -222,6 +222,9 @@ void Script::loadFromAss(QStringList content)
                 // Italic HTML-ification
                 text = text.replace("{\\i1}", "<i>");
                 text = text.replace("{\\i0}", "</i>");
+                // Bold HTML-ification
+                text = text.replace("{\\b1}", "<b>");
+                text = text.replace("{\\b0}", "</b>");
                 // Color HTML-ification
                 {
                     int idxAccOpenColor = text.indexOf("{\\1c&H");
