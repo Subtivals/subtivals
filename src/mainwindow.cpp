@@ -23,12 +23,38 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QScrollBar>
+#include <QtGui/QPainter>
+#include <QtGui/QItemDelegate>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "configeditor.h"
 
 #define DELAY_OFFSET 250
+
+
+/**
+ * A small delegate class to allow rich text rendering in main table cells.
+ */
+class EventTableDelegate : public QItemDelegate
+{
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if (index.column() == COLUMN_TEXT) {
+             QTextDocument document;
+             QVariant value = index.data(Qt::DisplayRole);
+             if (value.isValid() && !value.isNull()) {
+                 document.setHtml(value.toString());
+                 painter->translate(option.rect.topLeft());
+                 document.drawContents(painter);
+                 painter->translate(-option.rect.topLeft());
+            }
+        }
+        else
+            QItemDelegate::paint(painter, option, index);
+    }
+};
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_scriptProperties(new QLabel(this))
 {
     ui->setupUi(this);
+    ui->tableWidget->setItemDelegate(new EventTableDelegate());
     ui->tableWidget->installEventFilter(this);
     ui->speedFactor->installEventFilter(this);
     m_preferences->installEventFilter(this);
