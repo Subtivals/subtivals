@@ -343,7 +343,7 @@ void MainWindow::actionPlay()
         m_userDelay = 0;
         m_pauseTotal = 0;
         if (!m_msseStartTime) m_msseStartTime = tick();
-        if (row > 0) {
+        if (row >= 0) {
             updateCurrentEventAt(row);
         }
         actionToggleHide(false);
