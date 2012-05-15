@@ -24,7 +24,7 @@
 #include <QtGui/QDesktopServices>
 #include <QtGui/QScrollBar>
 #include <QtGui/QPainter>
-#include <QtGui/QItemDelegate>
+#include <QtGui/QStyledItemDelegate>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -36,22 +36,24 @@
 /**
  * A small delegate class to allow rich text rendering in main table cells.
  */
-class EventTableDelegate : public QItemDelegate
+class EventTableDelegate : public QStyledItemDelegate
 {
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
-        if (index.column() == COLUMN_TEXT) {
-             QTextDocument document;
-             QVariant value = index.data(Qt::DisplayRole);
-             if (value.isValid() && !value.isNull()) {
-                 document.setHtml(value.toString());
-                 painter->translate(option.rect.topLeft());
-                 document.drawContents(painter);
-                 painter->translate(-option.rect.topLeft());
-            }
+        QTextDocument document;
+        QVariant value = index.data(Qt::DisplayRole);
+        // Draw background with cell style
+        QStyleOptionViewItemV4 options = option;
+        initStyleOption(&options, index);
+        options.text = "";
+        options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
+        // Render rich text
+        if (value.isValid() && !value.isNull()) {
+            document.setHtml(value.toString());
+            painter->translate(option.rect.topLeft());
+            document.drawContents(painter);
+            painter->translate(-option.rect.topLeft());
         }
-        else
-            QItemDelegate::paint(painter, option, index);
     }
 };
 
@@ -70,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_scriptProperties(new QLabel(this))
 {
     ui->setupUi(this);
-    ui->tableWidget->setItemDelegate(new EventTableDelegate());
+    ui->tableWidget->setItemDelegateForColumn(COLUMN_TEXT, new EventTableDelegate());
     ui->tableWidget->installEventFilter(this);
     ui->speedFactor->installEventFilter(this);
     m_preferences->installEventFilter(this);
