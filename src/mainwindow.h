@@ -37,6 +37,7 @@
 #define COLUMN_TEXT     3
 
 class ConfigEditor;
+class Player;
 
 namespace Ui {
     class MainWindow;
@@ -69,29 +70,24 @@ public slots:
     void actionPlay();
     void actionStop();
     void actionConfig(bool);
-    void actionAddDelay();
-    void actionSubDelay();
     void actionPause();
     void actionNext();
     void actionPrevious();
     void actionToggleHide(bool state = true);
     void actionAbout();
     void actionShowHelp();
-    void timeout();
+    void playPulse(qint64 msecsElapsed);
+    void eventChanged();
     void actionEnableReload(bool);
     void fileChanged(QString path);
     void reloadScript();
     void actionEventClic(QModelIndex);
     void actionEventSelected(QModelIndex);
-    void updateCurrentEvent(qint64);
-    void updateCurrentEventAt(int);
     void enableEventSelection();
     void disableEventSelection();
     void search();
     void searchTextChanged(QString);
     void actionAutoHideEnded(bool);
-    void setSpeedFactor(double);
-    void enableSpeedFactor(bool);
 protected:
     bool canNext();
     bool canPrevious();
@@ -100,27 +96,18 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent* event);
     void dropEvent(QDropEvent* event);
     void closeEvent(QCloseEvent *);
+    void jumpToSubtitle(int row);
     void highlightEvents(qlonglong elapsed);
     QString ts2tc(qint64 p_timestamp);
     void setState(State p_state);
-    qint64 tick();
-    qint64 elapsedTime();
-    void setElapsedTime(qint64);
 private:
     State m_state;
     Ui::MainWindow *ui;
     Script *m_script;
+    Player *m_player;
     QString m_lastScript;
     QString m_lastFolder;
     ConfigEditor* m_preferences;
-    QTimer m_timer;
-    double m_speedFactor;
-    bool m_speedFactorEnabled;
-    qint64 m_msseStartTime;
-    qint64 m_pauseStart;
-    qint64 m_pauseTotal;
-    qint64 m_userDelay;
-    QList<Event *> m_lastEvents;
     QMap<Event *, int> m_tableMapping;
     bool m_selectEvent;
     QTimer m_timerSelection;

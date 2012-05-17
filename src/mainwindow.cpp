@@ -29,8 +29,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "configeditor.h"
-
-#define DELAY_OFFSET 250
+#include "player.h"
 
 
 /**
@@ -62,10 +61,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_script(0),
+    m_player(new Player()),
     m_preferences(new ConfigEditor(this)),
-    m_speedFactor(1.0),
-    m_speedFactorEnabled(false),
-    m_pauseTotal(0),
     m_selectEvent(true),
     m_rowChanged(false),
     m_filewatcher(new QFileSystemWatcher),
@@ -78,7 +75,17 @@ MainWindow::MainWindow(QWidget *parent) :
     m_preferences->installEventFilter(this);
     connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(disableEventSelection()));
 
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    connect(m_player, SIGNAL(on(Event*)), this, SIGNAL(eventStart(Event*)));
+    connect(m_player, SIGNAL(off(Event*)), this, SIGNAL(eventEnd(Event*)));
+    connect(m_player, SIGNAL(clear()), this, SIGNAL(eventClear()));
+    connect(m_player, SIGNAL(pulse(qint64)), this, SLOT(playPulse(qint64)));
+    connect(m_player, SIGNAL(changed()), this, SLOT(eventChanged()));
+
+    connect(ui->actionAddDelay, SIGNAL(triggered()), m_player, SLOT(addDelay()));
+    connect(ui->actionSubDelay, SIGNAL(triggered()), m_player, SLOT(subDelay()));
+    connect(ui->enableSpeedFactor, SIGNAL(toggled(bool)), m_player, SLOT(enableSpeedFactor(bool)));
+    connect(ui->speedFactor, SIGNAL(valueChanged(double)), m_player, SLOT(setSpeedFactor(double)));
+
     setState(NODATA);
     ui->tableWidget->setFocus();
     setAcceptDrops(true);
@@ -190,7 +197,7 @@ void MainWindow::actionShowCalibration(bool p_state)
         if (m_script)
             m_lastScript = m_script->fileName();
         openFile(":/samples/M.ass");
-        updateCurrentEventAt(0);
+        jumpToSubtitle(0);
         m_timerAutoHide.stop(); // disable auto-hide for calibration
         actionToggleHide(false);
     }
@@ -212,6 +219,7 @@ void MainWindow::openFile (const QString &p_fileName)
 
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);
+    m_player->setScript(m_script);
     m_preferences->setScript(m_script);  // will reset()
     // Set the window title from the file name, without extention
     setWindowTitle(QFileInfo(p_fileName).baseName());
@@ -243,6 +251,8 @@ void MainWindow::openFile (const QString &p_fileName)
     }
     actionDurationCorrection(ui->actionDurationCorrection->isChecked());
 
+	setState(STOPPED);
+
     // Watch file changes
     if (!p_fileName.startsWith(":"))
         m_filewatcher->addPath(p_fileName);
@@ -255,6 +265,7 @@ void MainWindow::openFile (const QString &p_fileName)
 void MainWindow::closeFile()
 {
     actionStop();
+    setState(NODATA);
 
     // Clean-up previously allocated resources & reset GUI
     if(m_script != 0) {
@@ -262,18 +273,13 @@ void MainWindow::closeFile()
         m_preferences->setScript(0);
         delete m_script;
         m_script = 0;
+        m_player->setScript(m_script);
     }
-    if(m_timer.isActive()) {
-        m_timer.stop();
-    }
-    m_msseStartTime = 0;
-    m_userDelay = 0;
-    m_lastEvents.clear();
     m_tableMapping.clear();
 
     setWindowTitle(tr("Subtivals"));
     m_scriptProperties->setText("");
-    //ui->tableWidget->clear();
+    ui->tableWidget->clear();
     ui->tableWidget->setRowCount(0);
 }
 
@@ -324,26 +330,22 @@ void MainWindow::reloadScript()
 {
     // Script file has changed, reload.
     // Store current position
-    qint64 msseStartTime = m_msseStartTime;
-    qint64 userDelay = m_userDelay;
+    qint64 msseStartTime = m_player->elapsedTime();
+    qint64 userDelay = m_player->delay();
     // Store current playing state
     State previous = m_state;
     // Hide current subtitles
-    QListIterator<Event*> it(m_lastEvents);
-    while(it.hasNext())
-        emit eventEnd(it.next());
+    emit eventClear();
 
     // Reload file path
     openFile(QString(m_script->fileName())); //force copy
     statusBar()->showMessage(tr("Subtitle file reloaded."), 5000);
 
+    // Restore position
+    m_player->setElapsedTime(msseStartTime);
+    m_player->addDelay(userDelay);
     // Restore state
     setState(previous);
-    // Restore position
-    m_msseStartTime = msseStartTime;
-    m_userDelay = userDelay;
-    if (m_state == PLAYING)
-        m_timer.start(100);
 }
 
 void MainWindow::actionOpen()
@@ -357,7 +359,6 @@ void MainWindow::actionOpen()
     // Subtitle file selected ?
     if (!fileName.isEmpty()) {
         m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();
-        actionStop();
         openFile(fileName);
     }
 }
@@ -369,20 +370,14 @@ void MainWindow::actionPlay()
     switch(m_state) {
     case STOPPED:
         setState(PLAYING);
-        m_userDelay = 0;
-        m_pauseTotal = 0;
-        if (!m_msseStartTime) m_msseStartTime = tick();
         if (row >= 0) {
-            updateCurrentEventAt(row);
+            jumpToSubtitle(row);
         }
         actionToggleHide(false);
-        m_timer.start(100);
         ui->actionDurationCorrection->setChecked(false);
         break;
     case PAUSED:
         setState(PLAYING);
-        m_pauseTotal += tick() - m_pauseStart;
-        m_timer.start(100);
         break;
     case NODATA:
     case PLAYING:
@@ -393,14 +388,10 @@ void MainWindow::actionPlay()
 void MainWindow::actionStop()
 {
     emit eventClear();
-    setState(STOPPED);
-    m_timer.stop();
+	setState(STOPPED);
     ui->timer->setText("-");
     ui->userDelay->setText("-");
-    m_msseStartTime = 0;
 }
-
-#include <QDebug>
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
@@ -457,23 +448,9 @@ void MainWindow::actionConfig(bool state)
     if (!state) m_preferences->save();
 }
 
-void MainWindow::actionAddDelay()
-{
-    // Add 250 msecs
-    m_userDelay += DELAY_OFFSET;
-}
-
-void MainWindow::actionSubDelay()
-{
-    // Sub 250 msecs
-    m_userDelay -= DELAY_OFFSET;
-}
-
 void MainWindow::actionPause()
 {
     setState(PAUSED);
-    m_pauseStart = tick();
-    m_timer.stop();
 }
 
 bool MainWindow::canPrevious()
@@ -484,10 +461,9 @@ bool MainWindow::canPrevious()
 void MainWindow::actionPrevious()
 {
     if (canPrevious()) {
-        m_userDelay = 0;
         int i = ui->tableWidget->currentRow();
         m_selectEvent = true;
-        updateCurrentEventAt(i - 1);
+        jumpToSubtitle(i - 1);
         ui->actionHide->setChecked(false);
     }
     ui->actionPrevious->setEnabled(canPrevious());
@@ -502,19 +478,18 @@ bool MainWindow::canNext()
 void MainWindow::actionNext()
 {
     if (canNext()){
-        m_userDelay = 0;
         int row = ui->tableWidget->currentRow();
         bool isRowDisplayed = false;
-        foreach(Event* e, m_lastEvents)
+        foreach(Event* e, m_player->current())
             if (m_tableMapping[e] == row)
                 isRowDisplayed = true;
 
         // Jump next if selected is being viewed. Otherwise activate it.
         m_selectEvent = true;
         if (isRowDisplayed && !m_rowChanged)
-            updateCurrentEventAt(row + 1);
+            jumpToSubtitle(row + 1);
         else
-            updateCurrentEventAt(row);
+            jumpToSubtitle(row);
         ui->actionHide->setChecked(false);
     }
     ui->actionPrevious->setEnabled(canPrevious());
@@ -525,7 +500,7 @@ void MainWindow::actionToggleHide(bool state)
 {
     if(QObject::sender() != ui->actionHide)
         ui->actionHide->setChecked(state);
-    highlightEvents(elapsedTime());
+    highlightEvents(m_player->elapsedTime());
     emit toggleHide(state);
 }
 
@@ -551,79 +526,49 @@ void MainWindow::actionEventClic(QModelIndex index)
 
 void MainWindow::actionEventSelected(QModelIndex index)
 {
-    // Reset user delay
-    m_userDelay = 0;
     // Switch to the selected event
-    updateCurrentEventAt(index.row());
+    jumpToSubtitle(index.row());
     // Update the UI
     ui->actionHide->setChecked(false);
     ui->actionPrevious->setEnabled(canPrevious());
     ui->actionNext->setEnabled(canNext());
 }
 
-void MainWindow::timeout()
+void MainWindow::jumpToSubtitle(int row)
 {
-    updateCurrentEvent(elapsedTime());
-}
-
-void MainWindow::updateCurrentEventAt(int i)
-{
-    // Get event in script
-    const Event *event = m_script->eventAt(i);
-    m_timer.stop();
-    qint64 start_mss = event->msseStart();
-    setElapsedTime(start_mss);
-    // Show it !
-    updateCurrentEvent(start_mss + 1);
-    // Continuous play, even while pause
-    switch(m_state) {
+    m_player->jumpTo(row);
+    switch (m_state) {
     case PLAYING:
-        m_timer.start(100);
         break;
     case PAUSED:
-        m_pauseTotal = 0;
-        m_pauseStart = tick();
     case STOPPED:
         if (m_autoHideEnabled) {
+            const Event* event = m_script->eventAt(row);
             qint64 d = event->duration();
             if (event->autoDuration() > d)
                 d = event->autoDuration();
             m_timerAutoHide.setInterval(d);
             m_timerAutoHide.start();
         }
+        break;
     case NODATA:
         break;
     }
 }
 
-void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
+void MainWindow::playPulse(qint64 msecsElapsed)
 {
-    // Sanity check
-    if(m_script == 0)
-        return;
-    // Find events that match elapsed time
-    QList<Event *> currentEvents = m_script->currentEvents(msecsElapsed);
-
-    // Compare events that match elapsed time with events that matched elapsed time last
-    // time the timer was fired to find the differences
-    foreach(Event *e, m_lastEvents) {
-        // Events that where presents and that are no more presents : suppress
-        if(!currentEvents.contains(e))
-            emit eventEnd(e);
-    }
-    foreach(Event *e, currentEvents) {
-        // Events that are presents and that were not presents : add
-        if(!m_lastEvents.contains(e))
-            emit eventStart(e);
-    }
-
-    // Update the GUI
-    m_lastEvents = currentEvents;
-    highlightEvents(msecsElapsed);
     ui->timer->setText(ts2tc(msecsElapsed));
-    ui->userDelay->setText(ts2tc(m_userDelay));
+    ui->userDelay->setText(ts2tc(m_player->delay()));
+}
+
+void MainWindow::eventChanged()
+{
+    qint64 msecsElapsed = m_player->elapsedTime();
+    highlightEvents(msecsElapsed);
     if(m_selectEvent) {
         int eventRow = -1;
+        QList<Event*> currentEvents = m_player->current();
         if (currentEvents.size() > 0) {
             eventRow = m_tableMapping[currentEvents.last()];
             int scrollRow = eventRow > 2 ? eventRow - 2 : 0;
@@ -660,7 +605,7 @@ void MainWindow::highlightEvents(qlonglong elapsed)
         }
     }
 
-    foreach(Event *e, m_lastEvents) {
+    foreach(Event *e, m_player->current()) {
         int row = m_tableMapping[e];
         for (int col=0; col<ui->tableWidget->columnCount(); col++) {
             QTableWidgetItem* item = ui->tableWidget->item(row, col);
@@ -697,6 +642,7 @@ void MainWindow::setState(State p_state)
         ui->actionAutoHideEnded->setEnabled(false);
         break;
     case STOPPED:
+        m_player->stop();
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(false);
         ui->actionPause->setEnabled(false);
@@ -707,6 +653,7 @@ void MainWindow::setState(State p_state)
         ui->actionAutoHideEnded->setEnabled(true);
         break;
     case PLAYING:
+        m_player->play();
         ui->actionPlay->setEnabled(false);
         ui->actionStop->setEnabled(true);
         ui->actionPause->setEnabled(true);
@@ -717,6 +664,7 @@ void MainWindow::setState(State p_state)
         ui->actionAutoHideEnded->setEnabled(false);
         break;
     case PAUSED:
+        m_player->pause();
         ui->actionPlay->setEnabled(true);
         ui->actionStop->setEnabled(true);
         ui->actionPause->setEnabled(false);
@@ -727,46 +675,6 @@ void MainWindow::setState(State p_state)
         ui->actionAutoHideEnded->setEnabled(true);
         break;
     }
-}
-
-qint64 MainWindow::tick()
-{
-    QDateTime dateTime = QDateTime::currentDateTime();
-    qint64 dt=QDate(1982, 5, 8).daysTo(dateTime.date());
-    QTime tt=dateTime.time();
-    return 86400000 * dt + 3600000 * tt.hour() + 60000 * tt.minute() + 1000 * tt.second() + tt.msec();
-}
-
-void MainWindow::setElapsedTime(qint64 p_elapsed)
-{
-    double factor = m_speedFactorEnabled ? m_speedFactor : 1.0;
-    m_msseStartTime = tick() - p_elapsed/factor + m_userDelay - m_pauseTotal;
-}
-
-qint64 MainWindow::elapsedTime()
-{
-    if (m_state != PLAYING) {
-        if (m_lastEvents.count() > 0) {
-            return m_lastEvents.last()->msseStart() + 1;
-        }
-    }
-    // Gets the elapsed time in milliseconds
-    double factor = m_speedFactorEnabled ? m_speedFactor : 1.0;
-    return (tick() - m_msseStartTime + m_userDelay - m_pauseTotal) * factor;
-}
-
-void MainWindow::setSpeedFactor(double p_factor)
-{
-    qint64 elapsed = elapsedTime();
-    m_speedFactor = p_factor/100.0;
-    setElapsedTime(elapsed);
-}
-
-void MainWindow::enableSpeedFactor(bool p_state)
-{
-    qint64 elapsed = elapsedTime();
-    m_speedFactorEnabled = p_state;
-    setElapsedTime(elapsed);
 }
 
 void MainWindow::search()

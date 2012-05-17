@@ -234,7 +234,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -616,38 +616,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionAddDelay</sender>
-   <signal>activated()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>actionAddDelay()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>326</x>
-     <y>213</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionSubDelay</sender>
-   <signal>activated()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>actionSubDelay()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>326</x>
-     <y>213</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionPause</sender>
    <signal>activated()</signal>
    <receiver>MainWindow</receiver>
@@ -872,38 +840,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>speedFactor</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>setSpeedFactor(double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>312</x>
-     <y>105</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>326</x>
-     <y>249</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>enableSpeedFactor</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>enableSpeedFactor(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>140</x>
-     <y>105</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>326</x>
-     <y>249</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionShowHelp</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
@@ -950,15 +886,11 @@
   <slot>actionEventClic(QModelIndex)</slot>
   <slot>actionPrevious()</slot>
   <slot>actionEnableReload(bool)</slot>
-  <slot>actionAddDelay()</slot>
-  <slot>actionSubDelay()</slot>
   <slot>search()</slot>
   <slot>searchTextChanged(QString)</slot>
   <slot>actionShowCalibration(bool)</slot>
   <slot>actionAbout()</slot>
   <slot>actionAutoHideEnded(bool)</slot>
-  <slot>setSpeedFactor(double)</slot>
-  <slot>enableSpeedFactor(bool)</slot>
   <slot>actionShowHelp()</slot>
   <slot>actionDurationCorrection(bool)</slot>
  </slots>

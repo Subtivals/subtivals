@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     event.cpp \
     subtitlesform.cpp \
     styleeditor.cpp \
-    configeditor.cpp
+    configeditor.cpp \
+    player.cpp
 
 HEADERS  += mainwindow.h \
     script.h \
@@ -25,7 +26,8 @@ HEADERS  += mainwindow.h \
     event.h \
     subtitlesform.h \
     styleeditor.h \
-    configeditor.h
+    configeditor.h \
+    player.h
 
 FORMS    += mainwindow.ui \
     subtitlesform.ui \
