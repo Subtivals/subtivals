@@ -87,6 +87,8 @@ public slots:
     void updateCurrentEventAt(int);
     void enableEventSelection();
     void disableEventSelection();
+    void enableActionNext();
+    void disableActionNext();
     void search();
     void searchTextChanged(QString);
     void actionAutoHideEnded(bool);
@@ -124,6 +126,7 @@ private:
     QMap<Event *, int> m_tableMapping;
     bool m_selectEvent;
     QTimer m_timerSelection;
+    QTimer m_timerNext;
     bool m_rowChanged;
     bool m_reloadEnabled;
     QFileSystemWatcher* m_filewatcher;

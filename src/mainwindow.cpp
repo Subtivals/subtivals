@@ -93,6 +93,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_timerSelection.setInterval(1000);
     connect(&m_timerSelection, SIGNAL(timeout()), this, SLOT(enableEventSelection()));
 
+    // Action Next timer (disables next action for a while)
+    m_timerNext.setSingleShot(true);
+    m_timerNext.setInterval(300);
+    connect(&m_timerNext, SIGNAL(timeout()), this, SLOT(enableActionNext()));
+
     // Script file watching :
     connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
     m_timerFileChange.setSingleShot(true);
@@ -400,8 +405,6 @@ void MainWindow::actionStop()
     m_msseStartTime = 0;
 }
 
-#include <QDebug>
-
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
     if (event->type() == QEvent::FocusOut) {
@@ -418,7 +421,8 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             QList<QAction*> allActions = this->findChildren<QAction*>();
             foreach(QAction* action, allActions) {
                 if (!action->shortcut().isEmpty() &&
-                    action->shortcut().matches(keySequence)) {
+                    action->shortcut().matches(keySequence) &&
+                    action->isEnabled()) {
                     action->trigger();
                 }
             }
@@ -496,12 +500,12 @@ void MainWindow::actionPrevious()
 
 bool MainWindow::canNext()
 {
-    return ui->tableWidget->currentRow() < ui->tableWidget->rowCount() - 1;
+    return !m_timerNext.isActive() && ui->tableWidget->currentRow() < ui->tableWidget->rowCount() - 1;
 }
 
 void MainWindow::actionNext()
 {
-    if (canNext()){
+    if (canNext()) {
         m_userDelay = 0;
         int row = ui->tableWidget->currentRow();
         bool isRowDisplayed = false;
@@ -540,6 +544,18 @@ void MainWindow::disableEventSelection()
 void MainWindow::enableEventSelection()
 {
     m_selectEvent = true;
+}
+
+void MainWindow::disableActionNext()
+{
+    // Disable next for a while
+    ui->actionNext->setEnabled(false);
+    m_timerNext.start();
+}
+
+void MainWindow::enableActionNext()
+{
+    ui->actionNext->setEnabled(canNext());
 }
 
 void MainWindow::actionEventClic(QModelIndex index)
@@ -606,16 +622,23 @@ void MainWindow::updateCurrentEvent(qint64 msecsElapsed)
 
     // Compare events that match elapsed time with events that matched elapsed time last
     // time the timer was fired to find the differences
+    bool hasChanged = false;
     foreach(Event *e, m_lastEvents) {
         // Events that where presents and that are no more presents : suppress
-        if(!currentEvents.contains(e))
+        if(!currentEvents.contains(e)) {
             emit eventEnd(e);
+            hasChanged = true;
+        }
     }
     foreach(Event *e, currentEvents) {
         // Events that are presents and that were not presents : add
-        if(!m_lastEvents.contains(e))
+        if(!m_lastEvents.contains(e)) {
             emit eventStart(e);
+            hasChanged = true;
+        }
     }
+    if (hasChanged)
+        disableActionNext();
 
     // Update the GUI
     m_lastEvents = currentEvents;
