@@ -53,13 +53,9 @@ public:
     enum State { NODATA, STOPPED, PLAYING, PAUSED};
     void openFile (const QString &p_fileName);
     void closeFile();
-    bool eventFilter(QObject*, QEvent*);
-    const ConfigEditor * configEditor();
-    void showEvent(QShowEvent *);
+    const ConfigEditor* configEditor();
+    const Player* player();
 signals:
-    void eventStart(Event *p_event);
-    void eventEnd(Event *p_event);
-    void eventClear();
     void toggleHide(bool state);
     void screenResizable(bool state);
 public slots:
@@ -91,6 +87,8 @@ public slots:
 protected:
     bool canNext();
     bool canPrevious();
+    bool eventFilter(QObject*, QEvent*);
+    void showEvent(QShowEvent *);
     void dragEnterEvent(QDragEnterEvent* event);
     void dragMoveEvent(QDragMoveEvent* event);
     void dragLeaveEvent(QDragLeaveEvent* event);

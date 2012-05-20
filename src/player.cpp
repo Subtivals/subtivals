@@ -46,6 +46,7 @@ void Player::pause()
 
 void Player::stop()
 {
+    emit clear();
     m_timer.stop();
     m_msseStartTime = 0;
     m_pauseTotal = 0;

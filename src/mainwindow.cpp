@@ -75,9 +75,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_preferences->installEventFilter(this);
     connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(disableEventSelection()));
 
-    connect(m_player, SIGNAL(on(Event*)), this, SIGNAL(eventStart(Event*)));
-    connect(m_player, SIGNAL(off(Event*)), this, SIGNAL(eventEnd(Event*)));
-    connect(m_player, SIGNAL(clear()), this, SIGNAL(eventClear()));
     connect(m_player, SIGNAL(pulse(qint64)), this, SLOT(playPulse(qint64)));
     connect(m_player, SIGNAL(changed()), this, SLOT(eventChanged()));
 
@@ -191,6 +188,11 @@ const ConfigEditor* MainWindow::configEditor()
     return m_preferences;
 }
 
+const Player* MainWindow::player()
+{
+    return m_player;
+}
+
 void MainWindow::actionShowCalibration(bool p_state)
 {
     if (p_state) {
@@ -212,7 +214,6 @@ void MainWindow::actionShowCalibration(bool p_state)
 
 void MainWindow::openFile (const QString &p_fileName)
 {
-    emit eventClear();
     // Save on load file
     m_preferences->save();
     closeFile();
@@ -334,8 +335,6 @@ void MainWindow::reloadScript()
     qint64 userDelay = m_player->delay();
     // Store current playing state
     State previous = m_state;
-    // Hide current subtitles
-    emit eventClear();
 
     // Reload file path
     openFile(QString(m_script->fileName())); //force copy
@@ -387,7 +386,6 @@ void MainWindow::actionPlay()
 
 void MainWindow::actionStop()
 {
-    emit eventClear();
 	setState(STOPPED);
     ui->timer->setText("-");
     ui->userDelay->setText("-");
