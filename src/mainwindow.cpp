@@ -77,6 +77,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_player, SIGNAL(pulse(qint64)), this, SLOT(playPulse(qint64)));
     connect(m_player, SIGNAL(changed()), this, SLOT(eventChanged()));
+    connect(m_player, SIGNAL(changed()), this, SLOT(disableActionNext()));
 
     connect(ui->actionAddDelay, SIGNAL(triggered()), m_player, SLOT(addDelay()));
     connect(ui->actionSubDelay, SIGNAL(triggered()), m_player, SLOT(subDelay()));
@@ -96,6 +97,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_timerSelection.setSingleShot(true);
     m_timerSelection.setInterval(1000);
     connect(&m_timerSelection, SIGNAL(timeout()), this, SLOT(enableEventSelection()));
+
+    // Action Next timer (disables next action for a while)
+    m_timerNext.setSingleShot(true);
+    m_timerNext.setInterval(300);
+    connect(&m_timerNext, SIGNAL(timeout()), this, SLOT(enableActionNext()));
 
     // Script file watching :
     connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
@@ -407,7 +413,9 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             QList<QAction*> allActions = this->findChildren<QAction*>();
             foreach(QAction* action, allActions) {
                 if (!action->shortcut().isEmpty() &&
-                    action->shortcut().matches(keySequence)) {
+                    action->shortcut().matches(keySequence) &&
+                    action->isEnabled()) {
+                    // Trigger action manually
                     action->trigger();
                 }
             }
@@ -470,12 +478,12 @@ void MainWindow::actionPrevious()
 
 bool MainWindow::canNext()
 {
-    return ui->tableWidget->currentRow() < ui->tableWidget->rowCount() - 1;
+    return !m_timerNext.isActive() && ui->tableWidget->currentRow() < ui->tableWidget->rowCount() - 1;
 }
 
 void MainWindow::actionNext()
 {
-    if (canNext()){
+    if (canNext()) {
         int row = ui->tableWidget->currentRow();
         bool isRowDisplayed = false;
         foreach(Event* e, m_player->current())
@@ -513,6 +521,18 @@ void MainWindow::disableEventSelection()
 void MainWindow::enableEventSelection()
 {
     m_selectEvent = true;
+}
+
+void MainWindow::disableActionNext()
+{
+    // Disable next for a while
+    ui->actionNext->setEnabled(false);
+    m_timerNext.start();
+}
+
+void MainWindow::enableActionNext()
+{
+    ui->actionNext->setEnabled(canNext());
 }
 
 void MainWindow::actionEventClic(QModelIndex index)
