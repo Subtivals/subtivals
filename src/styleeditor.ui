@@ -23,8 +23,18 @@
       <string>Styles</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
       <item row="0" column="0">
-       <widget class="QListWidget" name="stylesNames"/>
+       <widget class="QListWidget" name="stylesNames">
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -106,9 +116,9 @@
  <connections>
   <connection>
    <sender>stylesNames</sender>
-   <signal>currentRowChanged(int)</signal>
+   <signal>itemSelectionChanged()</signal>
    <receiver>StyleEditor</receiver>
-   <slot>styleSelected(int)</slot>
+   <slot>styleSelected()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>195</x>
