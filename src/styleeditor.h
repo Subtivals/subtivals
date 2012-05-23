@@ -18,6 +18,7 @@
 #define STYLEEDITOR_H
 
 #include <QWidget>
+#include <QListWidgetItem>
 
 namespace Ui {
     class StyleEditor;
@@ -41,14 +42,14 @@ public slots:
     void save();
     void apply();
     void reset();
-    void styleSelected(int);
+    void styleSelected();
     void chooseColour();
     void setPreset(int);
 protected:
     void initComponents();
     void fillButtonColour();
     void setStyleNameBold(int, bool);
-
+    void setStyleNameBold(QListWidgetItem *item, bool bold);
 private:
     Script* m_script;
     QList<Style*> m_backup;

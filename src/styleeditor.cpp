@@ -17,7 +17,6 @@
 #include "styleeditor.h"
 #include "ui_styleeditor.h"
 
-#include <QListWidgetItem>
 #include <QColorDialog>
 #include <QPainter>
 #include <QSettings>
@@ -74,29 +73,42 @@ void StyleEditor::initComponents()
     }
 }
 
-void StyleEditor::styleSelected(int row)
+void StyleEditor::styleSelected()
 {
-    ui->groupFont->setEnabled(row >= 0);
-    if (row < 0)
-        return;
     if (!m_script)
         return;
 
-    // Load style from script
-    QString stylename = ui->stylesNames->item(row)->text();
-    Style* style = m_script->style(stylename);
-    QFont font(style->font());
-    font.setPointSize(12);  // fixed size in combo
-    m_colour = style->primaryColour();
-    fillButtonColour();
+    QList<QListWidgetItem*> selected = ui->stylesNames->selectedItems();
+    int nbselected = selected.size();
+    ui->groupFont->setEnabled(nbselected > 0);
+    if (nbselected == 0)
+        return;
 
     // Block signals to avoid apply() to be called.
     ui->fontName->blockSignals(true);
-    ui->fontName->setCurrentFont(font);
-    ui->fontName->blockSignals(false);
-
     ui->fontSize->blockSignals(true);
-    ui->fontSize->setValue(style->font().pointSize());
+
+    // Load style from script
+    Style* first = m_script->style(selected.first()->text());
+    m_colour = first->primaryColour();
+    QFont font(first->font());
+    font.setPointSize(12);  // fixed size in combo
+    ui->fontName->setCurrentFont(font);
+    ui->fontSize->setValue(first->font().pointSize());
+
+    foreach(QListWidgetItem* item, selected) {
+        // If any style differs from first, clear fields
+        Style* style = m_script->style(item->text());
+        if (style->font().family() != first->font().family())
+            ui->fontName->setCurrentIndex(-1);
+        if (style->font().pointSize() != first->font().pointSize())
+            ui->fontSize->clear();
+        if (style->primaryColour() != first->primaryColour())
+            m_colour = Qt::transparent;
+    }
+    fillButtonColour();
+
+    ui->fontName->blockSignals(false);
     ui->fontSize->blockSignals(false);
 }
 
@@ -118,6 +130,7 @@ void StyleEditor::save()
 void StyleEditor::reset()
 {
     // Reload styles from backup and apply overidden styles from settings
+    ui->stylesNames->clearSelection();
     ui->stylesNames->setCurrentRow(-1);
     m_overidden.clear();
     QSettings settings;
@@ -149,21 +162,35 @@ void StyleEditor::reset()
 
 void StyleEditor::apply()
 {
-    int row = ui->stylesNames->currentRow();
-    if (row < 0)
-        return;
     if (!m_script)
         return;
 
-    // Style properties were edited, store a copy
-    QString stylename = ui->stylesNames->item(row)->text();
-    QFont font = ui->fontName->currentFont();
-    font.setPointSize(ui->fontSize->value());
-    Style* style = m_script->style(stylename);
-    style->setFont(font);
-    style->setPrimaryColour(m_colour);
-    m_overidden.append(style);
-    setStyleNameBold(row, true);
+    QList<QListWidgetItem*> selected = ui->stylesNames->selectedItems();
+    int nbselected = selected.size();
+    if (nbselected == 0)
+        return;
+
+    foreach(QListWidgetItem* item, selected) {
+        // Style properties were edited, store a copy
+        Style* style = m_script->style(item->text());
+        int fontSize = style->font().pointSize();
+        QFont font = style->font();
+        if (ui->fontSize->value() >= 0) {
+            fontSize = ui->fontSize->value();
+            font.setPointSize(ui->fontSize->value());
+            style->setFont(font);
+        }
+        if (ui->fontName->currentIndex() >= 0) {
+            font = ui->fontName->currentFont();
+            font.setPointSize(fontSize);
+            style->setFont(font);
+        }
+        if (m_colour != Qt::transparent) {
+            style->setPrimaryColour(m_colour);
+        }
+        m_overidden.append(style);
+        setStyleNameBold(item, true);
+    }
 
     emit styleChanged();
 }
@@ -200,15 +227,26 @@ void StyleEditor::fillButtonColour()
 {
     QPixmap pm(24, 24);
     QPainter p(&pm);
-    p.setPen(m_colour);
-    p.setBrush(m_colour);
+    if (m_colour == Qt::transparent) {
+        p.setPen(qApp->palette().color(QPalette::AlternateBase));
+        p.setBrush(p.pen().color());
+    }
+    else {
+        p.setPen(m_colour);
+        p.setBrush(m_colour);
+    }
+
     p.drawRect(0, 0, 24, 24);
     ui->btnColor->setIcon(pm);
 }
 
 void StyleEditor::setStyleNameBold(int row, bool bold)
 {
-    QListWidgetItem* item = ui->stylesNames->item(row);
+    setStyleNameBold(ui->stylesNames->item(row), bold);
+}
+
+void StyleEditor::setStyleNameBold(QListWidgetItem *item, bool bold)
+{
     QFont f = item->font();
     f.setBold(bold);
     item->setFont(f);
