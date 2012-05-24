@@ -14,7 +14,7 @@ Video Position: 0
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: 01_BLANC,Ubuntu,32,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,50,50,45,1
+Style: 01_BLANC,Arial,27,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,50,50,45,1
 Style: 02_JAUNE-hors_champ,Ubuntu,32,&H000FEBEE,&H000FEBEE,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,50,50,45,1
 Style: 03_ROUGE-bruit,Ubuntu,32,&H000E0FEF,&H000E0FEF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,50,50,45,1
 Style: 04_MAGENTA-musique,Ubuntu,32,&H00900896,&H00900896,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,50,50,45,1

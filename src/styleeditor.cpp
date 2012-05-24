@@ -175,7 +175,7 @@ void StyleEditor::apply()
         Style* style = m_script->style(item->text());
         int fontSize = style->font().pointSize();
         QFont font = style->font();
-        if (ui->fontSize->value() >= 0) {
+        if (!ui->fontSize->text().isEmpty()) {
             fontSize = ui->fontSize->value();
             font.setPointSize(ui->fontSize->value());
             style->setFont(font);
@@ -187,10 +187,13 @@ void StyleEditor::apply()
         }
         if (m_colour != Qt::transparent) {
             style->setPrimaryColour(m_colour);
+
         }
         m_overidden.append(style);
         setStyleNameBold(item, true);
     }
+
+    styleSelected();
 
     emit styleChanged();
 }
@@ -211,7 +214,10 @@ void StyleEditor::restore()
 void StyleEditor::chooseColour()
 {
     // Show color chooser
-    QColor chosen = QColorDialog::getColor(m_colour, this
+    QColor init = m_colour;
+    if (init == Qt::transparent)
+        init = Qt::white;
+    QColor chosen = QColorDialog::getColor(init, this
     #if (QT_VERSION >= QT_VERSION_CHECK(4, 5, 0))
         , tr("Select Color"), QColorDialog::ShowAlphaChannel
     #endif
@@ -228,16 +234,14 @@ void StyleEditor::fillButtonColour()
     QPixmap pm(24, 24);
     QPainter p(&pm);
     if (m_colour == Qt::transparent) {
-        p.setPen(qApp->palette().color(QPalette::AlternateBase));
-        p.setBrush(p.pen().color());
+        ui->btnColor->setIcon(QIcon());
     }
     else {
         p.setPen(m_colour);
-        p.setBrush(m_colour);
+        p.setBrush(p.pen().color());
+        p.drawRect(0, 0, 24, 24);
+        ui->btnColor->setIcon(pm);
     }
-
-    p.drawRect(0, 0, 24, 24);
-    ui->btnColor->setIcon(pm);
 }
 
 void StyleEditor::setStyleNameBold(int row, bool bold)
