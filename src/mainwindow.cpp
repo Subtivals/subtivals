@@ -296,7 +296,6 @@ void MainWindow::closeFile()
 
     setWindowTitle(tr("Subtivals"));
     m_scriptProperties->setText("");
-    ui->tableWidget->clear();
     ui->tableWidget->setRowCount(0);
 }
 
