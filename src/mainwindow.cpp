@@ -138,6 +138,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    m_playerThread->quit();
     delete ui;
     if (m_script) delete m_script;
     delete m_player;
@@ -183,6 +184,7 @@ void MainWindow::dropEvent(QDropEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent *)
 {
+    setState(STOPPED);
     // Save settings
     QSettings settings;
     settings.beginGroup("MainWindow");
@@ -588,10 +590,11 @@ void MainWindow::playPulse(qint64 msecsElapsed)
     ui->userDelay->setText(ts2tc(m_player->delay()));
 
     // Update progression of events
+    QList<Event*> currentEvents = m_player->current();
     foreach(Event* event, m_script->events()) {
         int row = m_tableMapping[event];
         qreal progression = 0.0;
-        if (m_player->current().contains(event)) {
+        if (currentEvents.contains(event)) {
             progression = 1.0 - (msecsElapsed - event->msseStart()) / qreal(event->duration());
         }
         ui->tableWidget->item(row, COLUMN_END)->setData(Qt::UserRole, progression);
