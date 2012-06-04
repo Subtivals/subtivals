@@ -105,6 +105,7 @@ private:
     Ui::MainWindow *ui;
     Script *m_script;
     Player *m_player;
+    QThread *m_playerThread;
     QString m_lastScript;
     QString m_lastFolder;
     ConfigEditor* m_preferences;

@@ -17,6 +17,7 @@
 #include <QtCore/QtGlobal>
 #include <QtCore/QSettings>
 #include <QtCore/QUrl>
+#include <QtCore/QThread>
 #include <QtGui/QFileDialog>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QKeyEvent>
@@ -62,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_script(0),
     m_player(new Player()),
+    m_playerThread(new QThread()),
     m_preferences(new ConfigEditor(this)),
     m_selectEvent(true),
     m_rowChanged(false),
@@ -75,6 +77,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_preferences->installEventFilter(this);
     connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(disableEventSelection()));
 
+    m_player->moveToThread(m_playerThread);
+    m_playerThread->start();
     connect(m_player, SIGNAL(pulse(qint64)), this, SLOT(playPulse(qint64)));
     connect(m_player, SIGNAL(changed()), this, SLOT(eventChanged()));
     connect(m_player, SIGNAL(changed()), this, SLOT(disableActionNext()));
@@ -116,6 +120,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    if (m_script) delete m_script;
+    delete m_player;
+    delete m_playerThread;
+    delete m_preferences;
+    delete m_filewatcher;
+    delete m_scriptProperties;
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event) {
