@@ -246,6 +246,8 @@ void MainWindow::openFile (const QString &p_fileName)
         ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
         row++;
     }
+    ui->tableWidget->resizeColumnToContents(COLUMN_START);
+    ui->tableWidget->resizeColumnToContents(COLUMN_END);
     actionDurationCorrection(ui->actionDurationCorrection->isChecked());
 
     // Watch file changes
