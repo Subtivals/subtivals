@@ -213,7 +213,7 @@ void MainWindow::actionShowCalibration(bool p_state)
         if (m_script)
             m_lastScript = m_script->fileName();
         openFile(":/samples/M.ass");
-        jumpToSubtitle(0);
+        m_player->jumpTo(0);
         m_player->enableAutoHide(false); // disable auto-hide for calibration
         actionToggleHide(false);
     }
@@ -382,7 +382,7 @@ void MainWindow::actionPlay()
     case STOPPED:
         setState(PLAYING);
         if (row >= 0) {
-            jumpToSubtitle(row);
+            m_player->jumpTo(row);
         }
         actionToggleHide(false);
         ui->actionDurationCorrection->setChecked(false);
@@ -475,7 +475,7 @@ void MainWindow::actionPrevious()
     if (canPrevious()) {
         int i = ui->tableWidget->currentRow();
         m_selectEvent = true;
-        jumpToSubtitle(i - 1);
+        m_player->jumpTo(i - 1);
         ui->actionHide->setChecked(false);
     }
     ui->actionPrevious->setEnabled(canPrevious());
@@ -499,9 +499,9 @@ void MainWindow::actionNext()
         // Jump next if selected is being viewed. Otherwise activate it.
         m_selectEvent = true;
         if (isRowDisplayed && !m_rowChanged)
-            jumpToSubtitle(row + 1);
+            m_player->jumpTo(row + 1);
         else
-            jumpToSubtitle(row);
+            m_player->jumpTo(row);
         ui->actionHide->setChecked(false);
     }
     ui->actionPrevious->setEnabled(canPrevious());
@@ -551,16 +551,11 @@ void MainWindow::actionEventClic(QModelIndex index)
 void MainWindow::actionEventSelected(QModelIndex index)
 {
     // Switch to the selected event
-    jumpToSubtitle(index.row());
+    m_player->jumpTo(index.row());
     // Update the UI
     ui->actionHide->setChecked(false);
     ui->actionPrevious->setEnabled(canPrevious());
     ui->actionNext->setEnabled(canNext());
-}
-
-void MainWindow::jumpToSubtitle(int row)
-{
-    m_player->jumpTo(row);
 }
 
 void MainWindow::playPulse(qint64 msecsElapsed)

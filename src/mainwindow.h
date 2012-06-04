@@ -96,7 +96,6 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent* event);
     void dropEvent(QDropEvent* event);
     void closeEvent(QCloseEvent *);
-    void jumpToSubtitle(int row);
     void highlightEvents(qlonglong elapsed);
     QString ts2tc(qint64 p_timestamp);
     void setState(State p_state);
