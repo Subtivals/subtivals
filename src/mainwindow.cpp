@@ -36,7 +36,7 @@
 /**
  * A small delegate class to allow rich text rendering in main table cells.
  */
-class EventTableDelegate : public QStyledItemDelegate
+class SubtitleTextDelegate : public QStyledItemDelegate
 {
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
@@ -57,6 +57,27 @@ class EventTableDelegate : public QStyledItemDelegate
     }
 };
 
+class SubtitleDurationDelegate : public QStyledItemDelegate
+{
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        QStyledItemDelegate::paint(painter, option, index);
+        // Progression is stored in cell user data
+        qreal progression = index.data(Qt::UserRole).toReal();
+        if (progression == 0.0)
+            return;
+        // Paint progression of event
+        painter->save();
+        QPen pen(option.palette.text().color());
+        pen.setWidth(3);
+        painter->setPen(pen);
+        QPoint startLine(option.rect.bottomRight());
+        startLine.setX(startLine.x() - option.rect.width() * progression +1); // +1 for border width
+        painter->drawLine(startLine, option.rect.bottomRight());
+        painter->restore();
+    }
+};
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -71,7 +92,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_scriptProperties(new QLabel(this))
 {
     ui->setupUi(this);
-    ui->tableWidget->setItemDelegateForColumn(COLUMN_TEXT, new EventTableDelegate());
+    ui->tableWidget->setItemDelegateForColumn(COLUMN_END, new SubtitleDurationDelegate());
+    ui->tableWidget->setItemDelegateForColumn(COLUMN_TEXT, new SubtitleTextDelegate());
     ui->tableWidget->installEventFilter(this);
     ui->speedFactor->installEventFilter(this);
     m_preferences->installEventFilter(this);
@@ -564,6 +586,16 @@ void MainWindow::playPulse(qint64 msecsElapsed)
 {
     ui->timer->setText(ts2tc(msecsElapsed));
     ui->userDelay->setText(ts2tc(m_player->delay()));
+
+    // Update progression of events
+    foreach(Event* event, m_script->events()) {
+        int row = m_tableMapping[event];
+        qreal progression = 0.0;
+        if (m_player->current().contains(event)) {
+            progression = 1.0 - (msecsElapsed - event->msseStart()) / qreal(event->duration());
+        }
+        ui->tableWidget->item(row, COLUMN_END)->setData(Qt::UserRole, progression);
+    }
 }
 
 void MainWindow::eventChanged()
