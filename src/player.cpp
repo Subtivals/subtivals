@@ -12,9 +12,13 @@ Player::Player(QObject *parent) :
     m_msseStartTime(0),
     m_pauseStart(0),
     m_pauseTotal(0),
-    m_userDelay(0)
+    m_userDelay(0),
+    m_autoHideEnabled(false)
 {
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    // Timer for auto-hiding ended events
+    m_timerAutoHide.setSingleShot(true);
+    connect(&m_timerAutoHide, SIGNAL(timeout()), this, SIGNAL(autoHide()));
 }
 
 void Player::setScript(Script* p_script)
@@ -35,6 +39,7 @@ void Player::play()
         m_pauseTotal += tick() - m_pauseStart;
         m_pauseStart = 0;
     }
+    m_timerAutoHide.stop();
     m_timer.start(100);
 }
 
@@ -48,6 +53,7 @@ void Player::stop()
 {
     emit clear();
     m_timer.stop();
+    m_timerAutoHide.stop();
     m_msseStartTime = 0;
     m_pauseTotal = 0;
     m_userDelay = 0;
@@ -95,6 +101,13 @@ void Player::jumpTo(int i)
     else {
         m_pauseTotal = 0;
         if (m_pauseStart > 0) m_pauseStart = tick();
+        if (m_autoHideEnabled) {
+            qint64 d = event->duration();
+            if (event->autoDuration() > d)
+                d = event->autoDuration();
+            m_timerAutoHide.setInterval(d);
+            m_timerAutoHide.start();
+        }
     }
 }
 
@@ -162,6 +175,17 @@ void Player::setSpeedFactor(double p_factor)
     qint64 elapsed = elapsedTime();
     m_speedFactor = p_factor/100.0;
     setElapsedTime(elapsed);
+}
+
+void Player::enableAutoHide(bool p_state)
+{
+    m_autoHideEnabled = p_state;
+    m_timerAutoHide.stop();
+}
+
+bool Player::isAutoHideEnabled()
+{
+    return m_autoHideEnabled;
 }
 
 void Player::enableSpeedFactor(bool p_state)

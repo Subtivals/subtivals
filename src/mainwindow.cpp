@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_player, SIGNAL(pulse(qint64)), this, SLOT(playPulse(qint64)));
     connect(m_player, SIGNAL(changed()), this, SLOT(eventChanged()));
     connect(m_player, SIGNAL(changed()), this, SLOT(disableActionNext()));
+    connect(m_player, SIGNAL(autoHide()), this, SLOT(actionToggleHide()));
 
     connect(ui->actionAddDelay, SIGNAL(triggered()), m_player, SLOT(addDelay()));
     connect(ui->actionSubDelay, SIGNAL(triggered()), m_player, SLOT(subDelay()));
@@ -111,10 +112,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
     m_timerFileChange.setSingleShot(true);
     connect(&m_timerFileChange, SIGNAL(timeout()), this, SLOT(reloadScript()));
-
-    // Timer for auto-hiding ended events
-    m_timerAutoHide.setSingleShot(true);
-    connect(&m_timerAutoHide, SIGNAL(timeout()), this, SLOT(actionToggleHide()));
 }
 
 MainWindow::~MainWindow()
@@ -171,7 +168,7 @@ void MainWindow::closeEvent(QCloseEvent *)
     settings.setValue("size", size());
     settings.setValue("pos", pos());
     settings.setValue("reloadEnabled", m_reloadEnabled);
-    settings.setValue("autoHideEnabled", m_autoHideEnabled);
+    settings.setValue("autoHideEnabled", m_player->isAutoHideEnabled());
     settings.setValue("showPreferences", ui->actionPreferences->isChecked());
     settings.setValue("durationCorrection", ui->actionDurationCorrection->isChecked());
     settings.endGroup();
@@ -192,8 +189,9 @@ void MainWindow::showEvent(QShowEvent *)
 
     m_reloadEnabled = settings.value("reloadEnabled", false).toBool();
     ui->actionEnableReload->setChecked(m_reloadEnabled);
-    m_autoHideEnabled = settings.value("autoHideEnabled", false).toBool();
-    ui->actionAutoHideEnded->setChecked(m_autoHideEnabled);
+    bool autoHide = settings.value("autoHideEnabled", false).toBool();
+    m_player->enableAutoHide(autoHide);
+    ui->actionAutoHideEnded->setChecked(autoHide);
     ui->actionPreferences->setChecked(settings.value("showPreferences", false).toBool());
     ui->actionDurationCorrection->setChecked(settings.value("durationCorrection", false).toBool());
     settings.endGroup();
@@ -216,10 +214,11 @@ void MainWindow::actionShowCalibration(bool p_state)
             m_lastScript = m_script->fileName();
         openFile(":/samples/M.ass");
         jumpToSubtitle(0);
-        m_timerAutoHide.stop(); // disable auto-hide for calibration
+        m_player->enableAutoHide(false); // disable auto-hide for calibration
         actionToggleHide(false);
     }
     else {
+        m_player->enableAutoHide(ui->actionAutoHideEnded->isChecked()); // restore auto-hide
         if (!m_lastScript.isEmpty())
             openFile(m_lastScript);
         else {
@@ -276,7 +275,6 @@ void MainWindow::openFile (const QString &p_fileName)
     // Reset search field
     ui->searchField->setEnabled(row > 0);
     ui->searchField->setText("");
-    m_timerAutoHide.stop();
 }
 
 void MainWindow::closeFile()
@@ -329,7 +327,7 @@ void MainWindow::actionEnableReload(bool state)
 
 void MainWindow::actionAutoHideEnded(bool p_state)
 {
-    m_autoHideEnabled = p_state;
+    m_player->enableAutoHide(p_state);
 }
 
 void MainWindow::fileChanged(QString path)
@@ -380,7 +378,6 @@ void MainWindow::actionOpen()
 void MainWindow::actionPlay()
 {
     int row = ui->tableWidget->currentRow();
-    m_timerAutoHide.stop();
     switch(m_state) {
     case STOPPED:
         setState(PLAYING);
@@ -564,23 +561,6 @@ void MainWindow::actionEventSelected(QModelIndex index)
 void MainWindow::jumpToSubtitle(int row)
 {
     m_player->jumpTo(row);
-    switch (m_state) {
-    case PLAYING:
-        break;
-    case PAUSED:
-    case STOPPED:
-        if (m_autoHideEnabled) {
-            const Event* event = m_script->eventAt(row);
-            qint64 d = event->duration();
-            if (event->autoDuration() > d)
-                d = event->autoDuration();
-            m_timerAutoHide.setInterval(d);
-            m_timerAutoHide.start();
-        }
-        break;
-    case NODATA:
-        break;
-    }
 }
 
 void MainWindow::playPulse(qint64 msecsElapsed)

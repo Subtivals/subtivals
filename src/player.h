@@ -26,6 +26,7 @@ signals:
     void on(Event*);
     void off(Event*);
     void changed();
+    void autoHide();
 public slots:
     void play();
     void pause();
@@ -36,6 +37,9 @@ public slots:
     void addDelay(int d = DELAY_OFFSET);
     void subDelay(int d = DELAY_OFFSET);
     void setSpeedFactor(double);
+public:
+    void enableAutoHide(bool p_state);
+    bool isAutoHideEnabled();
 protected:
     void updateCurrent(qint64);
     qint64 tick();
@@ -51,6 +55,8 @@ private:
     qint64 m_pauseTotal;
     qint64 m_userDelay;
     QList<Event *> m_lastEvents;
+    QTimer m_timerAutoHide;
+    bool m_autoHideEnabled;
 };
 
 #endif // PLAYER_H

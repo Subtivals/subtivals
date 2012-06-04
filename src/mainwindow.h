@@ -117,8 +117,6 @@ private:
     bool m_reloadEnabled;
     QFileSystemWatcher* m_filewatcher;
     QTimer m_timerFileChange;
-    bool m_autoHideEnabled;
-    QTimer m_timerAutoHide;
     QLabel* m_scriptProperties;
 };
 
