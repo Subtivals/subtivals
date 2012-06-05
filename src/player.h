@@ -37,9 +37,11 @@ public slots:
     void addDelay(int d = DELAY_OFFSET);
     void subDelay(int d = DELAY_OFFSET);
     void setSpeedFactor(double);
+    void autoHideTimeout();
 public:
     void enableAutoHide(bool p_state);
     bool isAutoHideEnabled();
+    qint64 duration(const Event *p_event) const;
 protected:
     void updateCurrent(qint64);
     qint64 tick();
@@ -54,6 +56,7 @@ private:
     qint64 m_pauseStart;
     qint64 m_pauseTotal;
     qint64 m_userDelay;
+    qint64 m_autoHideDuration;
     QList<Event *> m_lastEvents;
     QTimer m_timerAutoHide;
     bool m_autoHideEnabled;

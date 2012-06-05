@@ -586,8 +586,10 @@ void MainWindow::actionEventSelected(QModelIndex index)
 
 void MainWindow::playPulse(qint64 msecsElapsed)
 {
-    ui->timer->setText(ts2tc(msecsElapsed));
-    ui->userDelay->setText(ts2tc(m_player->delay()));
+    if (m_state == PLAYING) {
+        ui->timer->setText(ts2tc(msecsElapsed));
+        ui->userDelay->setText(ts2tc(m_player->delay()));
+    }
 
     // Update progression of events
     QList<Event*> currentEvents = m_player->current();
@@ -595,7 +597,7 @@ void MainWindow::playPulse(qint64 msecsElapsed)
         int row = m_tableMapping[event];
         qreal progression = 0.0;
         if (currentEvents.contains(event)) {
-            progression = 1.0 - (msecsElapsed - event->msseStart()) / qreal(event->duration());
+            progression = qBound(0.0, 1.0 - (msecsElapsed - event->msseStart()) / qreal(m_player->duration(event)), 1.0);
         }
         ui->tableWidget->item(row, COLUMN_END)->setData(Qt::UserRole, progression);
     }
@@ -626,6 +628,7 @@ void MainWindow::highlightEvents(qlonglong elapsed)
     QColor on = qApp->palette().color(QPalette::Highlight).lighter(120);
     QColor next = qApp->palette().color(QPalette::Highlight).lighter(160);
 
+    // First reset all
     for(int row=0; row<ui->tableWidget->rowCount(); row++) {
         for (int col=0; col<ui->tableWidget->columnCount(); col++) {
             QTableWidgetItem* item = ui->tableWidget->item(row, col);
@@ -636,6 +639,7 @@ void MainWindow::highlightEvents(qlonglong elapsed)
         }
     }
 
+    // Then highlight next events
     foreach(Event *e, m_script->nextEvents(elapsed)) {
         int row = m_tableMapping[e];
         for (int col=0; col<ui->tableWidget->columnCount(); col++) {
@@ -644,6 +648,7 @@ void MainWindow::highlightEvents(qlonglong elapsed)
         }
     }
 
+    // Finally highlight current events
     foreach(Event *e, m_player->current()) {
         int row = m_tableMapping[e];
         for (int col=0; col<ui->tableWidget->columnCount(); col++) {

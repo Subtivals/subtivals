@@ -15,10 +15,11 @@ Player::Player(QObject *parent) :
     m_userDelay(0),
     m_autoHideEnabled(false)
 {
+    m_timer.setInterval(100);
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
     // Timer for auto-hiding ended events
-    m_timerAutoHide.setSingleShot(true);
-    connect(&m_timerAutoHide, SIGNAL(timeout()), this, SIGNAL(autoHide()));
+    m_timerAutoHide.setInterval(100);
+    connect(&m_timerAutoHide, SIGNAL(timeout()), this, SLOT(autoHideTimeout()));
 }
 
 void Player::setScript(Script* p_script)
@@ -40,7 +41,7 @@ void Player::play()
         m_pauseStart = 0;
     }
     m_timerAutoHide.stop();
-    m_timer.start(100);
+    m_timer.start();
 }
 
 void Player::pause()
@@ -82,6 +83,25 @@ void Player::timeout()
     updateCurrent(d);
 }
 
+void Player::autoHideTimeout()
+{
+    if (m_autoHideDuration > 0) {
+        m_autoHideDuration -= m_timerAutoHide.interval();
+        emit pulse(tick() - m_pauseStart + m_lastEvents.at(0)->msseStart());
+    }
+    else {
+        emit autoHide();
+        m_timerAutoHide.stop();
+    }
+}
+
+qint64 Player::duration(const Event* p_event) const
+{
+    if (m_timer.isActive())
+        return p_event->duration();
+    return qMax(p_event->duration(), p_event->autoDuration());
+}
+
 void Player::jumpTo(int i)
 {
     // Reset user delay
@@ -96,16 +116,15 @@ void Player::jumpTo(int i)
     updateCurrent(start_mss + 1);
     // Continuous play, even while pause
     if (playing) {
-        m_timer.start(100);
+        m_timer.start();
     }
     else {
         m_pauseTotal = 0;
         if (m_pauseStart > 0) m_pauseStart = tick();
+
         if (m_autoHideEnabled) {
-            qint64 d = event->duration();
-            if (event->autoDuration() > d)
-                d = event->autoDuration();
-            m_timerAutoHide.setInterval(d);
+            m_pauseStart = tick();
+            m_autoHideDuration = duration(event);
             m_timerAutoHide.start();
         }
     }
