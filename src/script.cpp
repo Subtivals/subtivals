@@ -121,6 +121,26 @@ const QList<Event *> Script::nextEvents(qlonglong elapsed) const
     return currentEvents(nextStart + 1);
 }
 
+const QList<Event *> Script::previousEvents(qlonglong elapsed) const
+{
+    // Look for the last event among previous ones
+    int i = m_events.count()-1;
+    for(; i>=0; i--) {
+        Event* e = m_events.at(i);
+        if (e->msseEnd() < elapsed) {
+            break;
+        }
+    }
+    // If not any, return empty
+    if (i < 0) {
+        const QList<Event*> l;
+        return l;
+    }
+    // Return the list of events starting at this time
+    qlonglong previousEnd = m_events.at(i)->msseEnd();
+    return currentEvents(previousEnd - 1);
+}
+
 void Script::correctEventsDuration(bool p_state)
 {
     foreach(Event* e, m_events) {

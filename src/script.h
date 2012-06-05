@@ -72,6 +72,7 @@ public:
      * Returns the list of the next events at this elapsed time.
      */
     const QList<Event *> nextEvents(qlonglong elapsed) const;
+    const QList<Event *> previousEvents(qlonglong elapsed) const;
 public slots:
     /*
      * Activates duration correction of events.

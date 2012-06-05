@@ -32,6 +32,7 @@
 #include "configeditor.h"
 #include "player.h"
 
+#include <QDebug>
 
 /**
  * A small delegate class to allow rich text rendering in main table cells.
@@ -68,14 +69,22 @@ class SubtitleDurationDelegate : public QStyledItemDelegate
             return;
         // Paint progression of event
         painter->save();
-        QPen pen(option.palette.text().color());
+        QPen pen(option.palette.highlightedText().color());
         pen.setWidth(3);
+
+        QPoint startLine(option.rect.bottomLeft());
+        startLine.setX(startLine.x() + option.rect.width() * progression -1);
+        QPoint endLine = option.rect.bottomRight();
+        if (progression < 0) {
+            pen.setColor(option.palette.text().color());
+            startLine = option.rect.bottomRight();
+            endLine = option.rect.bottomLeft();
+            endLine.setX(endLine.x() - option.rect.width() * progression +1);
+        }
         painter->setPen(pen);
-        QPoint startLine(option.rect.bottomRight());
-        startLine.setX(startLine.x() - option.rect.width() * progression +1); // +1 for border width
-        painter->drawLine(startLine, option.rect.bottomRight());
+        painter->drawLine(startLine, endLine);
         painter->restore();
-    }
+   }
 };
 
 
@@ -92,6 +101,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_scriptProperties(new QLabel(this))
 {
     ui->setupUi(this);
+    ui->tableWidget->setItemDelegateForColumn(COLUMN_START, new SubtitleDurationDelegate());
     ui->tableWidget->setItemDelegateForColumn(COLUMN_END, new SubtitleDurationDelegate());
     ui->tableWidget->setItemDelegateForColumn(COLUMN_TEXT, new SubtitleTextDelegate());
     ui->tableWidget->installEventFilter(this);
@@ -425,6 +435,8 @@ void MainWindow::actionPlay()
 void MainWindow::actionStop()
 {
 	setState(STOPPED);
+    highlightEvents(m_player->elapsedTime());
+    playPulse(0);
     ui->timer->setText("-");
     ui->userDelay->setText("-");
 }
@@ -591,15 +603,31 @@ void MainWindow::playPulse(qint64 msecsElapsed)
         ui->userDelay->setText(ts2tc(m_player->delay()));
     }
 
+    if (!m_script) return;
+
     // Update progression of events
     QList<Event*> currentEvents = m_player->current();
+    QList<Event*> previousEvents = m_script->previousEvents(msecsElapsed);
+    QList<Event*> nextEvents = m_script->nextEvents(msecsElapsed);
     foreach(Event* event, m_script->events()) {
         int row = m_tableMapping[event];
-        qreal progression = 0.0;
+        qreal progressionCurrent = 0.0;
+        qreal progressionNext = 0.0;
         if (currentEvents.contains(event)) {
-            progression = qBound(0.0, 1.0 - (msecsElapsed - event->msseStart()) / qreal(m_player->duration(event)), 1.0);
+            qreal remaining = (msecsElapsed - event->msseStart()) / qreal(m_player->duration(event));
+            progressionCurrent = qBound(0.0, remaining, 1.0);
         }
-        ui->tableWidget->item(row, COLUMN_END)->setData(Qt::UserRole, progression);
+        if (m_state == PLAYING) {
+            if (currentEvents.isEmpty() && previousEvents.contains(event)) {
+                if (!nextEvents.isEmpty()) {
+                    qint64 interval = nextEvents.first()->msseStart() - event->msseEnd();
+                    qreal missing = qreal(msecsElapsed - event->msseEnd()) / interval;
+                    progressionNext = -qBound(0.0, missing, 1.0);
+                }
+            }
+        }
+        ui->tableWidget->item(row, COLUMN_START)->setData(Qt::UserRole, progressionCurrent);
+        ui->tableWidget->item(row, COLUMN_END)->setData(Qt::UserRole, progressionNext);
     }
 }
 
@@ -640,11 +668,13 @@ void MainWindow::highlightEvents(qlonglong elapsed)
     }
 
     // Then highlight next events
-    foreach(Event *e, m_script->nextEvents(elapsed)) {
-        int row = m_tableMapping[e];
-        for (int col=0; col<ui->tableWidget->columnCount(); col++) {
-            QTableWidgetItem* item = ui->tableWidget->item(row, col);
-            item->setBackgroundColor(next);
+    if (m_script) {
+        foreach(Event *e, m_script->nextEvents(elapsed)) {
+            int row = m_tableMapping[e];
+            for (int col=0; col<ui->tableWidget->columnCount(); col++) {
+                QTableWidgetItem* item = ui->tableWidget->item(row, col);
+                item->setBackgroundColor(next);
+            }
         }
     }
 
