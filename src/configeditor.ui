@@ -218,7 +218,7 @@ p, li { white-space: pre-wrap; }
          <item row="2" column="1">
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Top:</string>
+            <string>Bottom:</string>
            </property>
           </widget>
          </item>
@@ -228,7 +228,7 @@ p, li { white-space: pre-wrap; }
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../resources/icons.qrc">:/icons/top.png</pixmap>
+            <pixmap>:/icons/bottom.png</pixmap>
            </property>
           </widget>
          </item>

@@ -56,7 +56,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/configeditor.ui" line="221"/>
-        <source>Top:</source>
+        <source>Bottom:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

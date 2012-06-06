@@ -73,14 +73,16 @@ void SubtitlesForm::toggleHide(bool state)
 void SubtitlesForm::changeGeometry(int monitor, const QRect& r)
 {
     m_screenGeom = QApplication::desktop()->screenGeometry(monitor);
-    setGeometry(r.x() + m_screenGeom.x(), r.y() + m_screenGeom.y(), r.width(), r.height());
+    setGeometry(m_screenGeom.x() + r.x(),
+                m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
+                r.width(), r.height());
 }
 
 void SubtitlesForm::changeGeometry(const QRect& r)
 {
     setGeometry(r);
     emit geometryChanged(QRect(r.x() - m_screenGeom.x(),
-                               r.y() - m_screenGeom.y(),
+                               m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
                                r.width(), r.height()));
 }
 

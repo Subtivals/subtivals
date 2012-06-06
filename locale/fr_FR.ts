@@ -90,8 +90,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/configeditor.ui" line="221"/>
+        <source>Bottom:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Top:</source>
-        <translation>Haut:</translation>
+        <translation type="obsolete">Haut:</translation>
     </message>
     <message>
         <location filename="../src/configeditor.ui" line="238"/>

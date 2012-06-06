@@ -17,6 +17,6 @@
         <file>height.png</file>
         <file>width.png</file>
         <file>left.png</file>
-        <file>top.png</file>
+        <file>bottom.png</file>
     </qresource>
 </RCC>
