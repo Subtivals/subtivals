@@ -32,6 +32,9 @@ class Script : public QObject
 {
     Q_OBJECT
 public:
+
+    enum ScriptFormat { ASS, SRT };
+
     /*
      * Constructs a script from an subtitle file.
      */
@@ -73,6 +76,7 @@ public:
      */
     const QList<Subtitle *> nextSubtitles(qlonglong elapsed) const;
     const QList<Subtitle *> previousSubtitles(qlonglong elapsed) const;
+    ScriptFormat format() const;
 public slots:
     /*
      * Activates duration correction of subtitles.
@@ -98,6 +102,7 @@ private:
      * Script subtitles list.
      */
     QList<Subtitle *> m_subtitles;
+    ScriptFormat m_format;
 };
 
 #endif // SCRIPT_H

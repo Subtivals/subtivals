@@ -44,13 +44,19 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
     QFileInfo fileInfo(p_fileName);
     QString ext = fileInfo.suffix().toLower();
     if (ext == "ass") {
+        m_format = ASS;
         loadFromAss(content);
     }
     else if (ext == "srt") {
+        m_format = SRT;
         loadFromSrt(content);
     }
 }
 
+Script::ScriptFormat Script::format() const
+{
+    return m_format;
+}
 
 const QString &Script::fileName() const
 {

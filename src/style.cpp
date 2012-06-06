@@ -26,7 +26,10 @@ Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, 
     m_name(p_name),
     m_font(p_font),
     m_primaryColour(p_color),
-    m_alignment(Qt::AlignVCenter | Qt::AlignHCenter)
+    m_alignment(Qt::AlignVCenter | Qt::AlignHCenter),
+    m_marginL(0),
+    m_marginR(0),
+    m_marginV(0)
 {
 }
 
@@ -89,14 +92,15 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
     html = html.append("</p>");
     painter->setFont(m_font);
     painter->setPen(m_primaryColour);
+    qDebug() << html;
     QTextDocument doc;
     doc.setHtml(html);
     doc.setDefaultFont(m_font);
     QAbstractTextDocumentLayout* layout = doc.documentLayout();
     QRect final(bounds);
     int marginL = m_marginL + subtitle.marginL();
-    int marginR = m_marginL + subtitle.marginR();
-    int marginV = m_marginL + subtitle.marginV();
+    int marginR = m_marginR + subtitle.marginR();
+    int marginV = m_marginV + subtitle.marginV();
     final = final.adjusted(marginL, marginV, -marginR, marginV);
     doc.setPageSize(QSize(final.width(), final.height()));
     QAbstractTextDocumentLayout::PaintContext context;

@@ -31,6 +31,7 @@
 #include "ui_mainwindow.h"
 #include "configeditor.h"
 #include "player.h"
+#include "configsrt.h"
 
 
 /**
@@ -312,6 +313,11 @@ void MainWindow::openFile (const QString &p_fileName)
     // Reset search field
     ui->searchField->setEnabled(row > 0);
     ui->searchField->setText("");
+
+    if (m_script->format() == Script::SRT) {
+        ConfigSrt dialog(m_script, this);
+        dialog.exec();
+    }
 }
 
 void MainWindow::closeFile()

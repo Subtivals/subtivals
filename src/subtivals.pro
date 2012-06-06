@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     subtitlesform.cpp \
     styleeditor.cpp \
     configeditor.cpp \
-    player.cpp
+    player.cpp \
+    configsrt.cpp
 
 HEADERS  += mainwindow.h \
     script.h \
@@ -27,12 +28,14 @@ HEADERS  += mainwindow.h \
     subtitlesform.h \
     styleeditor.h \
     configeditor.h \
-    player.h
+    player.h \
+    configsrt.h
 
 FORMS    += mainwindow.ui \
     subtitlesform.ui \
     styleeditor.ui \
-    configeditor.ui
+    configeditor.ui \
+    configsrt.ui
 
 RESOURCES += \
     ../resources/icons.qrc \
