@@ -23,10 +23,10 @@
 #include <QMap>
 
 #include "style.h"
-#include "event.h"
+#include "subtitle.h"
 
 /*
- * Scipts from a subtitle file : union of events and styles.
+ * Scipts from a subtitle file : union of subtitles and styles.
  */
 class Script : public QObject
 {
@@ -53,31 +53,31 @@ public:
      */
     QList<Style*> styles() const;
     /*
-     * Return the number of events in the script.
+     * Return the number of subtitles in the script.
      */
-    int eventsCount() const;
+    int subtitlesCount() const;
     /*
-     * Returns an iterator on the events of the script.
+     * Returns an iterator on the subtitles of the script.
      */
-    const QList<Event *> events() const;
+    const QList<Subtitle *> subtitles() const;
     /*
-     * Returns the event at the given index.
+     * Returns the subtitle at the given index.
      */
-    const Event * eventAt(int i) const;
+    const Subtitle * subtitleAt(int i) const;
     /*
-     * Returns the events matching the specified elapsed time.
+     * Returns the subtitles matching the specified elapsed time.
      */
-    const QList<Event *> currentEvents(qlonglong elapsed) const;
+    const QList<Subtitle *> currentSubtitles(qlonglong elapsed) const;
     /*
-     * Returns the list of the next events at this elapsed time.
+     * Returns the list of the next subtitles at this elapsed time.
      */
-    const QList<Event *> nextEvents(qlonglong elapsed) const;
-    const QList<Event *> previousEvents(qlonglong elapsed) const;
+    const QList<Subtitle *> nextSubtitles(qlonglong elapsed) const;
+    const QList<Subtitle *> previousSubtitles(qlonglong elapsed) const;
 public slots:
     /*
-     * Activates duration correction of events.
+     * Activates duration correction of subtitles.
      */
-    void correctEventsDuration(bool p_state);
+    void correctSubtitlesDuration(bool p_state);
 protected:
     void loadFromSrt(QStringList content);
     void loadFromAss(QStringList content);
@@ -95,9 +95,9 @@ private:
      */
     QMap<QString, Style *> m_styles;
     /*
-     * Script events list.
+     * Script subtitles list.
      */
-    QList<Event *> m_events;
+    QList<Subtitle *> m_subtitles;
 };
 
 #endif // SCRIPT_H

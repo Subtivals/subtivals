@@ -510,7 +510,7 @@
     <string>Timeout</string>
    </property>
    <property name="toolTip">
-    <string>Hide timeout events</string>
+    <string>Hide timeout subtitles</string>
    </property>
   </action>
   <action name="actionShowHelp">
@@ -635,7 +635,7 @@
    <sender>tableWidget</sender>
    <signal>doubleClicked(QModelIndex)</signal>
    <receiver>MainWindow</receiver>
-   <slot>actionEventSelected(QModelIndex)</slot>
+   <slot>actionSubtitleSelected(QModelIndex)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>326</x>
@@ -683,7 +683,7 @@
    <sender>tableWidget</sender>
    <signal>clicked(QModelIndex)</signal>
    <receiver>MainWindow</receiver>
-   <slot>actionEventClic(QModelIndex)</slot>
+   <slot>actionSubtitleClic(QModelIndex)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>326</x>
@@ -880,10 +880,10 @@
   <slot>actionExit()</slot>
   <slot>actionConfig(bool)</slot>
   <slot>actionPause()</slot>
-  <slot>actionEventSelected(QModelIndex)</slot>
+  <slot>actionSubtitleSelected(QModelIndex)</slot>
   <slot>actionNext()</slot>
   <slot>actionToggleHide(bool)</slot>
-  <slot>actionEventClic(QModelIndex)</slot>
+  <slot>actionSubtitleClic(QModelIndex)</slot>
   <slot>actionPrevious()</slot>
   <slot>actionEnableReload(bool)</slot>
   <slot>search()</slot>

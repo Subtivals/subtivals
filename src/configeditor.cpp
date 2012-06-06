@@ -146,7 +146,7 @@ void ConfigEditor::reset()
         left = m_parentWidget->geometry().left();
         width = m_parentWidget->geometry().width() + 2;
         top = m_parentWidget->geometry().bottom() + 5;
-        // Prevent exceeding bottom of desktop
+        // Prsubtitle exceeding bottom of desktop
         if ((top + DEFAULT_HEIGHT) > screenGeom.height())
             top = screenGeom.height() - DEFAULT_HEIGHT;
     }

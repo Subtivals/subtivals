@@ -22,7 +22,7 @@
 #include <QMouseEvent>
 #include <QColor>
 
-#include "event.h"
+#include "subtitle.h"
 
 namespace Ui {
     class SubtitlesForm;
@@ -38,9 +38,9 @@ public:
 signals:
     void geometryChanged(QRect);
 public slots:
-    void addEvent(Event *p_event);
-    void remEvent(Event *p_event);
-    void clearEvents();
+    void addSubtitle(Subtitle *p_subtitle);
+    void remSubtitle(Subtitle *p_subtitle);
+    void clearSubtitles();
     void toggleHide(bool state);
     void screenResizable(bool state);
     void changeGeometry(int, const QRect&);
@@ -55,8 +55,8 @@ protected:
     void wheelEvent(QWheelEvent *e);
 private:
     Ui::SubtitlesForm *ui;
-    int m_maxEvents;
-    QList<Event *> m_currentEvents;
+    int m_maxSubtitles;
+    QList<Subtitle *> m_currentSubtitles;
     bool m_visible;
     QPoint m_mouseOffset;
     QRect m_screenGeom;

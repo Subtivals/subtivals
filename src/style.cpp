@@ -19,7 +19,7 @@
 #include <QtGui/QAbstractTextDocumentLayout>
 
 #include "style.h"
-#include "event.h"
+#include "subtitle.h"
 
 Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, QObject *p_parent) :
     QObject(p_parent),
@@ -75,7 +75,7 @@ void Style::setPrimaryColour(const QColor &c)
     m_primaryColour = c;
 }
 
-void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds) const
+void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds) const
 {
     QString html;
     if (m_alignment & Qt::AlignLeft) {
@@ -85,7 +85,7 @@ void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds
     } else {
         html = "<p align=\"center\">";
     }
-    html = html.append(event.text());
+    html = html.append(subtitle.text());
     html = html.append("</p>");
     painter->setFont(m_font);
     painter->setPen(m_primaryColour);
@@ -94,9 +94,9 @@ void Style::drawEvent(QPainter *painter, const Event &event, const QRect &bounds
     doc.setDefaultFont(m_font);
     QAbstractTextDocumentLayout* layout = doc.documentLayout();
     QRect final(bounds);
-    int marginL = m_marginL + event.marginL();
-    int marginR = m_marginL + event.marginR();
-    int marginV = m_marginL + event.marginV();
+    int marginL = m_marginL + subtitle.marginL();
+    int marginR = m_marginL + subtitle.marginR();
+    int marginV = m_marginL + subtitle.marginV();
     final = final.adjusted(marginL, marginV, -marginR, marginV);
     doc.setPageSize(QSize(final.width(), final.height()));
     QAbstractTextDocumentLayout::PaintContext context;

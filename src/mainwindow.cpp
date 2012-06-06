@@ -32,7 +32,6 @@
 #include "configeditor.h"
 #include "player.h"
 
-#include <QDebug>
 
 /**
  * A small delegate class to allow rich text rendering in main table cells.
@@ -67,7 +66,7 @@ class SubtitleDurationDelegate : public QStyledItemDelegate
         qreal progression = index.data(Qt::UserRole).toReal();
         if (progression == 0.0)
             return;
-        // Paint progression of event
+        // Paint progression of subtitle
         painter->save();
         QPen pen(option.palette.highlightedText().color());
         pen.setWidth(3);
@@ -95,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_player(new Player()),
     m_playerThread(new QThread()),
     m_preferences(new ConfigEditor(this)),
-    m_selectEvent(true),
+    m_selectSubtitle(true),
     m_rowChanged(false),
     m_filewatcher(new QFileSystemWatcher),
     m_scriptProperties(new QLabel(this))
@@ -107,12 +106,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->installEventFilter(this);
     ui->speedFactor->installEventFilter(this);
     m_preferences->installEventFilter(this);
-    connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(disableEventSelection()));
+    connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(disableSubtitleSelection()));
 
     m_player->moveToThread(m_playerThread);
     m_playerThread->start();
     connect(m_player, SIGNAL(pulse(qint64)), this, SLOT(playPulse(qint64)));
-    connect(m_player, SIGNAL(changed()), this, SLOT(eventChanged()));
+    connect(m_player, SIGNAL(changed()), this, SLOT(subtitleChanged()));
     connect(m_player, SIGNAL(changed()), this, SLOT(disableActionNext()));
     connect(m_player, SIGNAL(autoHide()), this, SLOT(actionToggleHide()));
 
@@ -130,10 +129,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainLayout->addWidget(m_preferences);
     ui->statusBar->addPermanentWidget(m_scriptProperties);
 
-    // Selection timer (disables event highlighting for a while)
+    // Selection timer (disables subtitle highlighting for a while)
     m_timerSelection.setSingleShot(true);
     m_timerSelection.setInterval(1000);
-    connect(&m_timerSelection, SIGNAL(timeout()), this, SLOT(enableEventSelection()));
+    connect(&m_timerSelection, SIGNAL(timeout()), this, SLOT(enableSubtitleSelection()));
 
     // Action Next timer (disables next action for a while)
     m_timerNext.setSingleShot(true);
@@ -158,7 +157,8 @@ MainWindow::~MainWindow()
     delete m_scriptProperties;
 }
 
-void MainWindow::dragEnterEvent(QDragEnterEvent* event) {
+void MainWindow::dragEnterEvent(QDragEnterEvent* event)
+{
     event->acceptProposedAction();
 }
 
@@ -275,27 +275,27 @@ void MainWindow::openFile (const QString &p_fileName)
     setWindowTitle(QFileInfo(p_fileName).baseName());
 
     // Show script properties
-    qlonglong count = m_script->eventsCount();
+    qlonglong count = m_script->subtitlesCount();
     if (count > 0) {
-        QString firsttime = QTime().addMSecs(m_script->eventAt(0)->msseStart()).toString();
-        QString lasttime = QTime().addMSecs(m_script->eventAt(count-1)->msseStart()).toString();
-        m_scriptProperties->setText(tr("%1 events, %2 - %3").arg(count).arg(firsttime).arg(lasttime));
+        QString firsttime = QTime().addMSecs(m_script->subtitleAt(0)->msseStart()).toString();
+        QString lasttime = QTime().addMSecs(m_script->subtitleAt(count-1)->msseStart()).toString();
+        m_scriptProperties->setText(tr("%1 subtitles, %2 - %3").arg(count).arg(firsttime).arg(lasttime));
     }
 
     // Update the table
     ui->tableWidget->setRowCount(count);
-    QListIterator<Event *> i = m_script->events();
+    QListIterator<Subtitle *> i = m_script->subtitles();
     int row = 0;
     while (i.hasNext()) {
-        Event *event = i.next();
-        m_tableMapping[event] = row;
-        QTableWidgetItem *startItem = new QTableWidgetItem(QTime().addMSecs(event->msseStart()).toString());
+        Subtitle *subtitle = i.next();
+        m_tableMapping[subtitle] = row;
+        QTableWidgetItem *startItem = new QTableWidgetItem(QTime().addMSecs(subtitle->msseStart()).toString());
         ui->tableWidget->setItem(row, COLUMN_START, startItem);
-        QTableWidgetItem *endItem = new QTableWidgetItem(QTime().addMSecs(event->msseEnd()).toString());
+        QTableWidgetItem *endItem = new QTableWidgetItem(QTime().addMSecs(subtitle->msseEnd()).toString());
         ui->tableWidget->setItem(row, COLUMN_END, endItem);
-        QTableWidgetItem *styleItem = new QTableWidgetItem(event->style()->name());
+        QTableWidgetItem *styleItem = new QTableWidgetItem(subtitle->style()->name());
         ui->tableWidget->setItem(row, COLUMN_STYLE, styleItem);
-        QTableWidgetItem *textItem = new QTableWidgetItem(event->prettyText());
+        QTableWidgetItem *textItem = new QTableWidgetItem(subtitle->prettyText());
         ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
         row++;
     }
@@ -336,11 +336,11 @@ void MainWindow::closeFile()
 void MainWindow::refreshDurations()
 {
     int row = 0;
-    foreach(Event *event, m_script->events()) {
+    foreach(Subtitle *subtitle, m_script->subtitles()) {
         QTableWidgetItem *endItem = ui->tableWidget->item(row, COLUMN_END);
-        endItem->setText(QTime().addMSecs(event->msseEnd()).toString());
+        endItem->setText(QTime().addMSecs(subtitle->msseEnd()).toString());
         QFont f = endItem->font();
-        f.setItalic(event->isCorrected());
+        f.setItalic(subtitle->isCorrected());
         endItem->setFont(f);
         row++;
     }
@@ -350,7 +350,7 @@ void MainWindow::actionDurationCorrection(bool state)
 {
     if (!m_script)
         return;
-    m_script->correctEventsDuration(state);
+    m_script->correctSubtitlesDuration(state);
     refreshDurations();
 }
 
@@ -435,7 +435,7 @@ void MainWindow::actionPlay()
 void MainWindow::actionStop()
 {
 	setState(STOPPED);
-    highlightEvents(m_player->elapsedTime());
+    highlightSubtitles(m_player->elapsedTime());
     playPulse(0);
     ui->timer->setText("-");
     ui->userDelay->setText("-");
@@ -468,7 +468,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         // With key Up/Down : behave the way single mouse clics do.
         if (object == ui->tableWidget) {
             if (keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down) {
-                actionEventClic(ui->tableWidget->currentIndex());
+                actionSubtitleClic(ui->tableWidget->currentIndex());
             }
         }
 
@@ -512,7 +512,7 @@ void MainWindow::actionPrevious()
 {
     if (canPrevious()) {
         int i = ui->tableWidget->currentRow();
-        m_selectEvent = true;
+        m_selectSubtitle = true;
         m_player->jumpTo(i - 1);
         ui->actionHide->setChecked(false);
     }
@@ -530,12 +530,12 @@ void MainWindow::actionNext()
     if (canNext()) {
         int row = ui->tableWidget->currentRow();
         bool isRowDisplayed = false;
-        foreach(Event* e, m_player->current())
+        foreach(Subtitle* e, m_player->current())
             if (m_tableMapping[e] == row)
                 isRowDisplayed = true;
 
         // Jump next if selected is being viewed. Otherwise activate it.
-        m_selectEvent = true;
+        m_selectSubtitle = true;
         if (isRowDisplayed && !m_rowChanged)
             m_player->jumpTo(row + 1);
         else
@@ -550,21 +550,21 @@ void MainWindow::actionToggleHide(bool state)
 {
     if(QObject::sender() != ui->actionHide)
         ui->actionHide->setChecked(state);
-    highlightEvents(m_player->elapsedTime());
+    highlightSubtitles(m_player->elapsedTime());
     emit toggleHide(state);
 }
 
-void MainWindow::disableEventSelection()
+void MainWindow::disableSubtitleSelection()
 {
-    // Disable selection of events for some time
+    // Disable selection of subtitles for some time
     // in order to let the user perform a double-clic
-    m_selectEvent = false;
-    m_timerSelection.start(); // will timeout on enableEventSelection
+    m_selectSubtitle = false;
+    m_timerSelection.start(); // will timeout on enableSubtitleSelection
 }
 
-void MainWindow::enableEventSelection()
+void MainWindow::enableSubtitleSelection()
 {
-    m_selectEvent = true;
+    m_selectSubtitle = true;
 }
 
 void MainWindow::disableActionNext()
@@ -579,16 +579,16 @@ void MainWindow::enableActionNext()
     ui->actionNext->setEnabled(canNext());
 }
 
-void MainWindow::actionEventClic(QModelIndex index)
+void MainWindow::actionSubtitleClic(QModelIndex index)
 {
-    disableEventSelection();
+    disableSubtitleSelection();
     if (index.row() != ui->tableWidget->currentRow())
         m_rowChanged = true;
 }
 
-void MainWindow::actionEventSelected(QModelIndex index)
+void MainWindow::actionSubtitleSelected(QModelIndex index)
 {
-    // Switch to the selected event
+    // Switch to the selected subtitle
     m_player->jumpTo(index.row());
     // Update the UI
     ui->actionHide->setChecked(false);
@@ -605,23 +605,23 @@ void MainWindow::playPulse(qint64 msecsElapsed)
 
     if (!m_script) return;
 
-    // Update progression of events
-    QList<Event*> currentEvents = m_player->current();
-    QList<Event*> previousEvents = m_script->previousEvents(msecsElapsed);
-    QList<Event*> nextEvents = m_script->nextEvents(msecsElapsed);
-    foreach(Event* event, m_script->events()) {
-        int row = m_tableMapping[event];
+    // Update progression of subtitles
+    QList<Subtitle*> currentSubtitles = m_player->current();
+    QList<Subtitle*> previousSubtitles = m_script->previousSubtitles(msecsElapsed);
+    QList<Subtitle*> nextSubtitles = m_script->nextSubtitles(msecsElapsed);
+    foreach(Subtitle* subtitle, m_script->subtitles()) {
+        int row = m_tableMapping[subtitle];
         qreal progressionCurrent = 0.0;
         qreal progressionNext = 0.0;
-        if (currentEvents.contains(event)) {
-            qreal remaining = (msecsElapsed - event->msseStart()) / qreal(m_player->duration(event));
+        if (currentSubtitles.contains(subtitle)) {
+            qreal remaining = (msecsElapsed - subtitle->msseStart()) / qreal(m_player->duration(subtitle));
             progressionCurrent = qBound(0.0, remaining, 1.0);
         }
         if (m_state == PLAYING) {
-            if (currentEvents.isEmpty() && previousEvents.contains(event)) {
-                if (!nextEvents.isEmpty()) {
-                    qint64 interval = nextEvents.first()->msseStart() - event->msseEnd();
-                    qreal missing = qreal(msecsElapsed - event->msseEnd()) / interval;
+            if (currentSubtitles.isEmpty() && previousSubtitles.contains(subtitle)) {
+                if (!nextSubtitles.isEmpty()) {
+                    qint64 interval = nextSubtitles.first()->msseStart() - subtitle->msseEnd();
+                    qreal missing = qreal(msecsElapsed - subtitle->msseEnd()) / interval;
                     progressionNext = -qBound(0.0, missing, 1.0);
                 }
             }
@@ -631,26 +631,26 @@ void MainWindow::playPulse(qint64 msecsElapsed)
     }
 }
 
-void MainWindow::eventChanged()
+void MainWindow::subtitleChanged()
 {
     qint64 msecsElapsed = m_player->elapsedTime();
-    highlightEvents(msecsElapsed);
-    if(m_selectEvent) {
-        int eventRow = -1;
-        QList<Event*> currentEvents = m_player->current();
-        if (currentEvents.size() > 0) {
-            eventRow = m_tableMapping[currentEvents.last()];
-            int scrollRow = eventRow > 2 ? eventRow - 2 : 0;
+    highlightSubtitles(msecsElapsed);
+    if(m_selectSubtitle) {
+        int subtitleRow = -1;
+        QList<Subtitle*> currentSubtitles = m_player->current();
+        if (currentSubtitles.size() > 0) {
+            subtitleRow = m_tableMapping[currentSubtitles.last()];
+            int scrollRow = subtitleRow > 2 ? subtitleRow - 2 : 0;
             ui->tableWidget->scrollTo(ui->tableWidget->currentIndex().sibling(scrollRow, 0),
                                       QAbstractItemView::PositionAtTop);
         }
         if (ui->tableWidget->hasFocus())
-            ui->tableWidget->selectRow(eventRow);
+            ui->tableWidget->selectRow(subtitleRow);
     }
     m_rowChanged = false;
 }
 
-void MainWindow::highlightEvents(qlonglong elapsed)
+void MainWindow::highlightSubtitles(qlonglong elapsed)
 {
     QColor off = qApp->palette().color(QPalette::Base);
     QColor on = qApp->palette().color(QPalette::Highlight).lighter(120);
@@ -667,9 +667,9 @@ void MainWindow::highlightEvents(qlonglong elapsed)
         }
     }
 
-    // Then highlight next events
+    // Then highlight next subtitles
     if (m_script) {
-        foreach(Event *e, m_script->nextEvents(elapsed)) {
+        foreach(Subtitle *e, m_script->nextSubtitles(elapsed)) {
             int row = m_tableMapping[e];
             for (int col=0; col<ui->tableWidget->columnCount(); col++) {
                 QTableWidgetItem* item = ui->tableWidget->item(row, col);
@@ -678,8 +678,8 @@ void MainWindow::highlightEvents(qlonglong elapsed)
         }
     }
 
-    // Finally highlight current events
-    foreach(Event *e, m_player->current()) {
+    // Finally highlight current subtitles
+    foreach(Subtitle *e, m_player->current()) {
         int row = m_tableMapping[e];
         for (int col=0; col<ui->tableWidget->columnCount(); col++) {
             QTableWidgetItem* item = ui->tableWidget->item(row, col);
@@ -760,23 +760,23 @@ void MainWindow::search()
     int found = -1;
 
     // Loop over the whole list, start from current
-    int nb = m_script->eventsCount();
+    int nb = m_script->subtitlesCount();
     int i = ui->tableWidget->currentRow() + 1;
     int max = i + nb;
     for (; i < max; i++) {
-        const Event* e = m_script->eventAt(i % nb);
+        const Subtitle* e = m_script->subtitleAt(i % nb);
         if (e->text().contains(search, Qt::CaseInsensitive)) {
             found = i % nb;
             break;
         }
     }
-    // Select the event in the list
+    // Select the subtitle in the list
     if (found < 0) {
         ui->searchField->setStyleSheet("QLineEdit {color: red;}");
     } else {
         ui->tableWidget->selectRow(found);
         ui->tableWidget->setFocus();
-        actionEventClic(QModelIndex());
+        actionSubtitleClic(QModelIndex());
     }
 }
 

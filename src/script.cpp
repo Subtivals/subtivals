@@ -75,25 +75,25 @@ QList<Style *> Script::styles() const
     return m_styles.values();
 }
 
-int Script::eventsCount() const
+int Script::subtitlesCount() const
 {
-    return m_events.size();
+    return m_subtitles.size();
 }
 
-const QList<Event *> Script::events() const
+const QList<Subtitle *> Script::subtitles() const
 {
-    return QList<Event *>(m_events);
+    return QList<Subtitle *>(m_subtitles);
 }
 
-const Event *Script::eventAt(int i) const
+const Subtitle *Script::subtitleAt(int i) const
 {
-    return m_events[i];
+    return m_subtitles[i];
 }
 
-const QList<Event *> Script::currentEvents(qlonglong elapsed) const
+const QList<Subtitle *> Script::currentSubtitles(qlonglong elapsed) const
 {
-    QList<Event *> l;
-    foreach(Event* e, m_events) {
+    QList<Subtitle *> l;
+    foreach(Subtitle* e, m_subtitles) {
         if (e->match(elapsed)) {
             l.append(e);
         }
@@ -101,49 +101,49 @@ const QList<Event *> Script::currentEvents(qlonglong elapsed) const
     return l;
 }
 
-const QList<Event *> Script::nextEvents(qlonglong elapsed) const
+const QList<Subtitle *> Script::nextSubtitles(qlonglong elapsed) const
 {
-    // Look for the first event among next ones
+    // Look for the first subtitle among next ones
     int i=0;
-    for(; i<m_events.count(); i++) {
-        Event* e = m_events.at(i);
+    for(; i<m_subtitles.count(); i++) {
+        Subtitle* e = m_subtitles.at(i);
         if (e->msseStart() >= elapsed) {
             break;
         }
     }
     // If not any, return empty
-    if (i >= m_events.count()) {
-        const QList<Event*> l;
+    if (i >= m_subtitles.count()) {
+        const QList<Subtitle*> l;
         return l;
     }
-    // Return the list of events starting at this time
-    qlonglong nextStart = m_events.at(i)->msseStart();
-    return currentEvents(nextStart + 1);
+    // Return the list of subtitles starting at this time
+    qlonglong nextStart = m_subtitles.at(i)->msseStart();
+    return currentSubtitles(nextStart + 1);
 }
 
-const QList<Event *> Script::previousEvents(qlonglong elapsed) const
+const QList<Subtitle *> Script::previousSubtitles(qlonglong elapsed) const
 {
-    // Look for the last event among previous ones
-    int i = m_events.count()-1;
+    // Look for the last subtitle among previous ones
+    int i = m_subtitles.count()-1;
     for(; i>=0; i--) {
-        Event* e = m_events.at(i);
+        Subtitle* e = m_subtitles.at(i);
         if (e->msseEnd() < elapsed) {
             break;
         }
     }
     // If not any, return empty
     if (i < 0) {
-        const QList<Event*> l;
+        const QList<Subtitle*> l;
         return l;
     }
-    // Return the list of events starting at this time
-    qlonglong previousEnd = m_events.at(i)->msseEnd();
-    return currentEvents(previousEnd - 1);
+    // Return the list of subtitles starting at this time
+    qlonglong previousEnd = m_subtitles.at(i)->msseEnd();
+    return currentSubtitles(previousEnd - 1);
 }
 
-void Script::correctEventsDuration(bool p_state)
+void Script::correctSubtitlesDuration(bool p_state)
 {
-    foreach(Event* e, m_events) {
+    foreach(Subtitle* e, m_subtitles) {
         e->correct(p_state);
     }
 }
@@ -273,11 +273,11 @@ void Script::loadFromAss(QStringList content)
                     text = text.mid(1);
                 }
 
-                // Instantiate event !
-                Event *event = new Event(m_events.size(), text, start, end, this, this);
-                event->setStyle(style);
-                event->setMargins(marginL, marginR, marginV);
-                m_events.append(event);
+                // Instantiate subtitle !
+                Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
+                subtitle->setStyle(style);
+                subtitle->setMargins(marginL, marginR, marginV);
+                m_subtitles.append(subtitle);
             }
         }
     }
@@ -305,10 +305,10 @@ void Script::loadFromSrt(QStringList content)
         }
         else if (section == SECTION_EVENTS) {
             if (line.isEmpty()) {
-                // Instantiate event !
-                Event *event = new Event(m_events.size(), text.join("<br/>"), start, end, this, this);
-                event->setStyle(style);
-                m_events.append(event);
+                // Instantiate subtitle !
+                Subtitle *subtitle = new Subtitle(m_subtitles.size(), text.join("<br/>"), start, end, this, this);
+                subtitle->setStyle(style);
+                m_subtitles.append(subtitle);
                 text.clear();
 
                 section = SECTION_NONE;

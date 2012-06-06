@@ -9,7 +9,7 @@
 #define DELAY_OFFSET 250
 
 class Script;
-class Event;
+class Subtitle;
 
 class Player : public QObject
 {
@@ -17,14 +17,14 @@ class Player : public QObject
 public:
     explicit Player(QObject *parent = 0);
     void setScript(Script*);
-    QList<Event*> current();
+    QList<Subtitle*> current();
     qlonglong elapsedTime();
     int delay();
 signals:
     void pulse(qint64);
     void clear();
-    void on(Event*);
-    void off(Event*);
+    void on(Subtitle*);
+    void off(Subtitle*);
     void changed();
     void autoHide();
 public slots:
@@ -41,7 +41,7 @@ public slots:
 public:
     void enableAutoHide(bool p_state);
     bool isAutoHideEnabled();
-    qint64 duration(const Event *p_event) const;
+    qint64 duration(const Subtitle *p_subtitle) const;
 protected:
     void updateCurrent(qint64);
     qint64 tick();
@@ -57,7 +57,7 @@ private:
     qint64 m_pauseTotal;
     qint64 m_userDelay;
     qint64 m_autoHideDuration;
-    QList<Event *> m_lastEvents;
+    QList<Subtitle *> m_lastSubtitles;
     QTimer m_timerAutoHide;
     bool m_autoHideEnabled;
 };

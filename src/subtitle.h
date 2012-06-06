@@ -24,11 +24,11 @@
 class Style;
 class Script;
 
-class Event : public QObject
+class Subtitle : public QObject
 {
     Q_OBJECT
 public:
-    explicit Event(int p_index, const QString &p_text, qint64 p_msseStart, qint64 p_msseEnd, const Script *p_script, QObject *p_parent = 0);
+    explicit Subtitle(int p_index, const QString &p_text, qint64 p_msseStart, qint64 p_msseEnd, const Script *p_script, QObject *p_parent = 0);
     qint64 msseStart() const;
     qint64 msseEnd() const;
     qint64 duration() const;

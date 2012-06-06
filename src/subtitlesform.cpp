@@ -27,7 +27,7 @@
 SubtitlesForm::SubtitlesForm(QWidget *parent) :
         QWidget(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ),
     ui(new Ui::SubtitlesForm),
-    m_maxEvents(2),
+    m_maxSubtitles(2),
     m_visible(true),
     m_resizable(false),
     m_rotation(0),
@@ -42,25 +42,25 @@ SubtitlesForm::~SubtitlesForm()
     delete ui;
 }
 
-void SubtitlesForm::addEvent(Event *p_event)
+void SubtitlesForm::addSubtitle(Subtitle *p_subtitle)
 {
-    m_currentEvents.append(p_event);
-    if(m_currentEvents.size() > m_maxEvents)
+    m_currentSubtitles.append(p_subtitle);
+    if(m_currentSubtitles.size() > m_maxSubtitles)
     {
-        m_currentEvents.removeFirst();
+        m_currentSubtitles.removeFirst();
     }
     repaint();
 }
 
-void SubtitlesForm::remEvent(Event *p_event)
+void SubtitlesForm::remSubtitle(Subtitle *p_subtitle)
 {
-    m_currentEvents.removeOne(p_event);
+    m_currentSubtitles.removeOne(p_subtitle);
     repaint();
 }
 
-void SubtitlesForm::clearEvents()
+void SubtitlesForm::clearSubtitles()
 {
-    m_currentEvents.clear();
+    m_currentSubtitles.clear();
     repaint();
 }
 
@@ -103,9 +103,9 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
         p.rotate(m_rotation);
     }
 
-    for(int i = 0; i < m_maxEvents && i < m_currentEvents.size(); i++) {
-        Event *e = m_currentEvents.at(i);
-        e->style()->drawEvent(&p, *e, bounds);
+    for(int i = 0; i < m_maxSubtitles && i < m_currentSubtitles.size(); i++) {
+        Subtitle *e = m_currentSubtitles.at(i);
+        e->style()->drawSubtitle(&p, *e, bounds);
     }
 }
 

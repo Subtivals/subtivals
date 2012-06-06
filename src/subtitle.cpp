@@ -16,7 +16,7 @@
   **/
 #include <QtCore/QStringList>
 
-#include "event.h"
+#include "subtitle.h"
 #include "script.h"
 
 
@@ -25,7 +25,7 @@
 #define  AUTO_MIN_DURATION    1000  // msec
 
 
-Event::Event(int p_index, const QString &p_text, qint64 p_msseStart, qint64 p_msseEnd, const Script *p_script, QObject *p_parent) :
+Subtitle::Subtitle(int p_index, const QString &p_text, qint64 p_msseStart, qint64 p_msseEnd, const Script *p_script, QObject *p_parent) :
     QObject(p_parent),
     m_index(p_index),
     m_script(p_script),
@@ -47,18 +47,18 @@ Event::Event(int p_index, const QString &p_text, qint64 p_msseStart, qint64 p_ms
     if (m_msseStart == 0 || m_msseEnd == 0) {
         qint64 endPrevious = 0;
         if (m_index > 0)
-            endPrevious = m_script->eventAt(m_index-1)->msseEnd() + AUTO_EVENT_INTERVAL;
+            endPrevious = m_script->subtitleAt(m_index-1)->msseEnd() + AUTO_EVENT_INTERVAL;
         m_msseStart = endPrevious;
         m_msseEnd = m_msseStart + m_autoDuration;
     }
 }
 
-qint64 Event::msseStart() const
+qint64 Subtitle::msseStart() const
 {
     return m_msseStart;
 }
 
-qint64 Event::msseEnd() const
+qint64 Subtitle::msseEnd() const
 {
     if (m_corrected) {
         return m_msseStart + m_autoDuration;
@@ -66,37 +66,37 @@ qint64 Event::msseEnd() const
     return m_msseEnd;
 }
 
-qint64 Event::duration() const
+qint64 Subtitle::duration() const
 {
     return msseEnd() - msseStart();
 }
 
-qint64 Event::autoDuration() const
+qint64 Subtitle::autoDuration() const
 {
     return m_autoDuration;
 }
 
-bool Event::isCorrected() const
+bool Subtitle::isCorrected() const
 {
     return m_corrected;
 }
 
-void Event::correct(bool p_state)
+void Subtitle::correct(bool p_state)
 {
     m_corrected = p_state && (m_autoDuration > (m_msseEnd - m_msseStart));
 }
 
-void Event::setStyle(Style *p_style)
+void Subtitle::setStyle(Style *p_style)
 {
     m_style = p_style;
 }
 
-const Style *Event::style() const
+const Style *Subtitle::style() const
 {
     return m_style;
 }
 
-void Event::setText(const QString& p_text)
+void Subtitle::setText(const QString& p_text)
 {
     m_text = p_text;
 
@@ -105,39 +105,39 @@ void Event::setText(const QString& p_text)
     m_prettyText = m_prettyText.replace(QRegExp("</?[^bi]+/?>"), "");
 }
 
-const QString &Event::text() const
+const QString &Subtitle::text() const
 {
     return m_text;
 }
 
-const QString &Event::prettyText() const
+const QString &Subtitle::prettyText() const
 {
     return m_prettyText;
 }
 
-bool Event::match(qint64 p_msecs) const
+bool Subtitle::match(qint64 p_msecs) const
 {
     return msseStart() <= p_msecs && msseEnd() >= p_msecs;
 }
 
-void Event::setMargins(int p_marginL, int p_marginR, int p_marginV)
+void Subtitle::setMargins(int p_marginL, int p_marginR, int p_marginV)
 {
     m_marginL = p_marginL;
     m_marginR = p_marginR;
     m_marginV = p_marginV;
 }
 
-int Event::marginL() const
+int Subtitle::marginL() const
 {
     return m_marginL;
 }
 
-int Event::marginR() const
+int Subtitle::marginR() const
 {
     return m_marginR;
 }
 
-int Event::marginV() const
+int Subtitle::marginV() const
 {
     return m_marginV;
 }

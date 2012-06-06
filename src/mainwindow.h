@@ -73,14 +73,14 @@ public slots:
     void actionAbout();
     void actionShowHelp();
     void playPulse(qint64 msecsElapsed);
-    void eventChanged();
+    void subtitleChanged();
     void actionEnableReload(bool);
     void fileChanged(QString path);
     void reloadScript();
-    void actionEventClic(QModelIndex);
-    void actionEventSelected(QModelIndex);
-    void enableEventSelection();
-    void disableEventSelection();
+    void actionSubtitleClic(QModelIndex);
+    void actionSubtitleSelected(QModelIndex);
+    void enableSubtitleSelection();
+    void disableSubtitleSelection();
     void enableActionNext();
     void disableActionNext();
     void search();
@@ -96,7 +96,7 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent* event);
     void dropEvent(QDropEvent* event);
     void closeEvent(QCloseEvent *);
-    void highlightEvents(qlonglong elapsed);
+    void highlightSubtitles(qlonglong elapsed);
     QString ts2tc(qint64 p_timestamp);
     void setState(State p_state);
 private:
@@ -108,8 +108,8 @@ private:
     QString m_lastScript;
     QString m_lastFolder;
     ConfigEditor* m_preferences;
-    QMap<Event *, int> m_tableMapping;
-    bool m_selectEvent;
+    QMap<Subtitle *, int> m_tableMapping;
+    bool m_selectSubtitle;
     QTimer m_timerSelection;
     QTimer m_timerNext;
     bool m_rowChanged;

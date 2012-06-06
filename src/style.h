@@ -24,10 +24,10 @@
 #include <QRect>
 #include <QTextDocument>
 
-class Event;
+class Subtitle;
 
 /*
- * Style to use to show an event.
+ * Style to use to show an subtitle.
  */
 class Style : public QObject
 {
@@ -57,9 +57,9 @@ public:
     const QColor &primaryColour() const;
     void setPrimaryColour(const QColor &c);
     /*
-     * Draws an Event with this style within the specified area.
+     * Draws an Subtitle with this style within the specified area.
      */
-    void drawEvent(QPainter*, const Event&, const QRect&) const;
+    void drawSubtitle(QPainter*, const Subtitle&, const QRect&) const;
     void setMargins(int p_marginL, int p_marginR, int p_marginV);
     void setAlignment(Qt::Alignment p_alignment);
 private:

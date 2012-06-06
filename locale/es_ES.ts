@@ -94,7 +94,7 @@ p, li { white-space: pre-wrap; }
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="14"/>
-        <location filename="../src/mainwindow.cpp" line="245"/>
+        <location filename="../src/mainwindow.cpp" line="331"/>
         <source>Subtivals</source>
         <translation type="unfinished"></translation>
     </message>
@@ -311,7 +311,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="513"/>
-        <source>Hide timeout events</source>
+        <source>Hide timeout subtitles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -330,32 +330,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="195"/>
-        <source>%1 events, %2 - %3</source>
+        <location filename="../src/mainwindow.cpp" line="282"/>
+        <source>%1 subtitles, %2 - %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="309"/>
+        <location filename="../src/mainwindow.cpp" line="390"/>
         <source>Subtitle file reloaded.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="325"/>
+        <location filename="../src/mainwindow.cpp" line="404"/>
         <source>Open subtitles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="327"/>
+        <location filename="../src/mainwindow.cpp" line="406"/>
         <source>Subtitle Files (*.ass *.srt)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="782"/>
+        <location filename="../src/mainwindow.cpp" line="793"/>
         <source>&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="781"/>
+        <location filename="../src/mainwindow.cpp" line="792"/>
         <source>About Subtivals</source>
         <translation type="unfinished"></translation>
     </message>
@@ -363,7 +363,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Script</name>
     <message>
-        <location filename="../src/script.cpp" line="267"/>
+        <location filename="../src/script.cpp" line="290"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -381,27 +381,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/styleeditor.ui" line="38"/>
+        <location filename="../src/styleeditor.ui" line="48"/>
         <source>Apparence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/styleeditor.ui" line="44"/>
+        <location filename="../src/styleeditor.ui" line="54"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/styleeditor.ui" line="54"/>
+        <location filename="../src/styleeditor.ui" line="64"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/styleeditor.ui" line="74"/>
+        <location filename="../src/styleeditor.ui" line="84"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/styleeditor.cpp" line="189"/>
+        <location filename="../src/styleeditor.cpp" line="222"/>
         <source>Select Color</source>
         <translation type="unfinished"></translation>
     </message>
