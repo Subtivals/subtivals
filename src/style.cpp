@@ -92,7 +92,6 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
     html = html.append("</p>");
     painter->setFont(m_font);
     painter->setPen(m_primaryColour);
-    qDebug() << html;
     QTextDocument doc;
     doc.setHtml(html);
     doc.setDefaultFont(m_font);
