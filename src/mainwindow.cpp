@@ -77,9 +77,9 @@ class SubtitleDurationDelegate : public QStyledItemDelegate
         QPoint endLine = option.rect.bottomRight();
         if (progression < 0) {
             pen.setColor(option.palette.text().color());
-            startLine = option.rect.bottomRight();
-            endLine = option.rect.bottomLeft();
-            endLine.setX(endLine.x() - option.rect.width() * progression +1);
+            startLine = option.rect.bottomLeft();
+            endLine = option.rect.bottomRight();
+            endLine.setX(endLine.x() + option.rect.width() * progression +1);
         }
         painter->setPen(pen);
         painter->drawLine(startLine, endLine);
@@ -625,16 +625,16 @@ void MainWindow::playPulse(qint64 msecsElapsed)
             progressionCurrent = qBound(0.0, remaining, 1.0);
         }
         if (m_state == PLAYING) {
-            if (currentSubtitles.isEmpty() && previousSubtitles.contains(subtitle)) {
-                if (!nextSubtitles.isEmpty()) {
-                    qint64 interval = nextSubtitles.first()->msseStart() - subtitle->msseEnd();
-                    qreal missing = qreal(msecsElapsed - subtitle->msseEnd()) / interval;
+            if (currentSubtitles.isEmpty() && nextSubtitles.contains(subtitle)) {
+                if (!previousSubtitles.isEmpty()) {
+                    qint64 interval = subtitle->msseStart() - previousSubtitles.last()->msseEnd();
+                    qreal missing = qreal(subtitle->msseStart() - msecsElapsed) / interval;
                     progressionNext = -qBound(0.0, missing, 1.0);
                 }
             }
         }
-        ui->tableWidget->item(row, COLUMN_START)->setData(Qt::UserRole, progressionCurrent);
-        ui->tableWidget->item(row, COLUMN_END)->setData(Qt::UserRole, progressionNext);
+        ui->tableWidget->item(row, COLUMN_START)->setData(Qt::UserRole, progressionNext);
+        ui->tableWidget->item(row, COLUMN_END)->setData(Qt::UserRole, progressionCurrent);
     }
 }
 
@@ -647,10 +647,15 @@ void MainWindow::subtitleChanged()
         QList<Subtitle*> currentSubtitles = m_player->current();
         if (currentSubtitles.size() > 0) {
             subtitleRow = m_tableMapping[currentSubtitles.last()];
-            int scrollRow = subtitleRow > 2 ? subtitleRow - 2 : 0;
-            ui->tableWidget->scrollTo(ui->tableWidget->currentIndex().sibling(scrollRow, 0),
-                                      QAbstractItemView::PositionAtTop);
         }
+        else {
+            QList<Subtitle*> nextSubtitles = m_script->nextSubtitles(msecsElapsed);
+            if (nextSubtitles.size() > 0)
+                subtitleRow = m_tableMapping[nextSubtitles.first()];
+        }
+        int scrollRow = subtitleRow > 2 ? subtitleRow - 2 : 0;
+        ui->tableWidget->scrollTo(ui->tableWidget->currentIndex().sibling(scrollRow, 0),
+                                  QAbstractItemView::PositionAtTop);
         if (ui->tableWidget->hasFocus())
             ui->tableWidget->selectRow(subtitleRow);
     }
