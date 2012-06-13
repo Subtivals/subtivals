@@ -472,6 +472,11 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             }
         }
 
+        // With Space, behave almost like next(), since it can activate current row
+        if (keyEvent->key() == Qt::Key_Space) {
+            actionNext();  // Allow to trigger the action, event if disabled.
+        }
+
         // With key Up/Down : behave the way single mouse clics do.
         if (object == ui->tableWidget) {
             if (keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down) {
@@ -534,21 +539,19 @@ bool MainWindow::canNext()
 
 void MainWindow::actionNext()
 {
-    if (canNext()) {
-        int row = ui->tableWidget->currentRow();
-        bool isRowDisplayed = false;
-        foreach(Subtitle* e, m_player->current())
-            if (m_tableMapping[e] == row)
-                isRowDisplayed = true;
+    int row = ui->tableWidget->currentRow();
+    bool isRowDisplayed = false;
+    foreach(Subtitle* e, m_player->current())
+        if (m_tableMapping[e] == row)
+            isRowDisplayed = true;
 
-        // Jump next if selected is being viewed. Otherwise activate it.
-        m_selectSubtitle = true;
-        if (isRowDisplayed && !m_rowChanged)
-            m_player->jumpTo(row + 1);
-        else
-            m_player->jumpTo(row);
-        ui->actionHide->setChecked(false);
-    }
+    // Jump next if selected is being viewed. Otherwise activate it.
+    m_selectSubtitle = true;
+    if (canNext() && isRowDisplayed && !m_rowChanged)
+        m_player->jumpTo(row + 1);
+    else
+        m_player->jumpTo(row);
+    ui->actionHide->setChecked(false);
     ui->actionPrevious->setEnabled(canPrevious());
     ui->actionNext->setEnabled(canNext());
 }
@@ -591,6 +594,8 @@ void MainWindow::actionSubtitleClic(QModelIndex index)
     disableSubtitleSelection();
     if (index.row() != ui->tableWidget->currentRow())
         m_rowChanged = true;
+    ui->actionPrevious->setEnabled(canPrevious());
+    ui->actionNext->setEnabled(canNext());
 }
 
 void MainWindow::actionSubtitleSelected(QModelIndex index)

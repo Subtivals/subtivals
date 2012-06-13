@@ -433,9 +433,6 @@
    <property name="text">
     <string>Next</string>
    </property>
-   <property name="shortcut">
-    <string>Space</string>
-   </property>
   </action>
   <action name="actionHide">
    <property name="checkable">
