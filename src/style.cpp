@@ -80,32 +80,40 @@ void Style::setPrimaryColour(const QColor &c)
 
 void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds) const
 {
-    QString html;
-    if (m_alignment & Qt::AlignLeft) {
-        html = "<p align=\"left\">";
-    } else if (m_alignment & Qt::AlignRight) {
-        html = "<p align=\"right\">";
-    } else {
-        html = "<p align=\"center\">";
-    }
-    html = html.append(subtitle.text());
-    html = html.append("</p>");
-    painter->setFont(m_font);
-    painter->setPen(m_primaryColour);
-    QTextDocument doc;
-    doc.setHtml(html);
-    doc.setDefaultFont(m_font);
-    QAbstractTextDocumentLayout* layout = doc.documentLayout();
     QRect final(bounds);
     int marginL = m_marginL + subtitle.marginL();
     int marginR = m_marginR + subtitle.marginR();
     int marginV = m_marginV + subtitle.marginV();
     final = final.adjusted(marginL, marginV, -marginR, marginV);
+
+    QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
+
+    html = html.replace("TEXT", subtitle.text());
+    if (m_alignment & Qt::AlignLeft) {
+        html = html.replace("HORIZONTAL", "left");
+    } else if (m_alignment & Qt::AlignRight) {
+        html = html.replace("HORIZONTAL", "right");
+    } else {
+        html = html.replace("HORIZONTAL", "center");
+    }
+    if (m_alignment & Qt::AlignBottom) {
+        final.setY(final.bottom() - subtitle.textHeight());
+    } else if (m_alignment & Qt::AlignVCenter) {
+        final.setY(final.center().y() - subtitle.textHeight()/2);
+    }
+
+    QTextDocument doc;
     doc.setPageSize(QSize(final.width(), final.height()));
+    doc.setHtml(html);
+    doc.setDefaultFont(m_font);
+
+    painter->setFont(m_font);
+    painter->setPen(m_primaryColour);
     QAbstractTextDocumentLayout::PaintContext context;
     context.palette.setColor(QPalette::Text, painter->pen().color());
     painter->save();
     painter->translate(final.x(), final.y());
+    QAbstractTextDocumentLayout* layout = doc.documentLayout();
     layout->draw(painter, context);
     painter->restore();
 }

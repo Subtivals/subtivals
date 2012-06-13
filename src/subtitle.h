@@ -45,6 +45,8 @@ public:
     int marginV() const;
     bool isCorrected() const;
     void correct(bool);
+    int nbLines() const;
+    int textHeight() const;
 private:
     int m_index;
     const Script *m_script;
