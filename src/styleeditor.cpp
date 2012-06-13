@@ -92,16 +92,16 @@ void StyleEditor::styleSelected()
     Style* first = m_script->style(selected.first()->text());
     m_colour = first->primaryColour();
     QFont font(first->font());
-    font.setPointSize(12);  // fixed size in combo
+    font.setPixelSize(12);  // fixed size in combo
     ui->fontName->setCurrentFont(font);
-    ui->fontSize->setValue(first->font().pointSize());
+    ui->fontSize->setValue(first->font().pixelSize());
 
     foreach(QListWidgetItem* item, selected) {
         // If any style differs from first, clear fields
         Style* style = m_script->style(item->text());
         if (style->font().family() != first->font().family())
             ui->fontName->setCurrentIndex(-1);
-        if (style->font().pointSize() != first->font().pointSize())
+        if (style->font().pixelSize() != first->font().pixelSize())
             ui->fontSize->clear();
         if (style->primaryColour() != first->primaryColour())
             m_colour = Qt::transparent;
@@ -120,7 +120,7 @@ void StyleEditor::save()
     QString line;
     foreach(Style* style, m_overidden) {
         line = QString("%1/%2/%3").arg(style->font().family())
-                                  .arg(style->font().pointSize())
+                                  .arg(style->font().pixelSize())
                                   .arg(style->primaryColour().name());
         settings.setValue(style->name(), line);
     }
@@ -142,7 +142,7 @@ void StyleEditor::reset()
         QStringList overriden = settings.value(style->name(), "").toString().split("/");
         if (overriden.size() == 3) {
             QFont f(overriden[0]);
-            f.setPointSize(overriden.at(1).toInt());
+            f.setPixelSize(overriden.at(1).toInt());
             style->setFont(f);
             style->setPrimaryColour(QColor(overriden[2]));
             m_overidden.append(style);
@@ -173,16 +173,16 @@ void StyleEditor::apply()
     foreach(QListWidgetItem* item, selected) {
         // Style properties were edited, store a copy
         Style* style = m_script->style(item->text());
-        int fontSize = style->font().pointSize();
+        int fontSize = style->font().pixelSize();
         QFont font = style->font();
         if (!ui->fontSize->text().isEmpty()) {
             fontSize = ui->fontSize->value();
-            font.setPointSize(ui->fontSize->value());
+            font.setPixelSize(ui->fontSize->value());
             style->setFont(font);
         }
         if (ui->fontName->currentIndex() >= 0) {
             font = ui->fontName->currentFont();
-            font.setPointSize(fontSize);
+            font.setPixelSize(fontSize);
             style->setFont(font);
         }
         if (m_colour != Qt::transparent) {

@@ -24,25 +24,25 @@
 Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, QObject *p_parent) :
     QObject(p_parent),
     m_name(p_name),
-    m_font(p_font),
     m_primaryColour(p_color),
     m_alignment(Qt::AlignVCenter | Qt::AlignHCenter),
     m_marginL(0),
     m_marginR(0),
     m_marginV(0)
 {
+    setFont(p_font);
 }
 
 Style::Style(const Style &p_oth, const QFont& f, QObject *p_parent):
     QObject(p_parent),
     m_name(p_oth.m_name),
-    m_font(f),
     m_primaryColour(p_oth.m_primaryColour),
     m_alignment(p_oth.m_alignment),
     m_marginL(p_oth.m_marginL),
     m_marginR(p_oth.m_marginR),
     m_marginV(p_oth.m_marginV)
 {
+    setFont(f);
 }
 
 void Style::setAlignment(Qt::Alignment p_alignment)
@@ -67,6 +67,7 @@ const QFont &Style::font() const {
 
 void Style::setFont(const QFont& f) {
     m_font = f;
+    m_font.setStyleStrategy(QFont::PreferAntialias);
 }
 
 const QColor &Style::primaryColour() const {
@@ -78,13 +79,21 @@ void Style::setPrimaryColour(const QColor &c)
     m_primaryColour = c;
 }
 
+int Style::textHeight(const Subtitle &subtitle) const
+{
+    int lineHeight = font().pixelSize();
+    int lineSpace = 0.75 * lineHeight;
+    qreal nbSpaces = qMax(1.25, subtitle.nbLines()-0.75); // baseline (qpjg)
+    return lineHeight * subtitle.nbLines() + lineSpace * nbSpaces;
+}
+
 void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds) const
 {
     QRect final(bounds);
     int marginL = m_marginL + subtitle.marginL();
     int marginR = m_marginR + subtitle.marginR();
     int marginV = m_marginV + subtitle.marginV();
-    final = final.adjusted(marginL, marginV, -marginR, marginV);
+    final = final.adjusted(marginL, marginV, -marginR, -marginV);
 
     QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
 
@@ -97,9 +106,9 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
         html = html.replace("HORIZONTAL", "center");
     }
     if (m_alignment & Qt::AlignBottom) {
-        final.setY(final.bottom() - subtitle.textHeight());
+        final.moveTop(final.bottom() - textHeight(subtitle));
     } else if (m_alignment & Qt::AlignVCenter) {
-        final.setY(final.center().y() - subtitle.textHeight()/2);
+        final.moveTop(final.center().y() - textHeight(subtitle)/2);
     }
 
     QTextDocument doc;

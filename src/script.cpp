@@ -187,7 +187,8 @@ void Script::loadFromAss(QStringList content)
 
                         QList<QString> subparts = value.split(',');
                         QString name = subparts[0];
-                        QFont font = QFont(subparts[1], subparts[2].toInt());
+                        QFont font = QFont(subparts[1]);
+                        font.setPixelSize(subparts[2].toInt());
                         QString c = subparts[3].right(6);
                         QColor color;
                         color.setBlue(c.mid(0, 2).toInt(0, 16));

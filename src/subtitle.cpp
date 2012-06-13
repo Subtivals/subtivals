@@ -115,13 +115,6 @@ int Subtitle::nbLines() const
     return m_text.split("<br/>").count();
 }
 
-int Subtitle::textHeight() const
-{
-    int lineHeight = m_style->font().pointSize() * 1.5;
-    int lineSpace = 0.5 * lineHeight;
-    return 5 + lineHeight * nbLines() + lineSpace * (nbLines()-1);
-}
-
 const QString &Subtitle::prettyText() const
 {
     return m_prettyText;

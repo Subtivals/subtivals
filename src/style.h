@@ -62,6 +62,7 @@ public:
     void drawSubtitle(QPainter*, const Subtitle&, const QRect&) const;
     void setMargins(int p_marginL, int p_marginR, int p_marginV);
     void setAlignment(Qt::Alignment p_alignment);
+    int textHeight(const Subtitle &subtitle) const;
 private:
     /*
      * Style name.
