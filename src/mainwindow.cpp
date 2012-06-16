@@ -591,17 +591,24 @@ void MainWindow::enableActionNext()
 
 void MainWindow::actionSubtitleClic(QModelIndex index)
 {
-    disableSubtitleSelection();
-    if (index.row() != ui->tableWidget->currentRow())
+    // Keep track of row selection change
+    if (index.row() != ui->tableWidget->currentRow()) {
+        disableSubtitleSelection();
         m_rowChanged = true;
+    }
     ui->actionPrevious->setEnabled(canPrevious());
     ui->actionNext->setEnabled(canNext());
 }
 
 void MainWindow::actionSubtitleSelected(QModelIndex index)
 {
-    // Switch to the selected subtitle
+    // Switch to the selected subtitle.
+    // Force select subtitle (double-clic is two clics)
+    m_selectSubtitle = true;
     m_player->jumpTo(index.row());
+    // Force subtitle change, since double-clic should always
+    // last subtitle of current subtitles
+    subtitleChanged();
     // Update the UI
     ui->actionHide->setChecked(false);
     ui->actionPrevious->setEnabled(canPrevious());
@@ -670,8 +677,8 @@ void MainWindow::subtitleChanged()
 void MainWindow::highlightSubtitles(qlonglong elapsed)
 {
     QColor off = qApp->palette().color(QPalette::Base);
-    QColor on = qApp->palette().color(QPalette::Highlight).lighter(120);
-    QColor next = qApp->palette().color(QPalette::Highlight).lighter(160);
+    QColor on = qApp->palette().color(QPalette::Highlight).lighter(130);
+    QColor next = qApp->palette().color(QPalette::Highlight).lighter(170);
 
     // First reset all
     for(int row=0; row<ui->tableWidget->rowCount(); row++) {
