@@ -591,9 +591,13 @@ void MainWindow::enableActionNext()
 
 void MainWindow::actionSubtitleClic(QModelIndex index)
 {
+    disableSubtitleSelection();
     // Keep track of row selection change
-    if (index.row() != ui->tableWidget->currentRow()) {
-        disableSubtitleSelection();
+    QList<int> currentRows;
+    foreach(Subtitle *e, m_player->current()) {
+        currentRows.append(m_tableMapping[e]);
+    }
+    if (!currentRows.contains(index.row())) {
         m_rowChanged = true;
     }
     ui->actionPrevious->setEnabled(canPrevious());
