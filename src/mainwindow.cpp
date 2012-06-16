@@ -742,6 +742,7 @@ void MainWindow::setState(State p_state)
         ui->actionAddDelay->setEnabled(false);
         ui->actionSubDelay->setEnabled(false);
         ui->actionAutoHideEnded->setEnabled(false);
+        ui->actionShowCalibration->setEnabled(true);
         break;
     case STOPPED:
         m_player->stop();
@@ -753,6 +754,7 @@ void MainWindow::setState(State p_state)
         ui->actionAddDelay->setEnabled(false);
         ui->actionSubDelay->setEnabled(false);
         ui->actionAutoHideEnded->setEnabled(true);
+        ui->actionShowCalibration->setEnabled(true);
         break;
     case PLAYING:
         m_player->play();
@@ -764,6 +766,7 @@ void MainWindow::setState(State p_state)
         ui->actionAddDelay->setEnabled(true);
         ui->actionSubDelay->setEnabled(true);
         ui->actionAutoHideEnded->setEnabled(false);
+        ui->actionShowCalibration->setEnabled(false);
         break;
     case PAUSED:
         m_player->pause();
