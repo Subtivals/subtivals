@@ -45,6 +45,7 @@ public slots:
     void screenResizable(bool state);
     void changeGeometry(int, const QRect&);
     void rotate(double);
+    void zoom(double p_zoom);
     void color(QColor);
 protected:
     void changeGeometry(const QRect&);
@@ -62,6 +63,7 @@ private:
     QRect m_screenGeom;
     bool m_resizable;
     qreal m_rotation;
+    qreal m_zoom;
     QColor m_color;
 };
 

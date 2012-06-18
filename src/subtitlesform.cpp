@@ -31,6 +31,7 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
     m_visible(true),
     m_resizable(false),
     m_rotation(0),
+    m_zoom(1.0),
     m_color(Qt::black)
 {
     ui->setupUi(this);
@@ -104,7 +105,9 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     } else {
         p.rotate(m_rotation);
     }
-
+    p.translate(geometry().center() -geometry().topLeft());
+    p.scale(m_zoom, m_zoom);
+    p.translate(-geometry().center() +geometry().topLeft());
     for(int i = 0; i < m_maxSubtitles && i < m_currentSubtitles.size(); i++) {
         Subtitle *e = m_currentSubtitles.at(i);
         if (e && e->style()) e->style()->drawSubtitle(&p, *e, bounds);
@@ -164,6 +167,12 @@ void SubtitlesForm::screenResizable(bool state)
 void SubtitlesForm::rotate(double p_rotation)
 {
     m_rotation = p_rotation;
+    repaint();
+}
+
+void SubtitlesForm::zoom(double p_zoom)
+{
+    m_zoom = p_zoom;
     repaint();
 }
 

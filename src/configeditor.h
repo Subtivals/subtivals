@@ -39,6 +39,7 @@ public:
 signals:
     void changeScreen(int, QRect);
     void rotate(double);
+    void zoom(double);
     void color(QColor);
     void styleChanged();
 public slots:
