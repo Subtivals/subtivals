@@ -130,7 +130,7 @@ void Player::jumpTo(int i)
     }
 }
 
-QList<Subtitle*> Player::current()
+const QList<Subtitle *> Player::current() const
 {
     return m_lastSubtitles;
 }
@@ -162,7 +162,7 @@ void Player::updateCurrent(qint64 msecsElapsed)
     }
     m_lastSubtitles = currentSubtitles;
     if (change)
-        emit changed();
+        emit changed(m_lastSubtitles);
 }
 
 qint64 Player::tick()

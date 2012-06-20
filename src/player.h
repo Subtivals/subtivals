@@ -17,7 +17,6 @@ class Player : public QObject
 public:
     explicit Player(QObject *parent = 0);
     void setScript(Script*);
-    QList<Subtitle*> current();
     qlonglong elapsedTime();
     int delay();
 signals:
@@ -25,7 +24,7 @@ signals:
     void clear();
     void on(Subtitle*);
     void off(Subtitle*);
-    void changed();
+    void changed(QList<Subtitle*>);
     void autoHide();
 public slots:
     void play();
@@ -45,6 +44,7 @@ public:
 protected:
     void updateCurrent(qint64);
     qint64 tick();
+    const QList<Subtitle*> current() const;
 protected slots:
     void timeout();
 private:

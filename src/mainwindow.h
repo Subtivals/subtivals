@@ -73,7 +73,7 @@ public slots:
     void actionAbout();
     void actionShowHelp();
     void playPulse(qint64 msecsElapsed);
-    void subtitleChanged();
+    void subtitleChanged(QList<Subtitle*>);
     void actionEnableReload(bool);
     void fileChanged(QString path);
     void reloadScript();
@@ -117,6 +117,7 @@ private:
     QFileSystemWatcher* m_filewatcher;
     QTimer m_timerFileChange;
     QLabel* m_scriptProperties;
+    QList<Subtitle*> m_currentSubtitles;
 };
 
 #endif // MAINWINDOW_H

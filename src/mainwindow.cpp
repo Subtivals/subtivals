@@ -112,8 +112,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_player->moveToThread(m_playerThread);
     m_playerThread->start();
     connect(m_player, SIGNAL(pulse(qint64)), this, SLOT(playPulse(qint64)));
-    connect(m_player, SIGNAL(changed()), this, SLOT(subtitleChanged()));
-    connect(m_player, SIGNAL(changed()), this, SLOT(disableActionNext()));
+    connect(m_player, SIGNAL(changed(QList<Subtitle*>)), this, SLOT(subtitleChanged(QList<Subtitle*>)));
+    connect(m_player, SIGNAL(changed(QList<Subtitle*>)), this, SLOT(disableActionNext()));
     connect(m_player, SIGNAL(autoHide()), this, SLOT(actionToggleHide()));
 
     connect(ui->actionAddDelay, SIGNAL(triggered()), m_player, SLOT(addDelay()));
@@ -541,7 +541,7 @@ void MainWindow::actionNext()
 {
     int row = ui->tableWidget->currentRow();
     bool isRowDisplayed = false;
-    foreach(Subtitle* e, m_player->current())
+    foreach(Subtitle* e, m_currentSubtitles)
         if (m_tableMapping[e] == row)
             isRowDisplayed = true;
 
@@ -594,7 +594,7 @@ void MainWindow::actionSubtitleClic(QModelIndex index)
     disableSubtitleSelection();
     // Keep track of row selection change
     QList<int> currentRows;
-    foreach(Subtitle *e, m_player->current()) {
+    foreach(Subtitle *e, m_currentSubtitles) {
         currentRows.append(m_tableMapping[e]);
     }
     if (!currentRows.contains(index.row())) {
@@ -612,7 +612,7 @@ void MainWindow::actionSubtitleSelected(QModelIndex index)
     m_player->jumpTo(index.row());
     // Force subtitle change, since double-clic should always
     // last subtitle of current subtitles
-    subtitleChanged();
+    subtitleChanged(m_currentSubtitles);
     // Update the UI
     ui->actionHide->setChecked(false);
     ui->actionPrevious->setEnabled(canPrevious());
@@ -629,19 +629,18 @@ void MainWindow::playPulse(qint64 msecsElapsed)
     if (!m_script) return;
 
     // Update progression of subtitles
-    QList<Subtitle*> currentSubtitles = m_player->current();
     QList<Subtitle*> previousSubtitles = m_script->previousSubtitles(msecsElapsed);
     QList<Subtitle*> nextSubtitles = m_script->nextSubtitles(msecsElapsed);
     foreach(Subtitle* subtitle, m_script->subtitles()) {
         int row = m_tableMapping[subtitle];
         qreal progressionCurrent = 0.0;
         qreal progressionNext = 0.0;
-        if (currentSubtitles.contains(subtitle)) {
+        if (m_currentSubtitles.contains(subtitle)) {
             qreal remaining = (msecsElapsed - subtitle->msseStart()) / qreal(m_player->duration(subtitle));
             progressionCurrent = qBound(0.0, remaining, 1.0);
         }
         if (m_state == PLAYING) {
-            if (currentSubtitles.isEmpty() && nextSubtitles.contains(subtitle)) {
+            if (m_currentSubtitles.isEmpty() && nextSubtitles.contains(subtitle)) {
                 if (!previousSubtitles.isEmpty()) {
                     qint64 interval = subtitle->msseStart() - previousSubtitles.last()->msseEnd();
                     qreal missing = qreal(subtitle->msseStart() - msecsElapsed) / interval;
@@ -654,15 +653,15 @@ void MainWindow::playPulse(qint64 msecsElapsed)
     }
 }
 
-void MainWindow::subtitleChanged()
+void MainWindow::subtitleChanged(QList<Subtitle*> p_currentSubtitles)
 {
     qint64 msecsElapsed = m_player->elapsedTime();
     highlightSubtitles(msecsElapsed);
     if(m_selectSubtitle) {
         int subtitleRow = -1;
-        QList<Subtitle*> currentSubtitles = m_player->current();
-        if (currentSubtitles.size() > 0) {
-            subtitleRow = m_tableMapping[currentSubtitles.last()];
+        m_currentSubtitles = p_currentSubtitles;
+        if (m_currentSubtitles.size() > 0) {
+            subtitleRow = m_tableMapping[m_currentSubtitles.last()];
         }
         else {
             QList<Subtitle*> nextSubtitles = m_script->nextSubtitles(msecsElapsed);
@@ -707,7 +706,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed)
     }
 
     // Finally highlight current subtitles
-    foreach(Subtitle *e, m_player->current()) {
+    foreach(Subtitle *e, m_currentSubtitles) {
         int row = m_tableMapping[e];
         for (int col=0; col<ui->tableWidget->columnCount(); col++) {
             QTableWidgetItem* item = ui->tableWidget->item(row, col);
