@@ -1,3 +1,20 @@
+subtivals (1.2.0-1) stable; urgency=low
+
+  * Progress bar on each subtitle
+  * Bold and italic support
+  * Subtitles highlighting in list view
+  * Next subtitle is selected while waiting
+  * Disable calibration while playing
+  * Enhance SSA positioning
+  * Rework screen vertical positioning
+  * SubRip positioning configuration at file open
+  * Multiple styles edition
+  * Disable next for while after subtitles change
+  * Code refactor on playing control
+  * Fix next if simultaneous subtitles
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Thu, 21 Jun 2012 22:45:31 +0100
+
 subtivals (1.1.0-1) stable; urgency=low
 
   * SubRip (.srt) support
@@ -16,7 +33,7 @@ subtivals (1.1.0-1) stable; urgency=low
 
  -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Thu, 14 May 2012 09:45:31 +0100
  
- subtivals (1.0.1-1) stable; urgency=low
+subtivals (1.0.1-1) stable; urgency=low
 
   * Bug fix release.
 
