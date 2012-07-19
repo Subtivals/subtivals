@@ -1,11 +1,11 @@
 ![screenshot](http://mathieu-leplatre.info/media/subtivals/subtivals.png)
 
-**Subtivals**, a program to project Advanced SubStation Alpha subtitles (ASS, *.ass).
+**Subtivals**, a program to project Advanced SubStation Alpha (ASS, *.ass) and Subrip (*.srt) subtitles.
 
 Purpose
 =======
 
-Hard copies for film festivals do not always carry subtitles for the hard-of-hearing.
+Hard copies for film festivals do not always carry subtitles, especially for the hard-of-hearing.
 
 Subtivals goals are the projection and the control of subtitles superimposed on a cinema screen;
 
@@ -19,6 +19,7 @@ Subtivals was used during the following film festivals :
 
 * [Résistances à Foix](http://festival-resistances.fr) (*soon, 2012*)
 * [Festival du film de Beauvais](http://www.beauvaisfilmfest.com) (*2012*)
+* [Short films festivals Vila do Conde](http://rteixeira.eu) (*2012*)
 * [Cinélatino de Toulouse](http://www.cinelatino.com.fr) (*2012*)
 * [Festival Zoom Arrière, 6e édition](http://www.lacinemathequedetoulouse.com/archives/2012/thematiques) (*2012*)
 * [Festival International du film d'Amiens](http://www.filmfestamiens.org) (*2011*)
