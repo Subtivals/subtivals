@@ -102,7 +102,8 @@ void Subtitle::setText(const QString& p_text)
 
     m_prettyText = QString(p_text);
     m_prettyText = m_prettyText.replace(QRegExp("<br/>"), " # ");
-    m_prettyText = m_prettyText.replace(QRegExp("</?[^bi]+/?>"), "");
+    m_prettyText = m_prettyText.replace(QRegExp("<[^/bi>]+>"), "");
+    m_prettyText = m_prettyText.replace(QRegExp("</[^bi>]+>"), "");
 }
 
 const QString &Subtitle::text() const
