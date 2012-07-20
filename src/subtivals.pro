@@ -79,3 +79,8 @@ mac {
 }
 TRANSLATIONS_PATH_STR = '\\"$${TRANSLATIONS_PATH}\\"'
 DEFINES += TRANSLATIONS_PATH=\"$${TRANSLATIONS_PATH_STR}\"
+
+OTHER_FILES += \
+    ../debian/control \
+    ../debian/changelog \
+    ../win-installer/installer.nsi
