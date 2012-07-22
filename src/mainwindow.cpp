@@ -638,7 +638,6 @@ void MainWindow::playPulse(qint64 msecsElapsed)
     QList<Subtitle*> previousSubtitles = m_script->previousSubtitles(msecsElapsed);
     QList<Subtitle*> nextSubtitles = m_script->nextSubtitles(msecsElapsed);
     foreach(Subtitle* subtitle, m_script->subtitles()) {
-        int row = m_tableMapping[subtitle];
         qreal progressionCurrent = 0.0;
         qreal progressionNext = 0.0;
         if (m_currentSubtitles.contains(subtitle)) {
@@ -647,13 +646,16 @@ void MainWindow::playPulse(qint64 msecsElapsed)
         }
         if (m_state == PLAYING) {
             if (m_currentSubtitles.isEmpty() && nextSubtitles.contains(subtitle)) {
-                if (!previousSubtitles.isEmpty()) {
-                    qint64 interval = subtitle->msseStart() - previousSubtitles.last()->msseEnd();
-                    qreal missing = qreal(subtitle->msseStart() - msecsElapsed) / interval;
-                    progressionNext = -qBound(0.0, missing, 1.0);
-                }
+                qint64 lastEnd = 0;
+                if (!previousSubtitles.isEmpty())
+                    lastEnd = previousSubtitles.last()->msseEnd();
+
+                qint64 interval = subtitle->msseStart() - lastEnd;
+                qreal missing = qreal(subtitle->msseStart() - msecsElapsed) / interval;
+                progressionNext = -qBound(0.0, missing, 1.0);
             }
         }
+        int row = m_tableMapping[subtitle];
         ui->tableWidget->item(row, COLUMN_START)->setData(Qt::UserRole, progressionNext);
         ui->tableWidget->item(row, COLUMN_END)->setData(Qt::UserRole, progressionCurrent);
     }
