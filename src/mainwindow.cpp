@@ -34,6 +34,8 @@
 #include "configsrt.h"
 
 
+#include <QDebug>
+
 /**
  * A small delegate class to allow rich text rendering in main table cells.
  */
@@ -50,7 +52,10 @@ class SubtitleTextDelegate : public QStyledItemDelegate
         options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
         // Render rich text
         if (value.isValid() && !value.isNull()) {
-            document.setHtml(value.toString());
+			QString html(value.toString());
+			if (index.data(Qt::UserRole).toBool())
+				html = QString("<b>%1</b>").arg(html);
+            document.setHtml(html);
             painter->translate(option.rect.topLeft());
             document.drawContents(painter);
             painter->translate(-option.rect.topLeft());
@@ -692,6 +697,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed)
             QFont f = item->font();
             f.setBold(false);
             item->setFont(f);
+            if (col == COLUMN_TEXT) item->setData(Qt::UserRole, false);
         }
     }
 
@@ -715,6 +721,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed)
                     item->setFont(f);
                 }
                 item->setBackgroundColor(on);
+                if (col == COLUMN_TEXT) item->setData(Qt::UserRole, !ui->actionHide->isChecked());
             }
         }
     }
