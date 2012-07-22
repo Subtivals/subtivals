@@ -1,3 +1,11 @@
+subtivals (1.2.2-1) stable; urgency=low
+
+  * Fix subtitles hightlighting
+  * Fix crash on close
+  * Fix bold aspect of text column for visible subtitles
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Fri, 20 Jul 2012 23:05:00 +0100
+
 subtivals (1.2.1-1) stable; urgency=low
 
   * Fix disappearing texts if color tag is used
