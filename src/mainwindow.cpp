@@ -704,19 +704,18 @@ void MainWindow::highlightSubtitles(qlonglong elapsed)
                 item->setBackgroundColor(next);
             }
         }
-    }
-
-    // Finally highlight current subtitles
-    foreach(Subtitle *e, m_currentSubtitles) {
-        int row = m_tableMapping[e];
-        for (int col=0; col<ui->tableWidget->columnCount(); col++) {
-            QTableWidgetItem* item = ui->tableWidget->item(row, col);
-            if (!ui->actionHide->isChecked()) {
-                QFont f = item->font();
-                f.setBold(true);
-                item->setFont(f);
+        // Finally highlight current subtitles
+        foreach(Subtitle *e, m_currentSubtitles) {
+            int row = m_tableMapping[e];
+            for (int col=0; col<ui->tableWidget->columnCount(); col++) {
+                QTableWidgetItem* item = ui->tableWidget->item(row, col);
+                if (!ui->actionHide->isChecked()) {
+                    QFont f = item->font();
+                    f.setBold(true);
+                    item->setFont(f);
+                }
+                item->setBackgroundColor(on);
             }
-            item->setBackgroundColor(on);
         }
     }
 }
