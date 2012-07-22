@@ -656,11 +656,11 @@ void MainWindow::playPulse(qint64 msecsElapsed)
 
 void MainWindow::subtitleChanged(QList<Subtitle*> p_currentSubtitles)
 {
+    m_currentSubtitles = p_currentSubtitles;
     qint64 msecsElapsed = m_player->elapsedTime();
     highlightSubtitles(msecsElapsed);
     if(m_selectSubtitle) {
         int subtitleRow = -1;
-        m_currentSubtitles = p_currentSubtitles;
         if (m_currentSubtitles.size() > 0) {
             subtitleRow = m_tableMapping[m_currentSubtitles.last()];
         }
