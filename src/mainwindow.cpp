@@ -260,12 +260,12 @@ void MainWindow::actionShowCalibration(bool p_state)
         actionToggleHide(false);
     }
     else {
-        m_player->enableAutoHide(ui->actionAutoHideEnded->isChecked()); // restore auto-hide
         if (!m_lastScript.isEmpty())
             openFile(m_lastScript);
         else {
             closeFile();
         }
+        m_player->enableAutoHide(ui->actionAutoHideEnded->isChecked()); // restore auto-hide
     }
 }
 

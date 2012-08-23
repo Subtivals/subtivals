@@ -107,7 +107,7 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
 
     for(int i = 0; i < m_maxSubtitles && i < m_currentSubtitles.size(); i++) {
         Subtitle *e = m_currentSubtitles.at(i);
-        e->style()->drawSubtitle(&p, *e, bounds);
+        if (e && e->style()) e->style()->drawSubtitle(&p, *e, bounds);
     }
 }
 
