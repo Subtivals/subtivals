@@ -326,10 +326,7 @@ void MainWindow::openFile (const QString &p_fileName)
     ui->searchField->setEnabled(row > 0);
     ui->searchField->setText("");
 
-    if (m_script->format() == Script::SRT) {
-        ConfigSrt dialog(m_script, this);
-        dialog.exec();
-    }
+    ui->actionEditSubripPositioning->setEnabled(m_script->format() == Script::SRT);
 }
 
 void MainWindow::closeFile()
@@ -350,6 +347,7 @@ void MainWindow::closeFile()
     setWindowTitle(tr("Subtivals"));
     m_scriptProperties->setText("");
     ui->tableWidget->setRowCount(0);
+    ui->actionEditSubripPositioning->setEnabled(false);
 }
 
 void MainWindow::refreshDurations()
@@ -383,6 +381,12 @@ void MainWindow::actionEnableReload(bool state)
 void MainWindow::actionAutoHideEnded(bool p_state)
 {
     m_player->enableAutoHide(p_state);
+}
+
+void MainWindow::actionEditSubripPositioning()
+{
+    ConfigSrt config(m_script, this);
+    config.exec();
 }
 
 void MainWindow::fileChanged(QString path)

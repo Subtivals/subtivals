@@ -86,6 +86,7 @@ public slots:
     void search();
     void searchTextChanged(QString);
     void actionAutoHideEnded(bool);
+    void actionEditSubripPositioning();
 protected:
     bool canNext();
     bool canPrevious();
