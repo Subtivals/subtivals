@@ -97,7 +97,7 @@ protected:
     void dropEvent(QDropEvent* event);
     void closeEvent(QCloseEvent *);
     void highlightSubtitles(qlonglong elapsed);
-    QString ts2tc(qint64 p_timestamp);
+    QString ts2tc(qint64 p_timestamp, QString format = "hh:mm:ss.zzz");
     void setState(State p_state);
 private:
     State m_state;
@@ -117,6 +117,7 @@ private:
     QFileSystemWatcher* m_filewatcher;
     QTimer m_timerFileChange;
     QLabel* m_scriptProperties;
+    QLabel* m_countDown;
     QList<Subtitle*> m_currentSubtitles;
 };
 

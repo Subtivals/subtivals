@@ -58,6 +58,11 @@ Script::ScriptFormat Script::format() const
     return m_format;
 }
 
+double Script::totalDuration() const
+{
+    return m_subtitles.last()->msseEnd();
+}
+
 const QString &Script::fileName() const
 {
     return m_fileName;

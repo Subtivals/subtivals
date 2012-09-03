@@ -103,7 +103,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_selectSubtitle(true),
     m_rowChanged(false),
     m_filewatcher(new QFileSystemWatcher),
-    m_scriptProperties(new QLabel(this))
+    m_scriptProperties(new QLabel(this)),
+    m_countDown(new QLabel(this))
 {
     ui->setupUi(this);
     ui->tableWidget->setItemDelegateForColumn(COLUMN_START, new SubtitleDurationDelegate());
@@ -134,6 +135,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Add preferences dock
     m_preferences->setVisible(false);
     ui->mainLayout->addWidget(m_preferences);
+    ui->statusBar->addPermanentWidget(m_countDown);
     ui->statusBar->addPermanentWidget(m_scriptProperties);
 
     // Selection timer (disables subtitle highlighting for a while)
@@ -163,6 +165,7 @@ MainWindow::~MainWindow()
     delete m_preferences;
     delete m_filewatcher;
     delete m_scriptProperties;
+    delete m_countDown;
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)
@@ -452,6 +455,7 @@ void MainWindow::actionStop()
     playPulse(0);
     ui->timer->setText("-");
     ui->userDelay->setText("-");
+    m_countDown->setText("");
 }
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
@@ -630,6 +634,7 @@ void MainWindow::playPulse(qint64 msecsElapsed)
     if (m_state == PLAYING) {
         ui->timer->setText(ts2tc(msecsElapsed));
         ui->userDelay->setText(ts2tc(m_player->delay()));
+        m_countDown->setText(QString("Remaining: %1").arg(ts2tc(msecsElapsed - m_script->totalDuration(), "hh:mm:ss")));
     }
 
     if (!m_script) return;
@@ -729,12 +734,12 @@ void MainWindow::highlightSubtitles(qlonglong elapsed)
     }
 }
 
-QString MainWindow::ts2tc(qint64 p_ts)
+QString MainWindow::ts2tc(qint64 p_ts, QString format)
 {
     if (p_ts >= 0)
-        return "+" + QTime().addMSecs(p_ts).toString("hh:mm:ss.zzz");
+        return "+" + QTime().addMSecs(p_ts).toString(format);
     else
-        return "-" + QTime().addMSecs(-p_ts).toString("hh:mm:ss.zzz");
+        return "-" + QTime().addMSecs(-p_ts).toString(format);
 }
 
 void MainWindow::setState(State p_state)

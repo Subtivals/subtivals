@@ -77,6 +77,7 @@ public:
     const QList<Subtitle *> nextSubtitles(qlonglong elapsed) const;
     const QList<Subtitle *> previousSubtitles(qlonglong elapsed) const;
     ScriptFormat format() const;
+    double totalDuration() const;
 public slots:
     /*
      * Activates duration correction of subtitles.
