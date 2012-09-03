@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/samples">
         <file>M.ass</file>
+        <file>M.srt</file>
     </qresource>
 </RCC>
