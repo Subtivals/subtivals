@@ -133,6 +133,11 @@ void Subtitle::setMargins(int p_marginL, int p_marginR, int p_marginV)
     m_marginV = p_marginV;
 }
 
+void Subtitle::setPosition(int p_x, int p_y)
+{
+    m_position = QPoint(p_x, p_y);
+}
+
 int Subtitle::marginL() const
 {
     return m_marginL;
@@ -146,4 +151,9 @@ int Subtitle::marginR() const
 int Subtitle::marginV() const
 {
     return m_marginV;
+}
+
+QPoint Subtitle::position() const
+{
+    return m_position;
 }

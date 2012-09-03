@@ -20,6 +20,7 @@
 #include <QObject>
 #include <QTime>
 #include <QString>
+#include <QPoint>
 
 class Style;
 class Script;
@@ -46,6 +47,8 @@ public:
     bool isCorrected() const;
     void correct(bool);
     int nbLines() const;
+    void setPosition(int p_x, int p_y);
+    QPoint position() const;
 private:
     int m_index;
     const Script *m_script;
@@ -58,6 +61,7 @@ private:
     int m_marginL;
     int m_marginR;
     int m_marginV;
+    QPoint m_position;
     bool m_corrected;
 };
 

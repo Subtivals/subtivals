@@ -246,6 +246,7 @@ void Script::loadFromAss(QStringList content)
                     p = value.indexOf(",", p+1);
                 }
                 QString text = value.mid(p+1);
+                int x = y = -1;
 
                 // Transform the hints in the text into HTML:
                 // New ligne HTML-ification
@@ -269,6 +270,10 @@ void Script::loadFromAss(QStringList content)
                         idxAccOpenColor = text.indexOf("{\\1c&H");
                     }
                 }
+                // Absolute positioning
+                {
+                }
+
                 // Drop others hints that cannot be translated in HTML
                 {
                     int idxAccOpenDrop = text.indexOf("{\\");
@@ -289,6 +294,9 @@ void Script::loadFromAss(QStringList content)
                 Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
                 subtitle->setStyle(style);
                 subtitle->setMargins(marginL, marginR, marginV);
+                if (x>0 || y>0) {
+                    subtitle->setPosition(x, y);
+                }
                 m_subtitles.append(subtitle);
             }
         }

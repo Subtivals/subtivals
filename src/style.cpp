@@ -90,27 +90,33 @@ int Style::textHeight(const Subtitle &subtitle) const
 void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds) const
 {
     QRect final(bounds);
-    int marginL = m_marginL + subtitle.marginL();
-    int marginR = m_marginR + subtitle.marginR();
-    int marginV = m_marginV + subtitle.marginV();
-    final = final.adjusted(marginL, marginV, -marginR, -marginV);
-
     QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
 
-    html = html.replace("TEXT", subtitle.text());
-    if (m_alignment & Qt::AlignLeft) {
+    if (!subtitle.position().isNull()) {
+        final.setTopLeft(subtitle.position());  // absolute positioning
         html = html.replace("HORIZONTAL", "left");
-    } else if (m_alignment & Qt::AlignRight) {
-        html = html.replace("HORIZONTAL", "right");
-    } else {
-        html = html.replace("HORIZONTAL", "center");
     }
-    if (m_alignment & Qt::AlignBottom) {
-        final.moveTop(final.bottom() - textHeight(subtitle));
-    } else if (m_alignment & Qt::AlignVCenter) {
-        final.moveTop(final.center().y() - textHeight(subtitle)/2);
+    else {
+        int marginL = m_marginL + subtitle.marginL();
+        int marginR = m_marginR + subtitle.marginR();
+        int marginV = m_marginV + subtitle.marginV();
+        final = final.adjusted(marginL, marginV, -marginR, -marginV);
+
+        if (m_alignment & Qt::AlignLeft) {
+            html = html.replace("HORIZONTAL", "left");
+        } else if (m_alignment & Qt::AlignRight) {
+            html = html.replace("HORIZONTAL", "right");
+        } else {
+            html = html.replace("HORIZONTAL", "center");
+        }
+        if (m_alignment & Qt::AlignBottom) {
+            final.moveTop(final.bottom() - textHeight(subtitle));
+        } else if (m_alignment & Qt::AlignVCenter) {
+            final.moveTop(final.center().y() - textHeight(subtitle)/2);
+        }
     }
 
+    html = html.replace("TEXT", subtitle.text());
     QTextDocument doc;
     doc.setPageSize(QSize(final.width(), final.height()));
     doc.setHtml(html);
