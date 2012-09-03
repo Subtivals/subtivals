@@ -637,7 +637,7 @@ void MainWindow::playPulse(qint64 msecsElapsed)
     if (m_state == PLAYING) {
         ui->timer->setText(ts2tc(msecsElapsed));
         ui->userDelay->setText(ts2tc(m_player->delay()));
-        m_countDown->setText(QString("Remaining: %1").arg(ts2tc(msecsElapsed - m_script->totalDuration(), "hh:mm:ss")));
+        m_countDown->setText(tr("Remaining: %1").arg(ts2tc(msecsElapsed - m_script->totalDuration(), "hh:mm:ss")));
     }
 
     if (!m_script) return;
@@ -837,13 +837,13 @@ void MainWindow::actionAbout()
 {
     QMessageBox::about(this,
                        tr("About Subtivals"),
-                       tr("<h1>Subtivals</h1>"
+                       tr("<h1>Subtivals %1</h1>"
                           "<p>Subtivals, a program to project subtitles.</p>"
                           "<h2>Authors</h2>"
                           "<li>Lilian Lefranc</li>"
                           "<li>Arnaud Rolly</li>"
                           "<li>Mathieu Leplatre</li>"
-                          "<li>Emmanuel Digiaro</li>"));
+                          "<li>Emmanuel Digiaro</li>").arg(VERSION));
 }
 
 void MainWindow::actionShowHelp()
