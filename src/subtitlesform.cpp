@@ -105,12 +105,9 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     } else {
         p.rotate(m_rotation);
     }
-    p.translate(geometry().center() -geometry().topLeft());
-    p.scale(m_zoom, m_zoom);
-    p.translate(-geometry().center() +geometry().topLeft());
     for(int i = 0; i < m_maxSubtitles && i < m_currentSubtitles.size(); i++) {
         Subtitle *e = m_currentSubtitles.at(i);
-        if (e && e->style()) e->style()->drawSubtitle(&p, *e, bounds);
+        if (e && e->style()) e->style()->drawSubtitle(&p, *e, bounds, m_zoom);
     }
 }
 

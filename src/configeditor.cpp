@@ -156,7 +156,7 @@ void ConfigEditor::reset()
     int w = settings.value("w", width).toInt();
     int h = settings.value("h", DEFAULT_HEIGHT).toInt();
     double rotation = settings.value("rotation", 0).toDouble();
-    double zoom = settings.value("zoom", 1.0).toDouble();
+    double zoom = settings.value("zoom", 100.0).toDouble();
     QColor color = QColor(settings.value("color", DEFAULT_COLOR).toString());
     settings.endGroup();
     // Update the UI with the reloaded settings
@@ -181,7 +181,7 @@ void ConfigEditor::save()
     settings.setValue("w", ui->w->text());
     settings.setValue("h", ui->h->text());
     settings.setValue("rotation", ui->rotation->text());
-    settings.setValue("zoom", ui->zoom->text());
+    settings.setValue("zoom", ui->zoom->value());
     settings.setValue("color", m_color.name());
     settings.endGroup();
     m_styleEditor->save();
@@ -198,7 +198,7 @@ void ConfigEditor::apply()
             ui->h->text().toInt());
     emit changeScreen(screen, r);
     emit rotate(ui->rotation->value());
-    emit zoom(ui->zoom->value());
+    emit zoom(ui->zoom->value()/100.0);
     emit color(m_color);
     m_styleEditor->apply();
     enableButtonBox(true, true, true);

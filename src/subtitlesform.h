@@ -63,7 +63,7 @@ private:
     QRect m_screenGeom;
     bool m_resizable;
     qreal m_rotation;
-    qreal m_zoom;
+    double m_zoom;
     QColor m_color;
 };
 
