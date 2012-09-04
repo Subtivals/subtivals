@@ -1,3 +1,10 @@
+subtivals (1.2.3-1) stable; urgency=low
+
+  * Fix event painting on close
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Fri, 04 Sep 2012 14:35:00 +0100
+
+
 subtivals (1.2.2-1) stable; urgency=low
 
   * Fix subtitles hightlighting
