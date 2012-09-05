@@ -42,8 +42,8 @@ int main(int argc, char *argv[])
     SubtitlesForm f;
     MainWindow w;
 
-    QObject::connect(w.player(), SIGNAL(on(Subtitle*)), &f, SLOT(addSubtitle(Subtitle*)), Qt::DirectConnection);
-    QObject::connect(w.player(), SIGNAL(off(Subtitle*)), &f, SLOT(remSubtitle(Subtitle*)), Qt::DirectConnection);
+    QObject::connect(w.player(), SIGNAL(on(Subtitle*)), &f, SLOT(addSubtitle(Subtitle*)));
+    QObject::connect(w.player(), SIGNAL(off(Subtitle*)), &f, SLOT(remSubtitle(Subtitle*)));
     QObject::connect(w.player(), SIGNAL(clear()), &f, SLOT(clearSubtitles()), Qt::DirectConnection);
     QObject::connect(&w, SIGNAL(toggleHide(bool)), &f, SLOT(toggleHide(bool)));
     QObject::connect(&w, SIGNAL(screenResizable(bool)), &f, SLOT(screenResizable(bool)));
