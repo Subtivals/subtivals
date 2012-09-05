@@ -1,3 +1,9 @@
+subtivals (1.2.4-2) stable; urgency=low
+
+  * Fix packaged version.
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Wed, 05 Sep 2012 22:45:00 +0100
+
 subtivals (1.2.4-1) stable; urgency=low
 
   * (retry to)Fix event painting on close file
