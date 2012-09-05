@@ -93,6 +93,7 @@ const QList<Subtitle *> Script::subtitles() const
 
 const Subtitle *Script::subtitleAt(int i) const
 {
+    Q_ASSERT(i>=0 && i<m_subtitles.count());
     return m_subtitles[i];
 }
 

@@ -546,6 +546,7 @@ bool MainWindow::canNext()
 void MainWindow::actionNext()
 {
     int row = ui->tableWidget->currentRow();
+    if (row < 0) row = 0;  // If no row selected, consider first one.
     bool isRowDisplayed = false;
     foreach(Subtitle* e, m_currentSubtitles)
         if (m_tableMapping[e] == row)
