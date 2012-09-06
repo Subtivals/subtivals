@@ -87,7 +87,7 @@ int Style::textHeight(const Subtitle &subtitle) const
     return lineHeight * subtitle.nbLines() + lineSpace * nbSpaces;
 }
 
-void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds) const
+void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds, double zoom) const
 {
     QRect final(bounds);
     QString html = "<p align=\"HORIZONTAL\">TEXT</p>";

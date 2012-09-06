@@ -247,7 +247,8 @@ void Script::loadFromAss(QStringList content)
                     p = value.indexOf(",", p+1);
                 }
                 QString text = value.mid(p+1);
-                int x = y = -1;
+                int x = -1;
+                int y = -1;
 
                 // Transform the hints in the text into HTML:
                 // New ligne HTML-ification

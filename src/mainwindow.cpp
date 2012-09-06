@@ -457,7 +457,7 @@ void MainWindow::actionPlay()
 void MainWindow::actionStop()
 {
     setState(STOPPED);
-    highlightSubtitles(m_player->elapsedTime());
+    highlightSubtitles(0);
     playPulse(0);
     ui->timer->setText("-");
     ui->userDelay->setText("-");
