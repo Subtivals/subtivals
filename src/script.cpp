@@ -98,6 +98,7 @@ const QList<Subtitle *> Script::subtitles() const
 
 const Subtitle *Script::subtitleAt(int i) const
 {
+    Q_ASSERT(i>=0 && i<m_subtitles.count());
     return m_subtitles[i];
 }
 
@@ -307,7 +308,14 @@ void Script::loadFromSrt(QStringList content)
 {
     SectionType section = SECTION_NONE;
 
-    Style *style = new Style(tr("Default"), QFont("Sans", 18), Qt::white, this);
+#ifdef WIN32
+    QFont font("MS Sans Serif");
+#else
+    QFont font("Sans");
+#endif
+    font.setPixelSize(18);
+
+    Style *style = new Style(tr("Default"), font, Qt::white, this);
     m_styles[style->name()] = style;
 
     QStringList text;
