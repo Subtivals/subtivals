@@ -17,17 +17,24 @@ Its semi-manual mode also allows to project subtitles at theaters (or opera, bal
 
 Subtivals was used during the following film festivals :
 
-* [Résistances à Foix](http://festival-resistances.fr) (*soon, 2012*)
+* [Festival de Cinéma d'Amérique Latine de Biarritz](http://www.festivaldebiarritz.com) (*2012, 2011*)
+* [Festival de cinéma de Douarnenez](http://www.festival-douarnenez.com) (*2012, 2011*)
+* [Cinélatino de Toulouse](http://www.cinelatino.com.fr) (*2012, 2011*)
+* [Résistances à Foix](http://festival-resistances.fr) (*2012*)
 * [Festival du film de Beauvais](http://www.beauvaisfilmfest.com) (*2012*)
 * [Short films festivals Vila do Conde](http://rteixeira.eu) (*2012*)
-* [Cinélatino de Toulouse](http://www.cinelatino.com.fr) (*2012*)
 * [Festival Zoom Arrière, 6e édition](http://www.lacinemathequedetoulouse.com/archives/2012/thematiques) (*2012*)
 * [Festival International du film d'Amiens](http://www.filmfestamiens.org) (*2011*)
-* [Festival de Cinéma d'Amérique Latine de Biarritz](http://www.festivaldebiarritz.com) (*2011*)
 * [Festival Intergalactique de Brest](http://festival-galactique.infini.fr) (*2011*)
-* [Festival de cinéma de Douarnenez](http://www.festival-douarnenez.com) (*2011*)
-* *Contact-us to add yours!* 
 
+And is being used by professionals worldwide :
+
+* [ST2L](http://st2l.fr) (*France*)
+* [Fila13](http://fila13.org/) (*Spain*)
+* [Racti](http://racti.com/) (*Lebanon*)
+
+*Contact-us to add yours!*
+ 
 Main features
 =============
 
@@ -38,6 +45,7 @@ Main features
 * Easily adjust position and size of screen window with the mouse
 * Configure presets for screen positions and overriden styles
 * Support of screen rotation
+* Calibration mode
 * Support for subtitles without timecodes (fixes duration automatically)
 * Support for dual head (Xinerama) setup
 * Reload subtitles file if modified while playing
@@ -52,7 +60,7 @@ Subtivals is written in C++/Qt and has no other external dependencies.
 Installation
 ============
 
-Subtivals is available for *Ubuntu*, and can be installed by adding the
+Subtivals installer is available on *Ubuntu*, and can be installed by adding the
 following PPA to your Software Sources:
 
     sudo add-apt-repository ppa:mathieu.leplatre/subtivals
