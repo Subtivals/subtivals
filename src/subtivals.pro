@@ -81,7 +81,7 @@ mac {
 TRANSLATIONS_PATH_STR = '\\"$${TRANSLATIONS_PATH}\\"'
 DEFINES += TRANSLATIONS_PATH=\"$${TRANSLATIONS_PATH_STR}\"
 
-VERSION = $$system(git describe --abbrev=0 --tags)
+VERSION = 1.3.0
 DEFINES += VERSION=\\\"$$VERSION\\\"
 
 OTHER_FILES += \
