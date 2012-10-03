@@ -18,6 +18,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
+#include <QtCore/QRegExp>
 
 #include "script.h"
 
@@ -274,6 +275,13 @@ void Script::loadFromAss(QStringList content)
                 }
                 // Absolute positioning
                 {
+                    //{\pos(x,y)} in the beginning of the line
+                    QRegExp rx("\\{\\\\pos\\((\\d+),(\\d+)\\)\\}");
+                    if (rx.indexIn(text) >= 0){
+                        QStringList strpos = rx.capturedTexts();
+                        x = strpos[1].toInt();
+                        y = strpos[2].toInt();
+                    }
                 }
 
                 // Drop others hints that cannot be translated in HTML
