@@ -85,10 +85,10 @@ void ConfigEditor::presetChanged(int p_preset)
 void ConfigEditor::screenChanged(const QRect& r)
 {
     // Show values in form
-    ui->x->setValue(r.x());
-    ui->y->setValue(r.y());
-    ui->w->setValue(r.width());
-    ui->h->setValue(r.height());
+    ui->x->blockSignals(true); ui->x->setValue(r.x()); ui->x->blockSignals(false);
+    ui->y->blockSignals(true); ui->y->setValue(r.y()); ui->y->blockSignals(false);
+    ui->w->blockSignals(true); ui->w->setValue(r.width());  ui->w->blockSignals(false);
+    ui->h->blockSignals(true); ui->h->setValue(r.height()); ui->h->blockSignals(false);
 }
 
 void ConfigEditor::chooseColor()
