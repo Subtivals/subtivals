@@ -23,6 +23,12 @@
 
 enum SectionType { SECTION_NONE, SECTION_INFOS, SECTION_STYLES, SECTION_EVENTS };
 
+bool compareSubtitleStartTime(const Subtitle* s1, const Subtitle* s2)
+{
+     return s1->msseStart() < s2->msseStart();
+}
+
+
 Script::Script(const QString &p_fileName, QObject *p_parent) :
     QObject(p_parent),
     m_fileName (p_fileName)
@@ -51,6 +57,7 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
         m_format = SRT;
         loadFromSrt(content);
     }
+    qSort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
 }
 
 Script::ScriptFormat Script::format() const
