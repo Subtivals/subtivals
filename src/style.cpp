@@ -87,7 +87,7 @@ int Style::textHeight(const Subtitle &subtitle) const
     return lineHeight * subtitle.nbLines() + lineSpace * nbSpaces;
 }
 
-void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds) const
+void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds, double zoom) const
 {
     QRect final(bounds);
     QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
@@ -97,9 +97,9 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
         html = html.replace("HORIZONTAL", "left");
     }
     else {
-        int marginL = m_marginL + subtitle.marginL();
-        int marginR = m_marginR + subtitle.marginR();
-        int marginV = m_marginV + subtitle.marginV();
+        int marginL = (m_marginL + subtitle.marginL()) * zoom;
+        int marginR = (m_marginR + subtitle.marginR()) * zoom;
+        int marginV = (m_marginV + subtitle.marginV()) * zoom;
         final = final.adjusted(marginL, marginV, -marginR, -marginV);
 
         if (m_alignment & Qt::AlignLeft) {

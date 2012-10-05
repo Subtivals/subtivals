@@ -42,14 +42,15 @@ int main(int argc, char *argv[])
     SubtitlesForm f;
     MainWindow w;
 
-    QObject::connect(w.player(), SIGNAL(on(Subtitle*)), &f, SLOT(addSubtitle(Subtitle*)), Qt::DirectConnection);
-    QObject::connect(w.player(), SIGNAL(off(Subtitle*)), &f, SLOT(remSubtitle(Subtitle*)), Qt::DirectConnection);
+    QObject::connect(w.player(), SIGNAL(on(Subtitle*)), &f, SLOT(addSubtitle(Subtitle*)));
+    QObject::connect(w.player(), SIGNAL(off(Subtitle*)), &f, SLOT(remSubtitle(Subtitle*)));
     QObject::connect(w.player(), SIGNAL(clear()), &f, SLOT(clearSubtitles()), Qt::DirectConnection);
     QObject::connect(&w, SIGNAL(toggleHide(bool)), &f, SLOT(toggleHide(bool)));
     QObject::connect(&w, SIGNAL(screenResizable(bool)), &f, SLOT(screenResizable(bool)));
     QObject::connect(&f, SIGNAL(geometryChanged(QRect)), w.configEditor(), SLOT(screenChanged(QRect)));
     QObject::connect(w.configEditor(), SIGNAL(changeScreen(int,QRect)), &f, SLOT(changeGeometry(int,QRect)));
     QObject::connect(w.configEditor(), SIGNAL(rotate(double)), &f, SLOT(rotate(double)));
+    QObject::connect(w.configEditor(), SIGNAL(zoom(double)), &f, SLOT(zoom(double)));
     QObject::connect(w.configEditor(), SIGNAL(color(QColor)), &f, SLOT(color(QColor)));
     QObject::connect(w.configEditor(), SIGNAL(styleChanged()), &f, SLOT(repaint()));
 

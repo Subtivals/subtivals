@@ -18,6 +18,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
+#include <QtCore/QRegExp>
 
 #include "script.h"
 
@@ -98,6 +99,7 @@ const QList<Subtitle *> Script::subtitles() const
 
 const Subtitle *Script::subtitleAt(int i) const
 {
+    Q_ASSERT(i>=0 && i<m_subtitles.count());
     return m_subtitles[i];
 }
 
@@ -273,6 +275,13 @@ void Script::loadFromAss(QStringList content)
                 }
                 // Absolute positioning
                 {
+                    //{\pos(x,y)} in the beginning of the line
+                    QRegExp rx("\\{\\\\pos\\((\\d+),(\\d+)\\)\\}");
+                    if (rx.indexIn(text) >= 0){
+                        QStringList strpos = rx.capturedTexts();
+                        x = strpos[1].toInt();
+                        y = strpos[2].toInt();
+                    }
                 }
 
                 // Drop others hints that cannot be translated in HTML
@@ -308,7 +317,14 @@ void Script::loadFromSrt(QStringList content)
 {
     SectionType section = SECTION_NONE;
 
-    Style *style = new Style(tr("Default"), QFont("Sans", 18), Qt::white, this);
+#ifdef WIN32
+    QFont font("MS Sans Serif");
+#else
+    QFont font("Sans");
+#endif
+    font.setPixelSize(18);
+
+    Style *style = new Style(tr("Default"), font, Qt::white, this);
     m_styles[style->name()] = style;
 
     QStringList text;
