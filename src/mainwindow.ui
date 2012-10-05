@@ -234,7 +234,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -539,7 +539,7 @@
  <connections>
   <connection>
    <sender>actionOpen</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>actionOpen()</slot>
    <hints>
@@ -555,7 +555,7 @@
   </connection>
   <connection>
    <sender>actionExit</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>close()</slot>
    <hints>
@@ -571,7 +571,7 @@
   </connection>
   <connection>
    <sender>actionPlay</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>actionPlay()</slot>
    <hints>
@@ -587,7 +587,7 @@
   </connection>
   <connection>
    <sender>actionStop</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>actionStop()</slot>
    <hints>
@@ -619,7 +619,7 @@
   </connection>
   <connection>
    <sender>actionPause</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>actionPause()</slot>
    <hints>
@@ -651,7 +651,7 @@
   </connection>
   <connection>
    <sender>actionNext</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>actionNext()</slot>
    <hints>
@@ -699,7 +699,7 @@
   </connection>
   <connection>
    <sender>actionPrevious</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>actionPrevious()</slot>
    <hints>
@@ -795,7 +795,7 @@
   </connection>
   <connection>
    <sender>actionAbout</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>actionAbout()</slot>
    <hints>

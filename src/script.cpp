@@ -23,6 +23,12 @@
 
 enum SectionType { SECTION_NONE, SECTION_INFOS, SECTION_STYLES, SECTION_EVENTS };
 
+bool compareSubtitleStartTime(const Subtitle* s1, const Subtitle* s2)
+{
+     return s1->msseStart() < s2->msseStart();
+}
+
+
 Script::Script(const QString &p_fileName, QObject *p_parent) :
     QObject(p_parent),
     m_fileName (p_fileName)
@@ -51,6 +57,7 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
         m_format = SRT;
         loadFromSrt(content);
     }
+    qSort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
 }
 
 Script::ScriptFormat Script::format() const
@@ -98,6 +105,7 @@ const QList<Subtitle *> Script::subtitles() const
 
 const Subtitle *Script::subtitleAt(int i) const
 {
+    Q_ASSERT(i>=0 && i<m_subtitles.count());
     return m_subtitles[i];
 }
 
@@ -308,7 +316,14 @@ void Script::loadFromSrt(QStringList content)
 {
     SectionType section = SECTION_NONE;
 
-    Style *style = new Style(tr("Default"), QFont("Sans", 18), Qt::white, this);
+#ifdef WIN32
+    QFont font("MS Sans Serif");
+#else
+    QFont font("Sans");
+#endif
+    font.setPixelSize(18);
+
+    Style *style = new Style(tr("Default"), font, Qt::white, this);
     m_styles[style->name()] = style;
 
     QStringList text;

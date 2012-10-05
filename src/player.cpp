@@ -79,8 +79,8 @@ void Player::subDelay(int d)
 void Player::timeout()
 {
     qint64 d = elapsedTime();
-    emit pulse(d);
     updateCurrent(d);
+    emit pulse(d);
 }
 
 void Player::autoHideTimeout()
