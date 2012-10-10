@@ -56,7 +56,6 @@ protected:
     void wheelEvent(QWheelEvent *e);
 private:
     Ui::SubtitlesForm *ui;
-    int m_maxSubtitles;
     QList<Subtitle *> m_currentSubtitles;
     bool m_visible;
     QPoint m_mouseOffset;

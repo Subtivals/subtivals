@@ -27,7 +27,6 @@
 SubtitlesForm::SubtitlesForm(QWidget *parent) :
         QWidget(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ),
     ui(new Ui::SubtitlesForm),
-    m_maxSubtitles(2),
     m_visible(true),
     m_resizable(false),
     m_rotation(0),
@@ -46,10 +45,6 @@ SubtitlesForm::~SubtitlesForm()
 void SubtitlesForm::addSubtitle(Subtitle *p_subtitle)
 {
     m_currentSubtitles.append(p_subtitle);
-    if(m_currentSubtitles.size() > m_maxSubtitles)
-    {
-        m_currentSubtitles.removeFirst();
-    }
     repaint();
 }
 
@@ -105,8 +100,7 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     } else {
         p.rotate(m_rotation);
     }
-    for(int i = 0; i < m_maxSubtitles && i < m_currentSubtitles.size(); i++) {
-        Subtitle *e = m_currentSubtitles.at(i);
+    foreach(Subtitle *e, m_currentSubtitles) {
         if (e && e->style()) e->style()->drawSubtitle(&p, *e, bounds, m_zoom);
     }
 }
