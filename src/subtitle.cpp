@@ -44,7 +44,7 @@ Subtitle::Subtitle(int p_index, const QString &p_text, qint64 p_msseStart, qint6
     if (m_autoDuration < AUTO_MIN_DURATION) m_autoDuration = AUTO_MIN_DURATION;
 
     // Check if no timecode is specified
-    if (m_msseStart == 0 || m_msseEnd == 0) {
+    if (m_msseStart == 0 && m_msseEnd == 0) {
         qint64 endPrevious = 0;
         if (m_index > 0)
             endPrevious = m_script->subtitleAt(m_index-1)->msseEnd() + AUTO_EVENT_INTERVAL;

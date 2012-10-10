@@ -24,7 +24,8 @@ Style: DWR,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,10
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:01.01,0:00:07.50,UPR,,0000,0000,0000,,Up-Right 1\NUp-Right 2
+Dialogue: 0,0:00:00.00,0:00:00.99,UPC,,0000,0000,0000,,
+Dialogue: 0,0:00:01.00,0:00:07.50,UPR,,0000,0000,0000,,Up-Right 1\NUp-Right 2
 Dialogue: 0,0:00:01.50,0:00:08.00,UPC,,0000,0000,0000,,Up-Center 1\NUp-Center 2
 Dialogue: 0,0:00:02.00,0:00:08.50,UPL,,0000,0000,0000,,Up-Left 1\NUp-Left 2
 Dialogue: 0,0:00:02.50,0:00:09.00,DWL,,0000,0000,0000,,Down-Left 1\NDown-Left 2
