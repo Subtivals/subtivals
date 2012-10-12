@@ -15,19 +15,24 @@ Video Position: 0
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: UPL,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,7,0,0,0,1
-Style: UPC,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,8,0,0,0,1
-Style: UPR,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,9,0,0,0,1
-Style: DWL,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,1,0,0,0,1
-Style: DWC,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,0,0,0,1
-Style: DWR,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,3,0,0,0,1
+Style: Up-Left,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,7,0,0,0,1
+Style: Up-Center,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,8,0,0,0,1
+Style: Up-Right,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,9,0,0,0,1
+Style: Center-Left,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,4,0,0,0,1
+Style: Center,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Center-Right,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,6,0,0,0,1
+Style: Down-Left,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,1,0,0,0,1
+Style: Down-Center,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,0,0,0,1
+Style: Down-Right,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,3,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.00,0:00:00.99,UPC,,0000,0000,0000,,
-Dialogue: 0,0:00:01.00,0:00:07.50,UPR,,0000,0000,0000,,Up-Right 1\NUp-Right 2
-Dialogue: 0,0:00:01.50,0:00:08.00,UPC,,0000,0000,0000,,Up-Center 1\NUp-Center 2
-Dialogue: 0,0:00:02.00,0:00:08.50,UPL,,0000,0000,0000,,Up-Left 1\NUp-Left 2
-Dialogue: 0,0:00:02.50,0:00:09.00,DWL,,0000,0000,0000,,Down-Left 1\NDown-Left 2
-Dialogue: 0,0:00:03.00,0:00:09.50,DWC,,0000,0000,0000,,Down-Center 1\NDown-Center 2
-Dialogue: 0,0:00:03.50,0:00:10.00,DWR,,0000,0000,0000,,Down-Right 1\NDown-Right 2
+Dialogue: 0,0:00:00.00,0:00:12.00,Center,,0000,0000,0000,,Center 1\NCenter 2
+Dialogue: 0,0:00:00.25,0:00:10.00,Up-Right,,0000,0000,0000,,Up-Right 1\NUp-Right 2
+Dialogue: 0,0:00:00.50,0:00:10.25,Up-Center,,0000,0000,0000,,Up-Center 1\NUp-Center 2
+Dialogue: 0,0:00:00.75,0:00:10.50,Up-Left,,0000,0000,0000,,Up-Left 1\NUp-Left 2
+Dialogue: 0,0:00:01.00,0:00:10.75,Center-Left,,0000,0000,0000,,Center-Left 1\NCenter-Left 2
+Dialogue: 0,0:00:01.25,0:00:11.00,Down-Left,,0000,0000,0000,,Down-Left 1\NDown-Left 2
+Dialogue: 0,0:00:01.50,0:00:11.25,Down-Center,,0000,0000,0000,,Down-Center 1\NDown-Center 2
+Dialogue: 0,0:00:01.75,0:00:11.50,Down-Right,,0000,0000,0000,,Down-Right 1\NDown-Right 2
+Dialogue: 0,0:00:02.00,0:00:11.75,Center-Right,,0000,0000,0000,,Center-Right 1\NCenter-Right 2
