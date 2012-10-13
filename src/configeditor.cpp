@@ -89,6 +89,8 @@ void ConfigEditor::screenChanged(const QRect& r)
     ui->y->blockSignals(true); ui->y->setValue(r.y()); ui->y->blockSignals(false);
     ui->w->blockSignals(true); ui->w->setValue(r.width());  ui->w->blockSignals(false);
     ui->h->blockSignals(true); ui->h->setValue(r.height()); ui->h->blockSignals(false);
+    // We blocked signals to avoid apply() to be called. Update UI accordinly then:
+    enableButtonBox(true, true, true);
 }
 
 void ConfigEditor::chooseColor()
