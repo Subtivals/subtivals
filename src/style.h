@@ -56,6 +56,7 @@ public:
      */
     const QColor &primaryColour() const;
     void setPrimaryColour(const QColor &c);
+    void setOutline(const QColor &c, int width);
     /*
      * Draws an Subtitle with this style within the specified area.
      */
@@ -76,6 +77,8 @@ private:
      * Style primary colour.
      */
     QColor m_primaryColour;
+    QColor m_outlineColour;
+    int m_outlineWidth;
     /*
      * Alignment : after the layout of the numpad (1-3 sub, 4-6 mid, 7-9 top)
      */
