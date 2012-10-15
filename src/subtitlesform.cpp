@@ -28,6 +28,7 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
         QWidget(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ),
     ui(new Ui::SubtitlesForm),
     m_visible(true),
+    m_hideDesktop(false),
     m_resizable(false),
     m_rotation(0),
     m_zoom(1.0),
@@ -69,14 +70,22 @@ void SubtitlesForm::toggleHide(bool state)
 void SubtitlesForm::changeGeometry(int monitor, const QRect& r)
 {
     m_screenGeom = QApplication::desktop()->screenGeometry(monitor);
-    setGeometry(m_screenGeom.x() + r.x(),
-                m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
-                r.width(), r.height());
+    m_subtitlesGeom = QRect(m_screenGeom.x() + r.x(),
+                            m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
+                            r.width(), r.height());
+    if (m_hideDesktop)
+        setGeometry(m_screenGeom);
+    else
+        setGeometry(m_subtitlesGeom);
 }
 
 void SubtitlesForm::changeGeometry(const QRect& r)
 {
-    setGeometry(r);
+    m_subtitlesGeom = r;
+    if (m_hideDesktop)
+        setGeometry(m_screenGeom);
+    else
+        setGeometry(r);
     emit geometryChanged(QRect(r.x() - m_screenGeom.x(),
                                m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
                                r.width(), r.height()));
@@ -84,10 +93,9 @@ void SubtitlesForm::changeGeometry(const QRect& r)
 
 void SubtitlesForm::paintEvent(QPaintEvent*)
 {
-    QRect bounds(0, 0, width(), height());
     QPainter p(this);
     // Black background
-    p.fillRect(bounds, m_color);
+    p.fillRect(QRect(0, 0, width(), height()), m_color);
     // Draw text only if visible
     if (!m_visible)
         return;
@@ -100,8 +108,9 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     } else {
         p.rotate(m_rotation);
     }
+    QRect subtitlesBounds(0, 0, m_subtitlesGeom.width(), m_subtitlesGeom.height());
     foreach(Subtitle *e, m_currentSubtitles) {
-        if (e && e->style()) e->style()->drawSubtitle(&p, *e, bounds, m_zoom);
+        if (e && e->style()) e->style()->drawSubtitle(&p, *e, subtitlesBounds, m_zoom);
     }
 }
 

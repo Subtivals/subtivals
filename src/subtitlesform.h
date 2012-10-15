@@ -60,6 +60,8 @@ private:
     bool m_visible;
     QPoint m_mouseOffset;
     QRect m_screenGeom;
+    QRect m_subtitlesGeom;
+    bool m_hideDesktop;
     bool m_resizable;
     qreal m_rotation;
     double m_zoom;
