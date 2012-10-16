@@ -25,7 +25,7 @@ Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, 
     QObject(p_parent),
     m_name(p_name),
     m_primaryColour(p_color),
-    m_alignment(Qt::AlignVCenter | Qt::AlignHCenter),
+    m_alignment(Qt::AlignTop | Qt::AlignHCenter),
     m_marginL(0),
     m_marginR(0),
     m_marginV(0)
