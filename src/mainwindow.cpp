@@ -34,8 +34,6 @@
 #include "configsrt.h"
 
 
-#include <QDebug>
-
 /**
  * A small delegate class to allow rich text rendering in main table cells.
  */
@@ -52,13 +50,17 @@ class SubtitleTextDelegate : public QStyledItemDelegate
         options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
         // Render rich text
         if (value.isValid() && !value.isNull()) {
-			QString html(value.toString());
+            QString html(value.toString());
+            // Bold if selected
 			if (index.data(Qt::UserRole).toBool())
 				html = QString("<b>%1</b>").arg(html);
             document.setHtml(html);
-            painter->translate(option.rect.topLeft());
+            QPoint offset;
+            if (!index.data(Qt::DecorationRole).isNull())
+                offset = QPoint(16, 0);
+            painter->translate(option.rect.topLeft() + offset);
             document.drawContents(painter);
-            painter->translate(-option.rect.topLeft());
+            painter->translate(-option.rect.topLeft() - offset);
         }
     }
 };
@@ -311,6 +313,16 @@ void MainWindow::openFile (const QString &p_fileName)
         ui->tableWidget->setItem(row, COLUMN_STYLE, styleItem);
         QTableWidgetItem *textItem = new QTableWidgetItem(subtitle->prettyText());
         ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
+
+        if (subtitle->charsRate() > 14) {
+            QString icon(":/icons/chars-rate-warn.png");
+            textItem->setToolTip(tr("Fast (%1 chars/sec)").arg(subtitle->charsRate()));
+            if (subtitle->charsRate() > 18) {
+                icon = ":/icons/chars-rate-error.png";
+                textItem->setToolTip(tr("Unreadable (%1 chars/sec)").arg(subtitle->charsRate()));
+            }
+            textItem->setData(Qt::DecorationRole, QIcon(icon));
+        }
         row++;
     }
     ui->tableWidget->resizeColumnToContents(COLUMN_START);

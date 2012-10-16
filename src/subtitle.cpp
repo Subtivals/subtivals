@@ -76,6 +76,11 @@ qint64 Subtitle::autoDuration() const
     return m_autoDuration;
 }
 
+int Subtitle::charsRate() const
+{
+    return float(m_prettyText.size()) / (duration() / 1000.0);
+}
+
 bool Subtitle::isCorrected() const
 {
     return m_corrected;

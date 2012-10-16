@@ -34,6 +34,7 @@ public:
     qint64 msseEnd() const;
     qint64 duration() const;
     qint64 autoDuration() const;
+    int charsRate() const;
     void setStyle(Style *p_style);
     const Style *style() const;
     void setText(const QString &p_text);

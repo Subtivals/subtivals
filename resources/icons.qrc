@@ -18,5 +18,7 @@
         <file>width.png</file>
         <file>left.png</file>
         <file>bottom.png</file>
+        <file>chars-rate-error.png</file>
+        <file>chars-rate-warn.png</file>
     </qresource>
 </RCC>
