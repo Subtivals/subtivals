@@ -29,6 +29,7 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
     ui(new Ui::SubtitlesForm),
     m_visible(true),
     m_hideDesktop(false),
+    m_monitor(-1),
     m_resizable(false),
     m_rotation(0),
     m_zoom(1.0),
@@ -67,25 +68,33 @@ void SubtitlesForm::toggleHide(bool state)
     repaint();
 }
 
-void SubtitlesForm::changeGeometry(int monitor, const QRect& r)
+void SubtitlesForm::toggleHideDesktop(bool state)
 {
-    m_screenGeom = QApplication::desktop()->screenGeometry(monitor);
-    m_subtitlesGeom = QRect(m_screenGeom.x() + r.x(),
-                            m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
-                            r.width(), r.height());
+    m_hideDesktop = state && (m_monitor != QApplication::desktop()->primaryScreen());
     if (m_hideDesktop)
         setGeometry(m_screenGeom);
     else
         setGeometry(m_subtitlesGeom);
+    repaint();
+}
+
+void SubtitlesForm::changeGeometry(int monitor, const QRect& r)
+{
+    m_monitor = monitor;
+    m_screenGeom = QApplication::desktop()->screenGeometry(monitor);
+    // This is sent from UI, add screen geometry
+    m_subtitlesGeom = QRect(m_screenGeom.x() + r.x(),
+                            m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
+                            r.width(), r.height());
+    toggleHideDesktop(m_hideDesktop);
 }
 
 void SubtitlesForm::changeGeometry(const QRect& r)
 {
     m_subtitlesGeom = r;
-    if (m_hideDesktop)
-        setGeometry(m_screenGeom);
-    else
+    if (!m_hideDesktop)
         setGeometry(r);
+    // This is sent back to UI, substract screen geometry
     emit geometryChanged(QRect(r.x() - m_screenGeom.x(),
                                m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
                                r.width(), r.height()));
@@ -108,7 +117,12 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
     } else {
         p.rotate(m_rotation);
     }
+
+    // Rectangle where subtitles are drawn : should be relative to current window
     QRect subtitlesBounds(0, 0, m_subtitlesGeom.width(), m_subtitlesGeom.height());
+    if (m_hideDesktop) {
+        subtitlesBounds.moveTopLeft(m_subtitlesGeom.topLeft() - m_screenGeom.topLeft());
+    }
     foreach(Subtitle *e, m_currentSubtitles) {
         if (e && e->style()) e->style()->drawSubtitle(&p, *e, subtitlesBounds, m_zoom);
     }

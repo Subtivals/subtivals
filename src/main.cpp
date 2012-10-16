@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
     QObject::connect(&w, SIGNAL(screenResizable(bool)), &f, SLOT(screenResizable(bool)));
     QObject::connect(&f, SIGNAL(geometryChanged(QRect)), w.configEditor(), SLOT(screenChanged(QRect)));
     QObject::connect(w.configEditor(), SIGNAL(changeScreen(int,QRect)), &f, SLOT(changeGeometry(int,QRect)));
+    QObject::connect(w.configEditor(), SIGNAL(hideDesktop(bool)), &f, SLOT(toggleHideDesktop(bool)));
     QObject::connect(w.configEditor(), SIGNAL(rotate(double)), &f, SLOT(rotate(double)));
     QObject::connect(w.configEditor(), SIGNAL(zoom(double)), &f, SLOT(zoom(double)));
     QObject::connect(w.configEditor(), SIGNAL(color(QColor)), &f, SLOT(color(QColor)));

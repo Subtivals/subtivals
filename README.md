@@ -48,6 +48,7 @@ Main features
 * Calibration mode
 * Support for subtitles without timecodes (fixes duration automatically)
 * Support for dual head (Xinerama) setup
+* Hide desktop (fullscreen) on screen monitor
 * Reload subtitles file if modified while playing
 * Runs on GNU/Linux, Windows, Mac OSX
 * Available in English, French, Spanish and Catalan

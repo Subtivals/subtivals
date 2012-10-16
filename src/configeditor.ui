@@ -326,6 +326,13 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
+         <item row="5" column="4" colspan="4">
+          <widget class="QCheckBox" name="hideDesktop">
+           <property name="text">
+            <string>Hide desktop</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
        <widget class="QWidget" name="tabStyles">
@@ -496,6 +503,22 @@ p, li { white-space: pre-wrap; }
     <hint type="sourcelabel">
      <x>142</x>
      <y>251</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>219</x>
+     <y>241</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hideDesktop</sender>
+   <signal>released()</signal>
+   <receiver>ConfigEditor</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>312</x>
+     <y>297</y>
     </hint>
     <hint type="destinationlabel">
      <x>219</x>

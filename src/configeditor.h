@@ -38,6 +38,7 @@ public:
     void setScript(Script* script);
 signals:
     void changeScreen(int, QRect);
+    void hideDesktop(bool);
     void rotate(double);
     void zoom(double);
     void color(QColor);

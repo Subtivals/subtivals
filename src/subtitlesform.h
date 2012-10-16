@@ -42,6 +42,7 @@ public slots:
     void remSubtitle(Subtitle *p_subtitle);
     void clearSubtitles();
     void toggleHide(bool state);
+    void toggleHideDesktop(bool state);
     void screenResizable(bool state);
     void changeGeometry(int, const QRect&);
     void rotate(double);
@@ -62,6 +63,7 @@ private:
     QRect m_screenGeom;
     QRect m_subtitlesGeom;
     bool m_hideDesktop;
+    int m_monitor;
     bool m_resizable;
     qreal m_rotation;
     double m_zoom;
