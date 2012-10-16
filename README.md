@@ -42,6 +42,7 @@ Main features
 * Switch between several modes : timecode based, semi-automatic or fully manual
 * Ass styles (italic, positions, colors)
 * Override styles (color and font size)
+* Text outline (color and width)
 * Easily adjust position and size of screen window with the mouse
 * Configure presets for screen positions and overriden styles
 * Support of screen rotation
@@ -56,6 +57,12 @@ Main features
 Subtivals is written in C++/Qt and has no other external dependencies.
 
 ![screenshot](http://mathieu-leplatre.info/media/subtivals/subtivals-preview.png)
+
+## Video mixer (Chroma-key) support
+
+If you have a video mixer, then a separate projector is not necessary for inlaying subtitles !
+
+![chromakey](http://mathieu-leplatre.info/media/subtivals/subtivals-chromakey.png)
 
 
 Installation

@@ -24,9 +24,6 @@
 #include "script.h"
 #include "style.h"
 
-#define DEFAULT_OUTLINE_COLOR "#000000"
-#define DEFAULT_OUTLINE_WIDTH 0
-
 
 StyleEditor::StyleEditor(Script* script, QWidget *parent) :
     QWidget(parent),
@@ -160,17 +157,6 @@ void StyleEditor::reset()
     settings.endGroup();
     if (ui->stylesNames->count() > 0)
         ui->stylesNames->setCurrentRow(0);
-
-    settings.beginGroup("Styles-global");
-    // Text outline
-    QColor outlineColor(settings.value("outline-color", DEFAULT_OUTLINE_COLOR).toString());
-    int outlineWidth = settings.value("outline-width", DEFAULT_OUTLINE_WIDTH).toInt();
-    if (m_script) {
-        foreach(Style* style, m_script->styles()) {
-            style->setOutline(outlineColor, outlineWidth);
-        }
-    }
-    settings.endGroup();
 
     emit styleChanged();
 }

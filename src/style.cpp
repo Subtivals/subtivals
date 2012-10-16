@@ -25,7 +25,6 @@ Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, 
     QObject(p_parent),
     m_name(p_name),
     m_primaryColour(p_color),
-    m_outlineWidth(0),
     m_alignment(Qt::AlignVCenter | Qt::AlignHCenter),
     m_marginL(0),
     m_marginR(0),
@@ -80,12 +79,6 @@ void Style::setPrimaryColour(const QColor &c)
     m_primaryColour = c;
 }
 
-void Style::setOutline(const QColor& c, int width)
-{
-    m_outlineColour = c;
-    m_outlineWidth = width;
-}
-
 int Style::textHeight(const Subtitle &subtitle) const
 {
     int lineHeight = font().pixelSize();
@@ -94,7 +87,7 @@ int Style::textHeight(const Subtitle &subtitle) const
     return lineHeight * subtitle.nbLines() + lineSpace * nbSpaces;
 }
 
-void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds, double zoom) const
+void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds, double zoom, const QPen &outline) const
 {
     QRect final(bounds);
     QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
@@ -137,13 +130,11 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
     painter->save();
     painter->translate(final.x(), final.y());
 
-    if (m_outlineWidth > 0) {
+    if (outline.width() > 0) {
         // Paint outline
         QTextCursor cursor(&doc);
         cursor.select(QTextCursor::Document);
         QTextCharFormat format;
-        QPen outline(m_outlineColour);
-        outline.setWidth(m_outlineWidth);
         format.setTextOutline(outline);
         cursor.mergeCharFormat(format);
         layout->draw(painter, context);

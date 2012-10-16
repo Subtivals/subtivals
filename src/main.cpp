@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
     QObject::connect(w.configEditor(), SIGNAL(rotate(double)), &f, SLOT(rotate(double)));
     QObject::connect(w.configEditor(), SIGNAL(zoom(double)), &f, SLOT(zoom(double)));
     QObject::connect(w.configEditor(), SIGNAL(color(QColor)), &f, SLOT(color(QColor)));
+    QObject::connect(w.configEditor(), SIGNAL(outline(QColor,int)), &f, SLOT(outline(QColor,int)));
     QObject::connect(w.configEditor(), SIGNAL(styleChanged()), &f, SLOT(repaint()));
 
     f.show();

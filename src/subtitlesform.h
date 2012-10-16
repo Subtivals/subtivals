@@ -21,6 +21,7 @@
 #include <QList>
 #include <QMouseEvent>
 #include <QColor>
+#include <QPen>
 
 #include "subtitle.h"
 
@@ -48,6 +49,7 @@ public slots:
     void rotate(double);
     void zoom(double p_zoom);
     void color(QColor);
+    void outline(QColor, int);
 protected:
     void changeGeometry(const QRect&);
     void paintEvent(QPaintEvent* p_event);
@@ -68,6 +70,7 @@ private:
     qreal m_rotation;
     double m_zoom;
     QColor m_color;
+    QPen m_outline;
 };
 
 #endif // SUBTITLESFORM_H

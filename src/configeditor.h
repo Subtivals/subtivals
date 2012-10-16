@@ -27,6 +27,7 @@ namespace Ui {
 
 class Script;
 class StyleEditor;
+class QPushButton;
 
 class ConfigEditor : public QWidget
 {
@@ -42,6 +43,7 @@ signals:
     void rotate(double);
     void zoom(double);
     void color(QColor);
+    void outline(QColor, int);
     void styleChanged();
 public slots:
     void presetChanged(int);
@@ -54,12 +56,13 @@ public slots:
     void chooseColor();
 protected slots:
     void enableButtonBox(bool restore = true, bool cancel = true, bool save = true);
-    void setColor(const QColor&);
+    void setColor(QPushButton *button, const QColor &c);
 private:
     Ui::ConfigEditor *ui;
     StyleEditor* m_styleEditor;
     int m_preset;
     QColor m_color;
+    QColor m_outlineColor;
     QWidget* m_parentWidget;
 };
 

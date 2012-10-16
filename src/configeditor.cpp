@@ -31,6 +31,10 @@
 #define DEFAULT_HEIGHT 200
 #define DEFAULT_COLOR "#000000"
 
+#define DEFAULT_OUTLINE_COLOR "#000000"
+#define DEFAULT_OUTLINE_WIDTH 0
+
+
 ConfigEditor::ConfigEditor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ConfigEditor),
@@ -95,6 +99,7 @@ void ConfigEditor::screenChanged(const QRect& r)
 
 void ConfigEditor::chooseColor()
 {
+    QPushButton* sender = static_cast<QPushButton*>(QObject::sender());
     // Show color chooser
     QColor chosen = QColorDialog::getColor(m_color, this
     #if (QT_VERSION >= QT_VERSION_CHECK(4, 5, 0))
@@ -102,20 +107,23 @@ void ConfigEditor::chooseColor()
     #endif
         );
     if (chosen.isValid()) {
-        setColor(chosen);
+        setColor(sender, chosen);
+        if (sender == ui->btnColor)
+            m_color = chosen;
+        else if (sender == ui->btnOutlineColor)
+            m_outlineColor = chosen;
         apply();
     }
 }
 
-void ConfigEditor::setColor(const QColor& c)
+void ConfigEditor::setColor(QPushButton* button, const QColor& c)
 {
-    m_color = c;
     QPixmap pm(24, 24);
     QPainter p(&pm);
     p.setPen(c);
     p.setBrush(c);
     p.drawRect(0, 0, 24, 24);
-    ui->btnColor->setIcon(pm);
+    button->setIcon(pm);
 }
 
 void ConfigEditor::restore()
@@ -160,7 +168,9 @@ void ConfigEditor::reset()
     bool hideDesktop = settings.value("hideDesktop", false).toBool();
     double rotation = settings.value("rotation", 0).toDouble();
     double zoom = settings.value("zoom", 100.0).toDouble();
-    QColor color = QColor(settings.value("color", DEFAULT_COLOR).toString());
+    QColor color(settings.value("color", DEFAULT_COLOR).toString());
+    QColor outlineColor(settings.value("outline-color", DEFAULT_OUTLINE_COLOR).toString());
+    int outlineWidth = settings.value("outline-width", DEFAULT_OUTLINE_WIDTH).toInt();
     settings.endGroup();
     // Update the UI with the reloaded settings
     ui->screens->setCurrentIndex(screen);
@@ -168,7 +178,12 @@ void ConfigEditor::reset()
     screenChanged(QRect(x, y, w, h));
     ui->rotation->setValue(rotation);
     ui->zoom->setValue(zoom);
-    setColor(color);
+    setColor(ui->btnColor, color);
+    m_color = color;
+    setColor(ui->btnOutlineColor, outlineColor);
+    m_outlineColor = outlineColor;
+    ui->outlineWidth->setValue(outlineWidth);
+    ui->chkOutline->setChecked(outlineWidth > 0);
     apply();
     m_styleEditor->reset();
     enableButtonBox(true, false, false);
@@ -188,6 +203,8 @@ void ConfigEditor::save()
     settings.setValue("rotation", ui->rotation->text());
     settings.setValue("zoom", ui->zoom->value());
     settings.setValue("color", m_color.name());
+    settings.setValue("outline-color", m_outlineColor.name());
+    settings.setValue("outline-width", ui->outlineWidth->value());
     settings.endGroup();
     m_styleEditor->save();
     // Settings saved, update the UI
@@ -205,6 +222,7 @@ void ConfigEditor::apply()
     emit rotate(ui->rotation->value());
     emit zoom(ui->zoom->value()/100.0);
     emit color(m_color);
+    emit outline(m_outlineColor, ui->chkOutline->isChecked() ? ui->outlineWidth->value() : 0);
     emit hideDesktop(ui->hideDesktop->isChecked());
     m_styleEditor->apply();
     enableButtonBox(true, true, true);
