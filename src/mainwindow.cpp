@@ -55,13 +55,16 @@ class SubtitleTextDelegate : public QStyledItemDelegate
 			if (index.data(Qt::UserRole).toBool())
 				html = QString("<b>%1</b>").arg(html);
             document.setHtml(html);
-            QPoint offset;
-            if (!index.data(Qt::DecorationRole).isNull())
-                offset = QPoint(16, 0);
-            painter->translate(option.rect.topLeft() + offset);
+            painter->translate(option.rect.topLeft());
             document.drawContents(painter);
-            painter->translate(-option.rect.topLeft() - offset);
+            painter->translate(-option.rect.topLeft());
         }
+        // Draw icon on the right
+        if (!index.data(Qt::DecorationRole).isNull())
+            options.widget->style()->drawItemPixmap(painter, option.rect.translated(QPoint(-5, 0)),
+                                                    Qt::AlignRight|Qt::AlignVCenter,
+                                                    QPixmap(index.data(Qt::DecorationRole).toString()));
+
     }
 };
 
@@ -321,7 +324,7 @@ void MainWindow::openFile (const QString &p_fileName)
                 icon = ":/icons/chars-rate-error.png";
                 textItem->setToolTip(tr("Unreadable (%1 chars/sec)").arg(subtitle->charsRate()));
             }
-            textItem->setData(Qt::DecorationRole, QIcon(icon));
+            textItem->setData(Qt::DecorationRole, icon);
         }
         row++;
     }
