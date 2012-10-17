@@ -50,6 +50,7 @@ Subtitle::Subtitle(int p_index, const QString &p_text, qint64 p_msseStart, qint6
             endPrevious = m_script->subtitleAt(m_index-1)->msseEnd() + AUTO_EVENT_INTERVAL;
         m_msseStart = endPrevious;
         m_msseEnd = m_msseStart + m_autoDuration;
+        m_corrected = true;
     }
 }
 
