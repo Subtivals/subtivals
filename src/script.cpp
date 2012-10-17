@@ -327,16 +327,16 @@ void Script::loadFromSrt(QStringList content)
     m_styles[style->name()] = style;
 
     QStringList text;
+    qint64 start = 0;
+    qint64 end = 0;
     foreach(QString line, content) {
-        qint64 start = 0;
-        qint64 end = 0;
         if (section == SECTION_NONE && QRegExp("^[0-9]+$").exactMatch(line)) {
             section = SECTION_INFOS;
         }
         else if (section == SECTION_INFOS) {
             QStringList subparts = line.split(" --> ");
-            start = QTime().msecsTo(QTime::fromString(subparts[0], "h:mm:ss.z"));
-            end = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
+            start = QTime().msecsTo(QTime::fromString(subparts[0], "h:mm:ss,z"));
+            end = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss,z"));
             section = SECTION_EVENTS;
         }
         else if (section == SECTION_EVENTS) {
