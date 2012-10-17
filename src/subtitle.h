@@ -59,6 +59,7 @@ private:
     const Style *m_style;
     QString m_text;
     QString m_prettyText;
+    QString m_pureText;
     int m_marginL;
     int m_marginR;
     int m_marginV;

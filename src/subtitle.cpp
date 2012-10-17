@@ -78,7 +78,7 @@ qint64 Subtitle::autoDuration() const
 
 int Subtitle::charsRate() const
 {
-    return float(m_prettyText.size()) / (duration() / 1000.0);
+    return float(m_pureText.size()) / (duration() / 1000.0);
 }
 
 bool Subtitle::isCorrected() const
@@ -109,6 +109,8 @@ void Subtitle::setText(const QString& p_text)
     m_prettyText = m_prettyText.replace(QRegExp("<br/>"), " # ");
     m_prettyText = m_prettyText.replace(QRegExp("<[^/bi>]+>"), "");
     m_prettyText = m_prettyText.replace(QRegExp("</[^bi>]+>"), "");
+
+    m_pureText = m_prettyText.replace(QRegExp("<[^>]+>"), "");
 }
 
 const QString &Subtitle::text() const
