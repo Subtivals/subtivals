@@ -1,4 +1,4 @@
-subtival (1.3.2-1) stable; urgency=low
+subtivals (1.3.2-1) stable; urgency=low
 
   * Fix Subrip time parsing
 
