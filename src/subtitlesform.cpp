@@ -70,7 +70,9 @@ void SubtitlesForm::toggleHide(bool state)
 
 void SubtitlesForm::toggleHideDesktop(bool state)
 {
-    m_hideDesktop = state && (m_monitor != QApplication::desktop()->primaryScreen());
+    m_hideDesktop = (state &&
+                     QApplication::desktop()->screenCount() > 1 &&
+                     m_monitor != QApplication::desktop()->primaryScreen());
     if (m_hideDesktop)
         setGeometry(m_screenGeom);
     else
