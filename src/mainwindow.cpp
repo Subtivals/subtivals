@@ -358,6 +358,7 @@ void MainWindow::closeFile()
         m_player->setScript(m_script);
     }
     m_tableMapping.clear();
+    m_currentSubtitles.clear();
 
     setWindowTitle(tr("Subtivals"));
     m_scriptProperties->setText("");
