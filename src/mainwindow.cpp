@@ -504,9 +504,9 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             }
         }
 
-        // With Space, behave almost like next(), since it can activate current row
+        // With Space, behave like next()
         if (keyEvent->key() == Qt::Key_Space) {
-            actionNext();  // Allow to trigger the action, event if disabled.
+            actionNext();  // Allow to trigger the action, even if disabled.
         }
 
         // With key Up/Down : behave the way single mouse clics do.
@@ -572,7 +572,10 @@ bool MainWindow::canNext()
 void MainWindow::actionNext()
 {
     int row = ui->tableWidget->currentRow();
-    if (row < 0) row = 0;  // If no row selected, consider first one.
+    if (row < 0) {
+        // If no row selected, consider first one if no current subtitles
+        row = m_currentSubtitles.size() > 0 ? m_tableMapping[m_currentSubtitles.last()] : 0;
+    }
     bool isRowDisplayed = false;
     foreach(Subtitle* e, m_currentSubtitles)
         if (m_tableMapping[e] == row)
@@ -707,8 +710,10 @@ void MainWindow::subtitleChanged(QList<Subtitle*> p_currentSubtitles)
         int scrollRow = subtitleRow > 2 ? subtitleRow - 2 : 0;
         ui->tableWidget->scrollTo(ui->tableWidget->currentIndex().sibling(scrollRow, 0),
                                   QAbstractItemView::PositionAtTop);
-        if (ui->tableWidget->hasFocus())
-            ui->tableWidget->selectRow(subtitleRow);
+
+        QWidget* withFocus = qApp->focusWidget();
+        ui->tableWidget->selectRow(subtitleRow);
+        withFocus->setFocus();  // restore
     }
     m_rowChanged = false;
 }
