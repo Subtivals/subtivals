@@ -23,7 +23,7 @@
 
 #include "script.h"
 #include "style.h"
-#include "configsrt.h"
+#include "styleadvanced.h"
 
 
 StyleEditor::StyleEditor(Script* script, QWidget *parent) :
@@ -49,7 +49,7 @@ void StyleEditor::advancedConfig()
 {
     QString styleName = ui->stylesNames->selectedItems().first()->text();
     Style* style = m_script->style(styleName);
-    ConfigSrt config(style, this);
+    StyleAdvanced config(style, this);
     config.move(this->geometry().topLeft());
     if(config.exec() == QDialog::Accepted)
         apply();

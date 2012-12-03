@@ -1,12 +1,12 @@
-#include "configsrt.h"
-#include "ui_configsrt.h"
+#include "styleadvanced.h"
+#include "ui_styleadvanced.h"
 
 #include "script.h"
 #include "style.h"
 
-ConfigSrt::ConfigSrt(Style* p_style, QWidget *parent):
+StyleAdvanced::StyleAdvanced(Style* p_style, QWidget *parent):
     QDialog(parent),
-    ui(new Ui::ConfigSrt),
+    ui(new Ui::StyleAdvanced),
     m_style(p_style)
 {
     ui->setupUi(this);
@@ -28,12 +28,12 @@ ConfigSrt::ConfigSrt(Style* p_style, QWidget *parent):
     ui->marginV->setValue(m_style->marginV());
 }
 
-ConfigSrt::~ConfigSrt()
+StyleAdvanced::~StyleAdvanced()
 {
     delete ui;
 }
 
-void ConfigSrt::accept()
+void StyleAdvanced::accept()
 {
     Qt::Alignment vertical;
     switch(ui->verticalAlign->currentIndex()) {

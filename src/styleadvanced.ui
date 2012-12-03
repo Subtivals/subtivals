@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ConfigSrt</class>
- <widget class="QDialog" name="ConfigSrt">
+ <class>StyleAdvanced</class>
+ <widget class="QDialog" name="StyleAdvanced">
   <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
   </property>
@@ -146,7 +146,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>ConfigSrt</receiver>
+   <receiver>StyleAdvanced</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -162,7 +162,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>ConfigSrt</receiver>
+   <receiver>StyleAdvanced</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
