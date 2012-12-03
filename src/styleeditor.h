@@ -45,11 +45,12 @@ public slots:
     void styleSelected();
     void chooseColour();
     void setPreset(int);
+    void advancedConfig();
 protected:
-    void initComponents();
     void fillButtonColour();
     void setStyleNameBold(int, bool);
     void setStyleNameBold(QListWidgetItem *item, bool bold);
+    void initComponents();
 private:
     Script* m_script;
     QList<Style*> m_backup;

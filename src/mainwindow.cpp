@@ -31,8 +31,6 @@
 #include "ui_mainwindow.h"
 #include "configeditor.h"
 #include "player.h"
-#include "configsrt.h"
-
 
 /**
  * A small delegate class to allow rich text rendering in main table cells.
@@ -340,8 +338,6 @@ void MainWindow::openFile (const QString &p_fileName)
     // Reset search field
     ui->searchField->setEnabled(row > 0);
     ui->searchField->setText("");
-
-    ui->actionEditSubripPositioning->setEnabled(m_script->format() == Script::SRT);
 }
 
 void MainWindow::closeFile()
@@ -363,7 +359,6 @@ void MainWindow::closeFile()
     setWindowTitle(tr("Subtivals"));
     m_scriptProperties->setText("");
     ui->tableWidget->setRowCount(0);
-    ui->actionEditSubripPositioning->setEnabled(false);
 }
 
 void MainWindow::refreshDurations()
@@ -397,12 +392,6 @@ void MainWindow::actionEnableReload(bool state)
 void MainWindow::actionAutoHideEnded(bool p_state)
 {
     m_player->enableAutoHide(p_state);
-}
-
-void MainWindow::actionEditSubripPositioning()
-{
-    ConfigSrt config(m_script, this);
-    config.exec();
 }
 
 void MainWindow::fileChanged(QString path)
@@ -713,7 +702,7 @@ void MainWindow::subtitleChanged(QList<Subtitle*> p_currentSubtitles)
 
         QWidget* withFocus = qApp->focusWidget();
         ui->tableWidget->selectRow(subtitleRow);
-        withFocus->setFocus();  // restore
+        if (withFocus) withFocus->setFocus();  // restore
     }
     m_rowChanged = false;
 }

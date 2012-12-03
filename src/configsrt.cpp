@@ -4,12 +4,28 @@
 #include "script.h"
 #include "style.h"
 
-ConfigSrt::ConfigSrt(Script* p_script, QWidget *parent) :
+ConfigSrt::ConfigSrt(Style* p_style, QWidget *parent):
     QDialog(parent),
     ui(new Ui::ConfigSrt),
-    m_script(p_script)
+    m_style(p_style)
 {
     ui->setupUi(this);
+
+    if (m_style->alignment() & Qt::AlignTop)
+        ui->verticalAlign->setCurrentIndex(0);
+    else if (m_style->alignment() & Qt::AlignVCenter)
+        ui->verticalAlign->setCurrentIndex(1);
+    else if (m_style->alignment() & Qt::AlignBottom)
+        ui->verticalAlign->setCurrentIndex(2);
+    if (m_style->alignment() & Qt::AlignLeft)
+        ui->horizontalAlign->setCurrentIndex(0);
+    else if (m_style->alignment() & Qt::AlignHCenter)
+        ui->horizontalAlign->setCurrentIndex(1);
+    else if (m_style->alignment() & Qt::AlignRight)
+        ui->horizontalAlign->setCurrentIndex(2);
+    ui->marginL->setValue(m_style->marginL());
+    ui->marginR->setValue(m_style->marginR());
+    ui->marginV->setValue(m_style->marginV());
 }
 
 ConfigSrt::~ConfigSrt()
@@ -34,11 +50,10 @@ void ConfigSrt::accept()
     default: break;
     }
 
-    Style* defaultStyle = m_script->styles().at(0);
-    defaultStyle->setAlignment(vertical | horizontal);
-    defaultStyle->setMargins(ui->marginL->value(),
-                             ui->marginR->value(),
-                             ui->maringV->value());
+    m_style->setAlignment(vertical | horizontal);
+    m_style->setMargins(ui->marginL->value(),
+                        ui->marginR->value(),
+                        ui->marginV->value());
 
-    close();
+    QDialog::accept();
 }

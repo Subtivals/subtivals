@@ -50,6 +50,26 @@ void Style::setAlignment(Qt::Alignment p_alignment)
     m_alignment = p_alignment;
 }
 
+int Style::marginL() const
+{
+    return m_marginL;
+}
+
+int Style::marginR() const
+{
+    return m_marginR;
+}
+
+int Style::marginV() const
+{
+    return m_marginV;
+}
+
+Qt::Alignment Style::alignment() const
+{
+    return m_alignment;
+}
+
 void Style::setMargins(int p_marginL, int p_marginR, int p_marginV)
 {
     m_marginL = p_marginL;

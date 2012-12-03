@@ -33,48 +33,25 @@ class Style : public QObject
 {
     Q_OBJECT
 public:
-    /*
-     * Constructs a style.
-     */
     explicit Style(const QString &p_name, const QFont &p_font, const QColor &p_color, QObject *p_parent);
-    /*
-     * Copy constructor
-     */
     explicit Style(const Style &p_oth, const QFont& f, QObject *p_parent = 0);
-    /*
-     * Returns the style name.
-     */
     const QString &name() const;
-    /*
-     * Returns the style font.
-     */
     const QFont &font() const;
     void setFont(const QFont &f);
-    /*
-     * Returns the style primary colou.
-     * Others colours from the ASS file are ignored.
-     */
     const QColor &primaryColour() const;
     void setPrimaryColour(const QColor &c);
-    /*
-     * Draws an Subtitle with this style within the specified area.
-     */
-    void drawSubtitle(QPainter*, const Subtitle&, const QRect&, const double, const QPen&) const;
     void setMargins(int p_marginL, int p_marginR, int p_marginV);
     void setAlignment(Qt::Alignment p_alignment);
+    int marginL() const;
+    int marginR() const;
+    int marginV() const;
+    Qt::Alignment alignment() const;
+
+    void drawSubtitle(QPainter*, const Subtitle&, const QRect&, const double, const QPen&) const;
     int textHeight(const Subtitle &subtitle) const;
 private:
-    /*
-     * Style name.
-     */
     QString m_name;
-    /*
-     * Style font.
-     */
     QFont m_font;
-    /*
-     * Style primary colour.
-     */
     QColor m_primaryColour;
     /*
      * Alignment : after the layout of the numpad (1-3 sub, 4-6 mid, 7-9 top)

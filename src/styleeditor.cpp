@@ -23,6 +23,7 @@
 
 #include "script.h"
 #include "style.h"
+#include "configsrt.h"
 
 
 StyleEditor::StyleEditor(Script* script, QWidget *parent) :
@@ -44,6 +45,16 @@ void StyleEditor::setPreset(int p_preset)
     m_preset = p_preset;
 }
 
+void StyleEditor::advancedConfig()
+{
+    QString styleName = ui->stylesNames->selectedItems().first()->text();
+    Style* style = m_script->style(styleName);
+    ConfigSrt config(style, this);
+    config.move(this->geometry().topLeft());
+    if(config.exec() == QDialog::Accepted)
+        apply();
+}
+
 void StyleEditor::setScript(Script* script)
 {
     m_script = script;
@@ -58,21 +69,6 @@ void StyleEditor::setScript(Script* script)
     initComponents();
 }
 
-void StyleEditor::initComponents()
-{
-    ui->groupStyles->setEnabled(m_script);
-    ui->groupFont->setEnabled(false);
-    if (!m_script)
-        return;
-
-    ui->stylesNames->clear();
-    foreach(Style* style, m_script->styles()) {
-        // Add to the list
-        QListWidgetItem *item = new QListWidgetItem(style->name());
-        ui->stylesNames->addItem(item);
-    }
-}
-
 void StyleEditor::styleSelected()
 {
     if (!m_script)
@@ -81,6 +77,7 @@ void StyleEditor::styleSelected()
     QList<QListWidgetItem*> selected = ui->stylesNames->selectedItems();
     int nbselected = selected.size();
     ui->groupFont->setEnabled(nbselected > 0);
+    ui->btnAdvanced->setEnabled(nbselected == 1);
     if (nbselected == 0)
         return;
 
@@ -119,9 +116,14 @@ void StyleEditor::save()
     // Save overidden styles into settings
     QString line;
     foreach(Style* style, m_overidden) {
-        line = QString("%1/%2/%3").arg(style->font().family())
-                                  .arg(style->font().pixelSize())
-                                  .arg(style->primaryColour().name());
+        line = QString("%1/%2/%3/%4/%5/%7/%8")
+                .arg(style->font().family())
+                .arg(style->font().pixelSize())
+                .arg(style->primaryColour().name())
+                .arg(int(style->alignment()))
+                .arg(style->marginL())
+                .arg(style->marginR())
+                .arg(style->marginV());
         settings.setValue(style->name(), line);
     }
     settings.endGroup();
@@ -140,11 +142,15 @@ void StyleEditor::reset()
         Style* style = m_script->style(original->name());
 
         QStringList overriden = settings.value(style->name(), "").toString().split("/");
-        if (overriden.size() == 3) {
+        if (overriden.size() == 7) {
             QFont f(overriden[0]);
             f.setPixelSize(overriden.at(1).toInt());
             style->setFont(f);
             style->setPrimaryColour(QColor(overriden[2]));
+            style->setAlignment(QFlag(overriden.at(3).toInt()));
+            style->setMargins(overriden.at(4).toInt(),
+                              overriden.at(5).toInt(),
+                              overriden.at(6).toInt());
             m_overidden.append(style);
             setStyleNameBold(i, true);
         }
@@ -255,4 +261,19 @@ void StyleEditor::setStyleNameBold(QListWidgetItem *item, bool bold)
     QFont f = item->font();
     f.setBold(bold);
     item->setFont(f);
+}
+
+void StyleEditor::initComponents()
+{
+    ui->groupStyles->setEnabled(m_script);
+    ui->groupFont->setEnabled(false);
+    if (!m_script)
+        return;
+
+    ui->stylesNames->clear();
+    foreach(Style* style, m_script->styles()) {
+        // Add to the list
+        QListWidgetItem *item = new QListWidgetItem(style->name());
+        ui->stylesNames->addItem(item);
+    }
 }
