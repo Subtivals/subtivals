@@ -334,6 +334,10 @@ void Script::loadFromSrt(QStringList content)
     Style *style = new Style(tr("Default"), font, Qt::white, this);
     m_styles[style->name()] = style;
 
+    // Make sure its ends with empty line
+    if (!content.last().isEmpty())
+        content.append(QString());
+
     QStringList text;
     qint64 start = 0;
     qint64 end = 0;
