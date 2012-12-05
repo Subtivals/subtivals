@@ -1,3 +1,17 @@
+subtivals (1.4.0-1) stable; urgency=low
+
+  * Support SRT files without empty line at end of file
+  * Ability to configure margins and alignment for styles
+  * Show feedback icon if characters rate is too high
+  * Ability to hide desktop under screen
+  * Text outline support
+  * Change default SRT position on top
+  * Fix SRT timecode parsing
+  * Unlimited number of subtitles at a time
+  * Nicer ASS calibration file
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Wed, 05 Dec 2012 21:49:00 +0100
+
 subtivals (1.3.0-1) stable; urgency=low
 
   * Show remaining time
