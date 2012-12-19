@@ -8,10 +8,11 @@ Purpose
 Hard copies for film festivals do not always carry subtitles, especially for the hard-of-hearing.
 
 Subtivals goals are the projection and the control of subtitles superimposed on a cinema screen;
+Projecting subtitles on top of another screen is called *soft-titling*, *surtitling*, *supertitling* or even sometimes *electronic subtitles*, *virtual subtitles*.
 
 ![in-situ](http://mathieu-leplatre.info/media/subtivals/subtivals-insitu.png)
 
-Its semi-manual mode also allows to project subtitles at theaters (or opera, ballets, ...). 
+Subtivals is fully automatic, but its semi-manual mode also allows to project subtitles at theaters (or opera, ballets, ...). 
 
 ## References
 
