@@ -12,7 +12,7 @@ Projecting subtitles on top of another screen is called *soft-titling*, *surtitl
 
 ![in-situ](http://mathieu-leplatre.info/media/subtivals/subtivals-insitu.png)
 
-Subtivals is fully automatic, but its semi-manual mode also allows to project subtitles at theaters (or opera, ballets, ...). 
+Subtivals is fully automatic, but its semi-manual mode also allows to project subtitles at theaters (or opera, ballets, concerts and other cultural events...). 
 
 ## References
 
