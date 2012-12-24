@@ -47,10 +47,11 @@ Main features
 * Easily adjust position and size of screen window with the mouse
 * Configure presets for screen positions and overriden styles
 * Support of screen rotation
-* Calibration mode
+* Calibration mode (for both SRT and ASS)
 * Support for subtitles without timecodes (fixes duration automatically)
 * Support for dual head (Xinerama) setup
 * Hide desktop (fullscreen) on screen monitor
+* Feedback on number of characters per second
 * Reload subtitles file if modified while playing
 * Runs on GNU/Linux, Windows, Mac OSX
 * Available in English, French, Spanish and Catalan
