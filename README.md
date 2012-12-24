@@ -42,7 +42,7 @@ Main features
 * Control play/pause/delay/speed
 * Switch between several modes : timecode based, semi-automatic or fully manual
 * Ass styles (italic, positions, colors)
-* Override styles (color and font size)
+* Override styles (color, font size, margins, alignments)
 * Text outline (color and width)
 * Easily adjust position and size of screen window with the mouse
 * Configure presets for screen positions and overriden styles
