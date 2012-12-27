@@ -25,7 +25,7 @@
 #include "style.h"
 
 SubtitlesForm::SubtitlesForm(QWidget *parent) :
-        QWidget(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint ),
+        QWidget(parent),
     ui(new Ui::SubtitlesForm),
     m_visible(true),
     m_hideDesktop(false),
@@ -35,6 +35,11 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
     m_zoom(1.0),
     m_color(Qt::black)
 {
+    Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint;
+#ifdef WIN32
+    flags |= Qt::SubWindow;
+#endif
+    setWindowFlags(flags);
     ui->setupUi(this);
     setCursor(QCursor(Qt::BlankCursor));
 }
