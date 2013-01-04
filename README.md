@@ -85,3 +85,9 @@ Authors
 * Mathieu Leplatre ([@leplatrem](http://mathieu-leplatre.info))
 * Lilian Lefranc ([st2l](http://st2l.fr))
 * Emmanuel Digiaro ([@mallox](http://twitter.com/mallox))
+
+See Also
+========
+
+* [Aegisub](http://www.aegisub.org), a powerful ASS subtitles editor;
+* [Qstit](http://www.nova-cinema.org/spip.php?rubrique1664&lang=en), an another subtitle projection program, by Nova Cinema;
