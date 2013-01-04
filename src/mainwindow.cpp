@@ -328,6 +328,11 @@ void MainWindow::openFile (const QString &p_fileName)
     }
     ui->tableWidget->resizeColumnToContents(COLUMN_START);
     ui->tableWidget->resizeColumnToContents(COLUMN_END);
+    // Increase slightly columns widths to avoid ellipsing
+    ui->tableWidget->setColumnWidth(COLUMN_START,
+                                    1.1*ui->tableWidget->columnWidth(COLUMN_START));
+    ui->tableWidget->setColumnWidth(COLUMN_END,
+                                    1.1*ui->tableWidget->columnWidth(COLUMN_END));
     actionDurationCorrection(ui->actionDurationCorrection->isChecked());
 
 	setState(STOPPED);
