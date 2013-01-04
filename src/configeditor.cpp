@@ -141,29 +141,16 @@ void ConfigEditor::restore()
 
 void ConfigEditor::reset()
 {
+    int nbScreens = qApp->desktop()->screenCount();
+    int defaultScreen = nbScreens > 1 ? 1 : 0;
     // Reload from settings
     QSettings settings;
     settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
-    int screen = settings.value("screen", 0).toInt();
+    int screen = settings.value("screen", defaultScreen).toInt();
     QRect screenGeom = qApp->desktop()->screenGeometry(screen);
-    int width = screenGeom.width();
-    int left = 0;
-    int top = 0;
-
-    // If only one screen, make it less obstrusive
-    // place screen under the main window
-    if (qApp->desktop()->screenCount() == 1) {
-        left = m_parentWidget->geometry().left();
-        width = m_parentWidget->geometry().width() + 2;
-        top = m_parentWidget->geometry().bottom() + 5;
-        // Prsubtitle exceeding bottom of desktop
-        if ((top + DEFAULT_HEIGHT) > screenGeom.height())
-            top = screenGeom.height() - DEFAULT_HEIGHT;
-    }
-
-    int x = settings.value("x", left).toInt();
-    int y = settings.value("y", top).toInt();
-    int w = settings.value("w", width).toInt();
+    int x = settings.value("x", 0).toInt();
+    int y = settings.value("y", screenGeom.height() - DEFAULT_HEIGHT).toInt();
+    int w = settings.value("w", screenGeom.width()).toInt();
     int h = settings.value("h", DEFAULT_HEIGHT).toInt();
     bool hideDesktop = settings.value("hideDesktop", false).toBool();
     double rotation = settings.value("rotation", 0).toDouble();

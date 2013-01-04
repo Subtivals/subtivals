@@ -231,7 +231,7 @@ void MainWindow::showEvent(QShowEvent *)
     settings.beginGroup("MainWindow");
     m_lastFolder = settings.value("lastFolder", "").toString();
     resize(settings.value("size", size()).toSize());
-    QPoint pos(100, 100);
+    QPoint pos(100, 200);
     move(settings.value("pos", pos).toPoint());
     m_preferences->reset();
 
