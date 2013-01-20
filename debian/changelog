@@ -1,3 +1,12 @@
+subtivals (1.4.1-1) stable; urgency=low
+
+  * Update Catalan, Spanish translations
+  * Fix start/end columns width
+  * Fix default window positioning, to avoid overlapping
+  * Fix screen window shown in taskbar under MS Windows
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Wed, 20 Jan 2013 14:49:00 +0100
+
 subtivals (1.4.0-1) stable; urgency=low
 
   * Support SRT files without empty line at end of file
