@@ -111,24 +111,34 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
 {
     QRect final(bounds);
     QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
-
-    if (!subtitle.position().isNull()) {
-        final.setTopLeft(subtitle.position());  // absolute positioning
+    QPoint position = subtitle.position();
+    if (position.x() >= 0 && position.y() >= 0) {
+        // absolute positioning : (x, y)
+        final.setTopLeft(position);
         html = html.replace("HORIZONTAL", "left");
     }
     else {
-        int marginL = (m_marginL + subtitle.marginL()) * zoom;
-        int marginR = (m_marginR + subtitle.marginR()) * zoom;
-        int marginV = (m_marginV + subtitle.marginV()) * zoom;
-        final = final.adjusted(marginL, marginV, -marginR, -marginV);
+        if (position.x() < 0) {
+            // No margins if position is set
+            int marginL = (m_marginL + subtitle.marginL()) * zoom;
+            int marginR = (m_marginR + subtitle.marginR()) * zoom;
+            int marginV = (m_marginV + subtitle.marginV()) * zoom;
+            final = final.adjusted(marginL, marginV, -marginR, -marginV);
 
-        if (m_alignment & Qt::AlignLeft) {
-            html = html.replace("HORIZONTAL", "left");
-        } else if (m_alignment & Qt::AlignRight) {
-            html = html.replace("HORIZONTAL", "right");
-        } else {
-            html = html.replace("HORIZONTAL", "center");
+            // Nor alignment
+            if (m_alignment & Qt::AlignLeft) {
+                html = html.replace("HORIZONTAL", "left");
+            } else if (m_alignment & Qt::AlignRight) {
+                html = html.replace("HORIZONTAL", "right");
+            } else {
+                html = html.replace("HORIZONTAL", "center");
+            }
         }
+        else {
+            // Horizontal positioning : (x, ?)
+            final.moveLeft(position.x());
+        }
+        // Vertical positioning
         if (m_alignment & Qt::AlignBottom) {
             final.moveTop(final.bottom() - textHeight(subtitle));
         } else if (m_alignment & Qt::AlignVCenter) {

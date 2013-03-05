@@ -311,7 +311,7 @@ void Script::loadFromAss(QStringList content)
                 Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
                 subtitle->setStyle(style);
                 subtitle->setMargins(marginL, marginR, marginV);
-                if (x>0 || y>0) {
+                if (x>=0 || y>=0) {
                     subtitle->setPosition(x, y);
                 }
                 m_subtitles.append(subtitle);

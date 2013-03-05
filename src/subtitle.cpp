@@ -39,6 +39,9 @@ Subtitle::Subtitle(int p_index, const QString &p_text, qint64 p_msseStart, qint6
 {
     setText(p_text);
 
+    // Negative position are ignored
+    m_position = QPoint(-1, -1);
+
     // Auto duration
     m_autoDuration = 1000 * text().size() / AUTO_CHARS_RATE;
     if (m_autoDuration < AUTO_MIN_DURATION) m_autoDuration = AUTO_MIN_DURATION;
