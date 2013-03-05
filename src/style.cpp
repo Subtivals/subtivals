@@ -99,81 +99,100 @@ void Style::setPrimaryColour(const QColor &c)
     m_primaryColour = c;
 }
 
-int Style::textHeight(const Subtitle &subtitle) const
+int Style::subtitleHeight(const Subtitle &subtitle) const
 {
-    int lineHeight = font().pixelSize();
-    int lineSpace = 0.75 * lineHeight;
-    qreal nbSpaces = qMax(1.25, subtitle.nbLines()-0.75); // baseline (qpjg)
-    return lineHeight * subtitle.nbLines() + lineSpace * nbSpaces;
+    QFontMetrics metrics(font());
+    int h = font().pixelSize();
+    int nb = subtitle.nbLines();
+    int lineSpace = 0.75 * h * (nb-1) + metrics.descent() + 5;
+    return h * nb + lineSpace;
 }
 
 void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds, double zoom, const QPen &outline) const
 {
-    QRect final(bounds);
-    QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
-    QPoint position = subtitle.position();
-    if (position.x() >= 0 && position.y() >= 0) {
-        // absolute positioning : (x, y)
-        final.setTopLeft(position);
-        html = html.replace("HORIZONTAL", "left");
-    }
-    else {
-        if (position.x() < 0) {
-            // No margins if position is set
-            int marginL = (m_marginL + subtitle.marginL()) * zoom;
-            int marginR = (m_marginR + subtitle.marginR()) * zoom;
-            int marginV = (m_marginV + subtitle.marginV()) * zoom;
-            final = final.adjusted(marginL, marginV, -marginR, -marginV);
+    int stack = 0;
 
-            // Nor alignment
-            if (m_alignment & Qt::AlignLeft) {
-                html = html.replace("HORIZONTAL", "left");
-            } else if (m_alignment & Qt::AlignRight) {
-                html = html.replace("HORIZONTAL", "right");
-            } else {
-                html = html.replace("HORIZONTAL", "center");
-            }
+    foreach (SubtitleLine line, subtitle.lines()) {
+        QRect final(bounds);
+        QPoint position = line.position();
+
+        QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
+        if (position.x() >= 0 && position.y() >= 0) {
+            // absolute positioning : (x, y)
+            final.setTopLeft(position);
+            html = html.replace("HORIZONTAL", "left");
         }
         else {
-            // Horizontal positioning : (x, ?)
-            final.moveLeft(position.x());
+            int marginV = (m_marginV + subtitle.marginV()) * zoom;
+            int marginL = 0;
+            int marginR = 0;
+            int height = 0;
+
+            if (position.x() < 0) {
+                // If position is not set
+                height = font().pixelSize();
+                // Horizontal margins
+                marginL = (m_marginL + subtitle.marginL()) * zoom;
+                marginR = (m_marginR + subtitle.marginR()) * zoom;
+                // Same for alignment
+                if (m_alignment & Qt::AlignLeft) {
+                    html = html.replace("HORIZONTAL", "left");
+                } else if (m_alignment & Qt::AlignRight) {
+                    html = html.replace("HORIZONTAL", "right");
+                } else {
+                    html = html.replace("HORIZONTAL", "center");
+                }
+            }
+            else {
+                // Horizontal positioning : (x, ?)
+                final.moveLeft(position.x());
+            }
+
+            // Apply margins
+            final = final.adjusted(marginL, marginV, -marginR, -marginV);
+
+            // Vertical positioning
+            if (m_alignment & Qt::AlignBottom) {
+                final.moveTop(final.bottom() - subtitleHeight(subtitle) + stack);
+            } else if (m_alignment & Qt::AlignVCenter) {
+                final.moveTop(final.center().y() - font().pixelSize()/2 + stack);
+            }
+            else {  // AlignTop
+                final.moveTop(final.top() + stack);
+            }
+            // Stack lines
+            stack += (1.75 * height);
         }
-        // Vertical positioning
-        if (m_alignment & Qt::AlignBottom) {
-            final.moveTop(final.bottom() - textHeight(subtitle));
-        } else if (m_alignment & Qt::AlignVCenter) {
-            final.moveTop(final.center().y() - textHeight(subtitle)/2);
+
+        html = html.replace("TEXT", line.text());
+        QTextDocument doc;
+        doc.setPageSize(QSize(final.width(), final.height()));
+        doc.setHtml(html);
+        doc.setDefaultFont(m_font);
+        QAbstractTextDocumentLayout* layout = doc.documentLayout();
+
+        painter->setFont(m_font);
+        painter->setPen(m_primaryColour);
+        QAbstractTextDocumentLayout::PaintContext context;
+        context.palette.setColor(QPalette::Text, painter->pen().color());
+        painter->save();
+        painter->translate(final.x(), final.y());
+
+        if (outline.width() > 0) {
+            // Paint outline
+            QTextCursor cursor(&doc);
+            cursor.select(QTextCursor::Document);
+            QTextCharFormat format;
+            format.setTextOutline(outline);
+            cursor.mergeCharFormat(format);
+            layout->draw(painter, context);
+
+            format.setTextOutline(Qt::NoPen);
+            cursor.mergeCharFormat(format);
         }
-    }
-
-    html = html.replace("TEXT", subtitle.text());
-    QTextDocument doc;
-    doc.setPageSize(QSize(final.width(), final.height()));
-    doc.setHtml(html);
-    doc.setDefaultFont(m_font);
-    QAbstractTextDocumentLayout* layout = doc.documentLayout();
-
-    painter->setFont(m_font);
-    painter->setPen(m_primaryColour);
-    QAbstractTextDocumentLayout::PaintContext context;
-    context.palette.setColor(QPalette::Text, painter->pen().color());
-    painter->save();
-    painter->translate(final.x(), final.y());
-
-    if (outline.width() > 0) {
-        // Paint outline
-        QTextCursor cursor(&doc);
-        cursor.select(QTextCursor::Document);
-        QTextCharFormat format;
-        format.setTextOutline(outline);
-        cursor.mergeCharFormat(format);
+        // Repaint above, without outline
         layout->draw(painter, context);
-
-        format.setTextOutline(Qt::NoPen);
-        cursor.mergeCharFormat(format);
+        painter->restore();
     }
-    // Repaint above, without outline
-    layout->draw(painter, context);
-    painter->restore();
 }
 

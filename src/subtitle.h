@@ -21,9 +21,19 @@
 #include <QTime>
 #include <QString>
 #include <QPoint>
+#include <QPair>
 
 class Style;
 class Script;
+
+class SubtitleLine : public QPair<QString, QPoint>
+{
+public:
+    explicit SubtitleLine(const QString& t, const QPoint& p) { first = t; second = p; }
+    const QString text()    { return first; }
+    const QPoint position() { return second; }
+};
+
 
 class Subtitle : public QObject
 {
@@ -38,6 +48,7 @@ public:
     void setStyle(Style *p_style);
     const Style *style() const;
     void setText(const QString &p_text);
+    void setText(const QList<SubtitleLine> p_lines);
     const QString &text() const;
     const QString &prettyText() const;
     bool match(qint64 msecs) const;
@@ -50,6 +61,7 @@ public:
     int nbLines() const;
     void setPosition(int p_x, int p_y);
     QPoint position() const;
+    const QList<SubtitleLine> lines() const;
 private:
     int m_index;
     const Script *m_script;
@@ -63,7 +75,7 @@ private:
     int m_marginL;
     int m_marginR;
     int m_marginV;
-    QPoint m_position;
+    QList<SubtitleLine> m_lines;
     bool m_corrected;
 };
 

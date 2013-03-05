@@ -48,7 +48,7 @@ public:
     Qt::Alignment alignment() const;
 
     void drawSubtitle(QPainter*, const Subtitle&, const QRect&, const double, const QPen&) const;
-    int textHeight(const Subtitle &subtitle) const;
+    int subtitleHeight(const Subtitle &subtitle) const;
 private:
     QString m_name;
     QFont m_font;

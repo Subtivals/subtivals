@@ -168,6 +168,8 @@ void Script::correctSubtitlesDuration(bool p_state)
     }
 }
 
+#include <QDebug>
+
 void Script::loadFromAss(QStringList content)
 {
     SectionType section = SECTION_NONE;
@@ -255,13 +257,11 @@ void Script::loadFromAss(QStringList content)
                     p = value.indexOf(",", p+1);
                 }
                 QString text = value.mid(p+1);
-                int x = -1;
-                int y = -1;
+                text = text.trimmed();
+                // New-lines : ignore at start
+                text = text.replace(QRegExp("^(\\\\[nN])+"), "");
 
                 // Transform the hints in the text into HTML:
-                // New ligne HTML-ification
-                text = text.replace("\\N", "<br/>");
-                text = text.replace("\\n", "<br/>");
                 // Italic HTML-ification
                 text = text.replace("{\\i1}", "<i>");
                 text = text.replace("{\\i0}", "</i>");
@@ -280,40 +280,31 @@ void Script::loadFromAss(QStringList content)
                         idxAccOpenColor = text.indexOf("{\\1c&H");
                     }
                 }
-                // Absolute positioning
-                {
+
+                QList<SubtitleLine> lines;
+                foreach(QString line, text.split(QRegExp("\\\\[nN]"))) {
+                    // Absolute positioning
+                    int x = -1;
+                    int y = -1;
                     //{\pos(x,y)} or {\pos(x)} in the beginning of the line
                     QRegExp rx("\\{\\\\pos\\((\\d+)(,(\\d+))?\\)\\}");
-                    if (rx.indexIn(text) >= 0){
+                    if (rx.indexIn(line) >= 0){
+
                         QStringList strpos = rx.capturedTexts();
                         x = strpos[1].toInt();
                         if (!strpos[3].isEmpty()) y = strpos[3].toInt();
                     }
-                }
 
-                // Drop others hints that cannot be translated in HTML
-                {
-                    int idxAccOpenDrop = text.indexOf("{\\");
-                    while (idxAccOpenDrop != -1) {
-                        int idxAccCloseDrop = text.indexOf("}", idxAccOpenDrop);
-                        if (idxAccCloseDrop != -1) {
-                            text = text.left(idxAccOpenDrop) + text.mid(idxAccCloseDrop+1);
-                        }
-                        idxAccOpenDrop = text.indexOf("{\\");
-                    }
-                }
-                text = text.trimmed();
-                while(text.startsWith("\n")) {
-                    text = text.mid(1);
+                    // Drop others hints that cannot be translated in HTML
+                    lines.append(SubtitleLine(line.replace(QRegExp("\\{.*\\}"), ""),
+                                              QPoint(x, y)));
                 }
 
                 // Instantiate subtitle !
                 Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
                 subtitle->setStyle(style);
+                subtitle->setText(lines);
                 subtitle->setMargins(marginL, marginR, marginV);
-                if (x>=0 || y>=0) {
-                    subtitle->setPosition(x, y);
-                }
                 m_subtitles.append(subtitle);
             }
         }

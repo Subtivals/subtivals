@@ -39,9 +39,6 @@ Subtitle::Subtitle(int p_index, const QString &p_text, qint64 p_msseStart, qint6
 {
     setText(p_text);
 
-    // Negative position are ignored
-    m_position = QPoint(-1, -1);
-
     // Auto duration
     m_autoDuration = 1000 * text().size() / AUTO_CHARS_RATE;
     if (m_autoDuration < AUTO_MIN_DURATION) m_autoDuration = AUTO_MIN_DURATION;
@@ -107,14 +104,29 @@ const Style *Subtitle::style() const
 
 void Subtitle::setText(const QString& p_text)
 {
-    m_text = p_text;
+    // Negative position are ignored
+    QList<SubtitleLine> lines;
+    SubtitleLine line = SubtitleLine(p_text, QPoint(-1, -1));
+    lines.append(line);
+    setText(lines);
+}
 
-    m_prettyText = QString(p_text);
-    m_prettyText = m_prettyText.replace(QRegExp("<br/>"), " # ");
+void Subtitle::setText(const QList<SubtitleLine> p_lines)
+{
+    m_lines = p_lines;
+    m_text = QString();
+    m_pureText = QString();
+    m_prettyText = QString();
+    // Build flat strings from list
+    foreach(SubtitleLine line, p_lines) {
+        m_pureText += line.text();
+        if (!m_text.isEmpty()) m_text += "<br/>";
+        if (!m_prettyText.isEmpty()) m_prettyText += " # ";
+        m_text += line.text();
+        m_prettyText += line.text();
+    }
     m_prettyText = m_prettyText.replace(QRegExp("<[^/bi>]+>"), "");
     m_prettyText = m_prettyText.replace(QRegExp("</[^bi>]+>"), "");
-
-    m_pureText = m_prettyText.replace(QRegExp("<[^>]+>"), "");
 }
 
 const QString &Subtitle::text() const
@@ -122,9 +134,14 @@ const QString &Subtitle::text() const
     return m_text;
 }
 
+const QList<SubtitleLine> Subtitle::lines() const
+{
+    return m_lines;
+}
+
 int Subtitle::nbLines() const
 {
-    return m_text.split("<br/>").count();
+    return m_lines.length();
 }
 
 const QString &Subtitle::prettyText() const
@@ -144,11 +161,6 @@ void Subtitle::setMargins(int p_marginL, int p_marginR, int p_marginV)
     m_marginV = p_marginV;
 }
 
-void Subtitle::setPosition(int p_x, int p_y)
-{
-    m_position = QPoint(p_x, p_y);
-}
-
 int Subtitle::marginL() const
 {
     return m_marginL;
@@ -162,9 +174,4 @@ int Subtitle::marginR() const
 int Subtitle::marginV() const
 {
     return m_marginV;
-}
-
-QPoint Subtitle::position() const
-{
-    return m_position;
 }
