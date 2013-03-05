@@ -282,12 +282,12 @@ void Script::loadFromAss(QStringList content)
                 }
                 // Absolute positioning
                 {
-                    //{\pos(x,y)} in the beginning of the line
-                    QRegExp rx("\\{\\\\pos\\((\\d+),(\\d+)\\)\\}");
+                    //{\pos(x,y)} or {\pos(x)} in the beginning of the line
+                    QRegExp rx("\\{\\\\pos\\((\\d+)(,(\\d+))?\\)\\}");
                     if (rx.indexIn(text) >= 0){
                         QStringList strpos = rx.capturedTexts();
                         x = strpos[1].toInt();
-                        y = strpos[2].toInt();
+                        if (!strpos[3].isEmpty()) y = strpos[3].toInt();
                     }
                 }
 
