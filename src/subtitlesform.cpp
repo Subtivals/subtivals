@@ -39,6 +39,8 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
 #ifdef WIN32
     flags |= Qt::SubWindow;
 #endif
+    setStyleSheet("background:transparent;");
+    setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(flags);
     ui->setupUi(this);
     setCursor(QCursor(Qt::BlankCursor));
