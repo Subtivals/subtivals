@@ -100,6 +100,16 @@ void Style::setPrimaryColour(const QColor &c)
     m_primaryColour = c;
 }
 
+qreal Style::lineSpacing() const
+{
+    return m_lineSpacing;
+}
+
+void Style::setLineSpacing(qreal p_lineSpacing)
+{
+    m_lineSpacing = p_lineSpacing;
+}
+
 int Style::textHeight() const
 {
     QFontMetrics metrics(font());

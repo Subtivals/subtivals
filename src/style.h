@@ -40,6 +40,8 @@ public:
     void setFont(const QFont &f);
     const QColor &primaryColour() const;
     void setPrimaryColour(const QColor &c);
+    qreal lineSpacing() const;
+    void setLineSpacing(qreal p_lineSpacing);
     void setMargins(int p_marginL, int p_marginR, int p_marginV);
     void setAlignment(Qt::Alignment p_alignment);
     int marginL() const;

@@ -11,6 +11,7 @@ StyleAdvanced::StyleAdvanced(Style* p_style, QWidget *parent):
 {
     ui->setupUi(this);
 
+    ui->lineSpacing->setValue(m_style->lineSpacing());
     if (m_style->alignment() & Qt::AlignTop)
         ui->verticalAlign->setCurrentIndex(0);
     else if (m_style->alignment() & Qt::AlignVCenter)
@@ -35,6 +36,8 @@ StyleAdvanced::~StyleAdvanced()
 
 void StyleAdvanced::accept()
 {
+    m_style->setLineSpacing(ui->lineSpacing->value());
+
     Qt::Alignment vertical;
     switch(ui->verticalAlign->currentIndex()) {
     case 0: vertical = Qt::AlignTop; break;
