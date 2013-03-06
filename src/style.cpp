@@ -17,6 +17,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QTextDocument>
 #include <QtGui/QAbstractTextDocumentLayout>
+#include <QtGui/QTextFrame>
 
 #include "style.h"
 #include "subtitle.h"
@@ -181,8 +182,14 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
         doc.setPageSize(QSize(final.width(), final.height()));
         doc.setHtml(html);
         doc.setDefaultFont(m_font);
-        QAbstractTextDocumentLayout* layout = doc.documentLayout();
 
+        // Reduce document margins to 0
+        QTextFrame *tf = doc.rootFrame();
+        QTextFrameFormat tff = tf->frameFormat();
+        tff.setTopMargin(0);
+        tf->setFrameFormat(tff);
+
+        QAbstractTextDocumentLayout* layout = doc.documentLayout();
         painter->setFont(m_font);
         painter->setPen(m_primaryColour);
         QAbstractTextDocumentLayout::PaintContext context;
