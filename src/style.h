@@ -49,10 +49,12 @@ public:
 
     void drawSubtitle(QPainter*, const Subtitle&, const QRect&, const double, const QPen&) const;
     int subtitleHeight(const Subtitle &subtitle) const;
+    int textHeight() const;
 private:
     QString m_name;
     QFont m_font;
     QColor m_primaryColour;
+    qreal m_lineSpacing;
     /*
      * Alignment : after the layout of the numpad (1-3 sub, 4-6 mid, 7-9 top)
      */

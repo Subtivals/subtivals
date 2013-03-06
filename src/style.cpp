@@ -25,6 +25,7 @@ Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, 
     QObject(p_parent),
     m_name(p_name),
     m_primaryColour(p_color),
+    m_lineSpacing(0.0),
     m_alignment(Qt::AlignTop | Qt::AlignHCenter),
     m_marginL(0),
     m_marginR(0),
@@ -99,13 +100,17 @@ void Style::setPrimaryColour(const QColor &c)
     m_primaryColour = c;
 }
 
-int Style::subtitleHeight(const Subtitle &subtitle) const
+int Style::textHeight() const
 {
     QFontMetrics metrics(font());
-    int h = font().pixelSize();
+    return font().pixelSize() + metrics.descent();
+}
+
+int Style::subtitleHeight(const Subtitle &subtitle) const
+{
+    int h = textHeight();
     int nb = subtitle.nbLines();
-    int lineSpace = 0.75 * h * (nb-1) + metrics.descent() + 5;
-    return h * nb + lineSpace;
+    return (h * nb) + (m_lineSpacing * h * (nb-1));
 }
 
 void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds, double zoom, const QPen &outline) const
@@ -126,11 +131,8 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
             int marginV = (m_marginV + subtitle.marginV()) * zoom;
             int marginL = 0;
             int marginR = 0;
-            int height = 0;
 
-            if (position.x() < 0) {
-                // If position is not set
-                height = font().pixelSize();
+            if (position.x() < 0) { // If position is not set
                 // Horizontal margins
                 marginL = (m_marginL + subtitle.marginL()) * zoom;
                 marginR = (m_marginR + subtitle.marginR()) * zoom;
@@ -161,7 +163,7 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
                 final.moveTop(final.top() + stack);
             }
             // Stack lines
-            stack += (1.75 * height);
+            stack += textHeight() * (1.0 + m_lineSpacing);
         }
 
         html = html.replace("TEXT", line.text());
