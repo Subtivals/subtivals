@@ -155,7 +155,7 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
             if (m_alignment & Qt::AlignBottom) {
                 final.moveTop(final.bottom() - subtitleHeight(subtitle) + stack);
             } else if (m_alignment & Qt::AlignVCenter) {
-                final.moveTop(final.center().y() - font().pixelSize()/2 + stack);
+                final.moveTop(final.center().y() - subtitleHeight(subtitle)/2 + stack);
             }
             else {  // AlignTop
                 final.moveTop(final.top() + stack);
