@@ -50,7 +50,7 @@ public:
     int marginV() const;
     Qt::Alignment alignment() const;
 
-    void drawSubtitle(QPainter*, const Subtitle&, const QRect&, const double, const QPen&) const;
+    void drawSubtitle(QPainter*, const Subtitle&, const QRect&, const QPen&) const;
     int subtitleHeight(const Subtitle &subtitle) const;
     const QPoint textAnchor(const QPoint &p_point, const QString &p_text) const;
 private:

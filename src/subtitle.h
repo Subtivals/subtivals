@@ -47,6 +47,7 @@ public:
     int charsRate() const;
     void setStyle(Style *p_style);
     const Style *style() const;
+    const Script *script() const;
     void setText(const QString &p_text);
     void setText(const QList<SubtitleLine> p_lines);
     const QString &text() const;

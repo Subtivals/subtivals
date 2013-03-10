@@ -4,7 +4,8 @@ Last Style Storage: Default
 Video Aspect Ratio: 0
 Video Zoom: 8
 Video Position: 625
-Video File: ../Vidéos/histoire_louche.mp4
+PlayResX: 640
+PlayResY: 480
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding

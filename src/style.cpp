@@ -20,6 +20,7 @@
 #include <QtGui/QTextFrame>
 
 #include "style.h"
+#include "script.h"
 #include "subtitle.h"
 
 Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, QObject *p_parent) :
@@ -138,13 +139,19 @@ const QPoint Style::textAnchor(const QPoint &p_point, const QString &p_text) con
     return p_point + offset;
 }
 
-void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds, double zoom, const QPen &outline) const
+void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds, const QPen &outline) const
 {
+    QSize resolution = subtitle.script()->resolution();
+    QPointF scale = QPointF(1.0, 1.0);
+    if (resolution.width() > 0)  scale.setX(double(bounds.width()) / resolution.width());
+    if (resolution.height() > 0) scale.setY(double(bounds.height()) / resolution.height());
+
     int stack = 0;
 
     foreach (SubtitleLine line, subtitle.lines()) {
         QRect final(bounds);
-        QPoint position = line.position();
+        QPoint position = QPoint(line.position().x() * scale.x(),
+                                 line.position().y() * scale.y());
 
         QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
         if (position.x() >= 0 && position.y() >= 0) {
@@ -152,14 +159,14 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
             final.setTopLeft(textAnchor(position, line.text()));
         }
         else {
-            int marginV = (m_marginV + subtitle.marginV()) * zoom;
+            int marginV = (m_marginV + subtitle.marginV()) * scale.y();
             int marginL = 0;
             int marginR = 0;
 
             if (position.x() < 0) { // If position is not set
                 // Horizontal margins
-                marginL = (m_marginL + subtitle.marginL()) * zoom;
-                marginR = (m_marginR + subtitle.marginR()) * zoom;
+                marginL = (m_marginL + subtitle.marginL()) * scale.x();
+                marginR = (m_marginR + subtitle.marginR()) * scale.x();
                 // Same for alignment
                 if (m_alignment & Qt::AlignLeft) {
                     html = html.replace("HORIZONTAL", "left");

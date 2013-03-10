@@ -133,7 +133,7 @@ void SubtitlesForm::paintEvent(QPaintEvent*)
         subtitlesBounds.moveTopLeft(m_subtitlesGeom.topLeft() - m_screenGeom.topLeft());
     }
     foreach(Subtitle *e, m_currentSubtitles) {
-        if (e && e->style()) e->style()->drawSubtitle(&p, *e, subtitlesBounds, m_zoom, m_outline);
+        if (e && e->style()) e->style()->drawSubtitle(&p, *e, subtitlesBounds, m_outline);
     }
 }
 

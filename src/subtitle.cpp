@@ -102,6 +102,11 @@ const Style *Subtitle::style() const
     return m_style;
 }
 
+const Script *Subtitle::script() const
+{
+    return m_script;
+}
+
 void Subtitle::setText(const QString& p_text)
 {
     // Negative position are ignored
