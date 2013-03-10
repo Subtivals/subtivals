@@ -11,6 +11,8 @@ Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour,
 Style: default,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
 Style: Top,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,8,0,0,0,1
 Style: Bottom,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,0,0,0,1
+Style: Left,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,4,0,0,0,1
+Style: Right,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,6,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -23,6 +25,16 @@ Dialogue: 0,0:00:15.00,0:00:20.00,default,,0000,0000,0000,,{\pos(100,100)}[100,1
 Dialogue: 0,0:00:20.00,0:00:21.00,default,,0000,0000,0000,,center1\ncenter2
 Dialogue: 0,0:00:21.00,0:00:22.00,default,,0000,0000,0000,,line1\n{\pos(100,100)}[100,100]line2
 Dialogue: 0,0:00:22.00,0:00:23.00,default,,0000,0000,0000,,{\pos(100)}[100,?]line1\n{\pos(300)}[300,?]line2
+
 Dialogue: 0,0:00:29.00,0:00:30.00,Bottom,,0000,0000,0000,,bottom,jpq
 Dialogue: 0,0:00:30.00,0:00:31.00,Top,,0000,0000,0000,,top1\ntop2\ntop3
 Dialogue: 0,0:00:30.00,0:00:31.00,Bottom,,0000,0000,0000,,bottom1\nbottom2\nbottom3
+
+Dialogue: 0,0:00:31.00,0:00:32.00,Top,,0000,0000,0000,,{\pos(100,100)}[100,100]top
+Dialogue: 0,0:00:31.00,0:00:32.00,default,,0000,0000,0000,,{\pos(100,100)}[100,100]center
+Dialogue: 0,0:00:31.00,0:00:32.00,Bottom,,0000,0000,0000,,{\pos(100,100)}[100,100]bottom
+
+Dialogue: 0,0:00:32.00,0:00:33.00,Left,,0000,0000,0000,,{\pos(100,100)}[100,100]left
+Dialogue: 0,0:00:32.00,0:00:33.00,default,,0000,0000,0000,,{\pos(100,100)}[100,100]center
+Dialogue: 0,0:00:32.00,0:00:33.00,Right,,0000,0000,0000,,{\pos(100,100)}[100,100]right
+

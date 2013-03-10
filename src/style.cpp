@@ -25,6 +25,7 @@
 Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, QObject *p_parent) :
     QObject(p_parent),
     m_name(p_name),
+    m_metrics(p_font),
     m_primaryColour(p_color),
     m_lineSpacing(0.0),
     m_alignment(Qt::AlignTop | Qt::AlignHCenter),
@@ -38,6 +39,7 @@ Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, 
 Style::Style(const Style &p_oth, const QFont& f, QObject *p_parent):
     QObject(p_parent),
     m_name(p_oth.m_name),
+    m_metrics(f),
     m_primaryColour(p_oth.m_primaryColour),
     m_alignment(p_oth.m_alignment),
     m_marginL(p_oth.m_marginL),
@@ -90,6 +92,7 @@ const QFont &Style::font() const {
 void Style::setFont(const QFont& f) {
     m_font = f;
     m_font.setStyleStrategy(QFont::PreferAntialias);
+    m_metrics = QFontMetrics(m_font);
 }
 
 const QColor &Style::primaryColour() const {
@@ -111,17 +114,29 @@ void Style::setLineSpacing(qreal p_lineSpacing)
     m_lineSpacing = p_lineSpacing;
 }
 
-int Style::textHeight() const
-{
-    QFontMetrics metrics(font());
-    return font().pixelSize() + metrics.descent();
-}
-
 int Style::subtitleHeight(const Subtitle &subtitle) const
 {
-    int h = textHeight();
+    int h = m_metrics.height();
     int nb = subtitle.nbLines();
     return (h * nb) + (m_lineSpacing * h * (nb-1));
+}
+
+#include <QDebug>
+const QPoint Style::textAnchor(const QPoint &p_point, const QString &p_text) const
+{
+    QPoint offset(0, 0);
+    // alignment becomes text anchor
+    if (m_alignment & Qt::AlignVCenter) {
+        offset.setY(m_metrics.height() / 2);
+    } else if (m_alignment & Qt::AlignBottom) {
+        offset.setY(m_metrics.height());
+    }
+    if (m_alignment & Qt::AlignHCenter) {
+        offset.setX(-m_metrics.width(p_text) / 2);
+    } else if (m_alignment & Qt::AlignRight) {
+        offset.setX(-m_metrics.width(p_text));
+    }
+    return p_point + offset;
 }
 
 void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRect &bounds, double zoom, const QPen &outline) const
@@ -135,8 +150,7 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
         QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
         if (position.x() >= 0 && position.y() >= 0) {
             // absolute positioning : (x, y)
-            final.setTopLeft(position);
-            html = html.replace("HORIZONTAL", "left");
+            final.setTopLeft(textAnchor(position, line.text()));
         }
         else {
             int marginV = (m_marginV + subtitle.marginV()) * zoom;
@@ -158,7 +172,7 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
             }
             else {
                 // Horizontal positioning : (x, ?)
-                final.moveLeft(position.x());
+                final.moveLeft(textAnchor(position, line.text()).x());
             }
 
             // Apply margins
@@ -174,7 +188,7 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
                 final.moveTop(final.top() + stack);
             }
             // Stack lines
-            stack += textHeight() * (1.0 + m_lineSpacing);
+            stack += m_metrics.height() * (1.0 + m_lineSpacing);
         }
 
         html = html.replace("TEXT", line.text());

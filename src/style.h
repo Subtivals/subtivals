@@ -23,6 +23,7 @@
 #include <QColor>
 #include <QRect>
 #include <QTextDocument>
+#include <QFontMetrics>
 
 class Subtitle;
 
@@ -51,10 +52,11 @@ public:
 
     void drawSubtitle(QPainter*, const Subtitle&, const QRect&, const double, const QPen&) const;
     int subtitleHeight(const Subtitle &subtitle) const;
-    int textHeight() const;
+    const QPoint textAnchor(const QPoint &p_point, const QString &p_text) const;
 private:
     QString m_name;
     QFont m_font;
+    QFontMetrics m_metrics;
     QColor m_primaryColour;
     qreal m_lineSpacing;
     /*
