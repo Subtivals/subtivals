@@ -99,6 +99,11 @@ int Script::subtitlesCount() const
     return m_subtitles.size();
 }
 
+QSize Script::resolution() const
+{
+    return m_resolution;
+}
+
 const QList<Subtitle *> Script::subtitles() const
 {
     return QList<Subtitle *>(m_subtitles);
@@ -168,8 +173,6 @@ void Script::correctSubtitlesDuration(bool p_state)
     }
 }
 
-#include <QDebug>
-
 void Script::loadFromAss(QStringList content)
 {
     SectionType section = SECTION_NONE;
@@ -191,6 +194,12 @@ void Script::loadFromAss(QStringList content)
                     QString value = parts[1].trimmed();
                     if (key == "title") {
                         m_title = value;
+                    }
+                    if (key == "playresx") {
+                        m_resolution.setWidth(value.toInt());
+                    }
+                    if (key == "playresy") {
+                        m_resolution.setHeight(value.toInt());
                     }
                 }
             }

@@ -121,7 +121,6 @@ int Style::subtitleHeight(const Subtitle &subtitle) const
     return (h * nb) + (m_lineSpacing * h * (nb-1));
 }
 
-#include <QDebug>
 const QPoint Style::textAnchor(const QPoint &p_point, const QString &p_text) const
 {
     QPoint offset(0, 0);
