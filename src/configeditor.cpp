@@ -154,7 +154,6 @@ void ConfigEditor::reset()
     int h = settings.value("h", DEFAULT_HEIGHT).toInt();
     bool hideDesktop = settings.value("hideDesktop", false).toBool();
     double rotation = settings.value("rotation", 0).toDouble();
-    double zoom = settings.value("zoom", 100.0).toDouble();
     QColor color(settings.value("color", DEFAULT_COLOR).toString());
     QColor outlineColor(settings.value("outline-color", DEFAULT_OUTLINE_COLOR).toString());
     int outlineWidth = settings.value("outline-width", DEFAULT_OUTLINE_WIDTH).toInt();
@@ -164,7 +163,6 @@ void ConfigEditor::reset()
     ui->hideDesktop->setChecked(hideDesktop);
     screenChanged(QRect(x, y, w, h));
     ui->rotation->setValue(rotation);
-    ui->zoom->setValue(zoom);
     setColor(ui->btnColor, color);
     m_color = color;
     setColor(ui->btnOutlineColor, outlineColor);
@@ -188,7 +186,6 @@ void ConfigEditor::save()
     settings.setValue("h", ui->h->text());
     settings.setValue("hideDesktop", ui->hideDesktop->isChecked());
     settings.setValue("rotation", ui->rotation->text());
-    settings.setValue("zoom", ui->zoom->value());
     settings.setValue("color", m_color.name());
     settings.setValue("outline-color", m_outlineColor.name());
     settings.setValue("outline-width", ui->outlineWidth->value());
@@ -207,7 +204,6 @@ void ConfigEditor::apply()
             ui->h->text().toInt());
     emit changeScreen(screen, r);
     emit rotate(ui->rotation->value());
-    emit zoom(ui->zoom->value()/100.0);
     emit color(m_color);
     emit outline(m_outlineColor, ui->chkOutline->isChecked() ? ui->outlineWidth->value() : 0);
     emit hideDesktop(ui->hideDesktop->isChecked());

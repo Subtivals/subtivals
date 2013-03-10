@@ -32,7 +32,6 @@ SubtitlesForm::SubtitlesForm(QWidget *parent) :
     m_monitor(-1),
     m_resizable(false),
     m_rotation(0),
-    m_zoom(1.0),
     m_color(Qt::black)
 {
     Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint;
@@ -190,12 +189,6 @@ void SubtitlesForm::screenResizable(bool state)
 void SubtitlesForm::rotate(double p_rotation)
 {
     m_rotation = p_rotation;
-    repaint();
-}
-
-void SubtitlesForm::zoom(double p_zoom)
-{
-    m_zoom = p_zoom;
     repaint();
 }
 

@@ -65,6 +65,13 @@
          <string>Screen</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout">
+         <item row="1" column="1">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Left:</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="5">
           <widget class="QLabel" name="label_10">
            <property name="minimumSize">
@@ -91,16 +98,6 @@
          <item row="0" column="3" colspan="5">
           <widget class="QComboBox" name="screens"/>
          </item>
-         <item row="1" column="3">
-          <widget class="QSpinBox" name="x">
-           <property name="minimum">
-            <number>-9999</number>
-           </property>
-           <property name="maximum">
-            <number>9999</number>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="4">
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
@@ -113,6 +110,16 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="1" column="3">
+          <widget class="QSpinBox" name="x">
+           <property name="minimum">
+            <number>-9999</number>
+           </property>
+           <property name="maximum">
+            <number>9999</number>
+           </property>
+          </widget>
          </item>
          <item row="1" column="4">
           <spacer name="horizontalSpacer">
@@ -165,7 +172,7 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="4">
+         <item row="7" column="4">
           <spacer name="verticalSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -178,7 +185,7 @@
            </property>
           </spacer>
          </item>
-         <item row="7" column="0" colspan="8">
+         <item row="6" column="0" colspan="8">
           <widget class="QLabel" name="label_6">
            <property name="text">
             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -227,13 +234,6 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Left:</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_11">
            <property name="text">
@@ -261,14 +261,14 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="5" column="0" colspan="2">
+         <item row="4" column="0" colspan="2">
           <widget class="QLabel" name="label_13">
            <property name="text">
             <string>Color:</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="3">
+         <item row="4" column="3">
           <widget class="QPushButton" name="btnColor">
            <property name="minimumSize">
             <size>
@@ -284,49 +284,14 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="2">
-          <widget class="QLabel" name="label_14">
-           <property name="toolTip">
-            <string>Scale styles and events margin. No effect for margins at 0.</string>
-           </property>
-           <property name="text">
-            <string>Margin scale:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="3">
-          <widget class="QDoubleSpinBox" name="zoom">
-           <property name="toolTip">
-            <string>Scale styles and events margin. No effect for margins at 0.</string>
-           </property>
-           <property name="suffix">
-            <string>%</string>
-           </property>
-           <property name="decimals">
-            <number>0</number>
-           </property>
-           <property name="minimum">
-            <double>0.000000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>1000.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>100.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0" colspan="2">
+         <item row="5" column="0" colspan="2">
           <widget class="QCheckBox" name="chkOutline">
            <property name="text">
             <string>Text outline:</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="3">
+         <item row="5" column="3">
           <widget class="QPushButton" name="btnOutlineColor">
            <property name="enabled">
             <bool>false</bool>
@@ -348,7 +313,7 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="6" column="4">
+         <item row="5" column="4">
           <widget class="QSpinBox" name="outlineWidth">
            <property name="enabled">
             <bool>false</bool>
@@ -362,7 +327,7 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="6" column="5" colspan="3">
+         <item row="5" column="5" colspan="3">
           <widget class="QLabel" name="label_15">
            <property name="enabled">
             <bool>false</bool>
@@ -372,7 +337,7 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="5" column="4" colspan="4">
+         <item row="4" column="4" colspan="4">
           <widget class="QCheckBox" name="hideDesktop">
            <property name="text">
             <string>Hide desktop</string>
@@ -536,22 +501,6 @@ p, li { white-space: pre-wrap; }
     </hint>
     <hint type="destinationlabel">
      <x>221</x>
-     <y>241</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>ConfigEditor</receiver>
-   <slot>apply()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>142</x>
-     <y>251</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>219</x>
      <y>241</y>
     </hint>
    </hints>

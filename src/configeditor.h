@@ -41,7 +41,6 @@ signals:
     void changeScreen(int, QRect);
     void hideDesktop(bool);
     void rotate(double);
-    void zoom(double);
     void color(QColor);
     void outline(QColor, int);
     void styleChanged();

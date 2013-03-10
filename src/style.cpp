@@ -231,7 +231,9 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
         }
         // Repaint above, without outline
         layout->draw(painter, context);
+        painter->drawRect(final);
         painter->restore();
+
     }
 }
 

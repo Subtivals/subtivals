@@ -51,7 +51,6 @@ int main(int argc, char *argv[])
     QObject::connect(w.configEditor(), SIGNAL(changeScreen(int,QRect)), &f, SLOT(changeGeometry(int,QRect)));
     QObject::connect(w.configEditor(), SIGNAL(hideDesktop(bool)), &f, SLOT(toggleHideDesktop(bool)));
     QObject::connect(w.configEditor(), SIGNAL(rotate(double)), &f, SLOT(rotate(double)));
-    QObject::connect(w.configEditor(), SIGNAL(zoom(double)), &f, SLOT(zoom(double)));
     QObject::connect(w.configEditor(), SIGNAL(color(QColor)), &f, SLOT(color(QColor)));
     QObject::connect(w.configEditor(), SIGNAL(outline(QColor,int)), &f, SLOT(outline(QColor,int)));
     QObject::connect(w.configEditor(), SIGNAL(styleChanged()), &f, SLOT(repaint()));
