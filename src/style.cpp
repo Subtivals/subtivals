@@ -150,12 +150,13 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
 
     foreach (SubtitleLine line, subtitle.lines()) {
         QRect final(bounds);
-        QPoint position = QPoint(line.position().x() * scale.x(),
-                                 line.position().y() * scale.y());
+        QPoint position = line.position();
 
         QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
         if (position.x() >= 0 && position.y() >= 0) {
             // absolute positioning : (x, y)
+            position.setX(position().x() * scale.x());
+            position.setY(position().y() * scale.y());
             final.setTopLeft(textAnchor(position, line.text()));
         }
         else {
@@ -178,6 +179,7 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
             }
             else {
                 // Horizontal positioning : (x, ?)
+                position.setX(position().x() * scale.x());
                 final.moveLeft(textAnchor(position, line.text()).x());
             }
 
@@ -231,9 +233,7 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
         }
         // Repaint above, without outline
         layout->draw(painter, context);
-        painter->drawRect(final);
         painter->restore();
-
     }
 }
 
