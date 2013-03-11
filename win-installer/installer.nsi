@@ -23,7 +23,7 @@
 
 RequestExecutionLevel admin
 
-!define setup "subtivals-setup-1.4.1.exe"
+!define setup "subtivals-setup-1.5.0.exe"
 
 ; change this to wherever the files to be packaged reside
 !define srcdir "..\subtivals-build-desktop\release"
