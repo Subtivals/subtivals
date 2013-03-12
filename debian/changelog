@@ -1,3 +1,9 @@
+subtivals (1.5.0-2) stable; urgency=low
+
+  * Fix compilation error
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Mon, 12 Mar 2013 20:33:08 +0100
+
 subtivals (1.5.0-1) stable; urgency=low
 
   * Fix absolute positioning for \pos(0,0)
