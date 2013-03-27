@@ -125,6 +125,9 @@ int Style::subtitleHeight(const Subtitle &subtitle) const
 const QPoint Style::textAnchor(const QPoint &p_point, const QString &p_text) const
 {
     QPoint offset(0, 0);
+    // Make sure text contains no HTML
+    QString strip(p_text);
+    strip.remove(QRegExp("<[^>]*>"));
     // alignment becomes text anchor
     if (m_alignment & Qt::AlignVCenter) {
         offset.setY(m_metrics.height() / 2);
@@ -132,9 +135,9 @@ const QPoint Style::textAnchor(const QPoint &p_point, const QString &p_text) con
         offset.setY(m_metrics.height());
     }
     if (m_alignment & Qt::AlignHCenter) {
-        offset.setX(-m_metrics.width(p_text) / 2);
+        offset.setX(-m_metrics.width(strip) / 2);
     } else if (m_alignment & Qt::AlignRight) {
-        offset.setX(-m_metrics.width(p_text));
+        offset.setX(-m_metrics.width(strip));
     }
     return p_point + offset;
 }
@@ -180,6 +183,7 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
             else {
                 // Horizontal positioning : (x, ?)
                 position.setX(position.x() * scale.x());
+                html = html.replace("align=\"HORIZONTAL\"", "");
                 final.moveLeft(textAnchor(position, line.text()).x());
             }
 
