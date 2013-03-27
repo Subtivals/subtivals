@@ -277,18 +277,6 @@ void Script::loadFromAss(QStringList content)
                 // Bold HTML-ification
                 text = text.replace("{\\b1}", "<b>");
                 text = text.replace("{\\b0}", "</b>");
-                // Color HTML-ification
-                {
-                    int idxAccOpenColor = text.indexOf("{\\1c&H");
-                    while (idxAccOpenColor != -1) {
-                        int idxAccCloseColor = text.indexOf("}", idxAccOpenColor);
-                        if (idxAccCloseColor != -1) {
-                            QString htmlColor = "<font color=\"#" + text.mid(idxAccOpenColor + 6 + 4, 2) + text.mid(idxAccOpenColor + 6 + 2, 2) + text.mid(idxAccOpenColor + 6, 2) + "\">";
-                            text = text.left(idxAccOpenColor) + htmlColor + text.mid(idxAccCloseColor+1) + "</font>";
-                        }
-                        idxAccOpenColor = text.indexOf("{\\1c&H");
-                    }
-                }
 
                 QList<SubtitleLine> lines;
                 foreach(QString line, text.split(QRegExp("\\\\[nN]"))) {
@@ -298,10 +286,22 @@ void Script::loadFromAss(QStringList content)
                     //{\pos(x,y)} or {\pos(x)} in the beginning of the line
                     QRegExp rx("\\{\\\\pos\\((\\d+)(,(\\d+))?\\)\\}");
                     if (rx.indexIn(line) >= 0){
-
                         QStringList strpos = rx.capturedTexts();
                         x = strpos[1].toInt();
                         if (!strpos[3].isEmpty()) y = strpos[3].toInt();
+                    }
+
+                    // Color HTML-ification
+                    {
+                        int idxAccOpenColor = line.indexOf("{\\1c&H");
+                        while (idxAccOpenColor != -1) {
+                            int idxAccCloseColor = line.indexOf("}", idxAccOpenColor);
+                            if (idxAccCloseColor != -1) {
+                                QString htmlColor = "<font color=\"#" + line.mid(idxAccOpenColor + 6 + 4, 2) + line.mid(idxAccOpenColor + 6 + 2, 2) + line.mid(idxAccOpenColor + 6, 2) + "\">";
+                                line = line.left(idxAccOpenColor) + htmlColor + line.mid(idxAccCloseColor+1) + "</font>";
+                            }
+                            idxAccOpenColor = line.indexOf("{\\1c&H");
+                        }
                     }
 
                     // Drop others hints that cannot be translated in HTML
