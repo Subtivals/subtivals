@@ -1,3 +1,9 @@
+subtivals (1.5.1-1) stable; urgency=low
+
+  * Fix absolute X positioning with colors
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Mon, 28 Mar 2013 18:50:00 +0100
+
 subtivals (1.5.0-2) stable; urgency=low
 
   * Fix compilation error
