@@ -18,10 +18,11 @@ Subtivals is fully automatic, but its semi-manual mode also allows to project su
 
 Subtivals was used during the following film festivals :
 
+* [Lemesos International Documentary Festival](http://filmfestival.com.cy) ( *2013*, Cyprus )
+* [Cinélatino de Toulouse](http://www.cinelatino.com.fr) ( *2013, 2012, 2011* )
 * [Festival Cine sordo](http://www.festivalcinesordo.com) in Quito, Ecuador ( *2012* )
 * [Festival de Cinéma d'Amérique Latine de Biarritz](http://www.festivaldebiarritz.com) ( *2012, 2011* )
 * [Festival de cinéma de Douarnenez](http://www.festival-douarnenez.com) ( *2012, 2011* )
-* [Cinélatino de Toulouse](http://www.cinelatino.com.fr) ( *2012, 2011* )
 * [Résistances à Foix](http://festival-resistances.fr) ( *2012* )
 * [Festival du film de Beauvais](http://www.beauvaisfilmfest.com) ( *2012* )
 * [Short films festivals Vila do Conde](http://rteixeira.eu) ( *2012* )
