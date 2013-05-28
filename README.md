@@ -19,7 +19,7 @@ Subtivals is fully automatic, but its semi-manual mode also allows to project su
 Subtivals was used during the following film festivals :
 
 * [Lemesos International Documentary Festival](http://filmfestival.com.cy) in Cyprus ( *2013* )
-* [Cyprus Film Days](http://cyprusfilmdays.org) in Cyprus ( *2013* )
+* [Cyprus Film Days](http://cyprusfilmdays.org) ( *2013* )
 * [Cinélatino de Toulouse](http://www.cinelatino.com.fr) ( *2013, 2012, 2011* )
 * [Festival Cine sordo](http://www.festivalcinesordo.com) in Quito, Ecuador ( *2012* )
 * [Festival de cinéma de Douarnenez](http://www.festival-douarnenez.com) ( *2012, 2011* )
