@@ -1,4 +1,6 @@
+**Subtivals**, a program to project Advanced SubStation Alpha (ASS, *.ass), Subrip (*.srt) and simple text (*.txt) subtitles.
+
 ![screenshot](http://mathieu-leplatre.info/media/subtivals/subtivals.png)
 
-# [Homepage](http://subtivals.org)
+# [http://subtivals.org](http://subtivals.org)
 
