@@ -58,6 +58,10 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
         m_format = SRT;
         loadFromSrt(content);
     }
+    else if (ext == "txt") {
+        m_format = TXT;
+        loadFromTxt(content);
+    }
     qSort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
 }
 
@@ -352,6 +356,55 @@ void Script::loadFromSrt(QStringList content)
             section = SECTION_EVENTS;
         }
         else if (section == SECTION_EVENTS) {
+            if (line.isEmpty()) {
+                // Instantiate subtitle !
+                Subtitle *subtitle = new Subtitle(m_subtitles.size(), text.join("<br/>"), start, end, this, this);
+                subtitle->setStyle(style);
+                m_subtitles.append(subtitle);
+                text.clear();
+
+                section = SECTION_NONE;
+            }
+            else {
+                text.append(line);
+            }
+        }
+    }
+}
+
+void Script::loadFromTxt(QStringList content)
+{
+#ifdef WIN32
+    QFont font("MS Sans Serif");
+#else
+    QFont font("Sans");
+#endif
+    font.setPixelSize(18);
+
+    Style *style = new Style(tr("Default"), font, Qt::white, this);
+    m_styles[style->name()] = style;
+
+    // Make sure its ends with empty line
+    if (!content.last().isEmpty())
+        content.append(QString());
+
+    QStringList text;
+    qint64 start = 0;
+    qint64 end = 0;
+    SectionType section = SECTION_NONE;
+    foreach(QString line, content) {
+        if (section == SECTION_NONE) {
+            section = SECTION_EVENTS;
+
+            QRegExp times("^([0-9:]+) ([0-9:]+) ([0-9:]+)$");
+            if (times.indexIn(line) >= 0) {
+                QStringList subparts = times.capturedTexts();
+                start = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss:z"));
+                end = QTime().msecsTo(QTime::fromString(subparts[2], "h:mm:ss:z"));
+                continue;
+            }
+        }
+        if (section == SECTION_EVENTS) {
             if (line.isEmpty()) {
                 // Instantiate subtitle !
                 Subtitle *subtitle = new Subtitle(m_subtitles.size(), text.join("<br/>"), start, end, this, this);

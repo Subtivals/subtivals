@@ -199,7 +199,8 @@ void MainWindow::dropEvent(QDropEvent* event)
             QFileInfo fileInfo = QFileInfo(fileName);
             if(fileInfo.isFile() && fileInfo.isReadable() &&
                     (fileInfo.suffix().toLower() == "ass" ||
-                     fileInfo.suffix().toLower() == "srt")) {
+                     fileInfo.suffix().toLower() == "srt" ||
+                     fileInfo.suffix().toLower() == "txt")) {
                 openFile(fileName);
                 return;
             }
@@ -437,7 +438,7 @@ void MainWindow::actionOpen()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open subtitles"),
                                                     m_lastFolder,
-                                                    tr("Subtitle Files (*.ass *.srt)"));
+                                                    tr("Subtitle Files (*.ass *.srt *.txt)"));
     // Subtitle file selected ?
     if (!fileName.isEmpty()) {
         m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();
