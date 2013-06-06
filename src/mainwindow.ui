@@ -366,6 +366,9 @@
    <property name="text">
     <string>Preferences</string>
    </property>
+   <property name="toolTip">
+    <string>Show preferences</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
    </property>
@@ -432,6 +435,12 @@
    <property name="text">
     <string>Next</string>
    </property>
+   <property name="toolTip">
+    <string>Activate current or go to next</string>
+   </property>
+   <property name="shortcut">
+    <string>Space</string>
+   </property>
   </action>
   <action name="actionHide">
    <property name="checkable">
@@ -473,6 +482,9 @@
    <property name="text">
     <string>Auto reload</string>
    </property>
+   <property name="toolTip">
+    <string>Auto reload subtitle file on external change</string>
+   </property>
   </action>
   <action name="actionShowCalibration">
    <property name="checkable">
@@ -506,12 +518,18 @@
     <string>Timeout</string>
    </property>
    <property name="toolTip">
-    <string>Hide timeout subtitles</string>
+    <string>Hide timeout subtitles (manual mode)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
    </property>
   </action>
   <action name="actionShowHelp">
    <property name="text">
     <string>Online help...</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <action name="actionDurationCorrection">
@@ -523,6 +541,28 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionSpeedUp">
+   <property name="text">
+    <string>Speed up (+1%)</string>
+   </property>
+   <property name="toolTip">
+    <string>Adjust speed up (+1%)</string>
+   </property>
+   <property name="shortcut">
+    <string>Right</string>
+   </property>
+  </action>
+  <action name="actionSlowDown">
+   <property name="text">
+    <string>Slow down (-1%)</string>
+   </property>
+   <property name="toolTip">
+    <string>Adjust slow down  (-1%)</string>
+   </property>
+   <property name="shortcut">
+    <string>Left</string>
    </property>
   </action>
  </widget>

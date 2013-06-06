@@ -488,6 +488,10 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             // If key pressed matches any of the main window actions,
             // trigger it ! (capture keys in all widgets with this filter)
             QList<QAction*> allActions = this->findChildren<QAction*>();
+            // We treat of couple of actions differently below
+            allActions.removeAll(ui->actionNext);
+            allActions.removeAll(ui->actionSpeedUp);
+            allActions.removeAll(ui->actionSlowDown);
             foreach(QAction* action, allActions) {
                 if (!action->shortcut().isEmpty() &&
                     action->shortcut().matches(keySequence) &&
@@ -499,8 +503,10 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         }
 
         // With Space, behave like next()
-        if (keyEvent->key() == Qt::Key_Space) {
-            actionNext();  // Allow to trigger the action, even if disabled.
+        if (ui->actionNext->shortcut().matches(keySequence)) {
+            actionNext();  // Allow to trigger the action, even if disabled (activate last row).
+            event->accept();
+            return true;
         }
 
         // With key Up/Down : behave the way single mouse clics do.
@@ -518,13 +524,13 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             int factor = 10;
             if (keyEvent->modifiers().testFlag(Qt::ShiftModifier))
                 factor = 1;
-            if (keyEvent->key() == Qt::Key_Right)
+            if (ui->actionSpeedUp->shortcut().matches(keySequence))
                 ui->speedFactor->stepBy(factor);
-            if (keyEvent->key() == Qt::Key_Left)
+            if (ui->actionSlowDown->shortcut().matches(keySequence))
                 ui->speedFactor->stepBy(-factor);
         }
     }
-    return false;
+    return QMainWindow::eventFilter(object, event);
 }
 
 void MainWindow::actionConfig(bool state)
