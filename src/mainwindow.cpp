@@ -785,6 +785,7 @@ void MainWindow::setState(State p_state)
         ui->actionSubDelay->setEnabled(false);
         ui->actionAutoHideEnded->setEnabled(false);
         ui->actionShowCalibration->setEnabled(true);
+        ui->actionEditShortcuts->setEnabled(true);
         break;
     case STOPPED:
         m_player->stop();
@@ -797,6 +798,7 @@ void MainWindow::setState(State p_state)
         ui->actionSubDelay->setEnabled(false);
         ui->actionAutoHideEnded->setEnabled(true);
         ui->actionShowCalibration->setEnabled(true);
+        ui->actionEditShortcuts->setEnabled(true);
         break;
     case PLAYING:
         m_player->play();
@@ -809,6 +811,7 @@ void MainWindow::setState(State p_state)
         ui->actionSubDelay->setEnabled(true);
         ui->actionAutoHideEnded->setEnabled(false);
         ui->actionShowCalibration->setEnabled(false);
+        ui->actionEditShortcuts->setEnabled(false);
         break;
     case PAUSED:
         m_player->pause();
