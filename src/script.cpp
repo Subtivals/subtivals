@@ -314,7 +314,7 @@ void Script::loadFromAss(QStringList content)
                 }
 
                 // Instantiate subtitle !
-                Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
+                Subtitle *subtitle = new Subtitle(m_subtitles.size(), QStringList(), start, end, this, this);
                 subtitle->setStyle(style);
                 subtitle->setText(lines);
                 subtitle->setMargins(marginL, marginR, marginV);
@@ -358,7 +358,7 @@ void Script::loadFromSrt(QStringList content)
         else if (section == SECTION_EVENTS) {
             if (line.isEmpty()) {
                 // Instantiate subtitle !
-                Subtitle *subtitle = new Subtitle(m_subtitles.size(), text.join("<br/>"), start, end, this, this);
+                Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
                 subtitle->setStyle(style);
                 m_subtitles.append(subtitle);
                 text.clear();
@@ -407,7 +407,7 @@ void Script::loadFromTxt(QStringList content)
         if (section == SECTION_EVENTS) {
             if (line.isEmpty()) {
                 // Instantiate subtitle !
-                Subtitle *subtitle = new Subtitle(m_subtitles.size(), text.join("<br/>"), start, end, this, this);
+                Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
                 subtitle->setStyle(style);
                 m_subtitles.append(subtitle);
                 text.clear();

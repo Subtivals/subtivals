@@ -25,7 +25,7 @@
 #define  AUTO_MIN_DURATION    1000  // msec
 
 
-Subtitle::Subtitle(int p_index, const QString &p_text, qint64 p_msseStart, qint64 p_msseEnd, const Script *p_script, QObject *p_parent) :
+Subtitle::Subtitle(int p_index, const QStringList &p_text, qint64 p_msseStart, qint64 p_msseEnd, const Script *p_script, QObject *p_parent) :
     QObject(p_parent),
     m_index(p_index),
     m_script(p_script),
@@ -107,12 +107,14 @@ const Script *Subtitle::script() const
     return m_script;
 }
 
-void Subtitle::setText(const QString& p_text)
+void Subtitle::setText(const QStringList& p_text)
 {
     // Negative position are ignored
     QList<SubtitleLine> lines;
-    SubtitleLine line = SubtitleLine(p_text, QPoint(-1, -1));
-    lines.append(line);
+    foreach (QString strline, p_text) {
+        SubtitleLine line = SubtitleLine(strline, QPoint(-1, -1));
+        lines.append(line);
+    }
     setText(lines);
 }
 
