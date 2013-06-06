@@ -62,6 +62,7 @@ Main features
 * Hide desktop (fullscreen) on screen monitor
 * Feedback on number of characters per second
 * Reload subtitles file if modified while playing
+* Shortcut editor
 * Runs on GNU/Linux, Windows, Mac OSX
 * Available in English, French, Spanish and Catalan
 
@@ -79,13 +80,13 @@ If you have a video mixer, then a separate projector is not necessary for inlayi
 Installation
 ============
 
-Subtivals installer is available on *Ubuntu*, and can be installed by adding the
+Subtivals installer is primarily available on **Ubuntu**, and can be installed by adding the
 following PPA to your Software Sources:
 
     sudo add-apt-repository ppa:mathieu.leplatre/subtivals
     sudo apt-get update && sudo apt-get install subtivals
 
-For *Windows* and *Mac OS* installers, you can [try out the demo version](http://mathieu-leplatre.info/media/subtivals/) or contact us by email !
+For **Windows* and **Mac OS** installers, you can [try out the demo version](http://mathieu-leplatre.info/media/subtivals/) or contact us by email !
 
 
 File Formats
@@ -93,7 +94,21 @@ File Formats
 
 Subtivals supports all characters and alphabets (Greek, Arabic, Chinese, ...) if the subtitles files are saved with UTF-8 encoding. 
 
-## Text format
+## SSA format (*.ssa)
+
+Supported attributes:
+
+* Styles
+* Positions
+* Margins
+* Colors
+* Bold / Italic
+
+## Subrip format (*.srt)
+
+Full support.
+
+## Text format (*.txt)
 
 Without timecode ( *duration is computed automatically from text length* ):
 
