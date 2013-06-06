@@ -1,3 +1,11 @@
+subtivals (1.6.0-1) stable; urgency=low
+
+  * Fix multiple line display for SRT
+  * Add support for simple text files
+  * Shortcut editor
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Mon, 07 Jun 2013 23:50:00 +0100
+
 subtivals (1.5.1-1) stable; urgency=low
 
   * Fix absolute X positioning with colors
