@@ -31,6 +31,7 @@
 #include "ui_mainwindow.h"
 #include "configeditor.h"
 #include "player.h"
+#include "shortcuteditor.h"
 
 /**
  * A small delegate class to allow rich text rendering in main table cells.
@@ -856,6 +857,28 @@ void MainWindow::searchTextChanged(QString)
 {
     ui->searchField->setStyleSheet("");
     ui->searchButton->setEnabled(!ui->searchField->text().isEmpty());
+}
+
+void MainWindow::actionEditShortcuts()
+{
+    ShortcutEditor shortcutEditor;
+    shortcutEditor.registerAction(ui->actionPlay);
+    shortcutEditor.registerAction(ui->actionPause);
+    shortcutEditor.registerAction(ui->actionStop);
+    shortcutEditor.registerAction(ui->actionPrevious);
+    shortcutEditor.registerAction(ui->actionNext);
+    shortcutEditor.registerAction(ui->actionHide);
+    shortcutEditor.registerAction(ui->actionAddDelay);
+    shortcutEditor.registerAction(ui->actionSubDelay);
+    shortcutEditor.registerAction(ui->actionSpeedUp);
+    shortcutEditor.registerAction(ui->actionSlowDown);
+    shortcutEditor.registerAction(ui->actionAutoHideEnded);
+    shortcutEditor.registerAction(ui->actionShowCalibration);
+    shortcutEditor.registerAction(ui->actionPreferences);
+    shortcutEditor.registerAction(ui->actionEnableReload);
+    shortcutEditor.registerAction(ui->actionShowHelp);
+    shortcutEditor.registerAction(ui->actionExit);
+    shortcutEditor.exec();
 }
 
 void MainWindow::actionAbout()

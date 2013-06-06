@@ -250,6 +250,7 @@
      <string>Edit</string>
     </property>
     <addaction name="actionPreferences"/>
+    <addaction name="actionEditShortcuts"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -563,6 +564,14 @@
    </property>
    <property name="shortcut">
     <string>Left</string>
+   </property>
+  </action>
+  <action name="actionEditShortcuts">
+   <property name="text">
+    <string>Edit shortcuts...</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit shortcuts</string>
    </property>
   </action>
  </widget>
@@ -891,6 +900,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionEditShortcuts</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionEditShortcuts()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -913,5 +938,6 @@
   <slot>actionAutoHideEnded(bool)</slot>
   <slot>actionShowHelp()</slot>
   <slot>actionDurationCorrection(bool)</slot>
+  <slot>actionEditShortcuts()</slot>
  </slots>
 </ui>
