@@ -4,7 +4,7 @@ title: Subtivals
 ---
 ![screenshot](http://mathieu-leplatre.info/media/subtivals/subtivals.png)
 
-**Subtivals**, a program to project Advanced SubStation Alpha (ASS, *.ass) and Subrip (*.srt) subtitles.
+**Subtivals**, a program to project Advanced SubStation Alpha (ASS, *.ass), Subrip (*.srt) and simple text (*.txt) subtitles.
 
 Purpose
 =======
@@ -50,7 +50,7 @@ Main features
 
 * Control play/pause/delay/speed
 * Switch between several modes : timecode based, semi-automatic or fully manual
-* Ass styles (italic, positions, colors)
+* SSA styles (italic, positions, colors)
 * Override styles (color, font size, margins, alignments)
 * Text outline (color and width)
 * Easily adjust position and size of screen window with the mouse
@@ -87,6 +87,44 @@ following PPA to your Software Sources:
 
 For *Windows* and *Mac OS* installers, you can [try out the demo version](http://mathieu-leplatre.info/media/subtivals/) or contact us by email !
 
+
+File Formats
+============
+
+Subtivals supports all characters and alphabets (Greek, Arabic, Chinese, ...) if the subtitles files are saved with UTF-8 encoding. 
+
+## Text format
+
+Without timecode ( *duration is computed automatically from text length* ):
+
+```
+À 24-25 ans, j'avais déjà un film
+qui tournait en festival.
+
+J'étais très jeune,
+
+diplômé de la fac
+depuis tout juste 3 ans.
+```
+
+With timecode:
+
+```
+00:00:19:13 00:00:23:08 03:20
+À 24-25 ans, j'avais déjà un film
+qui tournait en festival.
+
+00:00:23:22 00:00:25:09 01:12
+J'étais très jeune,
+
+00:00:26:12 00:00:29:10 02:23
+diplômé de la fac
+depuis tout juste 3 ans.
+```
+
+See [example files](https://github.com/traxtech/subtivals/tree/master/examples)
+
+
 Authors
 =======
 
@@ -94,6 +132,7 @@ Authors
 * Mathieu Leplatre ([@leplatrem](http://mathieu-leplatre.info))
 * Lilian Lefranc ([st2l](http://st2l.fr))
 * Emmanuel Digiaro ([@mallox](http://twitter.com/mallox))
+
 
 See Also
 ========
