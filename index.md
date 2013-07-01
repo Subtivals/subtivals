@@ -86,7 +86,7 @@ following PPA to your Software Sources:
     sudo add-apt-repository ppa:mathieu.leplatre/subtivals
     sudo apt-get update && sudo apt-get install subtivals
 
-For **Windows** and **Mac OS** installers, you can [try out the demo version](http://mathieu-leplatre.info/media/subtivals/) or contact us by email !
+For **Windows** and **Mac OS** installers, you can [try out the demo version](http://mathieu-leplatre.info/media/subtivals/) or contact us by email (contact@subtivals.org) !
 
 
 File Formats
@@ -148,6 +148,7 @@ Authors
 * Lilian Lefranc ([st2l](http://st2l.fr))
 * Emmanuel Digiaro ([@mallox](http://twitter.com/mallox))
 
+Don't hesitate to drop us an email at **contact@subtivals.org**
 
 See Also
 ========
