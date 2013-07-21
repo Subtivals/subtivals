@@ -121,19 +121,18 @@ void Subtitle::setText(const QStringList& p_text)
 void Subtitle::setText(const QList<SubtitleLine> p_lines)
 {
     m_lines = p_lines;
-    m_text = QString();
-    m_pureText = QString();
-    m_prettyText = QString();
     // Build flat strings from list
+    QStringList lines;
     foreach(SubtitleLine line, p_lines) {
-        m_pureText += line.text();
-        if (!m_text.isEmpty()) m_text += "<br/>";
-        if (!m_prettyText.isEmpty()) m_prettyText += " # ";
-        m_text += line.text();
-        m_prettyText += line.text();
+        lines.append(line.text());
     }
-    m_prettyText = m_prettyText.replace(QRegExp("<[^/bi>]+>"), "");
-    m_prettyText = m_prettyText.replace(QRegExp("</[^bi>]+>"), "");
+    m_text = lines.join("<br/>");
+    // Strip everything for character count
+    m_pureText = lines.join(" ");
+    m_pureText = m_pureText.replace(QRegExp("</?[^>]+>"), "");
+    // Keep bold and italic for displayed text
+    m_prettyText = lines.join(" # ");
+    m_prettyText = m_prettyText.replace(QRegExp("</?[^bi>]+>"), "");
 }
 
 const QString &Subtitle::text() const
