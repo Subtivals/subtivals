@@ -317,6 +317,9 @@ void MainWindow::openFile (const QString &p_fileName)
         QTableWidgetItem *textItem = new QTableWidgetItem(subtitle->prettyText());
         ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
 
+        // Show chars/sec
+        textItem->setToolTip(tr("%1 chars/sec").arg(subtitle->charsRate()));
+        // Warn if too fast !
         if (subtitle->charsRate() > 14) {
             QString icon(":/icons/chars-rate-warn.png");
             textItem->setToolTip(tr("Fast (%1 chars/sec)").arg(subtitle->charsRate()));
