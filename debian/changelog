@@ -1,3 +1,11 @@
+subtivals (1.6.1-1) stable; urgency=low
+
+  * Always show chars/sec tooltip
+  * Fix subtitle pure text cleanup
+  * Support italic between <> in txt format
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Tue, 23 Jul 2013 23:39:00 +0100
+
 subtivals (1.6.0-1) stable; urgency=low
 
   * Fix multiple line display for SRT
