@@ -86,7 +86,13 @@ following PPA to your Software Sources:
     sudo add-apt-repository ppa:mathieu.leplatre/subtivals
     sudo apt-get update && sudo apt-get install subtivals
 
-For **Windows** and **Mac OS** installers, you can [try out the demo version](http://mathieu-leplatre.info/media/subtivals/) or contact us by email (contact@subtivals.org) !
+For **Windows** and **Mac OS** installers, you can [try out the demo version](http://mathieu-leplatre.info/media/subtivals/),
+or buy the complete versions using Paypal:
+
+* [Windows XP / Vista / 7 / 8 (.exe)](http://www.digitalgoodsstore.com/mydgs/apNeyq)
+* [Mac OS X (.dmg)](http://www.digitalgoodsstore.com/mydgs/5RQeV1)
+
+If you prefer bank transfers, or have any questions, contact us by email (contact@subtivals.org) !
 
 
 File Formats
