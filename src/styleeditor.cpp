@@ -50,9 +50,9 @@ void StyleEditor::advancedConfig()
     QString styleName = ui->stylesNames->selectedItems().first()->text();
     Style* style = m_script->style(styleName);
     StyleAdvanced config(style, this);
+    connect(&config, SIGNAL(styleChanged()), SLOT(apply()));
     config.move(this->geometry().topLeft());
-    if(config.exec() == QDialog::Accepted)
-        apply();
+    config.exec();
 }
 
 void StyleEditor::setScript(Script* script)

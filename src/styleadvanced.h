@@ -16,8 +16,10 @@ class StyleAdvanced : public QDialog
 public:
     explicit StyleAdvanced(Style* p_style, QWidget *parent = 0);
     ~StyleAdvanced();
+signals:
+    void styleChanged();
 protected slots:
-    void accept();
+    void apply();
 private:
     Ui::StyleAdvanced *ui;
     Style* m_style;

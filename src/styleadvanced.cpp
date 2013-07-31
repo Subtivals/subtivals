@@ -11,22 +11,33 @@ StyleAdvanced::StyleAdvanced(Style* p_style, QWidget *parent):
 {
     ui->setupUi(this);
 
+    ui->title->setText(m_style->name());
+
     ui->lineSpacing->setValue(m_style->lineSpacing());
-    if (m_style->alignment() & Qt::AlignTop)
+    if (m_style->alignment().testFlag(Qt::AlignTop))
         ui->verticalAlign->setCurrentIndex(0);
-    else if (m_style->alignment() & Qt::AlignVCenter)
+    else if (m_style->alignment().testFlag(Qt::AlignVCenter))
         ui->verticalAlign->setCurrentIndex(1);
-    else if (m_style->alignment() & Qt::AlignBottom)
+    else if (m_style->alignment().testFlag(Qt::AlignBottom))
         ui->verticalAlign->setCurrentIndex(2);
-    if (m_style->alignment() & Qt::AlignLeft)
+
+    if (m_style->alignment().testFlag(Qt::AlignLeft))
         ui->horizontalAlign->setCurrentIndex(0);
-    else if (m_style->alignment() & Qt::AlignHCenter)
+    else if (m_style->alignment().testFlag(Qt::AlignHCenter))
         ui->horizontalAlign->setCurrentIndex(1);
-    else if (m_style->alignment() & Qt::AlignRight)
+    else if (m_style->alignment().testFlag(Qt::AlignRight))
         ui->horizontalAlign->setCurrentIndex(2);
+
     ui->marginL->setValue(m_style->marginL());
     ui->marginR->setValue(m_style->marginR());
     ui->marginV->setValue(m_style->marginV());
+
+    connect(ui->lineSpacing, SIGNAL(valueChanged(double)), SLOT(apply()));
+    connect(ui->verticalAlign, SIGNAL(currentIndexChanged(int)), SLOT(apply()));
+    connect(ui->horizontalAlign, SIGNAL(currentIndexChanged(int)), SLOT(apply()));
+    connect(ui->marginL, SIGNAL(valueChanged(int)), SLOT(apply()));
+    connect(ui->marginR, SIGNAL(valueChanged(int)), SLOT(apply()));
+    connect(ui->marginV, SIGNAL(valueChanged(int)), SLOT(apply()));
 }
 
 StyleAdvanced::~StyleAdvanced()
@@ -34,7 +45,7 @@ StyleAdvanced::~StyleAdvanced()
     delete ui;
 }
 
-void StyleAdvanced::accept()
+void StyleAdvanced::apply()
 {
     m_style->setLineSpacing(ui->lineSpacing->value());
 
@@ -57,6 +68,5 @@ void StyleAdvanced::accept()
     m_style->setMargins(ui->marginL->value(),
                         ui->marginR->value(),
                         ui->marginV->value());
-
-    QDialog::accept();
+    emit styleChanged();
 }
