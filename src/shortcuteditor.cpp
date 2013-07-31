@@ -9,7 +9,11 @@ ShortcutEditor::ShortcutEditor(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tableActions->verticalHeader()->hide();
-    ui->tableActions->horizontalHeader()->setResizeMode(COLUMN_DESCRIPTION, QHeaderView::Stretch);
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+        ui->tableActions->horizontalHeader()->setSectionResizeMode(COLUMN_DESCRIPTION, QHeaderView::Stretch);
+    #else
+        ui->tableActions->horizontalHeader()->setResizeMode(COLUMN_DESCRIPTION, QHeaderView::Stretch);
+    #endif
     connect(ui->tableActions, SIGNAL(itemPressed(QTableWidgetItem*)), this, SLOT(recordAction(QTableWidgetItem*)));
     connect(ui->tableActions, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(validateAction(QTableWidgetItem*)));
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(onClicked(QAbstractButton*)));
@@ -96,7 +100,7 @@ void ShortcutEditor::validateAction(QTableWidgetItem* item)
     if (item->column() != 1)
         return;
     QKeySequence accel(item->text());
-    QString accelText = QString(accel);
+    QString accelText = accel.toString();
     if (accelText.isEmpty() && !item->text().isEmpty()) {
         item->setText(m_oldAccelText);
     } else {

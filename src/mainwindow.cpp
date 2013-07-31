@@ -18,14 +18,16 @@
 #include <QtCore/QSettings>
 #include <QtCore/QUrl>
 #include <QtCore/QThread>
-#include <QtGui/QFileDialog>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QMessageBox>
-#include <QtGui/QDesktopServices>
-#include <QtGui/QScrollBar>
-#include <QtGui/QPainter>
-#include <QtGui/QStyledItemDelegate>
+#include <QFileDialog>
+#include <QDesktopWidget>
+#include <QKeyEvent>
+#include <QMessageBox>
+#include <QDesktopServices>
+#include <QScrollBar>
+#include <QPainter>
+#include <QMimeData>
+#include <QStyledItemDelegate>
+
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"

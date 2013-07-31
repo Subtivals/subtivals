@@ -15,10 +15,10 @@
   *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
   **/
 #include <QtCore/QSettings>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QPushButton>
-#include <QtGui/QPainter>
-#include <QtGui/QColorDialog>
+#include <QDesktopWidget>
+#include <QPushButton>
+#include <QPainter>
+#include <QColorDialog>
 
 #include "configeditor.h"
 #include "ui_configeditor.h"

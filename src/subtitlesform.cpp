@@ -17,7 +17,7 @@
 #include <QtCore/QSettings>
 #include <QtGui/QPainter>
 #include <QtGui/QCursor>
-#include <QtGui/QDesktopWidget>
+#include <QDesktopWidget>
 #include <QtCore/qmath.h>
 
 #include "subtitlesform.h"

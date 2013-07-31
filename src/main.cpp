@@ -14,7 +14,7 @@
   *  You should have received a copy of the GNU General Public License
   *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
   **/
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QtCore/QFileInfo>
 #include <QTranslator>
 
