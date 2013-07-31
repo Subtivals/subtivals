@@ -22,10 +22,14 @@ ShortcutEditor::~ShortcutEditor()
 
 void ShortcutEditor::apply()
 {
+    QSettings settings;
+    settings.beginGroup(QString("Shortcuts"));
     for(int i=0; i<ui->tableActions->rowCount(); i++) {
         QKeySequence accel(ui->tableActions->item(i, COLUMN_SHORTCUT)->text());
         m_actions[i]->setShortcut(accel);
+        settings.setValue(m_actions[i]->objectName(), accel);
     }
+    settings.endGroup();
     emit(changed());
 }
 
@@ -54,6 +58,7 @@ void ShortcutEditor::reset()
         ui->tableActions->setItem(row, COLUMN_SHORTCUT, item);
         row++;
     }
+    settings.endGroup();
     ui->tableActions->blockSignals(false);
     apply();
 }
