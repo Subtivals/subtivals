@@ -116,10 +116,11 @@ void StyleEditor::save()
     // Save overidden styles into settings
     QString line;
     foreach(Style* style, m_overidden) {
-        line = QString("%1/%2/%3/%4/%5/%7/%8")
+        line = QString("%1/%2/%3/%4/%5/%7/%8/%9")
                 .arg(style->font().family())
                 .arg(style->font().pixelSize())
                 .arg(style->primaryColour().name())
+                .arg(style->lineSpacing())
                 .arg(int(style->alignment()))
                 .arg(style->marginL())
                 .arg(style->marginR())
@@ -142,15 +143,16 @@ void StyleEditor::reset()
         Style* style = m_script->style(original->name());
 
         QStringList overriden = settings.value(style->name(), "").toString().split("/");
-        if (overriden.size() == 7) {
+        if (overriden.size() == 8) {
             QFont f(overriden[0]);
             f.setPixelSize(overriden.at(1).toInt());
             style->setFont(f);
             style->setPrimaryColour(QColor(overriden[2]));
-            style->setAlignment(QFlag(overriden.at(3).toInt()));
-            style->setMargins(overriden.at(4).toInt(),
-                              overriden.at(5).toInt(),
-                              overriden.at(6).toInt());
+            style->setLineSpacing(overriden.at(3).toDouble());
+            style->setAlignment(QFlag(overriden.at(4).toInt()));
+            style->setMargins(overriden.at(5).toInt(),
+                              overriden.at(6).toInt(),
+                              overriden.at(7).toInt());
             m_overidden.append(style);
             setStyleNameBold(i, true);
         }
