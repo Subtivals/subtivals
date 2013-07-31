@@ -48,7 +48,7 @@ void ShortcutEditor::reset()
 
         // Read from settings if exists
         QString accel = settings.value(action->objectName(),
-                                       m_backup[action].toString()).toString();
+                                       m_backup[action]).toString();
         item = new QTableWidgetItem(accel);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
         ui->tableActions->setItem(row, COLUMN_SHORTCUT, item);
@@ -106,6 +106,6 @@ void ShortcutEditor::registerAction(QAction *p_action)
     if (p_action->text().simplified().isEmpty())
         return;
     m_actions.append(p_action);
-    m_backup[p_action] = p_action->shortcut();
+    m_backup[p_action] = p_action->shortcut().toString();
     reset();
 }
