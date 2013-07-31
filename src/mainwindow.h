@@ -37,6 +37,7 @@
 #define COLUMN_TEXT     3
 
 class ConfigEditor;
+class ShortcutEditor;
 class Player;
 
 namespace Ui {
@@ -109,6 +110,7 @@ private:
     QString m_lastScript;
     QString m_lastFolder;
     ConfigEditor* m_preferences;
+    ShortcutEditor* m_shortcutEditor;
     QMap<Subtitle *, int> m_tableMapping;
     bool m_selectSubtitle;
     QTimer m_timerSelection;

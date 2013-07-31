@@ -104,6 +104,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_player(new Player()),
     m_playerThread(new QThread()),
     m_preferences(new ConfigEditor(this)),
+    m_shortcutEditor(new ShortcutEditor(this)),
     m_selectSubtitle(true),
     m_rowChanged(false),
     m_filewatcher(new QFileSystemWatcher),
@@ -156,6 +157,24 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_filewatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
     m_timerFileChange.setSingleShot(true);
     connect(&m_timerFileChange, SIGNAL(timeout()), this, SLOT(reloadScript()));
+
+    // Initialize shortcuts
+    m_shortcutEditor->registerAction(ui->actionPlay);
+    m_shortcutEditor->registerAction(ui->actionPause);
+    m_shortcutEditor->registerAction(ui->actionStop);
+    m_shortcutEditor->registerAction(ui->actionPrevious);
+    m_shortcutEditor->registerAction(ui->actionNext);
+    m_shortcutEditor->registerAction(ui->actionHide);
+    m_shortcutEditor->registerAction(ui->actionAddDelay);
+    m_shortcutEditor->registerAction(ui->actionSubDelay);
+    m_shortcutEditor->registerAction(ui->actionSpeedUp);
+    m_shortcutEditor->registerAction(ui->actionSlowDown);
+    m_shortcutEditor->registerAction(ui->actionAutoHideEnded);
+    m_shortcutEditor->registerAction(ui->actionShowCalibration);
+    m_shortcutEditor->registerAction(ui->actionPreferences);
+    m_shortcutEditor->registerAction(ui->actionEnableReload);
+    m_shortcutEditor->registerAction(ui->actionShowHelp);
+    m_shortcutEditor->registerAction(ui->actionExit);
 }
 
 MainWindow::~MainWindow()
@@ -868,24 +887,7 @@ void MainWindow::searchTextChanged(QString)
 
 void MainWindow::actionEditShortcuts()
 {
-    ShortcutEditor shortcutEditor;
-    shortcutEditor.registerAction(ui->actionPlay);
-    shortcutEditor.registerAction(ui->actionPause);
-    shortcutEditor.registerAction(ui->actionStop);
-    shortcutEditor.registerAction(ui->actionPrevious);
-    shortcutEditor.registerAction(ui->actionNext);
-    shortcutEditor.registerAction(ui->actionHide);
-    shortcutEditor.registerAction(ui->actionAddDelay);
-    shortcutEditor.registerAction(ui->actionSubDelay);
-    shortcutEditor.registerAction(ui->actionSpeedUp);
-    shortcutEditor.registerAction(ui->actionSlowDown);
-    shortcutEditor.registerAction(ui->actionAutoHideEnded);
-    shortcutEditor.registerAction(ui->actionShowCalibration);
-    shortcutEditor.registerAction(ui->actionPreferences);
-    shortcutEditor.registerAction(ui->actionEnableReload);
-    shortcutEditor.registerAction(ui->actionShowHelp);
-    shortcutEditor.registerAction(ui->actionExit);
-    shortcutEditor.exec();
+    m_shortcutEditor->exec();
 }
 
 void MainWindow::actionAbout()
