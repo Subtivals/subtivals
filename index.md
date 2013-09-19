@@ -42,6 +42,8 @@ And is being used by professionals worldwide :
 * [Racti](http://racti.com/) ( *Lebanon* )
 * [Lycée Français Sainte Pulchérie](http://www.sp.k12.tr/) ( *Istambul, Turkey* )
 * [Filmoteca UNAM](http://www.filmoteca.unam.mx) ( *Mexico* )
+* [Gutek Film](http://gutekfilm.pl/) ( *Poland* )
+* [Francisco Baudet](http://virtuelcompagnie.eu/) ( *France* )
 
 *Contact-us to add yours!*
  
