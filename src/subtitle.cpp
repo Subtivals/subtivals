@@ -120,12 +120,37 @@ void Subtitle::setText(const QStringList& p_text)
 
 void Subtitle::setText(const QList<SubtitleLine> p_lines)
 {
-    m_lines = p_lines;
+    m_lines.clear();
+
+    /*
+    Repair unpaired start tags.
+    For example, <i>line1\Nline2</i> will
+    become <i>line1\N<i>line2</i>.
+    */
+    foreach(SubtitleLine line, p_lines) {
+        // Remove paired tags
+        QString unpaired = line.text();
+        unpaired = unpaired.replace(QRegExp("<([bi])>[^>]+($|</\1>)"), "");
+
+        // For all close tags, add an open tag at the beginning.
+        // (Note: we don't bother repairing unclosed tag,
+        //  because it does not affect display)
+        QRegExp rx("</([bi])>");
+        int pos = 0;
+        QString lineText = line.text();
+        while ((pos = rx.indexIn(unpaired, pos)) != -1) {
+            lineText = QString("<%1>").arg(rx.cap(1)) + lineText;
+            pos += rx.matchedLength();
+        }
+        m_lines.append(SubtitleLine(lineText, line.position()));
+    }
+
     // Build flat strings from list
     QStringList lines;
-    foreach(SubtitleLine line, p_lines) {
+    foreach(SubtitleLine line, m_lines) {
         lines.append(line.text());
     }
+
     m_text = lines.join("<br/>");
     // Strip everything for character count
     m_pureText = lines.join(" ");
