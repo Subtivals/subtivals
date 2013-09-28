@@ -163,3 +163,5 @@ See Also
 
 * [Aegisub](http://www.aegisub.org), a powerful ASS subtitles editor;
 * [Qstit](http://www.nova-cinema.org/spip.php?rubrique1664&lang=en), an another subtitle projection program, by Nova Cinema;
+* [Blog articles about Subtivals](http://blog.mathieu-leplatre.info/tag/subtivals.html)
+
