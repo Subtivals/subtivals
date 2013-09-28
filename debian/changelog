@@ -1,3 +1,13 @@
+subtivals (1.7.0-1) stable; urgency=low
+
+  * Preview changes of advanced style configuration
+  * Fix keyboard shortcuts settings lost on exit
+  * Fix linespacing setting lost on exit
+  * Fix italic and bold on second line if text is wrapped
+  * Add Qt5 compatibility
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Tue, 28 Sep 2013 15:39:00 +0100
+
 subtivals (1.6.1-1) stable; urgency=low
 
   * Always show chars/sec tooltip
