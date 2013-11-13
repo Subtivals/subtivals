@@ -23,13 +23,13 @@
 
 RequestExecutionLevel admin
 
-!define setup "subtivals-setup-1.6.1.exe"
+!define setup "ractisubs-setup-1.6.1.exe"
 
 ; change this to wherever the files to be packaged reside
 !define srcdir "..\subtivals-build-desktop\release"
 
-!define prodname "Subtivals"
-!define exec "subtivals.exe"
+!define prodname "Racti Subs"
+!define exec "ractisubs.exe"
 
 !define qtdirmain "C:\Qt\4.7.4\mingw"
 !define qtdirdesktop "C:\Qt\4.7.4\Desktop\Qt\4.7.4\mingw"

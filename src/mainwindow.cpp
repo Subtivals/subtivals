@@ -895,9 +895,9 @@ void MainWindow::actionEditShortcuts()
 void MainWindow::actionAbout()
 {
     QMessageBox::about(this,
-                       tr("About Subtivals"),
-                       tr("<h1>Subtivals %1</h1>"
-                          "<p>Subtivals, a program to project subtitles.</p>"
+                       tr("About Racti Subs"),
+                       tr("<h1>Racti Subs %1</h1>"
+                          "<p>Racti Subs, a program to project subtitles.</p>"
                           "<h2>Authors</h2>"
                           "<li>Lilian Lefranc</li>"
                           "<li>Arnaud Rolly</li>"

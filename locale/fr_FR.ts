@@ -164,8 +164,8 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="14"/>
         <location filename="../src/mainwindow.cpp" line="359"/>
-        <source>Subtivals</source>
-        <translation>Subtivals</translation>
+        <source>Racti Subs</source>
+        <translation>Racti Subs</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="194"/>
@@ -373,8 +373,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="494"/>
-        <source>About Subtivals...</source>
-        <translation>À propos de Subtivals...</translation>
+        <source>About Racti Subs...</source>
+        <translation>À propos de Racti Subs...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="506"/>
@@ -446,12 +446,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="854"/>
-        <source>&lt;h1&gt;Subtivals %1&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</source>
-        <translation>&lt;h1&gt;Subtivals %1&lt;/h1&gt;&lt;p&gt;Subtivals, un programme pour projeter des sous-titres.&lt;/p&gt;&lt;h2&gt;Auteurs&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</translation>
+        <source>&lt;h1&gt;Racti Subs %1&lt;/h1&gt;&lt;p&gt;Racti Subs, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</source>
+        <translation>&lt;h1&gt;Racti Subs %1&lt;/h1&gt;&lt;p&gt;Racti Subs, un programme pour projeter des sous-titres.&lt;/p&gt;&lt;h2&gt;Auteurs&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</translation>
     </message>
     <message>
-        <source>&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</source>
-        <translation type="obsolete">&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, un programme pour projetter les sous-titres.&lt;/p&gt;&lt;h2&gt;Auteurs&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</translation>
+        <source>&lt;h1&gt;Racti Subs&lt;/h1&gt;&lt;p&gt;Racti Subs, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</source>
+        <translation type="obsolete">&lt;h1&gt;Racti Subs&lt;/h1&gt;&lt;p&gt;Racti Subs, un programme pour projetter les sous-titres.&lt;/p&gt;&lt;h2&gt;Auteurs&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</translation>
     </message>
     <message>
         <source>Subtitle Files (*.ass)</source>
@@ -459,12 +459,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="853"/>
-        <source>About Subtivals</source>
-        <translation>À propos de Subtivals</translation>
+        <source>About Racti Subs</source>
+        <translation>À propos de Racti Subs</translation>
     </message>
     <message>
-        <source>&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project *.ass subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</source>
-        <translation type="obsolete">&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, un programme pour projetter les sous-titres *.ass.&lt;/p&gt;&lt;h2&gt;Auteur&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</translation>
+        <source>&lt;h1&gt;Racti Subs&lt;/h1&gt;&lt;p&gt;Racti Subs, a program to project *.ass subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</source>
+        <translation type="obsolete">&lt;h1&gt;Racti Subs&lt;/h1&gt;&lt;p&gt;Racti Subs, un programme pour projetter les sous-titres *.ass.&lt;/p&gt;&lt;h2&gt;Auteur&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</translation>
     </message>
 </context>
 <context>

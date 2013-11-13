@@ -6,7 +6,7 @@
 
 QT       += core gui widgets
 
-TARGET = subtivals
+TARGET = ractisubs
 TEMPLATE = app
 CONFIG += qt
 
