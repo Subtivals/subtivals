@@ -37,7 +37,7 @@ Subtivals was used during the following film festivals :
 
 And is being used by professionals worldwide :
 
-* [ST2L](http://st2l.fr) ( *France* )
+* [Le Joli Mai](http://www.lejolimai.org) ( *France* )
 * [Fila13](http://fila13.org/) ( *Barcelona, Spain* )
 * [Racti](http://racti.com/) ( *Lebanon* )
 * [Lycée Français Sainte Pulchérie](http://www.sp.k12.tr/) ( *Istambul, Turkey* )
