@@ -1,3 +1,10 @@
+subtivals (1.7.1-1) stable; urgency=low
+
+  * Add a few safety checks around timecode start/end
+  * Add support of SRT timecodes if too many spaces (fixes #226)
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Sun, 16 Feb 2014 21:27:00 +0100
+
 subtivals (1.7.0-1) stable; urgency=low
 
   * Preview changes of advanced style configuration
