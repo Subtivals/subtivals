@@ -41,8 +41,14 @@ Subtitle::Subtitle(int p_index, const QStringList &p_text, qint64 p_msseStart, q
 
     // Auto duration
     m_autoDuration = 1000 * text().size() / AUTO_CHARS_RATE;
-    if (m_autoDuration < AUTO_MIN_DURATION) m_autoDuration = AUTO_MIN_DURATION;
+    if (m_autoDuration < AUTO_MIN_DURATION)
+        m_autoDuration = AUTO_MIN_DURATION;
 
+    // Check if duration is 0, add just enough to select it
+    if (m_msseStart == m_msseEnd) {
+        m_msseEnd = m_msseStart + 2;
+        m_corrected = true;
+    }
     // Check if no timecode is specified
     if (m_msseStart == 0 && m_msseEnd == 0) {
         qint64 endPrevious = 0;
