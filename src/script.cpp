@@ -350,7 +350,7 @@ void Script::loadFromSrt(QStringList content)
             section = SECTION_INFOS;
         }
         else if (section == SECTION_INFOS) {
-            QStringList subparts = line.split(" --> ");
+            QStringList subparts = line.split(QRegExp("\\s+\\-\\->\\s+"));
             start = QTime().msecsTo(QTime::fromString(subparts[0], "h:mm:ss,z"));
             end = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss,z"));
             section = SECTION_EVENTS;
