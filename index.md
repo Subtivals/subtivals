@@ -40,7 +40,7 @@ And is being used by professionals worldwide :
 * [Le Joli Mai](http://www.lejolimai.org) ( *France* )
 * [Fila13](http://fila13.org/) ( *Barcelona, Spain* )
 * [Racti](http://racti.com/) ( *Lebanon* )
-* [Lycée Français Sainte Pulchérie](http://www.sp.k12.tr/) ( *Istambul, Turkey* )
+* [Lycée Français Sainte Pulchérie](http://www.sp.k12.tr/) ( *Istanbul, Turkey* )
 * [Filmoteca UNAM](http://www.filmoteca.unam.mx) ( *Mexico* )
 * [Gutek Film](http://gutekfilm.pl/) ( *Poland* )
 * [Francisco Baudet](http://virtuelcompagnie.eu/) ( *France* )
