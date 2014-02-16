@@ -49,6 +49,11 @@ Subtitle::Subtitle(int p_index, const QStringList &p_text, qint64 p_msseStart, q
         m_msseEnd = m_msseStart + 2;
         m_corrected = true;
     }
+    // Check if end is before start
+    if (m_msseStart > m_msseEnd) {
+        m_msseEnd = m_msseStart + m_autoDuration;
+        m_corrected = true;
+    }
     // Check if no timecode is specified
     if (m_msseStart == 0 && m_msseEnd == 0) {
         qint64 endPrevious = 0;
