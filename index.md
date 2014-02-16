@@ -2,7 +2,7 @@
 layout: main
 title: Subtivals
 ---
-![screenshot](http://mathieu-leplatre.info/media/subtivals/subtivals.png)
+![screenshot](images/subtivals.png)
 
 **Subtivals**, a program to project Advanced SubStation Alpha (ASS, *.ass), Subrip (*.srt) and simple text (*.txt) subtitles.
 
@@ -14,7 +14,7 @@ Hard copies for film festivals do not always carry subtitles, especially for the
 Subtivals goals are the projection and the control of subtitles superimposed on a cinema screen;
 Projecting subtitles on top of another screen is called *soft-titling*, *surtitling*, *supertitling* or even sometimes *electronic subtitles*, *virtual subtitles*.
 
-![in-situ](http://mathieu-leplatre.info/media/subtivals/subtivals-insitu.png)
+![in-situ](images/subtivals-insitu.png)
 
 Subtivals is fully automatic, but its semi-manual mode also allows to project subtitles at theaters (or opera, ballets, concerts and other cultural events...). 
 
@@ -70,13 +70,13 @@ Main features
 
 Subtivals is written in C++/Qt and has no other external dependencies.
 
-![screenshot](http://mathieu-leplatre.info/media/subtivals/subtivals-preview.png)
+![screenshot](images/subtivals-preview.png)
 
 ## Video mixer (Chroma-key) support
 
 If you have a video mixer, then a separate projector is not necessary for inlaying subtitles !
 
-![chromakey](http://mathieu-leplatre.info/media/subtivals/subtivals-chromakey.png)
+![chromakey](images/subtivals-chromakey.png)
 
 
 Installation
@@ -95,6 +95,10 @@ or buy the complete versions using Paypal:
 * [Mac OS X (.dmg)](http://www.digitalgoodsstore.com/mydgs/5RQeV1)
 
 If you prefer bank transfers, or have any questions, contact us by email (contact@subtivals.org) !
+
+If your *Mac OS X* [security settings](images/macos-security-2.png) do not allow
+applications not published Mac App Store, change the appropriate setting
+as [explained here](images/macos-security-4.png).
 
 
 File Formats
