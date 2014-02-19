@@ -44,6 +44,7 @@ And is being used by professionals worldwide :
 * [Filmoteca UNAM](http://www.filmoteca.unam.mx) ( *Mexico* )
 * [Gutek Film](http://gutekfilm.pl/) ( *Poland* )
 * [Francisco Baudet](http://virtuelcompagnie.eu/) ( *France* )
+* [CALF Studio](http://calf-studio.jp/) ( *Japan* )
 
 *Contact-us to add yours!*
  
