@@ -138,14 +138,14 @@ depuis tout juste 3 ans.
 With timecode:
 
 ```
-00:00:19:13 00:00:23:08 03:20
+00:00:19:13 00:00:23:08
 À 24-25 ans, j'avais déjà un film
 qui tournait en festival.
 
-00:00:23:22 00:00:25:09 01:12
+00:00:23:22 00:00:25:09
 J'étais très jeune,
 
-00:00:26:12 00:00:29:10 02:23
+00:00:26:12 00:00:29:10
 diplômé de la fac
 depuis tout juste 3 ans.
 ```
