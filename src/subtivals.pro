@@ -78,6 +78,7 @@ win32 {
 }
 
 mac {
+    QT += svg
     ICON = ../resources/subtivals.icns
 }
 
