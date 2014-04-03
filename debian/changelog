@@ -1,3 +1,11 @@
+subtivals (1.7.2-1) stable; urgency=low
+
+  * Updated spanish and french locales
+  * Fix text files without timecodes corner-case (fixes #227)
+  * Show preferences by default (fixes #228)
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Sun, 04 Apr 2014 00:01:00 +0100
+
 subtivals (1.7.1-1) stable; urgency=low
 
   * Add a few safety checks around timecode start/end
