@@ -263,7 +263,7 @@ void MainWindow::showEvent(QShowEvent *)
     bool autoHide = settings.value("autoHideEnabled", false).toBool();
     m_player->enableAutoHide(autoHide);
     ui->actionAutoHideEnded->setChecked(autoHide);
-    ui->actionPreferences->setChecked(settings.value("showPreferences", false).toBool());
+    ui->actionPreferences->setChecked(settings.value("showPreferences", true).toBool());
     ui->actionDurationCorrection->setChecked(settings.value("durationCorrection", false).toBool());
     settings.endGroup();
 }
