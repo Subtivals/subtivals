@@ -44,11 +44,6 @@ Subtitle::Subtitle(int p_index, const QStringList &p_text, qint64 p_msseStart, q
     if (m_autoDuration < AUTO_MIN_DURATION)
         m_autoDuration = AUTO_MIN_DURATION;
 
-    // Check if duration is 0, add just enough to select it
-    if (m_msseStart == m_msseEnd) {
-        m_msseEnd = m_msseStart + 2;
-        m_corrected = true;
-    }
     // Check if end is before start
     if (m_msseStart > m_msseEnd) {
         m_msseEnd = m_msseStart + m_autoDuration;
@@ -61,6 +56,11 @@ Subtitle::Subtitle(int p_index, const QStringList &p_text, qint64 p_msseStart, q
             endPrevious = m_script->subtitleAt(m_index-1)->msseEnd() + AUTO_EVENT_INTERVAL;
         m_msseStart = endPrevious;
         m_msseEnd = m_msseStart + m_autoDuration;
+        m_corrected = true;
+    }
+    // Check if duration is 0, add just enough to select it
+    if (m_msseStart == m_msseEnd) {
+        m_msseEnd = m_msseStart + 2;
         m_corrected = true;
     }
 }
