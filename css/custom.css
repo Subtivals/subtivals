@@ -1,6 +1,16 @@
+#intro .btn.btn-default,
 #pricing .btn.btn-default {
-    background-color: #cccccc !important;
+    background-color: transparent !important;
+    border: solid 1px #cccccc;
+    color: #cccccc !important;
 }
+#pricing .btn.btn-default {
+    color: #7c7c7c !important;
+}
+#intro .btn.btn-default i {
+    font-size: 2em;
+}
+
 .cbp-af-header.cbp-af-header-shrink img {
     height: 64px;
 }
