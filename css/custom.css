@@ -4,3 +4,7 @@
 .cbp-af-header.cbp-af-header-shrink img {
     height: 64px;
 }
+.screencast {
+    padding: 20px;
+    background-color: white;
+}
