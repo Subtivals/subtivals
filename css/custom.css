@@ -18,3 +18,19 @@
     padding: 20px;
     background-color: white;
 }
+
+#testimonials li {
+    color: white;
+}
+
+#testimonials .carousel .carousel-control.right {
+    right: 0px;
+}
+
+#testimonials .carousel .carousel-control.left {
+    left: -60px;
+}
+
+.plan-notes {
+    text-align: center;
+}
