@@ -32,5 +32,35 @@
 }
 
 .plan-notes {
+    font-size: 0.8em;
+}
+
+.logos {
     text-align: center;
+}
+
+.logos img {
+    max-height: 60px;
+
+    margin-top: 30px;
+    margin-right: 10px;
+    background-color: white;
+
+    opacity: 0.5;
+
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    filter: gray;
+}
+
+.logos a:hover img {
+    opacity: 1;
+
+    filter: grayscale(0);
+    -webkit-filter: grayscale(0);
+    -moz-filter: grayscale(0);
+    -ms-filter: grayscale(0);
+    filter: gray;
 }
