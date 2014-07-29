@@ -1,3 +1,5 @@
+#include <QtCore/QTime>
+
 #include "player.h"
 
 #include "script.h"

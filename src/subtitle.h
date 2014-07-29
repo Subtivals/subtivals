@@ -18,7 +18,6 @@
 #define EVENT_H
 
 #include <QObject>
-#include <QTime>
 #include <QString>
 #include <QPoint>
 #include <QPair>

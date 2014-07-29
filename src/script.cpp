@@ -19,6 +19,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegExp>
+#include <QtCore/QTime>
 
 #include "script.h"
 
