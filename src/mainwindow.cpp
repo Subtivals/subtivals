@@ -317,8 +317,8 @@ void MainWindow::openFile (const QString &p_fileName)
     // Show script properties
     qlonglong count = m_script->subtitlesCount();
     if (count > 0) {
-        QString firsttime = QTime().addMSecs(m_script->subtitleAt(0)->msseStart()).toString();
-        QString lasttime = QTime().addMSecs(m_script->subtitleAt(count-1)->msseStart()).toString();
+        QString firsttime = QTime(0, 0, 0).addMSecs(m_script->subtitleAt(0)->msseStart()).toString();
+        QString lasttime = QTime(0, 0, 0).addMSecs(m_script->subtitleAt(count-1)->msseStart()).toString();
         m_scriptProperties->setText(tr("%1 subtitles, %2 - %3").arg(count).arg(firsttime).arg(lasttime));
     }
 
@@ -329,9 +329,10 @@ void MainWindow::openFile (const QString &p_fileName)
     while (i.hasNext()) {
         Subtitle *subtitle = i.next();
         m_tableMapping[subtitle] = row;
-        QTableWidgetItem *startItem = new QTableWidgetItem(QTime().addMSecs(subtitle->msseStart()).toString());
+
+        QTableWidgetItem *startItem = new QTableWidgetItem(QTime(0, 0, 0).addMSecs(subtitle->msseStart()).toString());
         ui->tableWidget->setItem(row, COLUMN_START, startItem);
-        QTableWidgetItem *endItem = new QTableWidgetItem(QTime().addMSecs(subtitle->msseEnd()).toString());
+        QTableWidgetItem *endItem = new QTableWidgetItem(QTime(0, 0, 0).addMSecs(subtitle->msseEnd()).toString());
         ui->tableWidget->setItem(row, COLUMN_END, endItem);
         QTableWidgetItem *styleItem = new QTableWidgetItem(subtitle->style()->name());
         ui->tableWidget->setItem(row, COLUMN_STYLE, styleItem);
@@ -397,7 +398,7 @@ void MainWindow::refreshDurations()
     int row = 0;
     foreach(Subtitle *subtitle, m_script->subtitles()) {
         QTableWidgetItem *endItem = ui->tableWidget->item(row, COLUMN_END);
-        endItem->setText(QTime().addMSecs(subtitle->msseEnd()).toString());
+        endItem->setText(QTime(0, 0, 0).addMSecs(subtitle->msseEnd()).toString());
         QFont f = endItem->font();
         f.setItalic(subtitle->isCorrected());
         endItem->setFont(f);
@@ -791,9 +792,9 @@ void MainWindow::highlightSubtitles(qlonglong elapsed)
 QString MainWindow::ts2tc(qint64 p_ts, QString format)
 {
     if (p_ts >= 0)
-        return "+" + QTime().addMSecs(p_ts).toString(format);
+        return "+" + QTime(0, 0, 0).addMSecs(p_ts).toString(format);
     else
-        return "-" + QTime().addMSecs(-p_ts).toString(format);
+        return "-" + QTime(0, 0, 0).addMSecs(-p_ts).toString(format);
 }
 
 void MainWindow::setState(State p_state)

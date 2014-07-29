@@ -258,8 +258,8 @@ void Script::loadFromAss(QStringList content)
                     continue;
 
                 QList<QString> subparts = value.split(',');
-                qint64 start = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
-                qint64 end = QTime().msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
+                qint64 start = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
+                qint64 end = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
                 Style *style = this->style(subparts[3].trimmed());
                 int marginL = subparts[5].toInt();
                 int marginR = subparts[6].toInt();
@@ -351,8 +351,8 @@ void Script::loadFromSrt(QStringList content)
         }
         else if (section == SECTION_INFOS) {
             QStringList subparts = line.split(QRegExp("\\s+\\-\\->\\s+"));
-            start = QTime().msecsTo(QTime::fromString(subparts[0], "h:mm:ss,z"));
-            end = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss,z"));
+            start = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[0], "h:mm:ss,z"));
+            end = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[1], "h:mm:ss,z"));
             section = SECTION_EVENTS;
         }
         else if (section == SECTION_EVENTS) {
@@ -399,8 +399,8 @@ void Script::loadFromTxt(QStringList content)
             QRegExp times("^([0-9:]+) ([0-9:]+) ([0-9:]+)$");
             if (times.indexIn(line) >= 0) {
                 QStringList subparts = times.capturedTexts();
-                start = QTime().msecsTo(QTime::fromString(subparts[1], "h:mm:ss:z"));
-                end = QTime().msecsTo(QTime::fromString(subparts[2], "h:mm:ss:z"));
+                start = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[1], "h:mm:ss:z"));
+                end = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[2], "h:mm:ss:z"));
                 continue;
             }
         }
