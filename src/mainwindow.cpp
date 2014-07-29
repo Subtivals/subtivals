@@ -18,6 +18,10 @@
 #include <QtCore/QSettings>
 #include <QtCore/QUrl>
 #include <QtCore/QThread>
+#include <QtCore/QByteArray>
+#include <QtCore/QTextCodec>
+#include <QtCore/QFile>
+
 #include <QFileDialog>
 #include <QDesktopWidget>
 #include <QKeyEvent>
@@ -301,11 +305,32 @@ void MainWindow::actionShowCalibration(bool p_state)
     }
 }
 
+
+
 void MainWindow::openFile (const QString &p_fileName)
 {
     // Save on load file
     m_preferences->save();
     closeFile();
+
+    // Check file UTF-8 validity
+    QFile file(p_fileName);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QByteArray byteArray = file.readAll();
+        QTextCodec::ConverterState state;
+        QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+        const QString text = codec->toUnicode(byteArray.constData(), byteArray.size(), &state);
+        if (state.invalidChars > 0) {
+            QMessageBox::warning(this,
+                                 tr("Encoding error"),
+                                 tr("Looks like the subtitles were not saved in a valid UTF-8 file."));
+        }
+    }
+    else {
+        QMessageBox::warning(this,
+                             tr("Error with subtitles"),
+                             tr("Could not read the file specified."));
+    }
 
     // Create the script & setup the GUI
     m_script = new Script(p_fileName, this);

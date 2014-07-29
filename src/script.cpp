@@ -30,7 +30,6 @@ bool compareSubtitleStartTime(const Subtitle* s1, const Subtitle* s2)
      return s1->msseStart() < s2->msseStart();
 }
 
-
 Script::Script(const QString &p_fileName, QObject *p_parent) :
     QObject(p_parent),
     m_fileName (p_fileName)
