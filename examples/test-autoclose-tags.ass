@@ -1,0 +1,18 @@
+﻿[Script Info]
+ScriptType: v4.00+
+Last Style Storage: Default
+Video Aspect Ratio: 0
+Video Zoom: 8
+Video Position: 625
+PlayResX: 640
+PlayResY: 480
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: default,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:05.00,default,,0000,0000,0000,,{\i1}whole line italic{\i0}
+Dialogue: 0,0:00:00.00,0:00:05.00,default,,0000,0000,0000,,single {\i1}word{\i0} in italic
+Dialogue: 0,0:00:00.00,0:00:05.00,default,,0000,0000,0000,,unclosed {\i1}italic\Non first{\i0} line

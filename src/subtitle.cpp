@@ -141,7 +141,9 @@ void Subtitle::setText(const QList<SubtitleLine> p_lines)
     foreach(SubtitleLine line, p_lines) {
         // Remove paired tags
         QString unpaired = line.text();
-        unpaired = unpaired.replace(QRegExp("<([bi])>[^>]+($|</\1>)"), "");
+        unpaired = unpaired.replace(QRegExp("<b>[^<]+($|</b>)"), "");
+        unpaired = unpaired.replace(QRegExp("<i>[^<]+($|</i>)"), "");
+        // Now unpaired has no paired tags anymore.
 
         // For all close tags, add an open tag at the beginning.
         // (Note: we don't bother repairing unclosed tag,
