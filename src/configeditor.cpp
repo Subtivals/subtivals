@@ -46,6 +46,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     ui->tabStyles->setLayout(m_styleEditor->layout());
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SIGNAL(styleChanged()));
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
+    connect(ui->hideDesktop, SIGNAL(toggled(bool)), this, SIGNAL(hideDesktop(bool)));
     adjustSize();
     setMaximumSize(size());
 
@@ -206,7 +207,6 @@ void ConfigEditor::apply()
     emit rotate(ui->rotation->value());
     emit color(m_color);
     emit outline(m_outlineColor, ui->chkOutline->isChecked() ? ui->outlineWidth->value() : 0);
-    emit hideDesktop(ui->hideDesktop->isChecked());
     m_styleEditor->apply();
     enableButtonBox(true, true, true);
 }
