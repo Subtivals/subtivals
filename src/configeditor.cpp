@@ -153,7 +153,6 @@ void ConfigEditor::reset()
     int y = settings.value("y", screenGeom.height() - DEFAULT_HEIGHT).toInt();
     int w = settings.value("w", screenGeom.width()).toInt();
     int h = settings.value("h", DEFAULT_HEIGHT).toInt();
-    bool hideDesktop = settings.value("hideDesktop", false).toBool();
     double rotation = settings.value("rotation", 0).toDouble();
     QColor color(settings.value("color", DEFAULT_COLOR).toString());
     QColor outlineColor(settings.value("outline-color", DEFAULT_OUTLINE_COLOR).toString());
@@ -161,7 +160,6 @@ void ConfigEditor::reset()
     settings.endGroup();
     // Update the UI with the reloaded settings
     ui->screens->setCurrentIndex(screen);
-    ui->hideDesktop->setChecked(hideDesktop);
     screenChanged(QRect(x, y, w, h));
     ui->rotation->setValue(rotation);
     setColor(ui->btnColor, color);
@@ -185,7 +183,6 @@ void ConfigEditor::save()
     settings.setValue("y", ui->y->text());
     settings.setValue("w", ui->w->text());
     settings.setValue("h", ui->h->text());
-    settings.setValue("hideDesktop", ui->hideDesktop->isChecked());
     settings.setValue("rotation", ui->rotation->text());
     settings.setValue("color", m_color.name());
     settings.setValue("outline-color", m_outlineColor.name());
