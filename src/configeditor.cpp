@@ -54,6 +54,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     for(int i = 0; i < dw->screenCount(); i++) {
         ui->screens->addItem(QString(tr("Monitor %1")).arg(i));
     }
+    ui->hideDesktop->setEnabled(dw->screenCount() > 1);
 
     for(int i = 1; i <= NB_PRESETS; i++) {
         ui->presets->addItem(QString(tr("Preset %1")).arg(i));
