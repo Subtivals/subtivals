@@ -1,0 +1,81 @@
+@font-face {
+  font-family: 'Yanone Kaffeesatz';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Yanone Kaffeesatz Regular'), local('YanoneKaffeesatz-Regular'), url(http://fonts.gstatic.com/s/yanonekaffeesatz/v7/YDAoLskQQ5MOAgvHUQCcLRTHiN2BPBirwIkMLKUspj4.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url(http://fonts.gstatic.com/s/ubuntu/v7/_xyN3apAT_yRRDeqB3sPRg.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Ubuntu Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu Mono'), local('UbuntuMono-Regular'), url(http://fonts.gstatic.com/s/ubuntumono/v6/ViZhet7Ak-LRXZMXzuAfkYbN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+
+
+
+body {
+    font-family: 'Ubuntu';
+}
+
+div.presentation, div.slide {
+    background-color: black;
+    color: white;
+}
+
+dt, strong {
+    font-weight: bold;
+    font-size: 1.1em;
+    font-family: 'Yanone Kaffeesatz';
+}
+
+div.slide h1, div.slide h2, div.slide h3, div.slide h4, div.slide h5, div.slide h6 {
+    color: white;
+    font-family: 'Yanone Kaffeesatz';
+    font-weight: bold;
+    margin: 0px;
+}
+
+pre, .literal, .literal-block {
+    font-family: 'Ubuntu Mono';
+    color: lightgray;
+}
+
+.literal {
+  font-size: 0.9em;
+}
+pre, .literal-block {
+  font-size: 24px;
+}
+
+em {
+    color: gray;
+}
+
+a {
+  color: orange;
+}
+
+img.right {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  max-height: 600px;
+}
+
+.inner ul, .inner header {
+  position: relative;
+  z-index: 999;
+}
+
+.centered {
+  text-align: center;
+}
