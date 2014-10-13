@@ -29,6 +29,7 @@ LA PETITE HISTOIRE
 
 .. image:: images/bobines.jpg
     :alt: https://www.flickr.com/photos/gatien2011/8387048719
+    :class: full
 
 Presenter Notes
 ===============
@@ -42,6 +43,7 @@ Et puis à cause de ça...
 
 .. image:: images/digital-cinema.jpg
     :alt: https://www.flickr.com/photos/deltamike/3939346188
+    :class: full
 
 Presenter Notes
 ===============
@@ -55,6 +57,7 @@ Presenter Notes
 Sur-titres
 ==========
 
+Projecteur + fond noir
 
 .. image:: images/subtivals-principe.png
 
@@ -66,6 +69,7 @@ Avant Subtivals
 
 .. image:: images/spacebar.jpg
     :alt: https://www.flickr.com/photos/daviddmuir/8520174129
+    :class: full
 
 
 Presenter Notes
@@ -235,6 +239,8 @@ Reproduire l'expérience
 =======================
 
 .. image:: images/a-vous.jpg
+    :alt: https://www.flickr.com/photos/peasap/1409590802
+    :class: full
 
 Presenter Notes
 ===============
@@ -310,6 +316,7 @@ Idée #2 : aide à la routine
 ===========================
 
 .. image:: images/rutina.jpg
+    :alt: https://www.flickr.com/photos/dorkmaster/6003062742
 
 Presenter Notes
 ===============
@@ -325,9 +332,9 @@ Idées N+1
 =========
 
 * Cinéma numérique
-* Mains bioniques
 * `Anki + LSF <http://fr.wikipedia.org/wiki/Anki>`_
 * `Blender + LSF <https://www.youtube.com/watch?v=QKXvKIC4gkY>`_
+* Mains bioniques !
 * ...
 
 ----

@@ -71,6 +71,14 @@ img.right {
   max-height: 600px;
 }
 
+img.full {
+  max-width: 1024px;
+  max-height: none;
+  position: fixed;
+  top: 140px;
+  left: 0px;
+}
+
 .inner ul, .inner header {
   position: relative;
   z-index: 999;
