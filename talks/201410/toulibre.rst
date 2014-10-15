@@ -35,6 +35,7 @@ Presenter Notes
 ===============
 
 * Une copie 35 mm coûte entre 1000 et 1500 €
+* 1 copie par tournée
 
 ----
 
@@ -61,6 +62,7 @@ Projecteur + fond noir
 
 .. image:: images/subtivals-principe.png
 
+
 ----
 
 Avant Subtivals
@@ -76,6 +78,8 @@ Presenter Notes
 ===============
 
 * 10 ans de Powerpoint en manuel
+* Peur du direct
+* Logiciel manuel !
 
 ----
 
@@ -85,6 +89,14 @@ La solution !
 .. raw:: html
 
     <video src="images/subtivals-1.6-calibration.webm" width="80%" preload="auto" autoplay="" loop=""/>
+
+
+Presenter Notes
+===============
+
+* Force : auto + manuel
+* Avec ou sans timecodes
+
 
 
 
@@ -99,7 +111,6 @@ Pour quelques-uns
 Presenter Notes
 ===============
 
-* Ne viens pas présenter Subtivals en fait :)
 * Sous-titrage pour sourds et malentendants
 
 ----
@@ -111,6 +122,9 @@ Presenter Notes
 ===============
 
 * Projections étrangères
+* Double sous-titres
+* Cinelatino !
+* ~ 20 pays
 
 ----
 
@@ -121,19 +135,22 @@ Presenter Notes
 ===============
 
 * Encore... powerpoint !
+* Finger Lakes Opera
+* Italy
 
 ----
 
 Et plus encore !
 ================
 
-
 Presenter Notes
 ===============
 
-* Théatre, TEDx, festilight, ...
-* ~ 20 pays
-* International (Japon, Brésil, Europe de l'Est, USA, ...)
+* Théatre
+* Spectacle d'école
+* TEDx
+* festilight
+* ...
 
 ----
 
@@ -152,8 +169,10 @@ Moi, avant.
 Presenter Notes
 ===============
 
+* Invention seul
 * Nombre d'utilisateurs : 0.5
 * Technico-technique
+* Passif
 
 ----
 
@@ -164,11 +183,15 @@ Presenter Notes
 ===============
 
 * Rappel: 10 ans de Powerpoint en manuel !
+* Du cinema, au théatre en passant par les conférences!
 
 ----
 
 C'est zouli
 ===========
+
+.. image:: images/website.jpg
+    :class: full
 
 Presenter Notes
 ===============
@@ -183,6 +206,7 @@ Des rencontres
 Presenter Notes
 ===============
 
+* Gens heureux
 * Festival CineLatino
 * Association sens dessus dessous
 * Impression de voyager
@@ -197,6 +221,7 @@ Presenter Notes
 
 * Bonne nouvelle: on le vend
 * La Banque m'appelle...
+* Pas la motivation première : récompense
 
 ----
 
@@ -247,6 +272,7 @@ Presenter Notes
 
 * 2 enfants tout ça
 * À vous !
+* Ne viens pas présenter Subtivals en fait :)
 
 ----
 
@@ -256,9 +282,9 @@ Pas d'idée ?
 Presenter Notes
 ===============
 
-* Scratch your own itch
-* Corps sain, esprit sain
-* Autrui
+* Scratch your own itch :(
+* Attention: corps sain, esprit sain
+* Autrui !
 
 ----
 
@@ -270,6 +296,7 @@ Presenter Notes
 
 * Le Libre ne sauvera pas le Monde
 * Outils conviviaux (Ivan Illich)
+* Construction collaborative
 
 ----
 
