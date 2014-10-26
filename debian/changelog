@@ -1,3 +1,9 @@
+subtivals (1.7.4-1) stable; urgency=low
+
+  * Fix timecode parsing in text files
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Sun, 26 Oct 2014 21:50:00 +0100
+
 subtivals (1.7.3-1) stable; urgency=low
 
   * Fix italic for single words (fixes #237)
@@ -5,7 +11,6 @@ subtivals (1.7.3-1) stable; urgency=low
   * Detect if the subtitles file is a valid UTF-8 file (fixes #238)
 
  -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Sun, 03 Aug 2014 10:55:00 +0100
-
 
 subtivals (1.7.2-1) stable; urgency=low
 
