@@ -396,7 +396,7 @@ void Script::loadFromTxt(QStringList content)
         if (section == SECTION_NONE) {
             section = SECTION_EVENTS;
 
-            QRegExp times("^([0-9:]+) ([0-9:]+) ([0-9:]+)$");
+            QRegExp times("^([0-9:]+) ([0-9:]+)");
             if (times.indexIn(line) >= 0) {
                 QStringList subparts = times.capturedTexts();
                 start = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[1], "h:mm:ss:z"));
