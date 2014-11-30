@@ -246,6 +246,7 @@ void MainWindow::closeEvent(QCloseEvent *)
     settings.setValue("autoHideEnabled", m_player->isAutoHideEnabled());
     settings.setValue("showPreferences", ui->actionPreferences->isChecked());
     settings.setValue("durationCorrection", ui->actionDurationCorrection->isChecked());
+    settings.setValue("showMilliseconds", ui->actionShowMilliseconds->isChecked());
     settings.endGroup();
     // When the main window is close : end of the app
     qApp->exit();
@@ -269,6 +270,7 @@ void MainWindow::showEvent(QShowEvent *)
     ui->actionAutoHideEnded->setChecked(autoHide);
     ui->actionPreferences->setChecked(settings.value("showPreferences", true).toBool());
     ui->actionDurationCorrection->setChecked(settings.value("durationCorrection", false).toBool());
+    ui->actionShowMilliseconds->setChecked(settings.value("showMilliseconds", false).toBool());
     settings.endGroup();
 }
 
@@ -354,10 +356,9 @@ void MainWindow::openFile (const QString &p_fileName)
     while (i.hasNext()) {
         Subtitle *subtitle = i.next();
         m_tableMapping[subtitle] = row;
-
-        QTableWidgetItem *startItem = new QTableWidgetItem(QTime(0, 0, 0).addMSecs(subtitle->msseStart()).toString());
+        QTableWidgetItem *startItem = new QTableWidgetItem("");
         ui->tableWidget->setItem(row, COLUMN_START, startItem);
-        QTableWidgetItem *endItem = new QTableWidgetItem(QTime(0, 0, 0).addMSecs(subtitle->msseEnd()).toString());
+        QTableWidgetItem *endItem = new QTableWidgetItem("");
         ui->tableWidget->setItem(row, COLUMN_END, endItem);
         QTableWidgetItem *styleItem = new QTableWidgetItem(subtitle->style()->name());
         ui->tableWidget->setItem(row, COLUMN_STYLE, styleItem);
@@ -378,13 +379,9 @@ void MainWindow::openFile (const QString &p_fileName)
         }
         row++;
     }
-    ui->tableWidget->resizeColumnToContents(COLUMN_START);
-    ui->tableWidget->resizeColumnToContents(COLUMN_END);
-    // Increase slightly columns widths to avoid ellipsing
-    ui->tableWidget->setColumnWidth(COLUMN_START,
-                                    1.1*ui->tableWidget->columnWidth(COLUMN_START));
-    ui->tableWidget->setColumnWidth(COLUMN_END,
-                                    1.1*ui->tableWidget->columnWidth(COLUMN_END));
+
+    refreshDurations();
+
     actionDurationCorrection(ui->actionDurationCorrection->isChecked());
 
 	setState(STOPPED);
@@ -420,15 +417,35 @@ void MainWindow::closeFile()
 
 void MainWindow::refreshDurations()
 {
+    if (!m_script)
+        return;
+
+    QString format("hh:mm:ss");
+    if (ui->actionShowMilliseconds->isChecked()) {
+        format.append(".zzz");
+    }
     int row = 0;
     foreach(Subtitle *subtitle, m_script->subtitles()) {
+        QTableWidgetItem *startItem = ui->tableWidget->item(row, COLUMN_START);
         QTableWidgetItem *endItem = ui->tableWidget->item(row, COLUMN_END);
-        endItem->setText(QTime(0, 0, 0).addMSecs(subtitle->msseEnd()).toString());
+        QTime start = QTime(0, 0, 0).addMSecs(subtitle->msseStart());
+        QTime end = QTime(0, 0, 0).addMSecs(subtitle->msseEnd());
+        startItem->setText(start.toString(format));
+        endItem->setText(end.toString(format));
+        // Distinct apparence if corrected
         QFont f = endItem->font();
         f.setItalic(subtitle->isCorrected());
         endItem->setFont(f);
         row++;
     }
+
+    ui->tableWidget->resizeColumnToContents(COLUMN_START);
+    ui->tableWidget->resizeColumnToContents(COLUMN_END);
+    // Increase slightly columns widths to avoid ellipsing
+    ui->tableWidget->setColumnWidth(COLUMN_START,
+                                    1.1*ui->tableWidget->columnWidth(COLUMN_START));
+    ui->tableWidget->setColumnWidth(COLUMN_END,
+                                    1.1*ui->tableWidget->columnWidth(COLUMN_END));
 }
 
 void MainWindow::actionDurationCorrection(bool state)
@@ -916,6 +933,11 @@ void MainWindow::searchTextChanged(QString)
 void MainWindow::actionEditShortcuts()
 {
     m_shortcutEditor->exec();
+}
+
+void MainWindow::actionShowMilliseconds(bool)
+{
+    refreshDurations();
 }
 
 void MainWindow::actionAbout()

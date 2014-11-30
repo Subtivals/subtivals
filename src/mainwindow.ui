@@ -251,6 +251,7 @@
     </property>
     <addaction name="actionPreferences"/>
     <addaction name="actionEditShortcuts"/>
+    <addaction name="actionShowMilliseconds"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -572,6 +573,14 @@
    </property>
    <property name="toolTip">
     <string>Edit shortcuts</string>
+   </property>
+  </action>
+  <action name="actionShowMilliseconds">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show milliseconds</string>
    </property>
   </action>
  </widget>
@@ -916,6 +925,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionShowMilliseconds</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionShowMilliseconds(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -939,5 +964,6 @@
   <slot>actionShowHelp()</slot>
   <slot>actionDurationCorrection(bool)</slot>
   <slot>actionEditShortcuts()</slot>
+  <slot>actionShowMilliseconds(bool)</slot>
  </slots>
 </ui>

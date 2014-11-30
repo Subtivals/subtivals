@@ -88,6 +88,7 @@ public slots:
     void searchTextChanged(QString);
     void actionAutoHideEnded(bool);
     void actionEditShortcuts();
+    void actionShowMilliseconds(bool);
 protected:
     bool canNext();
     bool canPrevious();
