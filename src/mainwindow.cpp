@@ -323,7 +323,7 @@ void MainWindow::openFile (const QString &p_fileName)
         QByteArray byteArray = file.readAll();
         QTextCodec::ConverterState state;
         QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-        const QString text = codec->toUnicode(byteArray.constData(), byteArray.size(), &state);
+        codec->toUnicode(byteArray.constData(), byteArray.size(), &state);
         if (state.invalidChars > 0) {
             QMessageBox::warning(this,
                                  tr("Encoding error"),
