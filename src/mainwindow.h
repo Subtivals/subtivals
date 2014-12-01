@@ -35,6 +35,7 @@
 #define COLUMN_END      1
 #define COLUMN_STYLE    2
 #define COLUMN_TEXT     3
+#define COLUMN_COMMENTS 4
 
 class ConfigEditor;
 class ShortcutEditor;

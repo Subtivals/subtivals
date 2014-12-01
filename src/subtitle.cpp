@@ -173,6 +173,11 @@ void Subtitle::setText(const QList<SubtitleLine> p_lines)
     m_prettyText = m_prettyText.replace(QRegExp("</?[^bi>]+>"), "");
 }
 
+void Subtitle::setComments(const QString &p_comments)
+{
+    m_comments = p_comments;
+}
+
 const QString &Subtitle::text() const
 {
     return m_text;
@@ -191,6 +196,11 @@ int Subtitle::nbLines() const
 const QString &Subtitle::prettyText() const
 {
     return m_prettyText;
+}
+
+const QString &Subtitle::comments() const
+{
+    return m_comments;
 }
 
 bool Subtitle::match(qint64 p_msecs) const

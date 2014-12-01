@@ -79,6 +79,7 @@ public:
     ScriptFormat format() const;
     double totalDuration() const;
     QSize resolution() const;
+    bool hasComments() const;
 public slots:
     /*
      * Activates duration correction of subtitles.

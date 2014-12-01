@@ -108,6 +108,15 @@ QSize Script::resolution() const
     return m_resolution;
 }
 
+bool Script::hasComments() const
+{
+    foreach(Subtitle* subtitle, m_subtitles) {
+        if (!subtitle->comments().isEmpty())
+            return true;
+    }
+    return false;
+}
+
 const QList<Subtitle *> Script::subtitles() const
 {
     return QList<Subtitle *>(m_subtitles);
@@ -180,6 +189,7 @@ void Script::correctSubtitlesDuration(bool p_state)
 void Script::loadFromAss(QStringList content)
 {
     SectionType section = SECTION_NONE;
+    QList<Subtitle*> comments;
 
     foreach(QString line, content) {
         if (line.isEmpty())
@@ -254,12 +264,14 @@ void Script::loadFromAss(QStringList content)
                     continue;
                 QString key = parts[0].trimmed().toLower();
                 QString value = line.mid(key.length() + 1).trimmed();
-                if (key != "dialogue")
+                QList<QString> subparts = value.split(',');
+
+                if (key != "comment" && key != "dialogue")
                     continue;
 
-                QList<QString> subparts = value.split(',');
                 qint64 start = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
                 qint64 end = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
+
                 Style *style = this->style(subparts[3].trimmed());
                 int marginL = subparts[5].toInt();
                 int marginR = subparts[6].toInt();
@@ -314,11 +326,29 @@ void Script::loadFromAss(QStringList content)
                 }
 
                 // Instantiate subtitle !
-                Subtitle *subtitle = new Subtitle(m_subtitles.size(), QStringList(), start, end, this, this);
-                subtitle->setStyle(style);
-                subtitle->setText(lines);
-                subtitle->setMargins(marginL, marginR, marginV);
-                m_subtitles.append(subtitle);
+                Subtitle* subtitle = new Subtitle(m_subtitles.size(), QStringList(), start, end, this, this);
+
+                if (key == "dialogue") {
+                    subtitle->setText(lines);
+                    subtitle->setStyle(style);
+                    subtitle->setMargins(marginL, marginR, marginV);
+                    m_subtitles.append(subtitle);
+                }
+                else if (key == "comment") {
+                    subtitle->setComments(text);
+                    comments.append(subtitle);
+                }
+            }
+        }
+    }
+
+    // Merge comments into subtitles
+    foreach(Subtitle* comment, comments) {
+        foreach(Subtitle* subtitle, m_subtitles) {
+            if (comment->msseStart() == subtitle->msseStart() && 
+                comment->msseEnd() == subtitle->msseEnd()) {
+                subtitle->setComments(comment->comments());
+                break;
             }
         }
     }
@@ -343,6 +373,7 @@ void Script::loadFromSrt(QStringList content)
         content.append(QString());
 
     QStringList text;
+    QString comments;
     qint64 start = 0;
     qint64 end = 0;
     foreach(QString line, content) {
@@ -360,10 +391,14 @@ void Script::loadFromSrt(QStringList content)
                 // Instantiate subtitle !
                 Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
                 subtitle->setStyle(style);
+                subtitle->setComments(comments);
                 m_subtitles.append(subtitle);
                 text.clear();
 
                 section = SECTION_NONE;
+            }
+            else if (line.startsWith("#")) {
+                comments = line.replace("#", "");
             }
             else {
                 text.append(line);
@@ -389,6 +424,7 @@ void Script::loadFromTxt(QStringList content)
         content.append(QString());
 
     QStringList text;
+    QString comments;
     qint64 start = 0;
     qint64 end = 0;
     SectionType section = SECTION_NONE;
@@ -409,10 +445,14 @@ void Script::loadFromTxt(QStringList content)
                 // Instantiate subtitle !
                 Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
                 subtitle->setStyle(style);
+                subtitle->setComments(comments);
                 m_subtitles.append(subtitle);
                 text.clear();
 
                 section = SECTION_NONE;
+            }
+            else if (line.startsWith("#")) {
+                comments = line.replace("#", "");
             }
             else {
                 // In TXT format : <word> is equivalent to <i>word</i>

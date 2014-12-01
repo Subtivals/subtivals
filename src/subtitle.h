@@ -49,8 +49,10 @@ public:
     const Script *script() const;
     void setText(const QStringList &p_text);
     void setText(const QList<SubtitleLine> p_lines);
+    void setComments(const QString &p_comments);
     const QString &text() const;
     const QString &prettyText() const;
+    const QString &comments() const;
     bool match(qint64 msecs) const;
     void setMargins(int p_marginL, int p_marginR, int p_marginV);
     int marginL() const;
@@ -72,6 +74,7 @@ private:
     QString m_text;
     QString m_prettyText;
     QString m_pureText;
+    QString m_comments;
     int m_marginL;
     int m_marginR;
     int m_marginV;

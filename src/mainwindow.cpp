@@ -121,6 +121,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setItemDelegateForColumn(COLUMN_START, new SubtitleDurationDelegate());
     ui->tableWidget->setItemDelegateForColumn(COLUMN_END, new SubtitleDurationDelegate());
     ui->tableWidget->setItemDelegateForColumn(COLUMN_TEXT, new SubtitleTextDelegate());
+    ui->tableWidget->hideColumn(COLUMN_COMMENTS);
+
     ui->tableWidget->installEventFilter(this);
     ui->speedFactor->installEventFilter(this);
     m_preferences->installEventFilter(this);
@@ -364,6 +366,8 @@ void MainWindow::openFile (const QString &p_fileName)
         ui->tableWidget->setItem(row, COLUMN_STYLE, styleItem);
         QTableWidgetItem *textItem = new QTableWidgetItem(subtitle->prettyText());
         ui->tableWidget->setItem(row, COLUMN_TEXT, textItem);
+        QTableWidgetItem *commentsItem = new QTableWidgetItem(subtitle->comments());
+        ui->tableWidget->setItem(row, COLUMN_COMMENTS, commentsItem);
 
         // Show chars/sec
         textItem->setToolTip(tr("%1 chars/sec").arg(subtitle->charsRate()));
@@ -381,6 +385,9 @@ void MainWindow::openFile (const QString &p_fileName)
     }
 
     refreshDurations();
+
+    // Refresh the state of the comments column
+    actionConfig(m_preferences->isVisible());
 
     actionDurationCorrection(ui->actionDurationCorrection->isChecked());
 
@@ -604,6 +611,16 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 
 void MainWindow::actionConfig(bool state)
 {
+    // Hide comments when preferences is shown
+    if (m_script && m_script->hasComments()) {
+        if (state)
+            ui->tableWidget->hideColumn(COLUMN_COMMENTS);
+        else {
+            ui->tableWidget->showColumn(COLUMN_COMMENTS);
+            ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
+            ui->tableWidget->resizeColumnToContents(COLUMN_TEXT);
+        }
+    }
     // Show/Hide the config dialog
     m_preferences->setVisible(state);
     emit screenResizable(state);
