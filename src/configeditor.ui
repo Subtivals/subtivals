@@ -16,14 +16,32 @@
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="2" column="0">
+     <item row="3" column="0">
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="standardButtons">
         <set>QDialogButtonBox::Cancel|QDialogButtonBox::RestoreDefaults|QDialogButtonBox::Save</set>
        </property>
       </widget>
      </item>
+
      <item row="0" column="0">
+      <widget class="QGroupBox" name="groupBox_hideDesktop">
+       <property name="title">
+        <string>Live options:</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_hideDesktop">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="hideDesktop">
+           <property name="text">
+            <string>Hide desktop</string>
+           </property>
+          </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+
+     <item row="1" column="0">
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
         <string>Saved presets:</string>
@@ -39,7 +57,7 @@
        </layout>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <spacer name="verticalSpacer_2">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -52,7 +70,7 @@
        </property>
       </spacer>
      </item>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="QTabWidget" name="tabs">
        <property name="enabled">
         <bool>true</bool>
@@ -337,13 +355,6 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="4" column="4" colspan="4">
-          <widget class="QCheckBox" name="hideDesktop">
-           <property name="text">
-            <string>Hide desktop</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </widget>
        <widget class="QWidget" name="tabStyles">
@@ -501,22 +512,6 @@ p, li { white-space: pre-wrap; }
     </hint>
     <hint type="destinationlabel">
      <x>221</x>
-     <y>241</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>hideDesktop</sender>
-   <signal>released()</signal>
-   <receiver>ConfigEditor</receiver>
-   <slot>apply()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>312</x>
-     <y>297</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>219</x>
      <y>241</y>
     </hint>
    </hints>

@@ -46,6 +46,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     ui->tabStyles->setLayout(m_styleEditor->layout());
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SIGNAL(styleChanged()));
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
+    connect(ui->hideDesktop, SIGNAL(toggled(bool)), this, SIGNAL(hideDesktop(bool)));
     adjustSize();
     setMaximumSize(size());
 
@@ -53,6 +54,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     for(int i = 0; i < dw->screenCount(); i++) {
         ui->screens->addItem(QString(tr("Monitor %1")).arg(i));
     }
+    ui->hideDesktop->setEnabled(dw->screenCount() > 1);
 
     for(int i = 1; i <= NB_PRESETS; i++) {
         ui->presets->addItem(QString(tr("Preset %1")).arg(i));
@@ -152,7 +154,6 @@ void ConfigEditor::reset()
     int y = settings.value("y", screenGeom.height() - DEFAULT_HEIGHT).toInt();
     int w = settings.value("w", screenGeom.width()).toInt();
     int h = settings.value("h", DEFAULT_HEIGHT).toInt();
-    bool hideDesktop = settings.value("hideDesktop", false).toBool();
     double rotation = settings.value("rotation", 0).toDouble();
     QColor color(settings.value("color", DEFAULT_COLOR).toString());
     QColor outlineColor(settings.value("outline-color", DEFAULT_OUTLINE_COLOR).toString());
@@ -160,7 +161,6 @@ void ConfigEditor::reset()
     settings.endGroup();
     // Update the UI with the reloaded settings
     ui->screens->setCurrentIndex(screen);
-    ui->hideDesktop->setChecked(hideDesktop);
     screenChanged(QRect(x, y, w, h));
     ui->rotation->setValue(rotation);
     setColor(ui->btnColor, color);
@@ -184,7 +184,6 @@ void ConfigEditor::save()
     settings.setValue("y", ui->y->text());
     settings.setValue("w", ui->w->text());
     settings.setValue("h", ui->h->text());
-    settings.setValue("hideDesktop", ui->hideDesktop->isChecked());
     settings.setValue("rotation", ui->rotation->text());
     settings.setValue("color", m_color.name());
     settings.setValue("outline-color", m_outlineColor.name());
@@ -206,7 +205,6 @@ void ConfigEditor::apply()
     emit rotate(ui->rotation->value());
     emit color(m_color);
     emit outline(m_outlineColor, ui->chkOutline->isChecked() ? ui->outlineWidth->value() : 0);
-    emit hideDesktop(ui->hideDesktop->isChecked());
     m_styleEditor->apply();
     enableButtonBox(true, true, true);
 }
