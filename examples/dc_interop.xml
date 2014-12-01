@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<DCSubtitle Version="1.0">
+  <SubtitleID>6ef24fea-5a6a-4ca8-8a52-b65c99b476f1</SubtitleID>
+  <MovieTitle>subtivals</MovieTitle>
+  <ReelNumber>1</ReelNumber>
+  <Language></Language>
+  <LoadFont URI="Arial.ttf" Id="Arial" /><Font Id="Arial" Color="FFFFFFFF" Effect="border" EffectColor="FF000000" Italic="no" Underlined="no" Script="normal" Size="42">
+    <Subtitle SpotNumber="1" FadeUpTime="5" FadeDownTime="5" TimeIn="00:00:01:000" TimeOut="00:00:03:000">
+      <Text VPosition="8" VAlign="bottom" HAlign="center" Direction="horizontal">Texte centré.</Text>
+    </Subtitle>
+    <Subtitle SpotNumber="2" FadeUpTime="5" FadeDownTime="5" TimeIn="00:00:03:006" TimeOut="00:00:05:006">
+      <Text VPosition="8" VAlign="bottom" HAlign="left" Direction="horizontal">Texte aligné à gauche.</Text>
+    </Subtitle>
+    <Subtitle SpotNumber="3" FadeUpTime="5" FadeDownTime="5" TimeIn="00:00:05:012" TimeOut="00:00:07:012">
+      <Text VPosition="8" VAlign="bottom" HAlign="right" Direction="horizontal">Texte aligné à droite.</Text>
+    </Subtitle>
+    <Subtitle SpotNumber="4" FadeUpTime="5" FadeDownTime="5" TimeIn="00:00:07:018" TimeOut="00:00:09:018">
+      <Text VPosition="8" VAlign="bottom" HPosition="-25" HAlign="center" Direction="horizontal">Texte 1/4 gauche.</Text>
+    </Subtitle>
+    <Subtitle SpotNumber="5" FadeUpTime="5" FadeDownTime="5" TimeIn="00:00:09:025" TimeOut="00:00:11:025">
+      <Text VPosition="8" VAlign="bottom" HPosition="25" HAlign="center" Direction="horizontal">Texte 1/4 droite.</Text>
+    </Subtitle>
+    <Subtitle SpotNumber="6" FadeUpTime="5" FadeDownTime="5" TimeIn="00:00:11:031" TimeOut="00:00:13:031">
+      <Text VPosition="8" VAlign="bottom" HAlign="center" Direction="horizontal"><Font Color="FFFFFF00">Texte jaune.</Font></Text>
+    </Subtitle>
+    <Subtitle SpotNumber="7" FadeUpTime="5" FadeDownTime="5" TimeIn="00:00:13:037" TimeOut="00:00:15:037">
+      <Text VPosition="14" VAlign="bottom" HPosition="-10" HAlign="center" Direction="horizontal"><Font Color="FFFF0000">Texte rouge 2/10 gauche.</Font></Text>
+      <Text VPosition="8" VAlign="bottom" HPosition="15" HAlign="center" Direction="horizontal"><Font Color="FFFF00FF">Texte magenta 3/10 droite.</Font></Text>
+    </Subtitle>
+  </Font></DCSubtitle>

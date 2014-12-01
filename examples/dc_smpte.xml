@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<dcst:SubtitleReel Version="1.0" xmlns:dcst="http://www.smpte-ra.org/schemas/428-7/2010/DCST" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <dcst:Id>urn:uuid:17de25ef-cca1-4fc2-abce-caaf2f3f6505</dcst:Id>
+  <dcst:ContentTitleText>subtivals</dcst:ContentTitleText>
+  <dcst:AnnotationText>Test pour subtivals</dcst:AnnotationText>
+  <dcst:IssueDate>2013-07-31T17:11:01.000-00:00</dcst:IssueDate>
+  <dcst:ReelNumber>1</dcst:ReelNumber>
+  <dcst:Language>fr</dcst:Language>
+  <dcst:EditRate>24 1</dcst:EditRate>
+  <dcst:TimeCodeRate>24</dcst:TimeCodeRate>
+  <dcst:StartTime>00:00:00:00</dcst:StartTime>
+  <dcst:LoadFont ID="Arial">5a546ca2-38d1-4ccb-8486-0ab7bf0f30b5</dcst:LoadFont>
+  <dcst:SubtitleList>
+    <dcst:Font ID="Arial" Size="42" Weight="normal" Color="FFFFFFFF" Effect="border" EffectColor="FF000000">
+      <dcst:Subtitle SpotNumber="1" FadeUpTime="00:00:00:00" FadeDownTime="00:00:00:00" TimeIn="00:00:01:00" TimeOut="00:00:03:00">
+        <dcst:Text VPosition="8" VAlign="bottom" HAlign="center" Direction="horizontal">Texte centré.</dcst:Text>
+      </dcst:Subtitle>
+      <dcst:Subtitle SpotNumber="2" FadeUpTime="00:00:00:00" FadeDownTime="00:00:00:00" TimeIn="00:00:03:01" TimeOut="00:00:05:01">
+        <dcst:Text VPosition="8" VAlign="bottom" HAlign="left" Direction="horizontal">Texte aligné à gauche.</dcst:Text>
+      </dcst:Subtitle>
+      <dcst:Subtitle SpotNumber="3" FadeUpTime="00:00:00:00" FadeDownTime="00:00:00:00" TimeIn="00:00:05:01" TimeOut="00:00:07:01">
+        <dcst:Text VPosition="8" VAlign="bottom" HAlign="right" Direction="horizontal">Texte aligné à droite.</dcst:Text>
+      </dcst:Subtitle>
+      <dcst:Subtitle SpotNumber="4" FadeUpTime="00:00:00:00" FadeDownTime="00:00:00:00" TimeIn="00:00:07:02" TimeOut="00:00:09:02">
+        <dcst:Text VPosition="8" VAlign="bottom"  HPosition="-25" HAlign="center" Direction="horizontal">Texte 1/4 gauche.</dcst:Text>
+      </dcst:Subtitle>
+      <dcst:Subtitle SpotNumber="5" FadeUpTime="00:00:00:00" FadeDownTime="00:00:00:00" TimeIn="00:00:09:02" TimeOut="00:00:11:02">
+        <dcst:Text VPosition="8" VAlign="bottom"  HPosition="25" HAlign="center" Direction="horizontal">Texte 1/4 droite.</dcst:Text>
+      </dcst:Subtitle>
+      <dcst:Subtitle SpotNumber="6" FadeUpTime="00:00:00:00" FadeDownTime="00:00:00:00" TimeIn="00:00:11:03" TimeOut="00:00:13:03">
+        <dcst:Text VPosition="8" VAlign="bottom" HAlign="center" Direction="horizontal">
+          <dcst:Font Color="FFFFFF00">Texte jaune.</dcst:Font>
+        </dcst:Text>
+      </dcst:Subtitle>
+      <dcst:Subtitle SpotNumber="7" FadeUpTime="00:00:00:00" FadeDownTime="00:00:00:00" TimeIn="00:00:13:04" TimeOut="00:00:15:04">
+        <dcst:Text VPosition="14" VAlign="bottom"  HPosition="-10" HAlign="center" Direction="horizontal">
+          <dcst:Font Color="FFFF0000">Texte rouge 2/10 gauche.</dcst:Font>
+        </dcst:Text>
+        <dcst:Text VPosition="8" VAlign="bottom"  HPosition="15" HAlign="center" Direction="horizontal">
+          <dcst:Font Color="FFFF00FF">Texte magenta 3/10 droite.</dcst:Font>
+        </dcst:Text>
+      </dcst:Subtitle>
+    </dcst:Font>
+  </dcst:SubtitleList>
+</dcst:SubtitleReel>
