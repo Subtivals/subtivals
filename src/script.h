@@ -33,7 +33,7 @@ class Script : public QObject
     Q_OBJECT
 public:
 
-    enum ScriptFormat { ASS, SRT, TXT, CSV };
+    enum ScriptFormat { ASS, SRT, TXT, XML, CSV };
 
     /*
      * Constructs a script from an subtitle file.
@@ -90,6 +90,7 @@ protected:
     void loadFromSrt(QStringList content);
     void loadFromAss(QStringList content);
     void loadFromTxt(QStringList content);
+    void loadFromXml(QString content);
 private:
     /*
      * Script ASS file name.

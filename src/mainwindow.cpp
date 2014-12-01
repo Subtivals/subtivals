@@ -573,7 +573,7 @@ void MainWindow::actionOpen()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open subtitles"),
                                                     m_lastFolder,
-                                                    tr("Subtitle Files (*.ass *.srt *.txt)"));
+                                                    tr("Subtitle Files (*.ass *.srt *.txt *.xml)"));
     // Subtitle file selected ?
     if (!fileName.isEmpty()) {
         m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();

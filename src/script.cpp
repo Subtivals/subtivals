@@ -20,6 +20,8 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegExp>
 #include <QtCore/QTime>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomNodeList>
 
 #include "script.h"
 
@@ -68,6 +70,10 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
     else if (ext == "txt") {
         m_format = TXT;
         loadFromTxt(content);
+    }
+    else if (ext == "xml") {
+        m_format = XML;
+        loadFromXml(content.join(""));
     }
     qSort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
 }
@@ -469,6 +475,43 @@ void Script::loadFromTxt(QStringList content)
                 text.append(line);
             }
         }
+    }
+}
+
+void Script::loadFromXml(QString content)
+{
+#ifdef WIN32
+    QFont font("MS Sans Serif");
+#else
+    QFont font("Sans");
+#endif
+    font.setPixelSize(18);
+
+    Style *style = new Style(tr("Default"), font, Qt::white, this);
+    m_styles[style->name()] = style;
+
+    QDomDocument doc;
+    doc.setContent(content);
+    QDomNodeList subtitles = doc.elementsByTagName("Subtitle");
+
+    for(int i=0; i<subtitles.length(); i++) {
+        QDomNode node = subtitles.at(i);
+
+        QString timeIn = node.toElement().attribute("TimeIn");
+        QString timeOut = node.toElement().attribute("TimeOut");
+        qint64 start = QTime(0, 0, 0).msecsTo(QTime::fromString(timeIn, "h:mm:ss:z"));
+        qint64 end = QTime(0, 0, 0).msecsTo(QTime::fromString(timeOut, "h:mm:ss:z"));
+
+        QStringList text;
+        QDomNodeList textLines = node.childNodes();
+        for(int j=0; j<textLines.length(); j++) {
+            QDomNode line = textLines.at(j);
+            text.append(line.toElement().text());
+        }
+
+        Subtitle *subtitle = new Subtitle(m_subtitles.size(), text, start, end, this, this);
+        subtitle->setStyle(style);
+        m_subtitles.append(subtitle);
     }
 }
 
