@@ -42,9 +42,16 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
     QStringList content;
     while (!file.atEnd()) {
         QString line = QString::fromUtf8(file.readLine());
-        line = line.trimmed().replace("\n", "");
-        if (!line.startsWith(";")) {
-            content.append(line);
+
+        //Mac OS Classic end line support (CR)
+        QStringList macOsLineList = line.split("\r");
+        if(macOsLineList.size() > 1){
+            content.append(macOsLineList);
+        }else{
+            line = line.trimmed().replace("\n", "");
+            if (!line.startsWith(";")) {
+                content.append(line);
+            }
         }
     }
 
