@@ -112,18 +112,15 @@
      </layout>
     </item>
     <item row="0" column="2">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Search : </string>
         </property>
        </widget>
       </item>
-      <item>
+      <item row="0" column="1">
        <widget class="QLineEdit" name="searchField">
         <property name="enabled">
          <bool>false</bool>
@@ -136,7 +133,7 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="0" column="2">
        <widget class="QPushButton" name="searchButton">
         <property name="enabled">
          <bool>false</bool>
@@ -239,7 +236,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>29</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
