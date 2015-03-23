@@ -22,6 +22,7 @@
 #include "subtitlesform.h"
 #include "configeditor.h"
 #include "player.h"
+#include "weblive.h"
 
 
 int main(int argc, char *argv[])
@@ -41,10 +42,16 @@ int main(int argc, char *argv[])
 
     SubtitlesForm f;
     MainWindow w;
+    WebLive live;
 
     QObject::connect(w.player(), SIGNAL(on(Subtitle*)), &f, SLOT(addSubtitle(Subtitle*)));
     QObject::connect(w.player(), SIGNAL(off(Subtitle*)), &f, SLOT(remSubtitle(Subtitle*)));
     QObject::connect(w.player(), SIGNAL(clear()), &f, SLOT(clearSubtitles()), Qt::DirectConnection);
+
+    QObject::connect(w.player(), SIGNAL(on(Subtitle*)), &live, SLOT(addSubtitle(Subtitle*)));
+    QObject::connect(w.player(), SIGNAL(off(Subtitle*)), &live, SLOT(remSubtitle(Subtitle*)));
+    QObject::connect(w.player(), SIGNAL(clear()), &live, SLOT(clearSubtitles()), Qt::DirectConnection);
+
     QObject::connect(&w, SIGNAL(toggleHide(bool)), &f, SLOT(toggleHide(bool)));
     QObject::connect(&w, SIGNAL(screenResizable(bool)), &f, SLOT(screenResizable(bool)));
     QObject::connect(&f, SIGNAL(geometryChanged(QRect)), w.configEditor(), SLOT(screenChanged(QRect)));
@@ -57,6 +64,8 @@ int main(int argc, char *argv[])
 
     f.show();
     w.show();
+    live.start(QUrl("ws://live.subtivals.org:3141"));
+
     // If more than one arg and last arg is a file, open it
     if( argc > 1) {
         QFileInfo fileInfo(argv[argc - 1]);
