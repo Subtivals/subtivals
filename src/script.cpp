@@ -457,6 +457,8 @@ void Script::loadFromTxt(QStringList content)
             else {
                 // In TXT format : <word> is equivalent to <i>word</i>
                 line = line.replace(QRegExp("<([^i/][^>]+)>"), "<i>\\1</i>");
+                // and *word* is equivalent to <b>word</b>
+                line = line.replace(QRegExp("\\*([^\\*]+)\\*"), "<b>\\1</b>");
                 text.append(line);
             }
         }
