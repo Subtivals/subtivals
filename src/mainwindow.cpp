@@ -31,7 +31,7 @@
 #include <QPainter>
 #include <QMimeData>
 #include <QStyledItemDelegate>
-
+#include <QStyle>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -261,8 +261,14 @@ void MainWindow::showEvent(QShowEvent *)
     settings.beginGroup("MainWindow");
     m_lastFolder = settings.value("lastFolder", "").toString();
     resize(settings.value("size", size()).toSize());
-    QPoint pos(100, 200);
+
+    // Place window at center, below black screen by default.
+    QRect screenGeom = qApp->desktop()->screenGeometry();
+    int center = (screenGeom.width() - geometry().width()) / 2;
+    int decorationHeight = style()->pixelMetric(QStyle::PM_TitleBarHeight);
+    QPoint pos(center, DEFAULT_HEIGHT + decorationHeight);
     move(settings.value("pos", pos).toPoint());
+
     m_preferences->reset();
 
     m_reloadEnabled = settings.value("reloadEnabled", false).toBool();
