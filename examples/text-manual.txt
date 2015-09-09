@@ -1,5 +1,5 @@
-J'ai fait mon premier film en 2008,
-il a été projeté en festival en 2009.
+J'ai fait mon *premier film* en 2008,
+il a été <projeté en festival en 2009>.
 
 J'avais 23 ans quand on l'a tourné.
 
