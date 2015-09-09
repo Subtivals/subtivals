@@ -27,14 +27,6 @@
 #include "styleeditor.h"
 
 
-#define NB_PRESETS 6
-#define DEFAULT_HEIGHT 200
-#define DEFAULT_COLOR "#000000"
-
-#define DEFAULT_OUTLINE_COLOR "#000000"
-#define DEFAULT_OUTLINE_WIDTH 0
-
-
 ConfigEditor::ConfigEditor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ConfigEditor),
