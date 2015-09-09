@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     configeditor.cpp \
     player.cpp \
     styleadvanced.cpp \
-    shortcuteditor.cpp
+    shortcuteditor.cpp \
+    wizard.cpp
 
 HEADERS  += mainwindow.h \
     script.h \
@@ -31,14 +32,16 @@ HEADERS  += mainwindow.h \
     configeditor.h \
     player.h \
     styleadvanced.h \
-    shortcuteditor.h
+    shortcuteditor.h \
+    wizard.h
 
 FORMS    += mainwindow.ui \
     subtitlesform.ui \
     styleeditor.ui \
     configeditor.ui \
     styleadvanced.ui \
-    shortcuteditor.ui
+    shortcuteditor.ui \
+    wizard.ui
 
 RESOURCES += \
     ../resources/icons.qrc \

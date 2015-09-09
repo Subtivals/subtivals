@@ -236,7 +236,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -260,6 +260,7 @@
      <string>Help</string>
     </property>
     <addaction name="separator"/>
+    <addaction name="actionShowWizard"/>
     <addaction name="actionShowHelp"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -583,6 +584,14 @@
    </property>
    <property name="text">
     <string>Show milliseconds</string>
+   </property>
+  </action>
+  <action name="actionShowWizard">
+   <property name="text">
+    <string>Introduction...</string>
+   </property>
+   <property name="toolTip">
+    <string>Show introduction wizard</string>
    </property>
   </action>
  </widget>
@@ -943,6 +952,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionShowWizard</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionShowWizard()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -967,5 +992,6 @@
   <slot>actionDurationCorrection(bool)</slot>
   <slot>actionEditShortcuts()</slot>
   <slot>actionShowMilliseconds(bool)</slot>
+  <slot>actionShowWizard()</slot>
  </slots>
 </ui>
