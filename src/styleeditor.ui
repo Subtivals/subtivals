@@ -48,16 +48,6 @@
       <string>Apparence</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Font</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" colspan="3">
-       <widget class="QFontComboBox" name="fontName"/>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -68,16 +58,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="fontSize">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>999</number>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="2">
        <widget class="QLabel" name="label_3">
         <property name="text">
@@ -85,6 +65,45 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="3">
+       <widget class="QFontComboBox" name="fontName"/>
+      </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="btnBold">
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Bold</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/icons.qrc">
+          <normaloff>:/icons/bold.svg</normaloff>:/icons/bold.svg</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="fontSize">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>999</number>
         </property>
        </widget>
       </item>
@@ -107,7 +126,37 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Font</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QPushButton" name="btnItalic">
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Italic</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/icons.qrc">
+          <normaloff>:/icons/italic.svg</normaloff>:/icons/italic.svg</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="6">
        <widget class="QPushButton" name="btnAdvanced">
         <property name="toolTip">
          <string>Alignment, margins, ...</string>
@@ -122,7 +171,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>stylesNames</sender>
@@ -201,6 +252,38 @@
     <hint type="destinationlabel">
      <x>154</x>
      <y>120</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnBold</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>StyleEditor</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>236</x>
+     <y>174</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnItalic</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>StyleEditor</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>174</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>137</y>
     </hint>
    </hints>
   </connection>
