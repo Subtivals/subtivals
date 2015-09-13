@@ -32,7 +32,7 @@ class StyleEditor : public QWidget
     Q_OBJECT
 
 public:
-    explicit StyleEditor(Script* script = 0, QWidget *parent = 0);
+    explicit StyleEditor(QWidget *parent = 0);
     ~StyleEditor();
     void setScript(Script*);
 signals:

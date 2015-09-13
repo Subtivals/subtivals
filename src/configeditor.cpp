@@ -30,7 +30,7 @@
 ConfigEditor::ConfigEditor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ConfigEditor),
-    m_styleEditor(new StyleEditor()),
+    m_styleEditor(new StyleEditor(this)),
     m_preset(-1),
     m_parentWidget(parent)
 {
