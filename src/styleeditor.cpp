@@ -26,9 +26,9 @@
 #include "styleadvanced.h"
 
 
-StyleEditor::StyleEditor(Script* script, QWidget *parent) :
+StyleEditor::StyleEditor(QWidget *parent) :
     QWidget(parent),
-    m_script(script),
+    m_script(0),
     m_preset(-1),
     ui(new Ui::StyleEditor)
 {
@@ -51,7 +51,7 @@ void StyleEditor::advancedConfig()
     Style* style = m_script->style(styleName);
     StyleAdvanced config(style, this);
     connect(&config, SIGNAL(styleChanged()), SLOT(apply()));
-    config.move(this->geometry().topLeft());
+    config.move(this->parentWidget()->geometry().center());
     config.exec();
 }
 
