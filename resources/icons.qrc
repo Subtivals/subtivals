@@ -20,5 +20,7 @@
         <file>bottom.png</file>
         <file>chars-rate-error.png</file>
         <file>chars-rate-warn.png</file>
+        <file>italic.svg</file>
+        <file>bold.svg</file>
     </qresource>
 </RCC>
