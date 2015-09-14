@@ -37,6 +37,7 @@ public:
     void setScript(Script*);
 signals:
     void styleChanged();
+    void styleOverriden(bool);
 public slots:
     void restore();
     void save();

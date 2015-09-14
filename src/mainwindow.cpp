@@ -151,6 +151,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainLayout->addWidget(m_preferences);
     ui->statusBar->addPermanentWidget(m_countDown);
     ui->statusBar->addPermanentWidget(m_scriptProperties);
+    connect(m_preferences, SIGNAL(styleOverriden(bool)), this, SLOT(showStyleOverriden(bool)));
 
     // Selection timer (disables subtitle highlighting for a while)
     m_timerSelection.setSingleShot(true);
@@ -493,6 +494,17 @@ void MainWindow::actionEnableReload(bool state)
 void MainWindow::actionAutoHideEnded(bool p_state)
 {
     m_player->enableAutoHide(p_state);
+}
+
+void MainWindow::showStyleOverriden(bool p_state)
+{
+    QTableWidgetItem* item = new QTableWidgetItem();
+    item->setText(ui->tableWidget->horizontalHeaderItem(COLUMN_STYLE)->text());
+    if (p_state) {
+        item->setIcon(QIcon(":/icons/important.svg"));
+        item->setToolTip(tr("Some styles are currently overriden in preferences."));
+    }
+    ui->tableWidget->setHorizontalHeaderItem(COLUMN_STYLE, item);
 }
 
 void MainWindow::fileChanged(QString path)

@@ -52,7 +52,9 @@ signals:
     void rotate(double);
     void color(QColor);
     void outline(QColor, int);
+    // From styleeditor
     void styleChanged();
+    void styleOverriden(bool);
 public slots:
     void presetChanged(int);
     void screenChanged(const QRect& r);
