@@ -214,6 +214,26 @@ void ConfigEditor::onClicked(QAbstractButton* btn)
 
 void ConfigEditor::enableButtonBox(bool restore, bool cancel, bool save)
 {
+    // Show preset as unsaved in combobox.
+    for (int i = 0; i < ui->presets->count(); i++) {
+        ui->presets->setItemText(i, ui->presets->itemText(i).replace("*", ""));
+    }
+    if (save) {
+        QString current = ui->presets->currentText().append("*");
+        ui->presets->setItemText(ui->presets->currentIndex(), current);
+    }
+
+    // Show current tab as unsaved.
+    if (save) {
+        QString current = ui->tabs->tabText(ui->tabs->currentIndex()).replace("*", "").append("*");
+        ui->tabs->setTabText(ui->tabs->currentIndex(), current);
+    }
+    else {
+        for (int i = 0; i < ui->tabs->count(); i++) {
+            ui->tabs->setTabText(i, ui->tabs->tabText(i).replace("*", ""));
+        }
+    }
+
     ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(restore);
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(cancel);
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(save);
