@@ -38,6 +38,7 @@
 #include "configeditor.h"
 #include "player.h"
 #include "shortcuteditor.h"
+#include "wizard.h"
 
 /**
  * A small delegate class to allow rich text rendering in main table cells.
@@ -279,6 +280,12 @@ void MainWindow::showEvent(QShowEvent *)
     ui->actionPreferences->setChecked(settings.value("showPreferences", true).toBool());
     ui->actionDurationCorrection->setChecked(settings.value("durationCorrection", false).toBool());
     ui->actionShowMilliseconds->setChecked(settings.value("showMilliseconds", false).toBool());
+
+    if (settings.value("wizard", true).toBool()) {
+        ui->actionShowWizard->trigger();
+        settings.setValue("wizard", false);
+    }
+
     settings.endGroup();
 }
 
@@ -290,6 +297,13 @@ const ConfigEditor* MainWindow::configEditor()
 const Player* MainWindow::player()
 {
     return m_player;
+}
+
+void MainWindow::actionShowWizard()
+{
+    Wizard wizard;
+    wizard.setPixmap(Wizard::LogoPixmap, QPixmap(":/icons/subtivals.svg"));
+    wizard.exec();
 }
 
 void MainWindow::actionShowCalibration(bool p_state)
@@ -978,5 +992,5 @@ void MainWindow::actionAbout()
 
 void MainWindow::actionShowHelp()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/traxtech/subtivals/wiki/User-Manual"));
+    QDesktopServices::openUrl(QUrl("http://help.subtivals.org"));
 }

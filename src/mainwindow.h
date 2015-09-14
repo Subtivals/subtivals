@@ -90,6 +90,7 @@ public slots:
     void actionAutoHideEnded(bool);
     void actionEditShortcuts();
     void actionShowMilliseconds(bool);
+    void actionShowWizard();
 protected:
     bool canNext();
     bool canPrevious();

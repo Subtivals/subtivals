@@ -22,5 +22,9 @@
         <file>chars-rate-warn.png</file>
         <file>italic.svg</file>
         <file>bold.svg</file>
+        <file>text-icon.svg</file>
+        <file>characters.svg</file>
+        <file>help.svg</file>
+        <file>shortcuts.svg</file>
     </qresource>
 </RCC>
