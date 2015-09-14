@@ -21,6 +21,7 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QTextCodec>
 #include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
 #include <QFileDialog>
 #include <QDesktopWidget>
@@ -305,6 +306,43 @@ void MainWindow::actionShowWizard()
     Wizard wizard;
     wizard.setPixmap(Wizard::LogoPixmap, QPixmap(":/icons/subtivals.svg"));
     wizard.exec();
+}
+
+void MainWindow::actionOperatorPrintout()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save list as spreadsheet"),
+            m_lastFolder,
+            tr("Comma-separated files (*.csv)"));
+
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::information(this, tr("Unable to write file"), file.errorString());
+        return;
+    }
+
+    QTextStream out(&file);
+    QStringList strList;
+
+    strList << tr("Row");
+    for(int c=0; c < ui->tableWidget->columnCount(); c++) {
+        strList << "\" " + ui->tableWidget->horizontalHeaderItem(c)->text() + "\" ";
+    }
+    out << strList.join( ";" ) + "\n";
+
+    for(int r=0; r < ui->tableWidget->rowCount(); r++) {
+        strList.clear();
+        strList << QString("%1").arg(r+1);
+        for(int c=0; c < ui->tableWidget->columnCount(); c++) {
+            strList << "\" " + ui->tableWidget->item(r, c)->text() + "\" ";
+        }
+        out << strList.join( ";" ) + "\n";
+    }
+    file.close();
 }
 
 void MainWindow::actionShowCalibration(bool p_state)
