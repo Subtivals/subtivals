@@ -139,7 +139,9 @@ void StyleEditor::reset()
     // Reload styles from backup and apply overidden styles from settings
     ui->stylesNames->clearSelection();
     ui->stylesNames->setCurrentRow(-1);
+
     m_overidden.clear();
+
     QSettings settings;
     settings.beginGroup(QString("Styles-%1").arg(m_preset));
     for(int i = 0; i < m_backup.size(); i++) {
@@ -173,6 +175,9 @@ void StyleEditor::reset()
         }
     }
     settings.endGroup();
+
+    emit styleOverriden(m_overidden.size() > 0);
+
     if (ui->stylesNames->count() > 0)
         ui->stylesNames->setCurrentRow(0);
 
@@ -212,6 +217,7 @@ void StyleEditor::apply()
 
         m_overidden.append(style);
         setStyleNameBold(item, true);
+        emit styleOverriden(true);
     }
 
     styleSelected();

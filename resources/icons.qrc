@@ -26,5 +26,6 @@
         <file>characters.svg</file>
         <file>help.svg</file>
         <file>shortcuts.svg</file>
+        <file>important.svg</file>
     </qresource>
 </RCC>

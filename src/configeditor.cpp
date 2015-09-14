@@ -37,6 +37,7 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     ui->setupUi(this);
     ui->tabStyles->setLayout(m_styleEditor->layout());
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SIGNAL(styleChanged()));
+    connect(m_styleEditor, SIGNAL(styleOverriden(bool)), this, SIGNAL(styleOverriden(bool)));
     connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
     connect(ui->hideDesktop, SIGNAL(toggled(bool)), this, SIGNAL(hideDesktop(bool)));
     adjustSize();
