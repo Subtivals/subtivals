@@ -312,13 +312,15 @@ void MainWindow::actionOperatorPrintout()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save list as spreadsheet"),
-            m_lastFolder,
+            m_lastFolder + "/" + tr("spreadsheet") + ".csv",
             tr("Comma-separated files (*.csv)"));
 
     if (fileName.isEmpty()) {
         return;
     }
-
+    if (!fileName.endsWith(".csv")) {
+        fileName.append(".csv");
+    }
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly)) {
         QMessageBox::information(this, tr("Unable to write file"), file.errorString());
@@ -326,23 +328,12 @@ void MainWindow::actionOperatorPrintout()
     }
 
     QTextStream out(&file);
-    QStringList strList;
-
-    strList << tr("Row");
-    for(int c=0; c < ui->tableWidget->columnCount(); c++) {
-        strList << "\" " + ui->tableWidget->horizontalHeaderItem(c)->text() + "\" ";
-    }
-    out << strList.join( ";" ) + "\n";
-
-    for(int r=0; r < ui->tableWidget->rowCount(); r++) {
-        strList.clear();
-        strList << QString("%1").arg(r+1);
-        for(int c=0; c < ui->tableWidget->columnCount(); c++) {
-            strList << "\" " + ui->tableWidget->item(r, c)->text() + "\" ";
-        }
-        out << strList.join( ";" ) + "\n";
-    }
+    out << m_script->exportList(Script::CSV);
     file.close();
+    QMessageBox::information(this,
+                             tr("Saved successfully"),
+                             tr("Subtitles exported to <i>%1</i>").arg(fileName));
+
 }
 
 void MainWindow::actionShowCalibration(bool p_state)
