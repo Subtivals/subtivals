@@ -471,3 +471,47 @@ void Script::loadFromTxt(QStringList content)
         }
     }
 }
+
+const QString Script::exportList(Script::ScriptFormat p_format) const
+{
+    QString output;
+
+    if (p_format == Script::CSV) {
+        QString dateFormat("hh:mm:ss");
+
+        // CSV Headers
+        QStringList headers;
+        headers << tr("Row") << tr("Start") << tr("End") << tr("Style") << tr("Text") << tr("Comments");
+        output.append(QString("\"%1\"\n").arg(headers.join("\" ; \"")));
+
+        // Group subtitles by display order.
+        int rowIndex = 1;
+        QList<Subtitle*> next = nextSubtitles(0);
+        while(next.size() > 0) {
+            QStringList row;
+            row << QString("%1").arg(rowIndex);
+            row << QTime(0, 0, 0).addMSecs(next.first()->msseStart()).toString(dateFormat);
+            row << QTime(0, 0, 0).addMSecs(next.last()->msseEnd()).toString(dateFormat);
+
+            QStringList styles;
+            QStringList texts;
+            QStringList comments;
+            foreach(Subtitle* subtitle, next) {
+                styles << subtitle->style()->name();
+                texts << QString(subtitle->prettyText()).replace("\"", "");
+                if (!subtitle->comments().isEmpty())
+                    comments << QString(subtitle->comments()).replace("\n", "");
+            }
+            styles.removeDuplicates();
+            row << styles.join(" # ");
+            row << texts.join(" # ");
+            row << comments.join(" # ");
+
+            output.append(QString("\"%1\"\n").arg(row.join("\" ; \"")));
+
+            next = nextSubtitles(next.last()->msseStart () + 1);
+            rowIndex++;
+        }
+    }
+    return output;
+}

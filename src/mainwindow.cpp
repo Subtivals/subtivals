@@ -21,6 +21,7 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QTextCodec>
 #include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
 #include <QFileDialog>
 #include <QDesktopWidget>
@@ -305,6 +306,34 @@ void MainWindow::actionShowWizard()
     Wizard wizard;
     wizard.setPixmap(Wizard::LogoPixmap, QPixmap(":/icons/subtivals.svg"));
     wizard.exec();
+}
+
+void MainWindow::actionOperatorPrintout()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save list as spreadsheet"),
+            m_lastFolder + "/" + tr("spreadsheet") + ".csv",
+            tr("Comma-separated files (*.csv)"));
+
+    if (fileName.isEmpty()) {
+        return;
+    }
+    if (!fileName.endsWith(".csv")) {
+        fileName.append(".csv");
+    }
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::information(this, tr("Unable to write file"), file.errorString());
+        return;
+    }
+
+    QTextStream out(&file);
+    out << m_script->exportList(Script::CSV);
+    file.close();
+    QMessageBox::information(this,
+                             tr("Saved successfully"),
+                             tr("Subtitles exported to <i>%1</i>").arg(fileName));
+
 }
 
 void MainWindow::actionShowCalibration(bool p_state)

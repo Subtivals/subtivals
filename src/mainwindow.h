@@ -92,6 +92,7 @@ public slots:
     void actionEditShortcuts();
     void actionShowMilliseconds(bool);
     void actionShowWizard();
+    void actionOperatorPrintout();
 protected:
     bool canNext();
     bool canPrevious();
