@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>468</width>
-    <height>470</height>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,24 +23,6 @@
        </property>
       </widget>
      </item>
-
-     <item row="0" column="0">
-      <widget class="QGroupBox" name="groupBox_hideDesktop">
-       <property name="title">
-        <string>Live options:</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_hideDesktop">
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="hideDesktop">
-           <property name="text">
-            <string>Hide desktop</string>
-           </property>
-          </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-
      <item row="1" column="0">
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
@@ -364,6 +346,58 @@ p, li { white-space: pre-wrap; }
        </widget>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="groupBox_hideDesktop">
+       <property name="title">
+        <string>Live options:</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_hideDesktop">
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="enableWeblive">
+          <property name="text">
+           <string>Web live</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QLabel" name="iconWeblive">
+          <property name="maximumSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="4">
+         <widget class="QCheckBox" name="hideDesktop">
+          <property name="text">
+           <string>Hide desktop</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" colspan="2">
+         <widget class="QLabel" name="urlWeblive">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
@@ -596,8 +630,41 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>enableWeblive</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>iconWeblive</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>90</x>
+     <y>74</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>436</x>
+     <y>74</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>enableWeblive</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>urlWeblive</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>90</x>
+     <y>74</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>289</x>
+     <y>74</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
+  <signal>webliveEnabled(bool)</signal>
   <slot>apply()</slot>
   <slot>onClicked(QAbstractButton*)</slot>
   <slot>presetChanged(int)</slot>

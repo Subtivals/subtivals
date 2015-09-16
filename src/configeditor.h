@@ -47,8 +47,12 @@ public:
     ~ConfigEditor();
     void setScript(Script* script);
 signals:
-    void changeScreen(int, QRect);
+    // Live options
     void hideDesktop(bool);
+    void webliveEnabled(bool);
+
+    // Presets
+    void changeScreen(int, QRect);
     void rotate(double);
     void color(QColor);
     void outline(QColor, int);
@@ -64,6 +68,9 @@ public slots:
     void save();
     void onClicked(QAbstractButton*);
     void chooseColor();
+
+    void enableWeblive(bool);
+    void webliveConnected(bool p_state, QString p_url);
 protected slots:
     void enableButtonBox(bool restore = true, bool cancel = true, bool save = true);
     void setColor(QPushButton *button, const QColor &c);
