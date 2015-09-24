@@ -178,6 +178,11 @@ void Subtitle::setComments(const QString &p_comments)
     m_comments = p_comments;
 }
 
+const int &Subtitle::index() const
+{
+    return m_index;
+}
+
 const QString &Subtitle::text() const
 {
     return m_text;

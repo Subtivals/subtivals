@@ -31,6 +31,7 @@ private slots:
     void onConnected();
     void onDisconnected();
     void onError();
+    void sendJson(const QJsonObject &p_json);
 
 private:
     QString liveUrl() const;

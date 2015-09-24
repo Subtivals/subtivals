@@ -29,8 +29,8 @@ class SubtitleLine : public QPair<QString, QPoint>
 {
 public:
     explicit SubtitleLine(const QString& t, const QPoint& p) { first = t; second = p; }
-    const QString text()    { return first; }
-    const QPoint position() { return second; }
+    const QString text() const    { return first; }
+    const QPoint position() const { return second; }
 };
 
 
@@ -50,6 +50,7 @@ public:
     void setText(const QStringList &p_text);
     void setText(const QList<SubtitleLine> p_lines);
     void setComments(const QString &p_comments);
+    const int &index() const;
     const QString &text() const;
     const QString &prettyText() const;
     const QString &comments() const;
@@ -62,7 +63,6 @@ public:
     void correct(bool);
     int nbLines() const;
     void setPosition(int p_x, int p_y);
-    QPoint position() const;
     const QList<SubtitleLine> lines() const;
 private:
     int m_index;
