@@ -27,5 +27,7 @@
         <file>help.svg</file>
         <file>shortcuts.svg</file>
         <file>important.svg</file>
+        <file>off.svg</file>
+        <file>on.svg</file>
     </qresource>
 </RCC>

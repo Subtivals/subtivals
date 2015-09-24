@@ -291,7 +291,7 @@ void MainWindow::showEvent(QShowEvent *)
     settings.endGroup();
 }
 
-const ConfigEditor* MainWindow::configEditor()
+ConfigEditor* MainWindow::configEditor()
 {
     return m_preferences;
 }

@@ -55,7 +55,7 @@ public:
     enum State { NODATA, STOPPED, PLAYING, PAUSED};
     void openFile (const QString &p_fileName);
     void closeFile();
-    const ConfigEditor* configEditor();
+    ConfigEditor* configEditor();
     const Player* player();
 signals:
     void toggleHide(bool state);
