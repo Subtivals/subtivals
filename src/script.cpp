@@ -494,8 +494,17 @@ void Script::loadFromXml(QString content)
     QDomDocument doc;
     doc.setContent(content);
 
+    QString nameSpace;
+    // Interop.
+    QDomNodeList subtitles = doc.elementsByTagName("Subtitle");
+    if (subtitles.length() == 0) {
+        // SMTPE.
+        nameSpace = "dcst:";
+        subtitles = doc.elementsByTagName(nameSpace + "Subtitle");
+    }
+
     QString movieName = tr("Default");
-    QDomNodeList movies = doc.elementsByTagName("MovieTitle");
+    QDomNodeList movies = doc.elementsByTagName(nameSpace.isEmpty() ? "MovieTitle" : nameSpace + "ContentTitleText");
     if (movies.length() > 0) {
         movieName = movies.at(0).toElement().text();
     }
@@ -503,7 +512,7 @@ void Script::loadFromXml(QString content)
     QString defaultStyleName(tr("Default"));
 
     // XXX: Take first font tag.
-    QDomNodeList fonts = doc.elementsByTagName("Font");
+    QDomNodeList fonts = doc.elementsByTagName(nameSpace + "Font");
     if (fonts.length() > 0) {
         // Font is set, show specific name for style.
         defaultStyleName = movieName;
@@ -520,9 +529,6 @@ void Script::loadFromXml(QString content)
     Style *defaultStyle = new Style(defaultStyleName, defaultFont, defaultColor, this);
     m_styles[defaultStyle->name()] = defaultStyle;
 
-
-    QDomNodeList subtitles = doc.elementsByTagName("Subtitle");
-
     for(int i=0; i<subtitles.length(); i++) {
         QDomNode node = subtitles.at(i);
 
@@ -535,7 +541,7 @@ void Script::loadFromXml(QString content)
         QDomNodeList textLines = node.childNodes();
         for(int j=0; j<textLines.length(); j++) {
             QDomNode line = textLines.at(j);
-            if (line.nodeName().toLower() != "text") {
+            if (line.nodeName().toLower() != (nameSpace + "text")) {
                 continue;
             }
 
@@ -544,7 +550,7 @@ void Script::loadFromXml(QString content)
             QString color;
 
             // Find top level font.
-            QDomNodeList fonts = line.toElement().elementsByTagName("Font");
+            QDomNodeList fonts = line.toElement().elementsByTagName(nameSpace + "Font");
             if (fonts.length() > 0) {
                 QDomElement fontNode = fonts.at(0).toElement();
                 if (fontNode.hasAttribute("Color")) {
