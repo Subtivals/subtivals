@@ -32,20 +32,25 @@ Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color, 
     m_alignment(Qt::AlignTop | Qt::AlignHCenter),
     m_marginL(0),
     m_marginR(0),
-    m_marginV(0)
+    m_marginV(0),
+    m_offsetH(0),
+    m_offsetV(0)
 {
     setFont(p_font);
 }
 
-Style::Style(const Style &p_oth, const QFont& f, QObject *p_parent):
+Style::Style(const Style &p_oth, const QFont& f, QObject *p_parent) :
     QObject(p_parent),
     m_name(p_oth.m_name),
-    m_metrics(f),
+    m_metrics(QFontMetrics(p_oth.font())),
     m_primaryColour(p_oth.m_primaryColour),
+    m_lineSpacing(p_oth.m_lineSpacing),
     m_alignment(p_oth.m_alignment),
     m_marginL(p_oth.m_marginL),
     m_marginR(p_oth.m_marginR),
-    m_marginV(p_oth.m_marginV)
+    m_marginV(p_oth.m_marginV),
+    m_offsetH(p_oth.m_offsetH),
+    m_offsetV(p_oth.m_offsetV)
 {
     setFont(f);
 }
@@ -53,6 +58,12 @@ Style::Style(const Style &p_oth, const QFont& f, QObject *p_parent):
 void Style::setAlignment(Qt::Alignment p_alignment)
 {
     m_alignment = p_alignment;
+}
+
+void Style::setOffsets(double p_h, double p_v)
+{
+    m_offsetH = p_h;
+    m_offsetV = p_v;
 }
 
 int Style::marginL() const
@@ -86,6 +97,11 @@ const QString &Style::name() const {
     return m_name;
 }
 
+void Style::setName(const QString &p_name)
+{
+    m_name = p_name;
+}
+
 const QFont &Style::font() const {
     return m_font;
 }
@@ -93,7 +109,7 @@ const QFont &Style::font() const {
 void Style::setFont(const QFont& f) {
     m_font = f;
     m_font.setStyleStrategy(QFont::PreferAntialias);
-    m_metrics = QFontMetrics(m_font);
+    m_metrics = QFontMetrics(f);
 }
 
 const QColor &Style::primaryColour() const {
@@ -153,6 +169,7 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
 
     foreach (SubtitleLine line, subtitle.lines()) {
         QRect final(bounds);
+
         QPoint position = line.position();
 
         QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
@@ -199,6 +216,11 @@ void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle, const QRec
             else {  // AlignTop
                 final.moveTop(final.top() + stack);
             }
+
+            // Offsets.
+            final.moveBottom(final.bottom() - (m_offsetV * bounds.height()));
+            final.moveLeft(final.left() + (m_offsetH * bounds.width()));
+
             // Stack lines
             stack += m_metrics.height() * (1.0 + m_lineSpacing);
         }
