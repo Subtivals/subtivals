@@ -20,8 +20,13 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegExp>
 #include <QtCore/QTime>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomNodeList>
 
 #include "script.h"
+
+#define DEFAULT_FONT_SIZE 18
+
 
 enum SectionType { SECTION_NONE, SECTION_INFOS, SECTION_STYLES, SECTION_EVENTS };
 
@@ -68,6 +73,10 @@ Script::Script(const QString &p_fileName, QObject *p_parent) :
     else if (ext == "txt") {
         m_format = TXT;
         loadFromTxt(content);
+    }
+    else if (ext == "xml") {
+        m_format = XML;
+        loadFromXml(content.join(""));
     }
     qSort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
 }
@@ -370,7 +379,7 @@ void Script::loadFromSrt(QStringList content)
 #else
     QFont font("Sans");
 #endif
-    font.setPixelSize(18);
+    font.setPixelSize(DEFAULT_FONT_SIZE);
 
     Style *style = new Style(tr("Default"), font, Qt::white, this);
     m_styles[style->name()] = style;
@@ -421,7 +430,7 @@ void Script::loadFromTxt(QStringList content)
 #else
     QFont font("Sans");
 #endif
-    font.setPixelSize(18);
+    font.setPixelSize(DEFAULT_FONT_SIZE);
 
     Style *style = new Style(tr("Default"), font, Qt::white, this);
     m_styles[style->name()] = style;
@@ -469,6 +478,155 @@ void Script::loadFromTxt(QStringList content)
                 text.append(line);
             }
         }
+    }
+}
+
+void Script::loadFromXml(QString content)
+{
+    QColor defaultColor(Qt::white);
+#ifdef WIN32
+    QFont defaultFont("MS Sans Serif");
+#else
+    QFont defaultFont("Sans");
+#endif
+    defaultFont.setPixelSize(DEFAULT_FONT_SIZE);
+
+    QDomDocument doc;
+    doc.setContent(content);
+
+    QString nameSpace;
+    // Interop.
+    QDomNodeList subtitles = doc.elementsByTagName("Subtitle");
+    if (subtitles.length() == 0) {
+        // SMTPE.
+        nameSpace = "dcst:";
+        subtitles = doc.elementsByTagName(nameSpace + "Subtitle");
+    }
+
+    QString movieName = tr("Default");
+    QDomNodeList movies = doc.elementsByTagName(nameSpace.isEmpty() ? "MovieTitle" : nameSpace + "ContentTitleText");
+    if (movies.length() > 0) {
+        movieName = movies.at(0).toElement().text();
+    }
+
+    QString defaultStyleName(tr("Default"));
+
+    // XXX: Take first font tag.
+    QDomNodeList fonts = doc.elementsByTagName(nameSpace + "Font");
+    if (fonts.length() > 0) {
+        // Font is set, show specific name for style.
+        defaultStyleName = movieName;
+
+        QDomNode fontNode = fonts.at(0);
+        defaultFont.setFamily(fontNode.toElement().attribute("Id"));
+        defaultFont.setItalic((fontNode.toElement().attribute("Italic", "no") != "no"));
+        defaultFont.setBold((fontNode.toElement().attribute("Weight", "normal") == "bold"));
+        defaultFont.setPixelSize(fontNode.toElement().attribute("Size", "DEFAULT_FONT_SIZE").toInt());
+        defaultFont.setUnderline((fontNode.toElement().attribute("Underlined", "no") != "no"));
+        defaultColor.setNamedColor(QString("#%1").arg(fontNode.toElement().attribute("Color", "FFFFFFFF")));
+    }
+
+    Style *defaultStyle = new Style(defaultStyleName, defaultFont, defaultColor, this);
+    m_styles[defaultStyle->name()] = defaultStyle;
+
+    for(int i=0; i<subtitles.length(); i++) {
+        QDomNode node = subtitles.at(i);
+
+        QString timeIn = node.toElement().attribute("TimeIn");
+        QString timeOut = node.toElement().attribute("TimeOut");
+        qint64 start = QTime(0, 0, 0).msecsTo(QTime::fromString(timeIn, "h:mm:ss:z"));
+        qint64 end = QTime(0, 0, 0).msecsTo(QTime::fromString(timeOut, "h:mm:ss:z"));
+
+        // Each <Text> becomes a subtitle with its own style (duplicated start/end).
+        QDomNodeList textLines = node.childNodes();
+        for(int j=0; j<textLines.length(); j++) {
+            QDomNode line = textLines.at(j);
+            if (line.nodeName().toLower() != (nameSpace + "text")) {
+                continue;
+            }
+
+            Style *style = defaultStyle;
+            QFont font(style->font());
+            QString color;
+
+            // Find top level font.
+            QDomNodeList fonts = line.toElement().elementsByTagName(nameSpace + "Font");
+            if (fonts.length() > 0) {
+                QDomElement fontNode = fonts.at(0).toElement();
+                if (fontNode.hasAttribute("Color")) {
+                    color = "#" + fontNode.attribute("Color");
+                }
+                if (fontNode.hasAttribute("Id")) {
+                    font.setFamily(fontNode.attribute("Id"));
+                }
+                if (fontNode.hasAttribute("Weight")) {
+                    font.setBold((fontNode.attribute("Weight") == "bold"));
+                }
+                if (fontNode.hasAttribute("Size")) {
+                    font.setPixelSize(fontNode.attribute("Size").toInt());
+                }
+                if (fontNode.hasAttribute("Italic")) {
+                    font.setItalic((fontNode.attribute("Italic") != "no"));
+                }
+                if (fontNode.hasAttribute("Underlined")) {
+                    font.setUnderline((fontNode.attribute("Underlined") != "no"));
+                }
+            }
+
+            // Vertical/horizontal alignment.
+            QString hAlign = line.toElement().attribute("HAlign");
+            QString vAlign = line.toElement().attribute("VAlign");
+
+            // Offsets from baseline/center.
+            QString vPosition = line.toElement().attribute("VPosition");
+            QString hPosition = line.toElement().attribute("HPosition");
+
+            // Build new style based on alignment+color.
+            bool isOverriden = ((!color.isEmpty()) ||
+                                (!hAlign.isEmpty() && hAlign != "center") ||
+                                (!vAlign.isEmpty() && vAlign != "center") ||
+                                (!vPosition.isEmpty()) ||
+                                (!hPosition.isEmpty()));
+            if (isOverriden) {
+                QStringList tokens;
+                tokens << defaultStyle->name()  << hAlign << vAlign << vPosition << hPosition << color;
+                QString styleName = tokens.join("-");
+                if (!m_styles.contains(styleName)) {
+                    // Not yet encountered. Built it!
+                    Style *newStyle = new Style(*style, font);
+                    newStyle->setName(styleName);
+
+                    if (!color.isEmpty()) {
+                        newStyle->setPrimaryColour(QColor(color));
+                    }
+
+                    Qt::Alignment alignment = Qt::AlignVCenter;
+                    if (hAlign.toLower() == "left")
+                        alignment = Qt::AlignLeft;
+                    if (hAlign.toLower() == "right")
+                        alignment = Qt::AlignRight;
+                    if (vAlign.toLower() == "bottom")
+                        alignment |= Qt::AlignBottom;
+                    if (vAlign.toLower() == "top")
+                        alignment |= Qt::AlignTop;
+
+                    // XXX: should inherit.
+                    newStyle->setAlignment(alignment);
+
+                    // XXX: should inherit.
+                    newStyle->setOffsets(hPosition.toDouble()/100.0,
+                                         vPosition.toDouble()/100.0);
+
+                    m_styles[styleName] = newStyle;
+                }
+                style = m_styles[styleName];
+            }
+
+            Subtitle *subtitle = new Subtitle(m_subtitles.size(), QStringList(line.toElement().text()), start, end, this, this);
+            subtitle->setStyle(style);
+            m_subtitles.append(subtitle);
+        }
+
     }
 }
 

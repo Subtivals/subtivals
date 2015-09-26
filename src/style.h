@@ -35,8 +35,10 @@ class Style : public QObject
     Q_OBJECT
 public:
     explicit Style(const QString &p_name, const QFont &p_font, const QColor &p_color, QObject *p_parent);
+    explicit Style(const Style &p_oth, QObject *p_parent = 0);
     explicit Style(const Style &p_oth, const QFont& f, QObject *p_parent = 0);
     const QString &name() const;
+    void setName(const QString &p_name);
     const QFont &font() const;
     void setFont(const QFont &f);
     const QColor &primaryColour() const;
@@ -45,6 +47,7 @@ public:
     void setLineSpacing(qreal p_lineSpacing);
     void setMargins(int p_marginL, int p_marginR, int p_marginV);
     void setAlignment(Qt::Alignment p_alignment);
+    void setOffsets(double p_h, double p_v);
     int marginL() const;
     int marginR() const;
     int marginV() const;
@@ -72,6 +75,11 @@ private:
      * MarginV : subtitle : margin from bottom; toptitle : margin from top, midtitle : ignored
      */
     int m_marginV;
+    /*
+     * Offsets from baseline/center.
+     */
+    double m_offsetH;
+    double m_offsetV;
 };
 
 #endif // STYLE_H
