@@ -16,6 +16,7 @@
   **/
 #include <QApplication>
 #include <QtCore/QFileInfo>
+#include <QSettings>
 #include <QTranslator>
 
 #include "mainwindow.h"
@@ -27,10 +28,12 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QSettings::setDefaultFormat(QSettings::IniFormat);
     QCoreApplication::setOrganizationName("Subtivals");
-    QCoreApplication::setOrganizationDomain("https://github.com/traxtech/subtivals/");
+    QCoreApplication::setOrganizationDomain("http://subtivals.org");
     QCoreApplication::setApplicationName("Subtivals");
+
+    QApplication a(argc, argv);
     a.setQuitOnLastWindowClosed(true);
 
     // Load translations (i18n) from system locale
