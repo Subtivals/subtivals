@@ -7,7 +7,7 @@
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	qmake-qt4 src/subtivals.pro
+	QT_SELECT=qt5 qmake src/subtivals.pro
 	touch configure-stamp
 
 build-arch: build

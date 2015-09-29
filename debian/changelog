@@ -1,3 +1,23 @@
+subtivals (1.8.0-9) stable; urgency=low
+
+  * Switch to Qt5 on every platform (#266)
+  * Forced ini format for settings (#268)
+  * Basic support of DCP XML format (#207)
+  * Support of Web live display (#252) 
+  * Show basic introduction wizard for new users (#255)
+  * Support of bold in simple text files using stars (#254)
+  * Add bold and italic in style editor (#248)
+  * The Hide desktop option is now safer, not stored in presets anymore (#241)
+  * New column with comments (SSA, SRT, TXT) (#221, #235)
+  * Option to show/hide milliseconds (#246)
+  * Export printable spreadsheet for operators (#240)
+  * Better apparence of unsaved presets (#262)
+  * Fix advanced style popup position, now centered on main window (#259)
+  * Fix default window position, not overlaping display screen anymore (#256)
+  * Fix apparence of search button on OSX (#250)
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Mon, 28 Sep 2015 00:09:00 +0100
+
 subtivals (1.7.4-1) stable; urgency=low
 
   * Fix timecode parsing in text files

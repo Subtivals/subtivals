@@ -23,7 +23,7 @@
 
 RequestExecutionLevel admin
 
-!define setup "subtivals-setup-1.7.4.exe"
+!define setup "subtivals-setup-1.8.0-beta.exe"
 
 ; change this to wherever the files to be packaged reside
 !define srcdir "..\subtivals-build-desktop\release"
@@ -31,9 +31,9 @@ RequestExecutionLevel admin
 !define prodname "Subtivals"
 !define exec "subtivals.exe"
 
-!define qtdirmain "C:\Qt\4.7.4\mingw"
-!define qtdirdesktop "C:\Qt\4.7.4\Desktop\Qt\4.7.4\mingw"
- 
+!define qtdirdesktop "C:\Qt\5.4\mingw491_32"
+!define mingwdir "C:\Qt\Tools\mingw491_32"
+
 ; optional stuff
  
 ; text file to open in notepad after installation

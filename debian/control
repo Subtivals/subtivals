@@ -2,12 +2,13 @@ Source: subtivals
 Section: video
 Priority: optional
 Maintainer: Mathieu Leplatre <contact@mathieu-leplatre.info>
-Build-Depends: debhelper (>> 3.0.0), libqt4-dev
-Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9), qtbase5-dev, qtbase5-dev-tools, qttools5-dev-tools, qt5-qmake, libqt5websockets5-dev
+Standards-Version: 3.9.6
 
 Package: subtivals
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: A program to project subtitles (*.ass, *.srt).
- Subtivals goals are the projection and the control of subtitles on a cinema screen; 
- for festivals that targets the hard of hearing.
+Description: A program to project subtitles (*.ass, *.srt, *.txt, *.xml).
+ Subtivals is the perfect tool to add subtitles for live performances.
+ It projects captions automatically with full control, and is used by
+ cinema festivals, theaters and operas worldwide.
