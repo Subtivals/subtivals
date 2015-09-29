@@ -13,6 +13,10 @@ Delete "$INSTDIR\QT5WIDGETS.DLL"
 Delete "$INSTDIR\QT5XML.DLL"
 Delete "$INSTDIR\QT5WEBSOCKETS.DLL"
 
+Delete "$INSTDIR\platforms\QMINIMAL.DLL"
+Delete "$INSTDIR\platforms\QWINDOWS.DLL"
+RMDir "$INSTDIR\platforms"
+
 Delete "$INSTDIR\imageformats\QSVG.DLL"
 RMDir "$INSTDIR\imageformats"
 

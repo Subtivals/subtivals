@@ -15,6 +15,11 @@ File /a "${qtdirdesktop}\bin\QT5WIDGETS.DLL"
 File /a "${qtdirdesktop}\bin\QT5XML.DLL"
 File /a "${qtdirdesktop}\bin\QT5WEBSOCKETS.DLL"
 
+
+CreateDirectory "$INSTDIR\platforms"
+File /a "/oname=$INSTDIR\platforms\QMINIMAL.DLL" "${qtdirdesktop}\plugins\platforms\QMINIMAL.DLL"
+File /a "/oname=$INSTDIR\platforms\QWINDOWS.DLL" "${qtdirdesktop}\plugins\platforms\QWINDOWS.DLL"
+
 CreateDirectory "$INSTDIR\iconengines"
 File /a "/oname=$INSTDIR\iconengines\QSVGICON.DLL" "${qtdirdesktop}\plugins\iconengines\QSVGICON.DLL"
 
