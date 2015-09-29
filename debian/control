@@ -2,8 +2,8 @@ Source: subtivals
 Section: video
 Priority: optional
 Maintainer: Mathieu Leplatre <contact@mathieu-leplatre.info>
-Build-Depends: debhelper (>> 3.0.0), libqt4-dev
-Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9), qtbase5-dev, qtbase5-dev-tools, qttools5-dev-tools, qt5-qmake, libqt5websockets5-dev
+Standards-Version: 3.9.6
 
 Package: subtivals
 Architecture: any

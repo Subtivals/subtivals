@@ -53,6 +53,12 @@ TRANSLATIONS = ../locale/fr_FR.ts \
     ../locale/es_ES.ts \
     ../locale/ca_ES.ts
 
+isEmpty(QMAKE_LRELEASE) {
+    win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease.exe
+    else: QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+}
+QMAKE_POST_LINK += $$QMAKE_LRELEASE $$_PRO_FILE_
+
 RC_FILE = ../resources/subtivals.rc
 
 unix {
@@ -95,5 +101,6 @@ DEFINES += VERSION=\\\"$$VERSION\\\"
 
 OTHER_FILES += \
     ../debian/control \
+    ../debian/rules \
     ../debian/changelog \
     ../win-installer/installer.nsi
