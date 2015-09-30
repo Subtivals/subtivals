@@ -147,6 +147,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableWidget->setFocus();
     setAcceptDrops(true);
 
+    // Disable print out by default.
+    ui->actionOperatorPrintout->setEnabled(false);
+
     // Add preferences dock
     m_preferences->setVisible(false);
     ui->mainLayout->addWidget(m_preferences);
@@ -439,6 +442,9 @@ void MainWindow::openFile (const QString &p_fileName)
     // Refresh the state of the comments column
     actionConfig(m_preferences->isVisible());
 
+    // File opened, enable print out.
+    ui->actionOperatorPrintout->setEnabled(true);
+
     actionDurationCorrection(ui->actionDurationCorrection->isChecked());
 
 	setState(STOPPED);
@@ -466,6 +472,8 @@ void MainWindow::closeFile()
     }
     m_tableMapping.clear();
     m_currentSubtitles.clear();
+    // No file, disable print out.
+    ui->actionOperatorPrintout->setEnabled(false);
 
     setWindowTitle(tr("Subtivals"));
     m_scriptProperties->setText("");
