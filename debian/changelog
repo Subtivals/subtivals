@@ -1,4 +1,4 @@
-subtivals (1.8.0-9) stable; urgency=low
+subtivals (1.8.0-10) stable; urgency=low
 
   * Switch to Qt5 on every platform (#266)
   * Forced ini format for settings (#268)
@@ -16,7 +16,7 @@ subtivals (1.8.0-9) stable; urgency=low
   * Fix default window position, not overlaping display screen anymore (#256)
   * Fix apparence of search button on OSX (#250)
 
- -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Mon, 28 Sep 2015 00:09:00 +0100
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Wed, 30 Sep 2015 23:02:00 +0100
 
 subtivals (1.7.4-1) stable; urgency=low
 
