@@ -678,9 +678,11 @@ void MainWindow::actionConfig(bool state)
             ui->tableWidget->hideColumn(COLUMN_COMMENTS);
         else {
             ui->tableWidget->showColumn(COLUMN_COMMENTS);
-            ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
-            ui->tableWidget->resizeColumnToContents(COLUMN_TEXT);
         }
+        ui->tableWidget->resizeColumnToContents(COLUMN_STYLE);
+        ui->tableWidget->resizeColumnToContents(COLUMN_COMMENTS);
+        ui->tableWidget->resizeColumnToContents(COLUMN_TEXT);
+        ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
     }
     // Show/Hide the config dialog
     m_preferences->setVisible(state);
