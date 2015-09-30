@@ -464,6 +464,7 @@ void Script::loadFromTxt(QStringList content)
                 subtitle->setComments(comments);
                 m_subtitles.append(subtitle);
                 text.clear();
+                comments.clear();
 
                 section = SECTION_NONE;
             }
