@@ -1,3 +1,9 @@
+subtivals (1.8.1-1) stable; urgency=low
+
+  * Add more than 2 decimals to speed factor field (#279)
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Sun, 31 Jan 2015 17:12:00 +0100
+
 subtivals (1.8.0-10) stable; urgency=low
 
   * Switch to Qt5 on every platform (#266)
