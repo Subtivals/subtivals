@@ -92,8 +92,17 @@
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="suffix">
          <string>%</string>
+        </property>
+        <property name="decimals">
+         <number>10</number>
         </property>
         <property name="minimum">
          <double>0.100000000000000</double>
@@ -236,7 +245,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
