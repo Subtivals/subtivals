@@ -27,6 +27,7 @@
 #include <QString>
 #include <QFileSystemWatcher>
 #include <QLabel>
+#include <QFile>
 
 #include "script.h"
 
@@ -127,6 +128,7 @@ private:
     QLabel* m_scriptProperties;
     QLabel* m_countDown;
     QList<Subtitle*> m_currentSubtitles;
+    QFile* logFile;
 };
 
 #endif // MAINWINDOW_H

@@ -117,7 +117,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_rowChanged(false),
     m_filewatcher(new QFileSystemWatcher),
     m_scriptProperties(new QLabel(this)),
-    m_countDown(new QLabel(this))
+    m_countDown(new QLabel(this)),
+    logFile(new QFile("log_file.txt"))
 {
     ui->setupUi(this);
     ui->tableWidget->setItemDelegateForColumn(COLUMN_START, new SubtitleDurationDelegate());
@@ -587,6 +588,12 @@ void MainWindow::actionOpen()
     if (!fileName.isEmpty()) {
         m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();
         openFile(fileName);
+        logFile->open(QIODevice::WriteOnly | QIODevice::Append);
+        QTextStream ts(logFile);
+        QDateTime current = QDateTime::currentDateTime();
+        QString txt = QString("[%1] Opened file: %2\r\n").arg(current.toString("yyyy-MM-dd hh:mm:ss"), fileName);
+        ts << txt;
+        logFile->close();
     }
 }
 
