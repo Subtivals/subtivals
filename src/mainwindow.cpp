@@ -591,8 +591,9 @@ void MainWindow::actionOpen()
         logFile->open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream ts(logFile);
         QDateTime current = QDateTime::currentDateTime();
-        QString txt = QString("[%1] Opened file: %2\r\n").arg(current.toString("yyyy-MM-dd hh:mm:ss"), fileName);
-        ts << txt;
+        QString sub_info = QString("[%1] Opened file: %2\r\n").arg(current.toString("yyyy-MM-dd hh:mm:ss"), fileName);
+        QString duration_info = QString("Total duration: %2\r\n").arg(ts2tc(m_script->totalDuration(), "hh:mm:ss"));
+        ts << sub_info << duration_info;
         logFile->close();
     }
 }
@@ -855,6 +856,11 @@ void MainWindow::playPulse(qint64 msecsElapsed)
         ui->tableWidget->item(row, COLUMN_START)->setData(Qt::UserRole, progressionNext);
         ui->tableWidget->item(row, COLUMN_END)->setData(Qt::UserRole, progressionCurrent);
     }
+    logFile->open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream ts(logFile);
+    QString remaining_info = tr("Remaining: %1\r\n").arg(ts2tc(msecsElapsed - m_script->totalDuration(), "hh:mm:ss"));
+    ts << remaining_info;
+    logFile->close();
 }
 
 void MainWindow::subtitleChanged(QList<Subtitle*> p_currentSubtitles)
