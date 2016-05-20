@@ -107,6 +107,8 @@ protected:
     void highlightSubtitles(qlonglong elapsed);
     QString ts2tc(qint64 p_timestamp, QString format = "hh:mm:ss.zzz");
     void setState(State p_state);
+    QVariantHash readLog();
+    void writeLog(QVariantHash &updatedLogs);
 private:
     State m_state;
     Ui::MainWindow *ui;

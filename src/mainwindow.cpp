@@ -34,6 +34,9 @@
 #include <QStyledItemDelegate>
 #include <QStyle>
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QVariantHash>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -589,13 +592,13 @@ void MainWindow::actionOpen()
     if (!fileName.isEmpty()) {
         m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();
         openFile(fileName);
-        logFile->open(QIODevice::WriteOnly | QIODevice::Truncate);
-        QTextStream ts(logFile);
-        QDateTime current = QDateTime::currentDateTime();
-        QString sub_info = QString("[%1] Opened file: %2\r\n").arg(current.toString("yyyy-MM-dd hh:mm:ss"), fileName);
-        QString duration_info = QString("[%1] Total duration: %2\r\n").arg(current.toString("yyyy-MM-dd hh:mm:ss"), ts2tc(m_script->totalDuration(), "hh:mm:ss"));
-        ts << sub_info << duration_info;
-        logFile->close();
+
+        QVariantHash newLogs;
+        newLogs["last_updated"] = QDateTime::currentDateTime().toString();
+        newLogs["subtitle"]=  fileName;
+        newLogs["duration"] = ts2tc(m_script->totalDuration(), "hh:mm:ss");
+        newLogs["remaining"] = ts2tc(m_script->totalDuration(), "hh:mm:ss");
+        writeLog(newLogs);
     }
 }
 
@@ -882,11 +885,10 @@ void MainWindow::subtitleChanged(QList<Subtitle*> p_currentSubtitles)
         ui->tableWidget->selectRow(subtitleRow);
         if (withFocus) withFocus->setFocus();  // restore
 
-        logFile->open(QIODevice::WriteOnly | QIODevice::Append);
-        QTextStream ts(logFile);
-        QString remaining_info = tr("[%1] Remaining: %2\r\n").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"), ts2tc(m_script->totalDuration() - msecsElapsed, "hh:mm:ss"));
-        ts << remaining_info;
-        logFile->close();
+        QVariantHash currentLog = readLog();
+        currentLog["remaining"] = ts2tc(m_script->totalDuration() - msecsElapsed, "hh:mm:ss");
+        currentLog["last_updated"] = QDateTime::currentDateTime().toString();
+        writeLog(currentLog);
     }
     m_rowChanged = false;
 }
@@ -1060,4 +1062,25 @@ void MainWindow::actionAbout()
 void MainWindow::actionShowHelp()
 {
     QDesktopServices::openUrl(QUrl("http://help.subtivals.org"));
+}
+
+QVariantHash MainWindow::readLog()
+{
+      QString val;
+      logFile->open(QIODevice::ReadOnly | QIODevice::Text);
+      val = logFile->readAll();
+      logFile->close();
+      QJsonDocument json_log = QJsonDocument::fromJson(val.toUtf8());
+      QJsonObject logs = json_log.object();
+      QVariantHash log = logs.toVariantHash();
+      return log;
+}
+
+void MainWindow::writeLog(QVariantHash &updatedLogs)
+{
+    logFile->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    QJsonObject newLog = QJsonObject::fromVariantHash(updatedLogs);
+    QJsonDocument doc(newLog);
+    logFile->write(doc.toJson());
+    logFile->close();
 }
