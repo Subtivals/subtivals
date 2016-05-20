@@ -589,7 +589,7 @@ void MainWindow::actionOpen()
     if (!fileName.isEmpty()) {
         m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();
         openFile(fileName);
-        logFile->open(QIODevice::WriteOnly | QIODevice::Append);
+        logFile->open(QIODevice::WriteOnly | QIODevice::Truncate);
         QTextStream ts(logFile);
         QDateTime current = QDateTime::currentDateTime();
         QString sub_info = QString("[%1] Opened file: %2\r\n").arg(current.toString("yyyy-MM-dd hh:mm:ss"), fileName);
