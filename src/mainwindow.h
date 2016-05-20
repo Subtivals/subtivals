@@ -27,6 +27,7 @@
 #include <QString>
 #include <QFileSystemWatcher>
 #include <QLabel>
+#include <QFile>
 
 #include "script.h"
 
@@ -106,6 +107,8 @@ protected:
     void highlightSubtitles(qlonglong elapsed);
     QString ts2tc(qint64 p_timestamp, QString format = "hh:mm:ss.zzz");
     void setState(State p_state);
+    QVariantHash readLog();
+    void writeLog(QVariantHash &updatedLogs);
 private:
     State m_state;
     Ui::MainWindow *ui;
@@ -127,6 +130,7 @@ private:
     QLabel* m_scriptProperties;
     QLabel* m_countDown;
     QList<Subtitle*> m_currentSubtitles;
+    QFile* logFile;
 };
 
 #endif // MAINWINDOW_H

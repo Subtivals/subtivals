@@ -33,6 +33,10 @@
 #include <QMimeData>
 #include <QStyledItemDelegate>
 #include <QStyle>
+#include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QVariantHash>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -117,7 +121,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_rowChanged(false),
     m_filewatcher(new QFileSystemWatcher),
     m_scriptProperties(new QLabel(this)),
-    m_countDown(new QLabel(this))
+    m_countDown(new QLabel(this)),
+    logFile(new QFile("log_file.txt"))
 {
     ui->setupUi(this);
     ui->tableWidget->setItemDelegateForColumn(COLUMN_START, new SubtitleDurationDelegate());
@@ -587,6 +592,13 @@ void MainWindow::actionOpen()
     if (!fileName.isEmpty()) {
         m_lastFolder = QFileInfo(fileName).absoluteDir().absolutePath();
         openFile(fileName);
+
+        QVariantHash newLogs;
+        newLogs["last_updated"] = QDateTime::currentDateTime().toString();
+        newLogs["subtitle"]=  fileName;
+        newLogs["duration"] = ts2tc(m_script->totalDuration(), "hh:mm:ss");
+        newLogs["remaining"] = ts2tc(m_script->totalDuration(), "hh:mm:ss");
+        writeLog(newLogs);
     }
 }
 
@@ -872,6 +884,11 @@ void MainWindow::subtitleChanged(QList<Subtitle*> p_currentSubtitles)
         QWidget* withFocus = qApp->focusWidget();
         ui->tableWidget->selectRow(subtitleRow);
         if (withFocus) withFocus->setFocus();  // restore
+
+        QVariantHash currentLog = readLog();
+        currentLog["remaining"] = ts2tc(m_script->totalDuration() - msecsElapsed, "hh:mm:ss");
+        currentLog["last_updated"] = QDateTime::currentDateTime().toString();
+        writeLog(currentLog);
     }
     m_rowChanged = false;
 }
@@ -1045,4 +1062,25 @@ void MainWindow::actionAbout()
 void MainWindow::actionShowHelp()
 {
     QDesktopServices::openUrl(QUrl("http://help.subtivals.org"));
+}
+
+QVariantHash MainWindow::readLog()
+{
+      QString val;
+      logFile->open(QIODevice::ReadOnly | QIODevice::Text);
+      val = logFile->readAll();
+      logFile->close();
+      QJsonDocument json_log = QJsonDocument::fromJson(val.toUtf8());
+      QJsonObject logs = json_log.object();
+      QVariantHash log = logs.toVariantHash();
+      return log;
+}
+
+void MainWindow::writeLog(QVariantHash &updatedLogs)
+{
+    logFile->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    QJsonObject newLog = QJsonObject::fromVariantHash(updatedLogs);
+    QJsonDocument doc(newLog);
+    logFile->write(doc.toJson());
+    logFile->close();
 }
