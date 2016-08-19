@@ -47,7 +47,8 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     ../resources/icons.qrc \
-    ../resources/samples.qrc
+    ../resources/samples.qrc \
+    ../resources/qdarkstyle/uistyle.qrc
 
 TRANSLATIONS = ../locale/fr_FR.ts \
     ../locale/es_ES.ts \
@@ -104,3 +105,7 @@ OTHER_FILES += \
     ../debian/rules \
     ../debian/changelog \
     ../win-installer/installer.nsi
+
+DISTFILES += \
+    ../resources/qdarkstyle/uistyle.qss \
+    ../resources/qdarkstyle/rc/checkbox_indeterminate_disabled.png

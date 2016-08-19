@@ -154,9 +154,9 @@ void WebLive::addSubtitle(Subtitle *p_subtitle)
     if (p_subtitle->nbLines() > 0) {
         // XXX: second line is ignored.
         const SubtitleLine &firstLine = p_subtitle->lines().at(0);
-        if (!firstLine.position().x() > 0)
+        if (!(firstLine.position().x() > 0) ) //Fix parenthesis warning
             jsonPosition["x"] = firstLine.position().x();
-        if (!firstLine.position().y() > 0)
+        if (!(firstLine.position().y() > 0) ) //Fix parenthesis warning
             jsonPosition["y"] = firstLine.position().y();
     }
 
