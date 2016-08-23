@@ -300,7 +300,7 @@ QMenu::right-arrow {
 
 QWidget:disabled
 {
-    color: #454545;
+    color: #808080;
     background-color: #31363b;
 }
 

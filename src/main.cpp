@@ -46,9 +46,12 @@ int main(int argc, char *argv[])
 			f.open(QFile::ReadOnly | QFile::Text);
 			QTextStream ts(&f);
 			qApp->setStyleSheet(ts.readAll());
+			QPalette pal=qApp->palette();
+			pal.setColor(QPalette::Base,QColor(0,0,0,255));
+			pal.setColor(QPalette::Highlight,QColor(0,85,0));
+			qApp->setPalette(pal);
 		}
 	}
-
 
     // Load translations (i18n) from system locale
     QString locale = QLocale::system().name();
