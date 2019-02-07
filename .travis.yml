@@ -28,4 +28,6 @@ script:
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
   - ./linuxdeployqt*.AppImage ./appdir/usr/bin/* -bundle-non-qt-libs
   - ./linuxdeployqt*.AppImage ./appdir/subtivals.desktop -appimage
-  - curl --upload-file ./subtivals*.AppImage https://transfer.sh/subtivals-git.$(git rev-parse --short HEAD)-x86_64.AppImage
+
+after_success:
+  - curl --upload-file ./Subtivals*.AppImage https://transfer.sh/subtivals-git.$(git rev-parse --short HEAD)-x86_64.AppImage
