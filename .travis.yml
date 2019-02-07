@@ -8,7 +8,7 @@ before_install:
   - sudo apt-get update
 
 install:
-  - sudo apt-get install qt58base qt58svg qt58xmlpatterns qt58websockets
+  - sudo apt-get install qt58tools qt58base qt58svg qt58xmlpatterns qt58websockets
   - source /opt/qt58/bin/qt58-env.sh
   - sudo apt-get -y install checkinstall
   - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage"
