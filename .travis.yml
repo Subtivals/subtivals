@@ -15,9 +15,10 @@ install:
   - chmod a+x linuxdeployqt*.AppImage
 
 script:
-  - /opt/qt58/bin/qmake PREFIX=/usr
+  # Compile project
+  - /opt/qt58/bin/qmake PREFIX=/usr src/subtivals.pro
   - make
-  - # Generate AppImage
+  # Generate AppImage
   - sudo checkinstall --pkgname=app --pkgversion="1" --pkgrelease="1" --backup=no --fstrans=no --default --deldoc
   - mkdir -p appdir/usr/bin ; cd appdir
   - dpkg -x ../app_1-1_amd64.deb . ; find .
