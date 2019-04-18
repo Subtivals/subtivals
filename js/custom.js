@@ -63,7 +63,13 @@ function fullScreenContainer() {
 /* --- owlCarousel ------------- */
 
 function owlCarousel() {
-    $("#owl-example").owlCarousel({
+    $("#owl-screenshots").owlCarousel({
+      lazyLoad : true,
+      items: 3,
+      theme: "owl-theme-main"
+    });
+
+    $("#owl-in-situ").owlCarousel({
       lazyLoad : true,
       items: 3,
       theme: "owl-theme-main"
