@@ -55,6 +55,10 @@
     filter: gray;
 }
 
+.logos img.black {
+    background-color: black;
+}
+
 .logos a:hover img {
     opacity: 1;
 
