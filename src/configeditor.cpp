@@ -158,13 +158,14 @@ void ConfigEditor::restore() {
 }
 
 void ConfigEditor::reset() {
-  int nbScreens = qApp->desktop()->screenCount();
+  QList<QScreen *> screens = QGuiApplication::screens();
+  int nbScreens = screens.size();
   int defaultScreen = nbScreens > 1 ? 1 : 0;
   // Reload from settings
   QSettings settings;
   settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
   int screen = settings.value("screen", defaultScreen).toInt();
-  QRect screenGeom = qApp->desktop()->screenGeometry(screen);
+  QRect screenGeom = screens.at(screen)->geometry();
   int x = settings.value("x", 0).toInt();
   int y = settings.value("y", screenGeom.height() - DEFAULT_HEIGHT).toInt();
   int w = settings.value("w", screenGeom.width()).toInt();
