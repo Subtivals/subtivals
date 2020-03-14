@@ -7,16 +7,15 @@ namespace Ui {
 class Wizard;
 }
 
-class Wizard : public QWizard
-{
-    Q_OBJECT
+class Wizard : public QWizard {
+  Q_OBJECT
 
 public:
-    explicit Wizard(QWidget *parent = 0);
-    ~Wizard();
+  explicit Wizard(QWidget *parent = nullptr);
+  ~Wizard();
 
 private:
-    Ui::Wizard *ui;
+  Ui::Wizard *ui;
 };
 
 #endif // WIZARD_H

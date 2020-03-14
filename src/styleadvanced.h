@@ -9,20 +9,20 @@ namespace Ui {
 class StyleAdvanced;
 }
 
-class StyleAdvanced : public QDialog
-{
-    Q_OBJECT
-    
+class StyleAdvanced : public QDialog {
+  Q_OBJECT
+
 public:
-    explicit StyleAdvanced(Style* p_style, QWidget *parent = 0);
-    ~StyleAdvanced();
+  explicit StyleAdvanced(Style *p_style, QWidget *parent = nullptr);
+  ~StyleAdvanced();
 signals:
-    void styleChanged();
+  void styleChanged();
 protected slots:
-    void apply();
+  void apply();
+
 private:
-    Ui::StyleAdvanced *ui;
-    Style* m_style;
+  Ui::StyleAdvanced *ui;
+  Style *m_style;
 };
 
 #endif // STYLEADVANCED_H
