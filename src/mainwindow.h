@@ -98,6 +98,7 @@ public slots:
   void actionJumpLongest();
   void knownFactorChosen(int);
   void speedFactorChanged(double);
+  void actionAdvancedSettings();
 
 protected:
   bool canNext();

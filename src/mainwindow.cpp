@@ -1085,3 +1085,9 @@ void MainWindow::knownFactorChosen(int) {
   // Adjust spinbox to known factor.
   ui->speedFactor->setValue(ui->knownFactors->currentData().toDouble());
 }
+
+void MainWindow::actionAdvancedSettings() {
+  QSettings settings;
+  QDesktopServices::openUrl(
+      QUrl(QString("file://%1").arg(settings.fileName())));
+}

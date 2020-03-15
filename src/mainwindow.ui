@@ -288,9 +288,10 @@
      <string>Options</string>
     </property>
     <addaction name="actionPreferences"/>
+    <addaction name="actionShowMilliseconds"/>
     <addaction name="actionEditShortcuts"/>
     <addaction name="actionPersistentHide"/>
-    <addaction name="actionShowMilliseconds"/>
+    <addaction name="actionAdvancedSettings"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -664,6 +665,11 @@
    </property>
    <property name="toolTip">
     <string>Highlight the longest line among all subtitles</string>
+   </property>
+  </action>
+  <action name="actionAdvancedSettings">
+   <property name="text">
+    <string>Advanced settings...</string>
    </property>
   </action>
  </widget>
@@ -1056,6 +1062,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAdvancedSettings</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionAdvancedSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -1082,8 +1104,5 @@
   <slot>actionShowMilliseconds(bool)</slot>
   <slot>actionShowWizard()</slot>
   <slot>actionOperatorPrintout()</slot>
-  <slot>knownFactorChosen(int)</slot>
-  <slot>speedFactorChanged(double)</slot>
-  <slot>actionJumpLongest()</slot>
  </slots>
 </ui>
