@@ -36,6 +36,10 @@
 #define COLUMN_TEXT 3
 #define COLUMN_COMMENTS 4
 
+static QList<double> FACTORS_VALUES = {23.976, 24, 25, 29.97, 30};
+static QStringList FACTORS_LABELS = {"23,976 fps", "24 fps", "25 fps",
+                                     "29,97 fps", "30 fps"};
+
 class ConfigEditor;
 class ShortcutEditor;
 class Player;
@@ -91,6 +95,8 @@ public slots:
   void actionShowMilliseconds(bool);
   void actionShowWizard();
   void actionOperatorPrintout();
+  void knownFactorChosen(int);
+  void speedFactorChanged(double);
 
 protected:
   bool canNext();

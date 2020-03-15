@@ -146,6 +146,19 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableWidget->setFocus();
   setAcceptDrops(true);
 
+  // Build the list of known factors (all combinations).
+  ui->knownFactors->addItem("", 100.0);
+  for (int i = 0; i < FACTORS_LABELS.size(); i++) {
+    for (int j = 0; j < FACTORS_LABELS.size(); j++) {
+      if (i == j) {
+        continue;
+      }
+      ui->knownFactors->addItem(
+          QString("%1 → %2").arg(FACTORS_LABELS[i]).arg(FACTORS_LABELS[j]),
+          FACTORS_VALUES[j] / FACTORS_VALUES[i] * 100.0);
+    }
+  }
+
   // Disable print out by default.
   ui->actionOperatorPrintout->setEnabled(false);
 
@@ -1005,4 +1018,15 @@ void MainWindow::actionAbout() {
 
 void MainWindow::actionShowHelp() {
   QDesktopServices::openUrl(QUrl("http://help.subtivals.org"));
+}
+
+void MainWindow::speedFactorChanged(double p_factor) {
+  if (FACTORS_VALUES.indexOf(p_factor) >= 0) {
+    ui->knownFactors->setCurrentIndex(-1);
+  }
+}
+
+void MainWindow::knownFactorChosen(int) {
+  // Adjust spinbox to known factor.
+  ui->speedFactor->setValue(ui->knownFactors->currentData().toDouble());
 }

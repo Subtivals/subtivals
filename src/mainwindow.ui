@@ -21,6 +21,30 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="1">
+       <widget class="QLabel" name="userDelay">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>User delay:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" rowspan="2">
+       <widget class="QCheckBox" name="enableSpeedFactor">
+        <property name="text">
+         <string>Adjust speed</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="font">
@@ -63,60 +87,56 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>User delay:</string>
+      <item row="0" column="4" rowspan="2">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <property name="horizontalSpacing">
+         <number>0</number>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="userDelay">
-        <property name="text">
-         <string>-</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2" rowspan="2">
-       <widget class="QCheckBox" name="enableSpeedFactor">
-        <property name="text">
-         <string>Adjust speed</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3" rowspan="2">
-       <widget class="QDoubleSpinBox" name="speedFactor">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="suffix">
-         <string>%</string>
-        </property>
-        <property name="decimals">
-         <number>10</number>
-        </property>
-        <property name="minimum">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>199.900000000000006</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>100.000000000000000</double>
-        </property>
-       </widget>
+        <item row="0" column="0">
+         <widget class="QDoubleSpinBox" name="speedFactor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+          <property name="minimum">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>199.900000000000006</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="knownFactors">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Common framerates conversions</string>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -245,7 +265,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>27</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1010,6 +1030,54 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>enableSpeedFactor</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>knownFactors</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>460</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>knownFactors</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>knownFactorChosen(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>460</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>420</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>speedFactor</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>speedFactorChanged(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>361</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>420</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -1036,5 +1104,7 @@
   <slot>actionShowMilliseconds(bool)</slot>
   <slot>actionShowWizard()</slot>
   <slot>actionOperatorPrintout()</slot>
+  <slot>knownFactorChosen(int)</slot>
+  <slot>speedFactorChanged(double)</slot>
  </slots>
 </ui>
