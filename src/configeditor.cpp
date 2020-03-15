@@ -62,6 +62,8 @@ ConfigEditor::ConfigEditor(QWidget *parent)
   }
   // Use last preset, this will trigger presetChanged()
   ui->presets->setCurrentIndex(settings.value("preset", 0).toInt());
+
+  ui->presets->installEventFilter(this);
 }
 
 ConfigEditor::~ConfigEditor() {
@@ -89,6 +91,18 @@ void ConfigEditor::mouseDoubleClickEvent(QMouseEvent *event) {
   QWidget *clicked = this->childAt(event->pos());
   if (clicked == ui->presetsGroupBox) {
     ui->presets->setEditable(!ui->presets->isEditable());
+  }
+}
+
+bool ConfigEditor::eventFilter(QObject *object, QEvent *event) {
+  // Exit editable mode of preset when pressing Enter/Return.
+  if (event->type() == QEvent::KeyPress) {
+    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    if ((keyEvent->key() == Qt::Key_Enter ||
+         keyEvent->key() == Qt::Key_Return) &&
+        object == ui->presets) {
+      ui->presets->setEditable(false);
+    }
   }
 }
 

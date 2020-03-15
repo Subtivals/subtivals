@@ -46,6 +46,7 @@ public:
 
   void mouseReleaseEvent(QMouseEvent *event);
   void mouseDoubleClickEvent(QMouseEvent *event);
+  bool eventFilter(QObject *object, QEvent *event);
 signals:
   // Live options
   void hideDesktop(bool);
