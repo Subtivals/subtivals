@@ -140,6 +140,9 @@
           <height>0</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Use prefix &quot;:&quot; and number to jump to line</string>
+        </property>
        </widget>
       </item>
       <item row="0" column="2">
@@ -245,7 +248,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>27</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
