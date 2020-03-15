@@ -18,6 +18,7 @@
 #include <QDesktopWidget>
 #include <QPainter>
 #include <QPushButton>
+#include <QScreen>
 #include <QtCore/QSettings>
 
 #include "configeditor.h"
@@ -45,11 +46,11 @@ ConfigEditor::ConfigEditor(QWidget *parent)
   adjustSize();
   setMaximumSize(size());
 
-  QDesktopWidget *dw = QApplication::desktop();
-  for (int i = 0; i < dw->screenCount(); i++) {
-    ui->screens->addItem(QString(tr("Monitor %1")).arg(i));
+  QList<QScreen *> screens = QGuiApplication::screens();
+  for (int i = 0; i < screens.size(); i++) {
+    ui->screens->addItem(QString(tr("Monitor %1")).arg(screens.at(i)->name()));
   }
-  ui->hideDesktop->setEnabled(dw->screenCount() > 1);
+  ui->hideDesktop->setEnabled(screens.size() > 1);
 
   for (int i = 1; i <= NB_PRESETS; i++) {
     ui->presets->addItem(QString(tr("Preset %1")).arg(i));
@@ -157,13 +158,14 @@ void ConfigEditor::restore() {
 }
 
 void ConfigEditor::reset() {
-  int nbScreens = qApp->desktop()->screenCount();
+  QList<QScreen *> screens = QGuiApplication::screens();
+  int nbScreens = screens.size();
   int defaultScreen = nbScreens > 1 ? 1 : 0;
   // Reload from settings
   QSettings settings;
   settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
   int screen = settings.value("screen", defaultScreen).toInt();
-  QRect screenGeom = qApp->desktop()->screenGeometry(screen);
+  QRect screenGeom = screens.at(screen)->geometry();
   int x = settings.value("x", 0).toInt();
   int y = settings.value("y", screenGeom.height() - DEFAULT_HEIGHT).toInt();
   int w = settings.value("w", screenGeom.width()).toInt();
