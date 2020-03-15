@@ -28,11 +28,11 @@ Style: Down-Right,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 0,0:00:00.00,0:00:12.00,Center,,0000,0000,0000,,Center 1\NCenter 2
-Dialogue: 0,0:00:00.25,0:00:10.00,Up-Right,,0000,0000,0000,,Up-Right 1\NUp-Right 2
-Dialogue: 0,0:00:00.50,0:00:10.25,Up-Center,,0000,0000,0000,,Up-Center 1\NUp-Center 2
-Dialogue: 0,0:00:00.75,0:00:10.50,Up-Left,,0000,0000,0000,,Up-Left 1\NUp-Left 2
-Dialogue: 0,0:00:01.00,0:00:10.75,Center-Left,,0000,0000,0000,,Center-Left 1\NCenter-Left 2
-Dialogue: 0,0:00:01.25,0:00:11.00,Down-Left,,0000,0000,0000,,Down-Left 1\NDown-Left 2
-Dialogue: 0,0:00:01.50,0:00:11.25,Down-Center,,0000,0000,0000,,Down-Center 1\NDown-Center 2
-Dialogue: 0,0:00:01.75,0:00:11.50,Down-Right,,0000,0000,0000,,Down-Right 1\NDown-Right 2
-Dialogue: 0,0:00:02.00,0:00:11.75,Center-Right,,0000,0000,0000,,Center-Right 1\NCenter-Right 2
+Dialogue: 0,0:00:00.00,0:00:10.00,Up-Right,,0000,0000,0000,,Up-Right 1\NUp-Right 2
+Dialogue: 0,0:00:00.00,0:00:10.25,Up-Center,,0000,0000,0000,,Up-Center 1\NUp-Center 2
+Dialogue: 0,0:00:00.00,0:00:10.50,Up-Left,,0000,0000,0000,,Up-Left 1\NUp-Left 2
+Dialogue: 0,0:00:00.00,0:00:10.75,Center-Left,,0000,0000,0000,,Center-Left 1\NCenter-Left 2
+Dialogue: 0,0:00:00.00,0:00:11.00,Down-Left,,0000,0000,0000,,Down-Left 1\NDown-Left 2
+Dialogue: 0,0:00:00.00,0:00:11.25,Down-Center,,0000,0000,0000,,Down-Center 1\NDown-Center 2
+Dialogue: 0,0:00:00.00,0:00:11.50,Down-Right,,0000,0000,0000,,Down-Right 1\NDown-Right 2
+Dialogue: 0,0:00:00.00,0:00:11.75,Center-Right,,0000,0000,0000,,Center-Right 1\NCenter-Right 2
