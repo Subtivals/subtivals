@@ -959,19 +959,25 @@ void MainWindow::search() {
     return;
 
   QString search = ui->searchField->text();
+
   int found = -1;
 
-  // Loop over the whole list, start from current
-  int nb = m_script->subtitlesCount();
-  int i = ui->tableWidget->currentRow() + 1;
-  int max = i + nb;
-  for (; i < max; i++) {
-    const Subtitle *e = m_script->subtitleAt(i % nb);
-    if (e->text().contains(search, Qt::CaseInsensitive)) {
-      found = i % nb;
-      break;
+  if (search.startsWith(":")) {
+    found = search.replace(":", "").toInt() - 1;
+  } else {
+    // Loop over the whole list, start from current
+    int nb = m_script->subtitlesCount();
+    int i = ui->tableWidget->currentRow() + 1;
+    int max = i + nb;
+    for (; i < max; i++) {
+      const Subtitle *e = m_script->subtitleAt(i % nb);
+      if (e->text().contains(search, Qt::CaseInsensitive)) {
+        found = i % nb;
+        break;
+      }
     }
   }
+
   // Select the subtitle in the list
   if (found < 0) {
     ui->searchField->setStyleSheet("QLineEdit {color: red;}");
