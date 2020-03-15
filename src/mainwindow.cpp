@@ -188,6 +188,17 @@ MainWindow::MainWindow(QWidget *parent)
   m_timerFileChange.setSingleShot(true);
   connect(&m_timerFileChange, SIGNAL(timeout()), this, SLOT(reloadScript()));
 
+  // Initialize recent files actions.
+  for (int i = 0; i < MAX_RECENT_FILES; ++i) {
+    QAction *action = new QAction(this);
+    action->setVisible(false);
+    connect(action, SIGNAL(triggered()), this, SLOT(openRecentFile()));
+    m_recentFileActions.insert(i, action);
+    ui->menuFile->insertAction(ui->actionExit, action);
+  }
+  ui->menuFile->insertSeparator(ui->actionExit);
+  updateRecentFileActions();
+
   // Initialize shortcuts
   m_shortcutEditor->registerAction(ui->actionPlay);
   m_shortcutEditor->registerAction(ui->actionPause);
@@ -331,6 +342,13 @@ ConfigEditor *MainWindow::configEditor() { return m_preferences; }
 
 const Player *MainWindow::player() { return m_player; }
 
+void MainWindow::openRecentFile() {
+  QAction *action = qobject_cast<QAction *>(sender());
+  if (action) {
+    openFile(action->data().toString());
+  }
+}
+
 void MainWindow::actionShowWizard() {
   Wizard wizard;
   wizard.setPixmap(Wizard::LogoPixmap, QPixmap(":/icons/subtivals.svg"));
@@ -403,11 +421,24 @@ void MainWindow::openFile(const QString &p_fileName) {
       QMessageBox::warning(
           this, tr("Encoding error"),
           tr("Looks like the subtitles were not saved in a valid UTF-8 file."));
+      return;
     }
   } else {
     QMessageBox::warning(this, tr("Error with subtitles"),
                          tr("Could not read the file specified."));
+    return;
   }
+
+  // Keep track of last opened files.
+  QSettings settings;
+  QStringList files = settings.value("recentFileList").toStringList();
+  files.removeAll(p_fileName);
+  files.prepend(p_fileName);
+  while (files.size() > MAX_RECENT_FILES) {
+    files.removeLast();
+  }
+  settings.setValue("recentFileList", files);
+  updateRecentFileActions();
 
   // Create the script & setup the GUI
   m_script = new Script(p_fileName, m_charsRate, m_subtitleInterval,
@@ -509,6 +540,24 @@ void MainWindow::closeFile() {
   setWindowTitle(tr("Subtivals"));
   m_scriptProperties->setText("");
   ui->tableWidget->setRowCount(0);
+}
+
+void MainWindow::updateRecentFileActions() {
+  QSettings settings;
+  QStringList files = settings.value("recentFileList").toStringList();
+
+  int numRecentFiles = qMin(files.size(), MAX_RECENT_FILES);
+  for (int i = 0; i < numRecentFiles; ++i) {
+    QString strippedName = QFileInfo(files[i]).fileName();
+    QString text = tr("&%1 %2").arg(i + 1).arg(strippedName);
+    m_recentFileActions[i]->setText(text);
+    m_recentFileActions[i]->setData(files[i]);
+    m_recentFileActions[i]->setVisible(true);
+  }
+  for (int j = numRecentFiles; j < MAX_RECENT_FILES; ++j) {
+    m_recentFileActions[j]->setVisible(false);
+  }
+  // ui->separatorRecentFilesEnd->setVisible(numRecentFiles > 0);
 }
 
 void MainWindow::refreshDurations() {
