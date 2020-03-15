@@ -276,8 +276,11 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="separator"/>
     <addaction name="actionEnableReload"/>
+    <addaction name="actionJumpLongest"/>
     <addaction name="actionOperatorPrintout"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -653,6 +656,14 @@
    </property>
    <property name="toolTip">
     <string>Hide mode is fully manual</string>
+   </property>
+  </action>
+  <action name="actionJumpLongest">
+   <property name="text">
+    <string>Jump to longest line</string>
+   </property>
+   <property name="toolTip">
+    <string>Highlight the longest line among all subtitles</string>
    </property>
   </action>
  </widget>
@@ -1045,54 +1056,6 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>enableSpeedFactor</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>knownFactors</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>119</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>460</x>
-     <y>119</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>knownFactors</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>knownFactorChosen(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>460</x>
-     <y>119</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>420</x>
-     <y>249</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>speedFactor</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>speedFactorChanged(double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>361</x>
-     <y>119</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>420</x>
-     <y>249</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -1121,5 +1084,6 @@
   <slot>actionOperatorPrintout()</slot>
   <slot>knownFactorChosen(int)</slot>
   <slot>speedFactorChanged(double)</slot>
+  <slot>actionJumpLongest()</slot>
  </slots>
 </ui>

@@ -95,6 +95,7 @@ public slots:
   void actionShowMilliseconds(bool);
   void actionShowWizard();
   void actionOperatorPrintout();
+  void actionJumpLongest();
   void knownFactorChosen(int);
   void speedFactorChanged(double);
 

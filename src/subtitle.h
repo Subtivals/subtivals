@@ -64,6 +64,7 @@ public:
   bool isCorrected() const;
   void correct(bool);
   int nbLines() const;
+  int charsWidth() const;
   void setPosition(int p_x, int p_y);
   const QList<SubtitleLine> lines() const;
 
