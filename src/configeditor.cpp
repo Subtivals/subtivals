@@ -52,12 +52,19 @@ ConfigEditor::ConfigEditor(QWidget *parent)
   }
   ui->hideDesktop->setEnabled(screens.size() > 1);
 
-  for (int i = 1; i <= NB_PRESETS; i++) {
-    ui->presets->addItem(QString(tr("Preset %1")).arg(i));
+  // Load known presets.
+  QSettings settings;
+  for (int i = 0; i < NB_PRESETS; i++) {
+    settings.beginGroup(QString("ScreenGeometry-%1").arg(i));
+    QString name =
+        settings.value("name", QString(tr("Preset %1")).arg(i + 1)).toString();
+    ui->presets->addItem(name);
+    settings.endGroup();
   }
   // Use last preset, this will trigger presetChanged()
-  QSettings settings;
   ui->presets->setCurrentIndex(settings.value("preset", 0).toInt());
+
+  ui->presets->installEventFilter(this);
 }
 
 ConfigEditor::~ConfigEditor() {
@@ -73,12 +80,44 @@ void ConfigEditor::setScript(Script *script) {
   reset();
 }
 
+void ConfigEditor::mouseReleaseEvent(QMouseEvent *event) {
+  QWidget *clicked = this->childAt(event->pos());
+  if (clicked != ui->presetsGroupBox) {
+    ui->presets->setEditable(false);
+  }
+}
+
+void ConfigEditor::mouseDoubleClickEvent(QMouseEvent *event) {
+  event->setAccepted(true);
+  QWidget *clicked = this->childAt(event->pos());
+  if (clicked == ui->presetsGroupBox) {
+    ui->presets->setEditable(!ui->presets->isEditable());
+  }
+}
+
+bool ConfigEditor::eventFilter(QObject *object, QEvent *event) {
+  // Exit editable mode of preset when pressing Enter/Return.
+  if (event->type() == QEvent::KeyPress) {
+    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    if ((keyEvent->key() == Qt::Key_Enter ||
+         keyEvent->key() == Qt::Key_Return) &&
+        object == ui->presets) {
+      ui->presets->setEditable(false);
+    }
+  }
+}
+
 void ConfigEditor::presetChanged(int p_preset) {
   if (m_preset >= 0) // Do not save while constructing
     save();
   m_styleEditor->setPreset(p_preset);
   m_preset = p_preset;
   reset();
+}
+
+void ConfigEditor::presetRenamed(QString text) {
+  ui->presets->setItemText(m_preset, text);
+  save();
 }
 
 void ConfigEditor::screenChanged(const QRect &r) {
@@ -196,6 +235,7 @@ void ConfigEditor::save() {
   // Save settings
   QSettings settings;
   settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
+  settings.setValue("name", ui->presets->itemText(m_preset));
   settings.setValue("screen", ui->screens->currentIndex());
   settings.setValue("x", ui->x->text());
   settings.setValue("y", ui->y->text());

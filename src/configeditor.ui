@@ -24,7 +24,10 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="presetsGroupBox">
+       <property name="toolTip">
+        <string>Double click to rename preset</string>
+       </property>
        <property name="title">
         <string>Saved presets:</string>
        </property>
@@ -662,6 +665,22 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>presets</sender>
+   <signal>editTextChanged(QString)</signal>
+   <receiver>ConfigEditor</receiver>
+   <slot>presetRenamed(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>233</x>
+     <y>156</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>233</x>
+     <y>268</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>webliveEnabled(bool)</signal>
@@ -669,5 +688,6 @@ p, li { white-space: pre-wrap; }
   <slot>onClicked(QAbstractButton*)</slot>
   <slot>presetChanged(int)</slot>
   <slot>chooseColor()</slot>
+  <slot>presetRenamed(QString)</slot>
  </slots>
 </ui>

@@ -43,6 +43,10 @@ public:
   explicit ConfigEditor(QWidget *parent = nullptr);
   ~ConfigEditor();
   void setScript(Script *script);
+
+  void mouseReleaseEvent(QMouseEvent *event);
+  void mouseDoubleClickEvent(QMouseEvent *event);
+  bool eventFilter(QObject *object, QEvent *event);
 signals:
   // Live options
   void hideDesktop(bool);
@@ -65,6 +69,7 @@ public slots:
   void save();
   void onClicked(QAbstractButton *);
   void chooseColor();
+  void presetRenamed(QString);
 
   void enableWeblive(bool);
   void webliveConnected(bool p_state, QString p_url);
