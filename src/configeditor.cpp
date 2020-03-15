@@ -38,8 +38,6 @@ ConfigEditor::ConfigEditor(QWidget *parent)
   connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
   connect(ui->hideDesktop, SIGNAL(toggled(bool)), this,
           SIGNAL(hideDesktop(bool)));
-  connect(ui->persistentHide, SIGNAL(toggled(bool)), this,
-          SIGNAL(persistentHide(bool)));
 
   connect(ui->enableWeblive, SIGNAL(toggled(bool)), this,
           SIGNAL(webliveEnabled(bool)));
@@ -163,8 +161,6 @@ void ConfigEditor::reset() {
   int defaultScreen = nbScreens > 1 ? 1 : 0;
   // Reload from settings
   QSettings settings;
-  bool persistentHide = settings.value("persistentHide", false).toBool();
-  ui->persistentHide->setChecked(persistentHide);
   settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
   int screen = settings.value("screen", defaultScreen).toInt();
   QRect screenGeom = qApp->desktop()->screenGeometry(screen);
@@ -197,7 +193,6 @@ void ConfigEditor::reset() {
 void ConfigEditor::save() {
   // Save settings
   QSettings settings;
-  settings.setValue("persistentHide", ui->persistentHide->isChecked());
   settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
   settings.setValue("screen", ui->screens->currentIndex());
   settings.setValue("x", ui->x->text());

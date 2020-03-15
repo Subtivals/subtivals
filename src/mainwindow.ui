@@ -245,7 +245,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>27</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -263,6 +263,7 @@
     </property>
     <addaction name="actionPreferences"/>
     <addaction name="actionEditShortcuts"/>
+    <addaction name="actionPersistentHide"/>
     <addaction name="actionShowMilliseconds"/>
    </widget>
    <widget class="QMenu" name="menuAide">
@@ -618,6 +619,17 @@
   <action name="actionOperatorPrintout">
    <property name="text">
     <string>Operator listing...</string>
+   </property>
+  </action>
+  <action name="actionPersistentHide">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Persistent hide</string>
+   </property>
+   <property name="toolTip">
+    <string>Hide mode is fully manual</string>
    </property>
   </action>
  </widget>

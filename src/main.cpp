@@ -74,8 +74,6 @@ int main(int argc, char *argv[]) {
                    SLOT(changeGeometry(int, QRect)));
   QObject::connect(w.configEditor(), SIGNAL(hideDesktop(bool)), &f,
                    SLOT(toggleHideDesktop(bool)));
-  QObject::connect(w.configEditor(), SIGNAL(persistentHide(bool)), &w,
-                   SLOT(persistentHide(bool)));
   QObject::connect(w.configEditor(), SIGNAL(rotate(double)), &f,
                    SLOT(rotate(double)));
   QObject::connect(w.configEditor(), SIGNAL(color(QColor)), &f,

@@ -46,7 +46,6 @@ public:
 signals:
   // Live options
   void hideDesktop(bool);
-  void persistentHide(bool);
   void webliveEnabled(bool);
 
   // Presets
