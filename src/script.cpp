@@ -38,8 +38,12 @@ bool compareSubtitleStartTime(const Subtitle *s1, const Subtitle *s2) {
   return s1->msseStart() < s2->msseStart();
 }
 
-Script::Script(const QString &p_fileName, QObject *p_parent)
-    : QObject(p_parent), m_fileName(p_fileName) {
+Script::Script(const QString &p_fileName, int p_charsRate,
+               int p_subtitleInterval, int p_subtitleMinDuration,
+               QObject *p_parent)
+    : QObject(p_parent), m_fileName(p_fileName), m_charsRate(p_charsRate),
+      m_subtitleInterval(p_subtitleInterval),
+      m_subtitleMinDuration(p_subtitleMinDuration) {
   // Read and process each line of the input file
   QFile file(m_fileName);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -86,6 +90,10 @@ int Script::totalDuration() const { return m_subtitles.last()->msseEnd(); }
 const QString &Script::fileName() const { return m_fileName; }
 
 const QString &Script::title() const { return m_title; }
+
+int Script::charsRate() const { return m_charsRate; };
+int Script::subtitleInterval() const { return m_subtitleInterval; };
+int Script::subtitleMinDuration() const { return m_subtitleMinDuration; };
 
 Style *Script::style(const QString &p_name) const {
   // If style is unknown, return first one.
@@ -250,9 +258,9 @@ void Script::loadFromAss(QStringList content) {
         if (key != "comment" && key != "dialogue")
           continue;
 
-        qint64 start =
+        int start =
             QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[1], "h:mm:ss.z"));
-        qint64 end =
+        int end =
             QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
 
         Style *style = this->style(subparts[3].trimmed());
@@ -361,8 +369,8 @@ void Script::loadFromSrt(QStringList content) {
 
   QStringList text;
   QString comments;
-  qint64 start = 0;
-  qint64 end = 0;
+  int start = 0;
+  int end = 0;
   foreach (QString line, content) {
     if (section == SECTION_NONE && QRegExp("^[0-9]+$").exactMatch(line)) {
       section = SECTION_INFOS;
@@ -409,8 +417,8 @@ void Script::loadFromTxt(QStringList content) {
 
   QStringList text;
   QString comments;
-  qint64 start = 0;
-  qint64 end = 0;
+  int start = 0;
+  int end = 0;
   SectionType section = SECTION_NONE;
   foreach (QString line, content) {
     if (section == SECTION_NONE) {
@@ -510,10 +518,8 @@ void Script::loadFromXml(QString content) {
 
     QString timeIn = node.toElement().attribute("TimeIn");
     QString timeOut = node.toElement().attribute("TimeOut");
-    qint64 start =
-        QTime(0, 0, 0).msecsTo(QTime::fromString(timeIn, "h:mm:ss:z"));
-    qint64 end =
-        QTime(0, 0, 0).msecsTo(QTime::fromString(timeOut, "h:mm:ss:z"));
+    int start = QTime(0, 0, 0).msecsTo(QTime::fromString(timeIn, "h:mm:ss:z"));
+    int end = QTime(0, 0, 0).msecsTo(QTime::fromString(timeOut, "h:mm:ss:z"));
 
     // Each <Text> becomes a subtitle with its own style (duplicated start/end).
     QDomNodeList textLines = node.childNodes();

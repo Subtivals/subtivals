@@ -19,21 +19,16 @@
 #include "script.h"
 #include "subtitle.h"
 
-#define AUTO_CHARS_RATE 12       // Chars/sec
-#define AUTO_EVENT_INTERVAL 1000 // msec
-#define AUTO_MIN_DURATION 1000   // msec
-
-Subtitle::Subtitle(int p_index, const QStringList &p_text, qint64 p_msseStart,
-                   qint64 p_msseEnd, const Script *p_script, QObject *p_parent)
+Subtitle::Subtitle(int p_index, const QStringList &p_text, int p_msseStart,
+                   int p_msseEnd, const Script *p_script, QObject *p_parent)
     : QObject(p_parent), m_index(p_index), m_script(p_script),
       m_msseStart(p_msseStart), m_msseEnd(p_msseEnd), m_style(nullptr),
       m_marginL(0), m_marginR(0), m_marginV(0), m_corrected(false) {
   setText(p_text);
 
   // Auto duration
-  m_autoDuration = 1000 * text().size() / AUTO_CHARS_RATE;
-  if (m_autoDuration < AUTO_MIN_DURATION)
-    m_autoDuration = AUTO_MIN_DURATION;
+  m_autoDuration = qMin(m_script->subtitleMinDuration(),
+                        1000 * text().size() / m_script->charsRate());
 
   // Check if end is before start
   if (m_msseStart > m_msseEnd) {
@@ -42,10 +37,10 @@ Subtitle::Subtitle(int p_index, const QStringList &p_text, qint64 p_msseStart,
   }
   // Check if no timecode is specified
   if (m_msseStart == 0 && m_msseEnd == 0) {
-    qint64 endPrevious = 0;
+    int endPrevious = 0;
     if (m_index > 0)
-      endPrevious =
-          m_script->subtitleAt(m_index - 1)->msseEnd() + AUTO_EVENT_INTERVAL;
+      endPrevious = m_script->subtitleAt(m_index - 1)->msseEnd() +
+                    m_script->subtitleMinDuration();
     m_msseStart = endPrevious;
     m_msseEnd = m_msseStart + m_autoDuration;
     m_corrected = true;

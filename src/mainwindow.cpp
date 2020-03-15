@@ -272,6 +272,9 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.beginGroup("AdvancedOptions");
   settings.setValue("warnCharsRate", m_warnCharsRate);
   settings.setValue("errorCharsRate", m_errorCharsRate);
+  settings.setValue("charsRate", m_charsRate);
+  settings.setValue("subtitleInterval", m_subtitleInterval);
+  settings.setValue("subtitleMinDuration", m_subtitleMinDuration);
   settings.endGroup();
 
   // When the main window is close : end of the app
@@ -318,6 +321,9 @@ void MainWindow::showEvent(QShowEvent *) {
   settings.beginGroup("AdvancedOptions");
   m_warnCharsRate = settings.value("warnCharsRate", 14).toInt();
   m_errorCharsRate = settings.value("warnCharsRate", 18).toInt();
+  m_charsRate = settings.value("charsRate", 12).toInt();
+  m_subtitleInterval = settings.value("subtitleInterval", 1000).toInt();
+  m_subtitleMinDuration = settings.value("subtitleMinDuration", 1000).toInt();
   settings.endGroup();
 }
 
@@ -404,7 +410,8 @@ void MainWindow::openFile(const QString &p_fileName) {
   }
 
   // Create the script & setup the GUI
-  m_script = new Script(p_fileName, this);
+  m_script = new Script(p_fileName, m_charsRate, m_subtitleInterval,
+                        m_subtitleMinDuration, this);
   m_player->setScript(m_script);
   m_preferences->setScript(m_script); // will reset()
   // Set the window title from the file name, without extention

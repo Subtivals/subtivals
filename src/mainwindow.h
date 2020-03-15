@@ -137,6 +137,9 @@ private:
 
   int m_warnCharsRate;
   int m_errorCharsRate;
+  int m_charsRate;
+  int m_subtitleInterval;
+  int m_subtitleMinDuration;
 };
 
 #endif // MAINWINDOW_H
