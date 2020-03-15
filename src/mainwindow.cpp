@@ -108,7 +108,8 @@ MainWindow::MainWindow(QWidget *parent)
       m_player(new Player()), m_playerThread(new QThread()),
       m_preferences(new ConfigEditor(this)),
       m_shortcutEditor(new ShortcutEditor(this)), m_selectSubtitle(true),
-      m_rowChanged(false), m_filewatcher(new QFileSystemWatcher),
+      m_rowChanged(false), m_reloadEnabled(false),
+      m_filewatcher(new QFileSystemWatcher),
       m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)) {
   ui->setupUi(this);
   ui->tableWidget->setItemDelegateForColumn(COLUMN_START,
@@ -265,6 +266,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
                     ui->actionDurationCorrection->isChecked());
   settings.setValue("showMilliseconds",
                     ui->actionShowMilliseconds->isChecked());
+  settings.setValue("persistentHide", ui->actionPersistentHide->isChecked());
   settings.endGroup();
   // When the main window is close : end of the app
   qApp->exit();
@@ -297,6 +299,8 @@ void MainWindow::showEvent(QShowEvent *) {
       settings.value("durationCorrection", false).toBool());
   ui->actionShowMilliseconds->setChecked(
       settings.value("showMilliseconds", false).toBool());
+  ui->actionPersistentHide->setChecked(
+      settings.value("persistentHide", false).toBool());
 
   if (settings.value("wizard", true).toBool()) {
     ui->actionShowWizard->trigger();
@@ -704,7 +708,9 @@ void MainWindow::actionPrevious() {
     int i = ui->tableWidget->currentRow();
     m_selectSubtitle = true;
     m_player->jumpTo(i - 1);
-    ui->actionHide->setChecked(false);
+    if (!ui->actionPersistentHide->isChecked()) {
+      ui->actionHide->setChecked(false);
+    }
   }
   ui->actionPrevious->setEnabled(canPrevious());
   ui->actionNext->setEnabled(canNext());
@@ -734,7 +740,10 @@ void MainWindow::actionNext() {
     m_player->jumpTo(row + 1);
   else
     m_player->jumpTo(row);
-  ui->actionHide->setChecked(false);
+  // If hide is not persistent, then show text on jump/next.
+  if (!ui->actionPersistentHide->isChecked()) {
+    ui->actionHide->setChecked(false);
+  }
   ui->actionPrevious->setEnabled(canPrevious());
   ui->actionNext->setEnabled(canNext());
 }
@@ -786,7 +795,9 @@ void MainWindow::actionSubtitleSelected(QModelIndex index) {
   // last subtitle of current subtitles
   subtitleChanged(m_currentSubtitles);
   // Update the UI
-  ui->actionHide->setChecked(false);
+  if (!ui->actionPersistentHide->isChecked()) {
+    ui->actionHide->setChecked(false);
+  }
   ui->actionPrevious->setEnabled(canPrevious());
   ui->actionNext->setEnabled(canNext());
 }
