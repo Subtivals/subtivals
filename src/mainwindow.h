@@ -91,6 +91,7 @@ public slots:
   void actionShowMilliseconds(bool);
   void actionShowWizard();
   void actionOperatorPrintout();
+  void persistentHide(bool);
 
 protected:
   bool canNext();
@@ -122,6 +123,7 @@ private:
   QTimer m_timerNext;
   bool m_rowChanged;
   bool m_reloadEnabled;
+  bool m_persistentHide;
   QFileSystemWatcher *m_filewatcher;
   QTimer m_timerFileChange;
   QLabel *m_scriptProperties;

@@ -108,7 +108,8 @@ MainWindow::MainWindow(QWidget *parent)
       m_player(new Player()), m_playerThread(new QThread()),
       m_preferences(new ConfigEditor(this)),
       m_shortcutEditor(new ShortcutEditor(this)), m_selectSubtitle(true),
-      m_rowChanged(false), m_filewatcher(new QFileSystemWatcher),
+      m_rowChanged(false), m_reloadEnabled(false), m_persistentHide(false),
+      m_filewatcher(new QFileSystemWatcher),
       m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)) {
   ui->setupUi(this);
   ui->tableWidget->setItemDelegateForColumn(COLUMN_START,
@@ -303,6 +304,8 @@ void MainWindow::actionShowWizard() {
   wizard.setWizardStyle(QWizard::ClassicStyle);
   wizard.exec();
 }
+
+void MainWindow::persistentHide(bool p_state) { m_persistentHide = p_state; }
 
 void MainWindow::actionOperatorPrintout() {
   QString fileName = QFileDialog::getSaveFileName(
@@ -691,7 +694,9 @@ void MainWindow::actionPrevious() {
     int i = ui->tableWidget->currentRow();
     m_selectSubtitle = true;
     m_player->jumpTo(i - 1);
-    ui->actionHide->setChecked(false);
+    if (!m_persistentHide) {
+      ui->actionHide->setChecked(false);
+    }
   }
   ui->actionPrevious->setEnabled(canPrevious());
   ui->actionNext->setEnabled(canNext());
@@ -721,7 +726,10 @@ void MainWindow::actionNext() {
     m_player->jumpTo(row + 1);
   else
     m_player->jumpTo(row);
-  ui->actionHide->setChecked(false);
+  // If hide is not persistent, then show text on jump/next.
+  if (!m_persistentHide) {
+    ui->actionHide->setChecked(false);
+  }
   ui->actionPrevious->setEnabled(canPrevious());
   ui->actionNext->setEnabled(canNext());
 }
@@ -773,7 +781,9 @@ void MainWindow::actionSubtitleSelected(QModelIndex index) {
   // last subtitle of current subtitles
   subtitleChanged(m_currentSubtitles);
   // Update the UI
-  ui->actionHide->setChecked(false);
+  if (!m_persistentHide) {
+    ui->actionHide->setChecked(false);
+  }
   ui->actionPrevious->setEnabled(canPrevious());
   ui->actionNext->setEnabled(canNext());
 }
