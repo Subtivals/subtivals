@@ -268,6 +268,12 @@ void MainWindow::closeEvent(QCloseEvent *) {
                     ui->actionShowMilliseconds->isChecked());
   settings.setValue("persistentHide", ui->actionPersistentHide->isChecked());
   settings.endGroup();
+
+  settings.beginGroup("AdvancedOptions");
+  settings.setValue("warnCharsRate", m_warnCharsRate);
+  settings.setValue("errorCharsRate", m_errorCharsRate);
+  settings.endGroup();
+
   // When the main window is close : end of the app
   qApp->exit();
 }
@@ -275,6 +281,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
 void MainWindow::showEvent(QShowEvent *) {
   // Restore settings
   QSettings settings;
+
   settings.beginGroup("MainWindow");
   m_lastFolder = settings.value("lastFolder", "").toString();
   resize(settings.value("size", size()).toSize());
@@ -306,7 +313,11 @@ void MainWindow::showEvent(QShowEvent *) {
     ui->actionShowWizard->trigger();
     settings.setValue("wizard", false);
   }
+  settings.endGroup();
 
+  settings.beginGroup("AdvancedOptions");
+  m_warnCharsRate = settings.value("warnCharsRate", 14).toInt();
+  m_errorCharsRate = settings.value("warnCharsRate", 18).toInt();
   settings.endGroup();
 }
 
@@ -435,11 +446,11 @@ void MainWindow::openFile(const QString &p_fileName) {
     // Show chars/sec
     textItem->setToolTip(tr("%1 chars/sec").arg(subtitle->charsRate()));
     // Warn if too fast !
-    if (subtitle->charsRate() > 14) {
+    if (subtitle->charsRate() > m_warnCharsRate) {
       QString icon(":/icons/chars-rate-warn.png");
       textItem->setToolTip(
           tr("Fast (%1 chars/sec)").arg(subtitle->charsRate()));
-      if (subtitle->charsRate() > 18) {
+      if (subtitle->charsRate() > m_errorCharsRate) {
         icon = ":/icons/chars-rate-error.png";
         textItem->setToolTip(
             tr("Unreadable (%1 chars/sec)").arg(subtitle->charsRate()));

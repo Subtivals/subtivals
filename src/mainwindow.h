@@ -134,6 +134,9 @@ private:
   QLabel *m_scriptProperties;
   QLabel *m_countDown;
   QList<Subtitle *> m_currentSubtitles;
+
+  int m_warnCharsRate;
+  int m_errorCharsRate;
 };
 
 #endif // MAINWINDOW_H
