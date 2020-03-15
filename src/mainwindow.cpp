@@ -456,6 +456,7 @@ void MainWindow::openFile(const QString &p_fileName) {
 
   // File opened, enable print out.
   ui->actionOperatorPrintout->setEnabled(true);
+  ui->actionJumpLongest->setEnabled(true);
 
   actionDurationCorrection(ui->actionDurationCorrection->isChecked());
 
@@ -485,6 +486,7 @@ void MainWindow::closeFile() {
   m_currentSubtitles.clear();
   // No file, disable print out.
   ui->actionOperatorPrintout->setEnabled(false);
+  ui->actionJumpLongest->setEnabled(false);
 
   setWindowTitle(tr("Subtivals"));
   m_scriptProperties->setText("");
@@ -1015,6 +1017,24 @@ void MainWindow::search() {
 void MainWindow::searchTextChanged(QString) {
   ui->searchField->setStyleSheet("");
   ui->searchButton->setEnabled(!ui->searchField->text().isEmpty());
+}
+
+void MainWindow::actionJumpLongest() {
+  if (m_script == nullptr) {
+    return;
+  }
+  int longest = -1;
+  for (int i = 0; i < m_script->subtitlesCount(); i++) {
+    if (longest < 0 || m_script->subtitleAt(i)->charsWidth() >
+                           m_script->subtitleAt(longest)->charsWidth()) {
+      longest = i;
+    }
+  }
+  if (longest > 0) {
+    ui->tableWidget->selectRow(longest);
+    ui->tableWidget->setFocus();
+    actionSubtitleClic(QModelIndex());
+  }
 }
 
 void MainWindow::actionEditShortcuts() { m_shortcutEditor->exec(); }
