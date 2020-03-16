@@ -50,7 +50,10 @@ ConfigEditor::ConfigEditor(QWidget *parent)
 
   QList<QScreen *> screens = QGuiApplication::screens();
   for (int i = 0; i < screens.size(); i++) {
-    ui->screens->addItem(QString(tr("Monitor %1")).arg(screens.at(i)->name()));
+    QString screenName =
+        screens.at(i)->name().replace("\\", "").replace(".", " ").replace("  ",
+                                                                          " ");
+    ui->screens->addItem(QString(tr("Monitor %1")).arg(screenName));
   }
   ui->hideDesktop->setEnabled(screens.size() > 1);
 
