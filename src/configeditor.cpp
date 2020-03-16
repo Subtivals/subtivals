@@ -110,6 +110,7 @@ bool ConfigEditor::eventFilter(QObject *object, QEvent *event) {
       ui->presets->setEditable(false);
     }
   }
+  return QWidget::eventFilter(object, event);
 }
 
 void ConfigEditor::presetChanged(int p_preset) {
