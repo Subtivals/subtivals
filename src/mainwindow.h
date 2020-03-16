@@ -36,6 +36,8 @@
 #define COLUMN_TEXT 3
 #define COLUMN_COMMENTS 4
 
+#define MAX_RECENT_FILES 7
+
 static QList<double> FACTORS_VALUES = {23.976, 24, 25, 29.97, 30};
 static QStringList FACTORS_LABELS = {"23,976 fps", "24 fps", "25 fps",
                                      "29,97 fps", "30 fps"};
@@ -95,10 +97,6 @@ public slots:
   void actionShowMilliseconds(bool);
   void actionShowWizard();
   void actionOperatorPrintout();
-  void actionJumpLongest();
-  void knownFactorChosen(int);
-  void speedFactorChanged(double);
-  void actionAdvancedSettings();
 
 protected:
   bool canNext();
@@ -135,12 +133,6 @@ private:
   QLabel *m_scriptProperties;
   QLabel *m_countDown;
   QList<Subtitle *> m_currentSubtitles;
-
-  int m_warnCharsRate;
-  int m_errorCharsRate;
-  int m_charsRate;
-  int m_subtitleInterval;
-  int m_subtitleMinDuration;
 };
 
 #endif // MAINWINDOW_H
