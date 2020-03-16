@@ -36,7 +36,9 @@ public:
   /*
    * Constructs a script from an subtitle file.
    */
-  explicit Script(const QString &p_fileName, QObject *parent = nullptr);
+  explicit Script(const QString &p_fileName, int p_charsRate,
+                  int p_subtitleInterval, int p_subtitleMinDuration,
+                  QObject *parent = nullptr);
   /*
    * Returns the name of the subtitle file used to create the script.
    */
@@ -74,11 +76,15 @@ public:
    */
   const QList<Subtitle *> nextSubtitles(qlonglong elapsed) const;
   const QList<Subtitle *> previousSubtitles(qlonglong elapsed) const;
+  const QString exportList(ScriptFormat) const;
   ScriptFormat format() const;
   int totalDuration() const;
   QSize resolution() const;
   bool hasComments() const;
-  const QString exportList(ScriptFormat) const;
+  int charsRate() const;
+  int subtitleInterval() const;
+  int subtitleMinDuration() const;
+
 public slots:
   /*
    * Activates duration correction of subtitles.
@@ -110,6 +116,10 @@ private:
   QList<Subtitle *> m_subtitles;
   ScriptFormat m_format;
   QSize m_resolution;
+
+  int m_charsRate;
+  int m_subtitleInterval;
+  int m_subtitleMinDuration;
 };
 
 #endif // SCRIPT_H

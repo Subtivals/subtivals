@@ -268,6 +268,15 @@ void MainWindow::closeEvent(QCloseEvent *) {
                     ui->actionShowMilliseconds->isChecked());
   settings.setValue("persistentHide", ui->actionPersistentHide->isChecked());
   settings.endGroup();
+
+  settings.beginGroup("AdvancedOptions");
+  settings.setValue("warnCharsRate", m_warnCharsRate);
+  settings.setValue("errorCharsRate", m_errorCharsRate);
+  settings.setValue("charsRate", m_charsRate);
+  settings.setValue("subtitleInterval", m_subtitleInterval);
+  settings.setValue("subtitleMinDuration", m_subtitleMinDuration);
+  settings.endGroup();
+
   // When the main window is close : end of the app
   qApp->exit();
 }
@@ -275,6 +284,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
 void MainWindow::showEvent(QShowEvent *) {
   // Restore settings
   QSettings settings;
+
   settings.beginGroup("MainWindow");
   m_lastFolder = settings.value("lastFolder", "").toString();
   resize(settings.value("size", size()).toSize());
@@ -306,7 +316,14 @@ void MainWindow::showEvent(QShowEvent *) {
     ui->actionShowWizard->trigger();
     settings.setValue("wizard", false);
   }
+  settings.endGroup();
 
+  settings.beginGroup("AdvancedOptions");
+  m_warnCharsRate = settings.value("warnCharsRate", 14).toInt();
+  m_errorCharsRate = settings.value("warnCharsRate", 18).toInt();
+  m_charsRate = settings.value("charsRate", 12).toInt();
+  m_subtitleInterval = settings.value("subtitleInterval", 1000).toInt();
+  m_subtitleMinDuration = settings.value("subtitleMinDuration", 1000).toInt();
   settings.endGroup();
 }
 
@@ -393,7 +410,8 @@ void MainWindow::openFile(const QString &p_fileName) {
   }
 
   // Create the script & setup the GUI
-  m_script = new Script(p_fileName, this);
+  m_script = new Script(p_fileName, m_charsRate, m_subtitleInterval,
+                        m_subtitleMinDuration, this);
   m_player->setScript(m_script);
   m_preferences->setScript(m_script); // will reset()
   // Set the window title from the file name, without extention
@@ -435,11 +453,11 @@ void MainWindow::openFile(const QString &p_fileName) {
     // Show chars/sec
     textItem->setToolTip(tr("%1 chars/sec").arg(subtitle->charsRate()));
     // Warn if too fast !
-    if (subtitle->charsRate() > 14) {
+    if (subtitle->charsRate() > m_warnCharsRate) {
       QString icon(":/icons/chars-rate-warn.png");
       textItem->setToolTip(
           tr("Fast (%1 chars/sec)").arg(subtitle->charsRate()));
-      if (subtitle->charsRate() > 18) {
+      if (subtitle->charsRate() > m_errorCharsRate) {
         icon = ":/icons/chars-rate-error.png";
         textItem->setToolTip(
             tr("Unreadable (%1 chars/sec)").arg(subtitle->charsRate()));
@@ -1066,4 +1084,10 @@ void MainWindow::speedFactorChanged(double p_factor) {
 void MainWindow::knownFactorChosen(int) {
   // Adjust spinbox to known factor.
   ui->speedFactor->setValue(ui->knownFactors->currentData().toDouble());
+}
+
+void MainWindow::actionAdvancedSettings() {
+  QSettings settings;
+  QDesktopServices::openUrl(
+      QUrl(QString("file://%1").arg(settings.fileName())));
 }

@@ -98,6 +98,7 @@ public slots:
   void actionJumpLongest();
   void knownFactorChosen(int);
   void speedFactorChanged(double);
+  void actionAdvancedSettings();
 
 protected:
   bool canNext();
@@ -134,6 +135,12 @@ private:
   QLabel *m_scriptProperties;
   QLabel *m_countDown;
   QList<Subtitle *> m_currentSubtitles;
+
+  int m_warnCharsRate;
+  int m_errorCharsRate;
+  int m_charsRate;
+  int m_subtitleInterval;
+  int m_subtitleMinDuration;
 };
 
 #endif // MAINWINDOW_H

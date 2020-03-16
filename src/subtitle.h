@@ -38,8 +38,8 @@ public:
 class Subtitle : public QObject {
   Q_OBJECT
 public:
-  explicit Subtitle(int p_index, const QStringList &p_text, qint64 p_msseStart,
-                    qint64 p_msseEnd, const Script *p_script,
+  explicit Subtitle(int p_index, const QStringList &p_text, int p_msseStart,
+                    int p_msseEnd, const Script *p_script,
                     QObject *p_parent = nullptr);
   int msseStart() const;
   int msseEnd() const;
