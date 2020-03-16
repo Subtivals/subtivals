@@ -16,6 +16,8 @@
  **/
 #include <QColorDialog>
 #include <QDesktopWidget>
+#include <QKeyEvent>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QPushButton>
 #include <QScreen>

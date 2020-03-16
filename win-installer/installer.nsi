@@ -31,7 +31,7 @@ RequestExecutionLevel admin
 !define prodname "Subtivals"
 !define exec "subtivals.exe"
 
-!define qtdirdesktop "C:\Qt\5.14.1\mingw473_64"
+!define qtdirdesktop "C:\Qt\5.14.1\mingw73_64"
 !define mingwdir "C:\Qt\Tools\mingw730_64"
 
 ; optional stuff
