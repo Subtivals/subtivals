@@ -97,6 +97,11 @@ public slots:
   void actionShowMilliseconds(bool);
   void actionShowWizard();
   void actionOperatorPrintout();
+  void actionJumpLongest();
+  void knownFactorChosen(int);
+  void speedFactorChanged(double);
+  void actionAdvancedSettings();
+  void openRecentFile();
 
 protected:
   bool canNext();
@@ -111,6 +116,7 @@ protected:
   void highlightSubtitles(qlonglong elapsed);
   QString ts2tc(int p_timestamp, QString format = "hh:mm:ss.zzz");
   void setState(State p_state);
+  void updateRecentFileActions();
 
 private:
   State m_state;
@@ -133,6 +139,12 @@ private:
   QLabel *m_scriptProperties;
   QLabel *m_countDown;
   QList<Subtitle *> m_currentSubtitles;
+  QList<QAction *> m_recentFileActions;
+  int m_warnCharsRate;
+  int m_errorCharsRate;
+  int m_charsRate;
+  int m_subtitleInterval;
+  int m_subtitleMinDuration;
 };
 
 #endif // MAINWINDOW_H

@@ -276,10 +276,10 @@
      <string>&amp;File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionOperatorPrintout"/>
     <addaction name="separator"/>
     <addaction name="actionEnableReload"/>
     <addaction name="actionJumpLongest"/>
-    <addaction name="actionOperatorPrintout"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -289,8 +289,8 @@
     </property>
     <addaction name="actionPreferences"/>
     <addaction name="actionShowMilliseconds"/>
-    <addaction name="actionEditShortcuts"/>
     <addaction name="actionPersistentHide"/>
+    <addaction name="actionEditShortcuts"/>
     <addaction name="actionAdvancedSettings"/>
    </widget>
    <widget class="QMenu" name="menuAide">
@@ -660,6 +660,9 @@
    </property>
   </action>
   <action name="actionJumpLongest">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Jump to longest line</string>
    </property>
@@ -1078,6 +1081,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionJumpLongest</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionJumpLongest()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>enableSpeedFactor</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>knownFactors</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>427</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>speedFactor</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>speedFactorChanged(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>362</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>knownFactors</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>knownFactorChosen(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>427</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -1104,5 +1171,8 @@
   <slot>actionShowMilliseconds(bool)</slot>
   <slot>actionShowWizard()</slot>
   <slot>actionOperatorPrintout()</slot>
+  <slot>actionJumpLongest()</slot>
+  <slot>speedFactorChanged(double)</slot>
+  <slot>knownFactorChosen(int)</slot>
  </slots>
 </ui>
