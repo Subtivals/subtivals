@@ -290,6 +290,7 @@
     <addaction name="actionPreferences"/>
     <addaction name="actionShowMilliseconds"/>
     <addaction name="actionPersistentHide"/>
+    <addaction name="actionDarkMode"/>
     <addaction name="actionEditShortcuts"/>
     <addaction name="actionAdvancedSettings"/>
    </widget>
@@ -673,6 +674,17 @@
   <action name="actionAdvancedSettings">
    <property name="text">
     <string>Advanced settings...</string>
+   </property>
+  </action>
+  <action name="actionDarkMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Dark mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle dark mode</string>
    </property>
   </action>
  </widget>
@@ -1145,6 +1157,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDarkMode</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionToggleDarkMode(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -1174,5 +1202,6 @@
   <slot>actionJumpLongest()</slot>
   <slot>speedFactorChanged(double)</slot>
   <slot>knownFactorChosen(int)</slot>
+  <slot>actionToggleDarkMode(bool)</slot>
  </slots>
 </ui>
