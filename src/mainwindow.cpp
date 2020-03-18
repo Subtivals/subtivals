@@ -112,6 +112,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_filewatcher(new QFileSystemWatcher),
       m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)) {
   ui->setupUi(this);
+  m_defaultPalette = qApp->palette();
   ui->tableWidget->setItemDelegateForColumn(COLUMN_START,
                                             new SubtitleDurationDelegate());
   ui->tableWidget->setItemDelegateForColumn(COLUMN_END,
@@ -267,6 +268,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
   // Save settings
   QSettings settings;
   settings.beginGroup("MainWindow");
+  settings.setValue("darkMode", ui->actionDarkMode->isChecked());
   settings.setValue("lastFolder", m_lastFolder);
   settings.setValue("size", size());
   settings.setValue("pos", pos());
@@ -309,6 +311,7 @@ void MainWindow::showEvent(QShowEvent *) {
 
   m_preferences->reset();
 
+  ui->actionDarkMode->setChecked(settings.value("darkMode", false).toBool());
   m_reloadEnabled = settings.value("reloadEnabled", false).toBool();
   ui->actionEnableReload->setChecked(m_reloadEnabled);
   bool autoHide = settings.value("autoHideEnabled", false).toBool();
@@ -1139,4 +1142,30 @@ void MainWindow::actionAdvancedSettings() {
   QSettings settings;
   QDesktopServices::openUrl(
       QUrl(QString("file://%1").arg(settings.fileName())));
+}
+
+void MainWindow::actionToggleDarkMode(bool p_enabled) {
+  if (p_enabled) {
+    QColor darkGray(53, 53, 53);
+    QColor black(25, 25, 25);
+    QColor blue(42, 130, 218);
+
+    QPalette darkPalette;
+    darkPalette.setColor(QPalette::Window, darkGray);
+    darkPalette.setColor(QPalette::WindowText, Qt::white);
+    darkPalette.setColor(QPalette::Base, black);
+    darkPalette.setColor(QPalette::AlternateBase, darkGray);
+    darkPalette.setColor(QPalette::ToolTipBase, blue);
+    darkPalette.setColor(QPalette::ToolTipText, Qt::white);
+    darkPalette.setColor(QPalette::Text, Qt::white);
+    darkPalette.setColor(QPalette::Button, darkGray);
+    darkPalette.setColor(QPalette::ButtonText, Qt::white);
+    darkPalette.setColor(QPalette::BrightText, Qt::red);
+    darkPalette.setColor(QPalette::Link, blue);
+    darkPalette.setColor(QPalette::Highlight, blue);
+    darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+    qApp->setPalette(darkPalette);
+  } else {
+    qApp->setPalette(m_defaultPalette);
+  }
 }

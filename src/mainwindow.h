@@ -102,6 +102,7 @@ public slots:
   void speedFactorChanged(double);
   void actionAdvancedSettings();
   void openRecentFile();
+  void actionToggleDarkMode(bool);
 
 protected:
   bool canNext();
@@ -124,6 +125,7 @@ private:
   Script *m_script;
   Player *m_player;
   QThread *m_playerThread;
+  QPalette m_defaultPalette;
   QString m_lastScript;
   QString m_lastFolder;
   ConfigEditor *m_preferences;
