@@ -45,7 +45,6 @@ public:
   void setScript(Script *script);
 
   void mouseReleaseEvent(QMouseEvent *event);
-  void mouseDoubleClickEvent(QMouseEvent *event);
   bool eventFilter(QObject *object, QEvent *event);
 signals:
   // Live options

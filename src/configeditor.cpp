@@ -86,28 +86,38 @@ void ConfigEditor::setScript(Script *script) {
 }
 
 void ConfigEditor::mouseReleaseEvent(QMouseEvent *event) {
+  // Exit editable mode of preset when clicking elsewhere.
   QWidget *clicked = this->childAt(event->pos());
   if (clicked != ui->presetsGroupBox) {
     ui->presets->setEditable(false);
   }
 }
 
-void ConfigEditor::mouseDoubleClickEvent(QMouseEvent *event) {
-  event->setAccepted(true);
-  QWidget *clicked = this->childAt(event->pos());
-  if (clicked == ui->presetsGroupBox) {
-    ui->presets->setEditable(!ui->presets->isEditable());
-  }
-}
-
 bool ConfigEditor::eventFilter(QObject *object, QEvent *event) {
-  // Exit editable mode of preset when pressing Enter/Return.
-  if (event->type() == QEvent::KeyPress) {
-    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-    if ((keyEvent->key() == Qt::Key_Enter ||
-         keyEvent->key() == Qt::Key_Return) &&
-        object == ui->presets) {
-      ui->presets->setEditable(false);
+  if (object == ui->presets) {
+    // Exit editable mode of preset when pressing Enter/Return.
+    if (event->type() == QEvent::KeyPress) {
+      QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+      if (keyEvent->key() == Qt::Key_Enter ||
+          keyEvent->key() == Qt::Key_Return) {
+        ui->presets->setEditable(false);
+      }
+    }
+    // Enter editable mode of presets on right click or double click.
+    if (!ui->presets->isEditable()) {
+      bool toggleEdit = false;
+      if (event->type() == QEvent::MouseButtonRelease) {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (mouseEvent->button() == Qt::RightButton) {
+          toggleEdit = true;
+        }
+      }
+      if (event->type() == QEvent::MouseButtonDblClick) {
+        toggleEdit = true;
+      }
+      if (toggleEdit) {
+        ui->presets->setEditable(toggleEdit);
+      }
     }
   }
   return QWidget::eventFilter(object, event);

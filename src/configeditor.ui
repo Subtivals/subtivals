@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>468</width>
-    <height>529</height>
+    <height>537</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,15 +25,15 @@
      </item>
      <item row="1" column="0">
       <widget class="QGroupBox" name="presetsGroupBox">
-       <property name="toolTip">
-        <string>Double click to rename preset</string>
-       </property>
        <property name="title">
         <string>Saved presets:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
          <widget class="QComboBox" name="presets">
+          <property name="toolTip">
+           <string>Right click to rename preset</string>
+          </property>
           <property name="editable">
            <bool>false</bool>
           </property>
