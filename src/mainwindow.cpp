@@ -1138,6 +1138,15 @@ void MainWindow::knownFactorChosen(int) {
   ui->speedFactor->setValue(ui->knownFactors->currentData().toDouble());
 }
 
+void MainWindow::enableKnownFactors(bool p_state) {
+  if (p_state) {
+    ui->knownFactors->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+  } else {
+    ui->knownFactors->setSizeAdjustPolicy(
+        QComboBox::AdjustToMinimumContentsLength);
+  }
+}
+
 void MainWindow::actionAdvancedSettings() {
   QSettings settings;
   QDesktopServices::openUrl(

@@ -103,6 +103,7 @@ public slots:
   void actionAdvancedSettings();
   void openRecentFile();
   void actionToggleDarkMode(bool);
+  void enableKnownFactors(bool);
 
 protected:
   bool canNext();

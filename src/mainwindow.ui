@@ -1173,6 +1173,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>enableSpeedFactor</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>enableKnownFactors(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>configChanged()</signal>
@@ -1203,5 +1219,6 @@
   <slot>speedFactorChanged(double)</slot>
   <slot>knownFactorChosen(int)</slot>
   <slot>actionToggleDarkMode(bool)</slot>
+  <slot>enableKnownFactors(bool)</slot>
  </slots>
 </ui>
