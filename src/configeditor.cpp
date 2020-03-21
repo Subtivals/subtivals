@@ -45,6 +45,9 @@ ConfigEditor::ConfigEditor(QWidget *parent)
   connect(ui->enableWeblive, SIGNAL(toggled(bool)), this,
           SIGNAL(webliveEnabled(bool)));
 
+  // Fix apparence of label on Windows.
+  ui->labelWheelInfo->setFont(ui->labelMonitor->font());
+
   adjustSize();
   setMaximumSize(size());
 
