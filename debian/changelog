@@ -1,3 +1,18 @@
+subtivals (1.9.0-1) stable; urgency=low
+
+  * Add dark mode option
+  * List recent opened files in File menu
+  * Show real names of monitors
+  * Rename preferences presets (right click on Preset label to edit)
+  * Add common frame rates conversions to adjust the speed factor
+  * Jump to a specific line number by prefixing a search with colon (ex. ":42")
+  * Add option to remain hidden when jumping to subtitle
+  * Add menu entry to jump to longest line of script (to ease calibration)
+  * Show subtitles in all corners in calibration
+  * Added advanced options in configuration file (chars rate, warn/error chars rate, etc.)
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Sun, 22 Mar 2020 16:12:00 +0100
+
 subtivals (1.8.1-1) stable; urgency=low
 
   * Add more than 2 decimals to speed factor field (#279)
