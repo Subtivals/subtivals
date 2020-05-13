@@ -23,6 +23,7 @@
 #include <QMainWindow>
 #include <QMap>
 #include <QModelIndex>
+#include <QPair>
 #include <QString>
 #include <QTableWidget>
 #include <QTime>
@@ -38,9 +39,11 @@
 
 #define MAX_RECENT_FILES 7
 
-static QList<double> FACTORS_VALUES = {23.976, 24, 25, 29.97, 30};
-static QStringList FACTORS_LABELS = {"23,976 fps", "24 fps", "25 fps",
-                                     "29,97 fps", "30 fps"};
+typedef QPair<double, double> Factor;
+static QList<Factor> FACTORS_VALUES = {
+    {23.976, 24}, {23.976, 25}, {24, 23.976}, {24, 25},
+    {25, 23.976}, {25, 24},     {29.97, 30},  {30, 29.97},
+};
 
 class ConfigEditor;
 class ShortcutEditor;

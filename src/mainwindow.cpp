@@ -148,17 +148,12 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableWidget->setFocus();
   setAcceptDrops(true);
 
-  // Build the list of known factors (all combinations).
+  // Build the list of known factors.
   ui->knownFactors->addItem("", 100.0);
-  for (int i = 0; i < FACTORS_LABELS.size(); i++) {
-    for (int j = 0; j < FACTORS_LABELS.size(); j++) {
-      if (i == j) {
-        continue;
-      }
-      ui->knownFactors->addItem(
-          QString("%1 → %2").arg(FACTORS_LABELS[i]).arg(FACTORS_LABELS[j]),
-          FACTORS_VALUES[j] / FACTORS_VALUES[i] * 100.0);
-    }
+  foreach (Factor conv, FACTORS_VALUES) {
+    ui->knownFactors->addItem(
+        QString("%1 fps → %2 fps").arg(conv.first).arg(conv.second),
+        conv.first * 100.0 / conv.second);
   }
 
   // Disable print out by default.
@@ -1130,14 +1125,16 @@ void MainWindow::actionShowHelp() {
 }
 
 void MainWindow::speedFactorChanged(double p_factor) {
-  if (FACTORS_VALUES.indexOf(p_factor) >= 0) {
+  if (qAbs(p_factor - ui->knownFactors->currentData().toDouble()) > 0.001) {
     ui->knownFactors->setCurrentIndex(-1);
   }
 }
 
-void MainWindow::knownFactorChosen(int) {
+void MainWindow::knownFactorChosen(int p_chosen) {
   // Adjust spinbox to known factor.
-  ui->speedFactor->setValue(ui->knownFactors->currentData().toDouble());
+  if (p_chosen >= 0) {
+    ui->speedFactor->setValue(ui->knownFactors->itemData(p_chosen).toDouble());
+  }
 }
 
 void MainWindow::enableKnownFactors(bool p_state) {
