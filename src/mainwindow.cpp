@@ -1119,8 +1119,10 @@ void MainWindow::actionAbout() {
                         "<li>Lilian Lefranc</li>"
                         "<li>Arnaud Rolly</li>"
                         "<li>Mathieu Leplatre</li>"
-                        "<li>Emmanuel Digiaro</li>")
-                         .arg(VERSION));
+                        "<li>Emmanuel Digiaro</li>"
+                        "<h2>© 2011 - %2</h2>")
+                         .arg(VERSION)
+                         .arg(QDate::currentDate().year()));
 }
 
 void MainWindow::actionShowHelp() {
