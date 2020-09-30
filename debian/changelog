@@ -1,3 +1,11 @@
+subtivals (1.9.1-1) stable; urgency=low
+
+  * Reduce list of known factors
+  * Increase margins maximum values (#303)
+  * Add years in About window (#302)
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Web, 30 Sep 2020 12:12:00 +0100
+
 subtivals (1.9.0-1) stable; urgency=low
 
   * Add dark mode option
