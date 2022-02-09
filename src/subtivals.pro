@@ -47,7 +47,8 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     ../resources/icons.qrc \
-    ../resources/samples.qrc
+    ../resources/samples.qrc \
+    ../resources/ssl.qrc
 
 TRANSLATIONS = ../locale/fr_FR.ts \
     ../locale/es_ES.ts \

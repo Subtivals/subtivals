@@ -6,8 +6,9 @@
 #include "style.h"
 #include "weblive.h"
 
-#define DEFAULT_PLAYER_URL "http://live.subtivals.org"
-#define DEFAULT_PORT 3141
+#define DEFAULT_PLAYER_URL "https://live.subtivals.org"
+#define DEFAULT_PORT_WS 3141
+#define DEFAULT_PORT_WSS 8443
 #define DEFAULT_SCHEME "ws://"
 
 WebLive::WebLive(QObject *parent)
@@ -26,12 +27,15 @@ WebLive::WebLive(QObject *parent)
       m_server.setScheme(DEFAULT_SCHEME);
     }
     if (m_server.port() < 0) {
-      m_server.setPort(DEFAULT_PORT);
+      m_server.setPort(m_server.scheme() == "wss" ? DEFAULT_PORT_WSS
+                                                  : DEFAULT_PORT_WS);
     }
     qDebug() << "Live Server: " << m_server.toString();
     qDebug() << "Player URL: " << m_liveUrl.toString();
   }
   settings.endGroup();
+
+  qDebug() << "SSL stack: " << QSslSocket::sslLibraryVersionString();
 
   connect(&m_webSocket, SIGNAL(connected()), this, SLOT(onConnected()));
   connect(&m_webSocket, SIGNAL(disconnected()), this, SLOT(onDisconnected()));
@@ -79,6 +83,9 @@ void WebLive::onDisconnected() {
 
 void WebLive::onError() {
   qDebug() << "Error: " << m_webSocket.errorString();
+  qDebug()
+      << "SSL issuer: "
+      << m_webSocket.sslConfiguration().peerCertificate().issuerDisplayName();
   emit connected(false, m_webSocket.errorString());
   m_enabled = false;
 }
