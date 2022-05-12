@@ -284,6 +284,10 @@ void Script::loadFromAss(QStringList content) {
         // Bold HTML-ification
         text = text.replace("{\\b1}", "<b>");
         text = text.replace("{\\b0}", "</b>");
+        // Replace multiple spaces between words by non breakable spaces
+        if (QRegExp("\\S\\s{2,}\\S").exactMatch(line)) {
+          text = text.replace(" ", "&nbsp;");
+        }
 
         QList<SubtitleLine> lines;
         foreach (QString line, text.split(QRegExp("\\\\[nN]"))) {
@@ -394,6 +398,10 @@ void Script::loadFromSrt(QStringList content) {
       } else if (line.startsWith("#")) {
         comments = line.replace("#", "");
       } else {
+        // Replace multiple spaces between words by non breakable spaces
+        if (QRegExp("\\S\\s{2,}\\S").exactMatch(line)) {
+          line = line.replace(" ", "&nbsp;");
+        }
         text.append(line);
       }
     }
@@ -453,6 +461,10 @@ void Script::loadFromTxt(QStringList content) {
         line = line.replace(QRegExp("<([^i/][^>]+)>"), "<i>\\1</i>");
         // and *word* is equivalent to <b>word</b>
         line = line.replace(QRegExp("\\*([^\\*]+)\\*"), "<b>\\1</b>");
+        // Replace multiple spaces between words by non breakable spaces
+        if (QRegExp("\\S\\s{2,}\\S").exactMatch(line)) {
+          line = line.replace(" ", "&nbsp;");
+        }
         text.append(line);
       }
     }
