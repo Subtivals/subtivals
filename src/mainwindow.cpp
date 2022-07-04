@@ -211,6 +211,7 @@ MainWindow::MainWindow(QWidget *parent)
   m_shortcutEditor->registerAction(ui->actionPreferences);
   m_shortcutEditor->registerAction(ui->actionEnableReload);
   m_shortcutEditor->registerAction(ui->actionShowHelp);
+  m_shortcutEditor->registerAction(ui->actionDarkMode);
   m_shortcutEditor->registerAction(ui->actionExit);
 }
 
