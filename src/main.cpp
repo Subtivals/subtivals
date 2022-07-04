@@ -44,6 +44,9 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationDomain("http://subtivals.org");
   QCoreApplication::setApplicationName("Subtivals");
 
+  QSettings settings;
+  qInfo() << "Configuration location:" << settings.fileName();
+
   QApplication a(argc, argv);
   a.setQuitOnLastWindowClosed(true);
   a.setStyle(QStyleFactory::create("Fusion"));
