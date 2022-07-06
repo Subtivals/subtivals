@@ -38,6 +38,14 @@ bool compareSubtitleStartTime(const Subtitle *s1, const Subtitle *s2) {
   return s1->msseStart() < s2->msseStart();
 }
 
+QString sp2nbsp(const QString s) {
+    // Replace multiple spaces between words by non breakable spaces
+    if (QRegExp("\\S\\s{2,}\\S").exactMatch(s)) {
+        return QString(s).replace(" ", "&nbsp;");
+    }
+    return s;
+}
+
 Script::Script(const QString &p_fileName, int p_charsRate,
                int p_subtitleInterval, int p_subtitleMinDuration,
                QObject *p_parent)
@@ -284,6 +292,7 @@ void Script::loadFromAss(QStringList content) {
         // Bold HTML-ification
         text = text.replace("{\\b1}", "<b>");
         text = text.replace("{\\b0}", "</b>");
+        text = sp2nbsp(text);
 
         QList<SubtitleLine> lines;
         foreach (QString line, text.split(QRegExp("\\\\[nN]"))) {
@@ -394,6 +403,7 @@ void Script::loadFromSrt(QStringList content) {
       } else if (line.startsWith("#")) {
         comments = line.replace("#", "");
       } else {
+        line = sp2nbsp(line);
         text.append(line);
       }
     }
@@ -453,6 +463,7 @@ void Script::loadFromTxt(QStringList content) {
         line = line.replace(QRegExp("<([^i/][^>]+)>"), "<i>\\1</i>");
         // and *word* is equivalent to <b>word</b>
         line = line.replace(QRegExp("\\*([^\\*]+)\\*"), "<b>\\1</b>");
+        line = sp2nbsp(line);
         text.append(line);
       }
     }
