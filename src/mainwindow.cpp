@@ -131,9 +131,9 @@ MainWindow::MainWindow(QWidget *parent)
   m_playerThread->start();
   qRegisterMetaType<QList<Subtitle *>>("QList<Subtitle*>");
   connect(m_player, SIGNAL(pulse(int)), this, SLOT(playPulse(int)));
-  connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
-          SLOT(subtitleChanged(QList<Subtitle *>)));
-  connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
+  connect(m_player, SIGNAL(changed(QList<Subtitle*>)), this,
+          SLOT(subtitleChanged(QList<Subtitle*>)));
+  connect(m_player, SIGNAL(changed(QList<Subtitle*>)), this,
           SLOT(disableActionNext()));
   connect(m_player, SIGNAL(autoHide()), this, SLOT(actionToggleHide()));
 
