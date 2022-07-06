@@ -80,7 +80,7 @@ Script::Script(const QString &p_fileName, int p_charsRate,
     m_format = XML;
     loadFromXml(content.join(""));
   }
-  qSort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
+  std::sort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
 }
 
 Script::ScriptFormat Script::format() const { return m_format; }

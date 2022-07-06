@@ -107,9 +107,9 @@ const QPoint Style::textAnchor(const QPoint &p_point,
     offset.setY(m_metrics.height());
   }
   if (m_alignment & Qt::AlignHCenter) {
-    offset.setX(-m_metrics.width(strip) / 2);
+    offset.setX(-m_metrics.horizontalAdvance(strip) / 2);
   } else if (m_alignment & Qt::AlignRight) {
-    offset.setX(-m_metrics.width(strip));
+    offset.setX(-m_metrics.horizontalAdvance(strip));
   }
   return p_point + offset;
 }

@@ -92,9 +92,9 @@ void WebLive::onError() {
 
 QString WebLive::liveUrl() const {
   QByteArray ba;
-  ba.append(QString("%1|%2").arg(m_server.toString()).arg(m_secret));
+  ba.append(QString("%1|%2").arg(m_server.toString(), m_secret));
   QString key = ba.toBase64();
-  return QString("%1/#%2").arg(m_liveUrl.toString()).arg(key);
+  return QString("%1/#%2").arg(m_liveUrl.toString(), key);
 }
 
 void WebLive::sendJson(const QJsonObject &p_json) {
