@@ -42,7 +42,7 @@
 typedef QPair<double, double> Factor;
 static QList<Factor> FACTORS_VALUES = {
     {23.976, 24}, {23.976, 25}, {24, 23.976}, {24, 25},
-    {25, 23.976}, {25, 24},     {29.97, 30},  {30, 29.97},
+    {25, 23.976}, {25, 24},
 };
 
 class ConfigEditor;
