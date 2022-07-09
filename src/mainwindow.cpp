@@ -375,6 +375,8 @@ void MainWindow::actionOperatorPrintout() {
   }
 
   QTextStream out(&file);
+  out.setCodec("UTF-8");
+  out.setGenerateByteOrderMark(true);
   out << m_script->exportList(Script::CSV);
   file.close();
   QMessageBox::information(this, tr("Saved successfully"),
