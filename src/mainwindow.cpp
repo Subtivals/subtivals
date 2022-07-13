@@ -152,6 +152,9 @@ MainWindow::MainWindow(QWidget *parent)
   int pixelsWide = ui->timer->fontMetrics().horizontalAdvance("+44:44:44.444");
   ui->timer->setMinimumWidth(pixelsWide + 5);
 
+  // Adjust the known factors minimum height to neighbour
+  ui->knownFactors->setMinimumHeight(ui->speedFactor->height() - 6);
+
   // Build the list of known factors.
   ui->knownFactors->addItem("", 100.0);
   foreach (Factor conv, FACTORS_VALUES) {
