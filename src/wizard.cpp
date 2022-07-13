@@ -3,6 +3,7 @@
 
 Wizard::Wizard(QWidget *parent) : QWizard(parent), ui(new Ui::Wizard) {
   ui->setupUi(this);
+  adjustSize();
 }
 
 Wizard::~Wizard() { delete ui; }
