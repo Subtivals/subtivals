@@ -380,7 +380,9 @@ void MainWindow::actionOperatorPrintout() {
   out << m_script->exportList(Script::CSV);
   file.close();
   QMessageBox::information(this, tr("Saved successfully"),
-                           tr("Subtitles exported to <i>%1</i>").arg(fileName));
+                           tr("Subtitles exported to <a href=\"%1\">%2</a>")
+                             .arg(QUrl::fromLocalFile(fileName).toString())
+                             .arg(fileName));
 }
 
 void MainWindow::actionShowCalibration(bool p_state) {
