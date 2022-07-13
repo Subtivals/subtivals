@@ -91,12 +91,6 @@
           <property name="enabled">
            <bool>false</bool>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
           <property name="suffix">
            <string>%</string>
           </property>
