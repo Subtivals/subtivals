@@ -148,6 +148,10 @@ MainWindow::MainWindow(QWidget *parent)
   ui->tableWidget->setFocus();
   setAcceptDrops(true);
 
+  // Adjust the timer width based on font.
+  int pixelsWide = ui->timer->fontMetrics().horizontalAdvance("+44:44:44.444");
+  ui->timer->setMinimumWidth(pixelsWide + 5);
+
   // Build the list of known factors.
   ui->knownFactors->addItem("", 100.0);
   foreach (Factor conv, FACTORS_VALUES) {
