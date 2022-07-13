@@ -1,4 +1,4 @@
-qmake src/subtivals.pro -r -spec macx-g++ CONFIG+=release
+qmake src/subtivals.pro -r -spec macx-clang CONFIG+=release
 make clean -w
 make -w
 macdeployqt subtivals.app -dmg
