@@ -1156,12 +1156,13 @@ void MainWindow::actionAdvancedSettings() {
   QString filename = settings.fileName();
 
   QMessageBox msgBox;
-  msgBox.setText("Open external editor.");
-  msgBox.setInformativeText(QString("The configuration file is\n<a href=\"file://%1\">%1</a>").arg(filename));
+  msgBox.setText("Opening external editor...");
+  msgBox.setInformativeText(QString("Will open configuration file at<br><a href=\"file://%1\">%2</a>")
+                              .arg(QUrl::fromLocalFile(filename).toString())
+                              .arg(filename));
   msgBox.exec();
 
-  QDesktopServices::openUrl(
-      QUrl(QString("file://%1").arg(filename)));
+  QDesktopServices::openUrl(QUrl::fromLocalFile(filename));
 }
 
 void MainWindow::actionToggleDarkMode(bool p_enabled) {
