@@ -1,3 +1,22 @@
+subtivals (1.10.0-1) stable; urgency=low
+
+  * Adjust size of wizard automatically (#389)
+  * Adjust minimum height of known factors (#389)
+  * Do not restrict speed factor width (#389)
+  * Adjust timer minimum size automatically (#389)
+  * Fix advanced config opening on Windows (#318)
+  * Add dialog before opening advanced config (#315)
+  * Force UTF8 in operator listing export (fixes #274)
+  * Remove explicit font name and font weight in preferences panel (fixes #298)
+  * Remove superfluous known factors (fixes #244)
+  * Allow to configure dark mode shortcut (fixes #301)
+  * Fix crash when configured screen is out of range (fixes #309)
+  * Replace multiple spaces by non-breakable spaces (#308)
+  * Add support for WebLive through SSL
+  * Add examples files with left position and comments
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Fri, 15 Jul 2022 16:12:00 +0100
+
 subtivals (1.9.1-1) stable; urgency=low
 
   * Reduce list of known factors
