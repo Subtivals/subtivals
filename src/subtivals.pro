@@ -104,4 +104,6 @@ OTHER_FILES += \
     ../debian/control \
     ../debian/rules \
     ../debian/changelog \
-    ../win-installer/installer.nsi
+    ../win-installer/installer.nsi \
+    ../win-installer/files.nsi \
+    ../win-installer/unfiles.nsi

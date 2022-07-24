@@ -1,5 +1,6 @@
 ; This list was obtained using Dependency Walker
 ; Do not forget to update unfiles.nsi when modified this.
+File /a "C:\Windows\System32\MSVCRT.DLL"
 File /a "${mingwdir}\bin\LIBGCC_S_SEH-1.DLL"
 File /a "${mingwdir}\bin\LIBSTDC++-6.DLL"
 File /a "${mingwdir}\bin\LIBWINPTHREAD-1.DLL"
