@@ -19,6 +19,7 @@
 #include <QtCore/qmath.h>
 #include <QtGui/QCursor>
 #include <QtGui/QPainter>
+#include "QtGui/QScreen.h"
 
 #include "style.h"
 #include "subtitlesform.h"
@@ -63,8 +64,9 @@ void SubtitlesForm::toggleHide(bool state) {
 }
 
 void SubtitlesForm::toggleHideDesktop(bool state) {
-  m_hideDesktop = (state && QApplication::desktop()->screenCount() > 1 &&
-                   m_monitor != QApplication::desktop()->primaryScreen());
+  int primaryScreen = QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
+  m_hideDesktop = (state && QGuiApplication::screens().length() > 1 &&
+                   m_monitor != primaryScreen);
   if (m_hideDesktop)
     setGeometry(m_screenGeom);
   else
@@ -74,7 +76,7 @@ void SubtitlesForm::toggleHideDesktop(bool state) {
 
 void SubtitlesForm::changeGeometry(int monitor, const QRect &r) {
   m_monitor = monitor;
-  m_screenGeom = QApplication::desktop()->screenGeometry(monitor);
+  m_screenGeom = QGuiApplication::screens().at(monitor)->geometry();
   // This is sent from UI, add screen geometry
   m_subtitlesGeom =
       QRect(m_screenGeom.x() + r.x(),
@@ -154,8 +156,8 @@ void SubtitlesForm::wheelEvent(QWheelEvent *event) {
   int step = 24;
   if (event->modifiers().testFlag(Qt::ShiftModifier))
     step = 60;
-  int factor = event->delta() / step;
-  if (event->orientation() == Qt::Horizontal ||
+  int factor = event->angleDelta().y() / step;
+  if (event->angleDelta().x() > 0 ||
       event->modifiers().testFlag(Qt::ControlModifier)) {
     current.setHeight(current.height() + factor);
   } else {

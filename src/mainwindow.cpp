@@ -22,6 +22,7 @@
 #include <QtCore/QThread>
 #include <QtCore/QUrl>
 #include <QtCore/QtGlobal>
+#include <QtGui/QScreen>
 
 #include <QDesktopServices>
 #include <QDesktopWidget>
@@ -131,9 +132,9 @@ MainWindow::MainWindow(QWidget *parent)
   m_playerThread->start();
   qRegisterMetaType<QList<Subtitle *>>("QList<Subtitle*>");
   connect(m_player, SIGNAL(pulse(int)), this, SLOT(playPulse(int)));
-  connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
-          SLOT(subtitleChanged(QList<Subtitle *>)));
-  connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
+  connect(m_player, SIGNAL(changed(QList<Subtitle*>)), this,
+          SLOT(subtitleChanged(QList<Subtitle*>)));
+  connect(m_player, SIGNAL(changed(QList<Subtitle*>)), this,
           SLOT(disableActionNext()));
   connect(m_player, SIGNAL(autoHide()), this, SLOT(actionToggleHide()));
 
@@ -306,7 +307,7 @@ void MainWindow::showEvent(QShowEvent *) {
   resize(settings.value("size", size()).toSize());
 
   // Place window at center, below black screen by default.
-  QRect screenGeom = qApp->desktop()->screenGeometry();
+  QRect screenGeom = QGuiApplication::primaryScreen()->geometry();
   int center = (screenGeom.width() - geometry().width()) / 2;
   int decorationHeight = style()->pixelMetric(QStyle::PM_TitleBarHeight);
   QPoint pos(center, DEFAULT_HEIGHT + decorationHeight);
@@ -959,7 +960,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
   for (int row = 0; row < ui->tableWidget->rowCount(); row++) {
     for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
       QTableWidgetItem *item = ui->tableWidget->item(row, col);
-      item->setBackgroundColor(off);
+      item->setBackground(off);
       QFont f = item->font();
       f.setBold(false);
       item->setFont(f);
@@ -974,7 +975,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
       int row = m_tableMapping[e];
       for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
         QTableWidgetItem *item = ui->tableWidget->item(row, col);
-        item->setBackgroundColor(next);
+        item->setBackground(next);
       }
     }
     // Finally highlight current subtitles
@@ -987,7 +988,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
           f.setBold(true);
           item->setFont(f);
         }
-        item->setBackgroundColor(on);
+        item->setBackground(on);
         if (col == COLUMN_TEXT)
           item->setData(Qt::UserRole, !ui->actionHide->isChecked());
       }
