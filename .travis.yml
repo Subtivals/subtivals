@@ -1,0 +1,33 @@
+language: cpp
+dist: trusty
+compiler: g++
+sudo: required
+
+before_install:
+  - sudo add-apt-repository ppa:beineri/opt-qt532-trusty -y
+  - sudo apt-get update
+
+install:
+  - sudo apt-get install qt53tools qt53base qt53svg qt53xmlpatterns qt53websockets
+  - source /opt/qt53/bin/qt53-env.sh
+  - sudo apt-get -y install checkinstall
+  - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage"
+  - chmod a+x linuxdeployqt*.AppImage
+
+script:
+  # Compile project
+  - /opt/qt53/bin/qmake PREFIX=/usr src/subtivals.pro
+  - make
+  # Generate AppImage
+  - sudo checkinstall --pkgname=app --pkgversion="1" --pkgrelease="1" --backup=no --fstrans=no --default --deldoc
+  - mkdir -p appdir/usr/bin ; cd appdir
+  - dpkg -x ../app_1-1_amd64.deb . ; find .
+  - cp ./usr/share/icons/hicolor/scalable/apps/subtivals.svg .
+  - cp ./usr/share/applications/subtivals.desktop .
+  - cd ..
+  - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+  - ./linuxdeployqt*.AppImage ./appdir/usr/bin/* -bundle-non-qt-libs
+  - ./linuxdeployqt*.AppImage ./appdir/subtivals.desktop -appimage
+
+after_success:
+  - curl --upload-file ./Subtivals*.AppImage https://transfer.sh/subtivals-git.$(git rev-parse --short HEAD)-x86_64.AppImage
