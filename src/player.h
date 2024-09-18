@@ -5,7 +5,7 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 
-#define DELAY_OFFSET 250
+#define DELAY_OFFSET 50
 
 class Script;
 class Subtitle;

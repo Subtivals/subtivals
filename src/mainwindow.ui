@@ -425,10 +425,10 @@
      <normaloff>:/icons/media-seek-forward.svg</normaloff>:/icons/media-seek-forward.svg</iconset>
    </property>
    <property name="text">
-    <string>+1/4 sec</string>
+    <string>+50 ms</string>
    </property>
    <property name="toolTip">
-    <string>+1/4 sec</string>
+    <string>+50 ms</string>
    </property>
    <property name="shortcut">
     <string>+</string>
@@ -443,10 +443,10 @@
      <normaloff>:/icons/media-seek-backward.svg</normaloff>:/icons/media-seek-backward.svg</iconset>
    </property>
    <property name="text">
-    <string>-1/4 sec</string>
+    <string>-50 ms</string>
    </property>
    <property name="toolTip">
-    <string>-1/4 sec</string>
+    <string>-50 ms</string>
    </property>
    <property name="shortcut">
     <string>-</string>
