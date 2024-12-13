@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets websockets xml
+QT       += core core5compat gui widgets websockets xml
 
 TARGET = subtivals
 TEMPLATE = app
