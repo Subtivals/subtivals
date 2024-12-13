@@ -125,7 +125,7 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
 }
 
 void SubtitlesForm::mousePressEvent(QMouseEvent *e) {
-  m_mouseOffset = e->globalPos() - geometry().topLeft();
+  m_mouseOffset = e->globalPosition() - geometry().topLeft();
 }
 
 void SubtitlesForm::mouseMoveEvent(QMouseEvent *e) {
@@ -137,7 +137,7 @@ void SubtitlesForm::mouseMoveEvent(QMouseEvent *e) {
 
   // Simply move the window on mouse drag
   QRect current = geometry();
-  QPoint moveTo = e->globalPos() - m_mouseOffset;
+  QPoint moveTo = e->globalPosition() - m_mouseOffset;
   current.moveTopLeft(moveTo);
 
   changeGeometry(current);
