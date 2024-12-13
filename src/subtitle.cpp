@@ -15,7 +15,7 @@
  *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
  **/
 #include <QtCore/QStringList>
-
+#include <QRegularExpression>
 #include "script.h"
 #include "subtitle.h"
 
@@ -110,19 +110,21 @@ void Subtitle::setText(const QList<SubtitleLine> p_lines) {
   foreach (SubtitleLine line, p_lines) {
     // Remove paired tags
     QString unpaired = line.text();
-    unpaired = unpaired.replace(QRegExp("<b>[^<]+($|</b>)"), "");
-    unpaired = unpaired.replace(QRegExp("<i>[^<]+($|</i>)"), "");
+    unpaired = unpaired.replace(QRegularExpression("<b>[^<]+($|</b>)"), "");
+    unpaired = unpaired.replace(QRegularExpression("<i>[^<]+($|</i>)"), "");
     // Now unpaired has no paired tags anymore.
 
     // For all close tags, add an open tag at the beginning.
     // (Note: we don't bother repairing unclosed tag,
     //  because it does not affect display)
-    QRegExp rx("</([bi])>");
     int pos = 0;
+    QRegularExpression rx("</([bi])>");
+    QRegularExpressionMatch match;
     QString lineText = line.text();
-    while ((pos = rx.indexIn(unpaired, pos)) != -1) {
-      lineText = QString("<%1>").arg(rx.cap(1)) + lineText;
-      pos += rx.matchedLength();
+    while ((match = rx.match(unpaired, pos)).hasMatch()) {
+        QString capturedTag = match.captured(1); // Captures the group (e.g., "b" or "i")
+        lineText = QString("<%1>").arg(capturedTag) + lineText;
+        pos = match.capturedEnd(); // Update position to continue matching
     }
     m_lines.append(SubtitleLine(lineText, line.position()));
   }
@@ -134,10 +136,10 @@ void Subtitle::setText(const QList<SubtitleLine> p_lines) {
   m_text = lines.join("<br/>");
   // Strip everything for character count
   m_pureText = lines.join(" ");
-  m_pureText = m_pureText.replace(QRegExp("</?[^>]+>"), "");
+  m_pureText = m_pureText.replace(QRegularExpression("</?[^>]+>"), "");
   // Keep bold and italic for displayed text
   m_prettyText = lines.join(" # ");
-  m_prettyText = m_prettyText.replace(QRegExp("</?[^bi>]+>"), "");
+  m_prettyText = m_prettyText.replace(QRegularExpression("</?[^bi>]+>"), "");
 }
 
 void Subtitle::setComments(const QString &p_comments) {
