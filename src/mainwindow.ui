@@ -120,7 +120,7 @@
            <string>Common framerates conversions</string>
           </property>
           <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+           <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
           </property>
          </widget>
         </item>
@@ -1204,6 +1204,7 @@
   <slot>actionShowWizard()</slot>
   <slot>actionOperatorPrintout()</slot>
   <slot>actionJumpLongest()</slot>
+  <slot>actionAdvancedSettings()</slot>
   <slot>speedFactorChanged(double)</slot>
   <slot>knownFactorChosen(int)</slot>
   <slot>actionToggleDarkMode(bool)</slot>

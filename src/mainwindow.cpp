@@ -14,25 +14,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
  **/
-#include <QtCore/QByteArray>
-#include <QtCore/QFile>
-#include <QtCore/QSettings>
-#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtCore/QThread>
 #include <QtCore/QUrl>
 #include <QtCore/QtGlobal>
 
 #include <QDesktopServices>
-#include <QDesktopWidget>
+#include <QFile>
 #include <QFileDialog>
+#include <QFileSystemWatcher>
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPainter>
 #include <QScrollBar>
+#include <QSettings>
 #include <QStyle>
 #include <QStyledItemDelegate>
+#include <QTextCodec>
+#include <QThread>
+#include <QWidget>
+
 
 #include "configeditor.h"
 #include "mainwindow.h"
@@ -306,7 +308,7 @@ void MainWindow::showEvent(QShowEvent *) {
   resize(settings.value("size", size()).toSize());
 
   // Place window at center, below black screen by default.
-  QRect screenGeom = qApp->desktop()->screenGeometry();
+  QRect screenGeom = qApp->primaryScreen()->geometry();
   int center = (screenGeom.width() - geometry().width()) / 2;
   int decorationHeight = style()->pixelMetric(QStyle::PM_TitleBarHeight);
   QPoint pos(center, DEFAULT_HEIGHT + decorationHeight);
@@ -382,7 +384,6 @@ void MainWindow::actionOperatorPrintout() {
   }
 
   QTextStream out(&file);
-  out.setCodec("UTF-8");
   out.setGenerateByteOrderMark(true);
   out << m_script->exportList(Script::CSV);
   file.close();
@@ -951,15 +952,15 @@ void MainWindow::subtitleChanged(QList<Subtitle *> p_currentSubtitles) {
 }
 
 void MainWindow::highlightSubtitles(qlonglong elapsed) {
-  QColor off = qApp->palette().color(QPalette::Base);
-  QColor on = qApp->palette().color(QPalette::Highlight).lighter(130);
-  QColor next = qApp->palette().color(QPalette::Highlight).lighter(170);
+  QBrush off = QBrush(qApp->palette().color(QPalette::Base));
+  QBrush on = QBrush(qApp->palette().color(QPalette::Highlight).lighter(130));
+  QBrush next = QBrush(qApp->palette().color(QPalette::Highlight).lighter(170));
 
   // First reset all
   for (int row = 0; row < ui->tableWidget->rowCount(); row++) {
     for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
       QTableWidgetItem *item = ui->tableWidget->item(row, col);
-      item->setBackgroundColor(off);
+      item->setBackground(off);
       QFont f = item->font();
       f.setBold(false);
       item->setFont(f);
@@ -974,7 +975,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
       int row = m_tableMapping[e];
       for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
         QTableWidgetItem *item = ui->tableWidget->item(row, col);
-        item->setBackgroundColor(next);
+          item->setBackground(next);
       }
     }
     // Finally highlight current subtitles
@@ -987,7 +988,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
           f.setBold(true);
           item->setFont(f);
         }
-        item->setBackgroundColor(on);
+        item->setBackground(on);
         if (col == COLUMN_TEXT)
           item->setData(Qt::UserRole, !ui->actionHide->isChecked());
       }
@@ -1154,7 +1155,7 @@ void MainWindow::enableKnownFactors(bool p_state) {
     ui->knownFactors->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   } else {
     ui->knownFactors->setSizeAdjustPolicy(
-        QComboBox::AdjustToMinimumContentsLength);
+        QComboBox::AdjustToMinimumContentsLengthWithIcon);
   }
 }
 

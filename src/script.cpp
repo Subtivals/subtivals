@@ -88,7 +88,7 @@ Script::Script(const QString &p_fileName, int p_charsRate,
     m_format = XML;
     loadFromXml(content.join(""));
   }
-  qSort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
+  std::sort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
 }
 
 Script::ScriptFormat Script::format() const { return m_format; }
@@ -517,7 +517,7 @@ void Script::loadFromXml(QString content) {
         fontNode.toElement().attribute("Size", "DEFAULT_FONT_SIZE").toInt());
     defaultFont.setUnderline(
         (fontNode.toElement().attribute("Underlined", "no") != "no"));
-    defaultColor.setNamedColor(QString("#%1").arg(
+    defaultColor = QColor::fromString(QString("#%1").arg(
         fontNode.toElement().attribute("Color", "FFFFFFFF")));
   }
 
