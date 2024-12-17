@@ -2,6 +2,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QSettings>
+#include <QSslCertificate>
+#include <QSslSocket>
+#include <QFile>
 
 #include "style.h"
 #include "weblive.h"
@@ -13,6 +16,17 @@
 
 WebLive::WebLive(QObject *parent)
     : QObject(parent), m_configured(false), m_enabled(false) {
+
+  // Load Let's Encrypts issuer certificate (WebLive feature).
+  QFile file(":/ssl/lets-encrypt-r3.pem");
+  file.open(QIODevice::ReadOnly);
+  const QByteArray bytes = file.readAll();
+  const QSslCertificate certificate(bytes);
+
+  QSslConfiguration sslConfiguration(QSslConfiguration::defaultConfiguration());
+  sslConfiguration.addCaCertificate(certificate);
+  m_webSocket.setSslConfiguration(sslConfiguration);
+
   // Reload from settings
   QSettings settings;
   settings.beginGroup(QString("Weblive"));
@@ -91,8 +105,9 @@ void WebLive::onError() {
 }
 
 QString WebLive::liveUrl() const {
-  QByteArray ba;
-  ba.append(QString("%1|%2").arg(m_server.toString()).arg(m_secret));
+  QString urlSecret = QString("%1|%2").arg(m_server.toString()).arg(m_secret);
+  auto fromUtf8 = QStringEncoder(QStringEncoder::Utf8);
+  QByteArray ba = fromUtf8(urlSecret);
   QString key = ba.toBase64();
   return QString("%1/#%2").arg(m_liveUrl.toString()).arg(key);
 }

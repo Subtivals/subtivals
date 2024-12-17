@@ -18,8 +18,6 @@
 #include <QFile>
 #include <QIODevice>
 #include <QSettings>
-#include <QSslCertificate>
-#include <QSslSocket>
 #include <QStyleFactory>
 #include <QTranslator>
 #include <QtCore/QFileInfo>
@@ -34,13 +32,6 @@
 #include "weblive.h"
 
 int main(int argc, char *argv[]) {
-  // Load Let's Encrypts issuer certificate (WebLive feature).
-  QFile file(":/ssl/lets-encrypt-r3.pem");
-  file.open(QIODevice::ReadOnly);
-  const QByteArray bytes = file.readAll();
-  const QSslCertificate certificate(bytes);
-  QSslSocket::addDefaultCaCertificate(certificate);
-
   // Load settings from profile.
   QSettings::setDefaultFormat(QSettings::IniFormat);
   QCoreApplication::setOrganizationName("Subtivals");
