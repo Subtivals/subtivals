@@ -57,23 +57,23 @@ int main(int argc, char *argv[]) {
   WebLive live;
 
   // Live
-  QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &live,
-                   SLOT(addSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(off(Subtitle *)), &live,
-                   SLOT(remSubtitle(Subtitle *)));
+  QObject::connect(w.player(), SIGNAL(on(Subtitle*)), &live,
+                   SLOT(addSubtitle(Subtitle*)));
+  QObject::connect(w.player(), SIGNAL(off(Subtitle*)), &live,
+                   SLOT(remSubtitle(Subtitle*)));
   QObject::connect(w.player(), SIGNAL(clear()), &live, SLOT(clearSubtitles()),
                    Qt::DirectConnection);
   QObject::connect(w.configEditor(), SIGNAL(webliveEnabled(bool)), &live,
                    SLOT(enable(bool)));
-  QObject::connect(&live, SIGNAL(connected(bool, QString)), w.configEditor(),
-                   SLOT(webliveConnected(bool, QString)));
+  QObject::connect(&live, SIGNAL(connected(bool,QString)), w.configEditor(),
+                   SLOT(webliveConnected(bool,QString)));
   w.configEditor()->enableWeblive(live.configured());
 
   // Projection screen
-  QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &f,
-                   SLOT(addSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(off(Subtitle *)), &f,
-                   SLOT(remSubtitle(Subtitle *)));
+  QObject::connect(w.player(), SIGNAL(on(Subtitle*)), &f,
+                   SLOT(addSubtitle(Subtitle*)));
+  QObject::connect(w.player(), SIGNAL(off(Subtitle*)), &f,
+                   SLOT(remSubtitle(Subtitle*)));
   QObject::connect(w.player(), SIGNAL(clear()), &f, SLOT(clearSubtitles()),
                    Qt::DirectConnection);
   QObject::connect(&w, SIGNAL(toggleHide(bool)), &f, SLOT(toggleHide(bool)));
@@ -81,16 +81,16 @@ int main(int argc, char *argv[]) {
                    SLOT(screenResizable(bool)));
   QObject::connect(&f, SIGNAL(geometryChanged(QRect)), w.configEditor(),
                    SLOT(screenChanged(QRect)));
-  QObject::connect(w.configEditor(), SIGNAL(changeScreen(int, QRect)), &f,
-                   SLOT(changeGeometry(int, QRect)));
+  QObject::connect(w.configEditor(), SIGNAL(changeScreen(int,QRect)), &f,
+                   SLOT(changeGeometry(int,QRect)));
   QObject::connect(w.configEditor(), SIGNAL(hideDesktop(bool)), &f,
                    SLOT(toggleHideDesktop(bool)));
   QObject::connect(w.configEditor(), SIGNAL(rotate(double)), &f,
                    SLOT(rotate(double)));
   QObject::connect(w.configEditor(), SIGNAL(color(QColor)), &f,
                    SLOT(color(QColor)));
-  QObject::connect(w.configEditor(), SIGNAL(outline(QColor, int)), &f,
-                   SLOT(outline(QColor, int)));
+  QObject::connect(w.configEditor(), SIGNAL(outline(QColor,int)), &f,
+                   SLOT(outline(QColor,int)));
   QObject::connect(w.configEditor(), SIGNAL(styleChanged()), &f,
                    SLOT(repaint()));
 
