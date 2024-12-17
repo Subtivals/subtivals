@@ -43,6 +43,7 @@
 #include "ui_mainwindow.h"
 #include "wizard.h"
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 /**
  * A small delegate class to allow rich text rendering in main table cells.
  */
@@ -104,6 +105,7 @@ class SubtitleDurationDelegate : public QStyledItemDelegate {
     painter->restore();
   }
 };
+#endif
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), m_script(nullptr),
@@ -115,12 +117,14 @@ MainWindow::MainWindow(QWidget *parent)
       m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)) {
   ui->setupUi(this);
   m_defaultPalette = qApp->palette();
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
   ui->tableWidget->setItemDelegateForColumn(COLUMN_START,
                                             new SubtitleDurationDelegate());
   ui->tableWidget->setItemDelegateForColumn(COLUMN_END,
                                             new SubtitleDurationDelegate());
   ui->tableWidget->setItemDelegateForColumn(COLUMN_TEXT,
                                             new SubtitleTextDelegate());
+#endif
   ui->tableWidget->hideColumn(COLUMN_COMMENTS);
 
   ui->tableWidget->installEventFilter(this);
