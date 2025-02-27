@@ -19,6 +19,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure full history is available for tags
+
+      - name: Get latest tag version
+        run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
@@ -58,13 +63,13 @@ jobs:
 
           cat <<EOF > package/DEBIAN/control
           Package: $APP_NAME
-          Version: 1.0.0
+          Version: ${PACKAGE_VERSION#v}
           Architecture: amd64
           Maintainer: Mathieu Leplatre <contact@subtivals.org>
           Description: A program to project subtitles.
           EOF
 
-          dpkg-deb --build package $APP_NAME.deb
+          dpkg-deb --build package $APP_NAME-${PACKAGE_VERSION#v}.deb
 
       - name: Package as AppImage
         run: |
@@ -83,6 +88,7 @@ jobs:
           EOF
 
           linuxdeploy --appdir $APPDIR --output appimage
+          mv *.AppImage $APP_NAME-${PACKAGE_VERSION#v}.AppImage
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -90,21 +96,39 @@ jobs:
           name: ${{ env.APP_NAME }}-artifacts
           path: |
             build/${{ env.APP_NAME }}
-            ${{ env.APP_NAME }}.deb
-            *.AppImage
+            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION#v }}.deb
+            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION#v }}.AppImage
 
   release:
     needs: build
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure full history is available for tags
+
+      - name: Get latest tag version
+        run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+
       - name: Download built artifacts
         uses: actions/download-artifact@v4
         with:
           name: myapp-artifacts
           path: release/
 
+      - name: Rename artifacts with version
+        run: |
+          mv release/myapp.deb release/myapp-${PACKAGE_VERSION#v}.deb
+          mv release/myapp.AppImage release/myapp-${PACKAGE_VERSION#v}.AppImage
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: release/*
+          tag_name: ${{ env.PACKAGE_VERSION }}
+          name: "Release ${{ env.PACKAGE_VERSION }}"
+          body: "Automated release for version ${{ env.PACKAGE_VERSION }}"
+          draft: false
+          prerelease: false
