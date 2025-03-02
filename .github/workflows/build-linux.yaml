@@ -45,11 +45,12 @@ jobs:
 
       - name: Install static Qt (if needed)
         run: |
-          mkdir -p $HOME/Qt
-          wget -q https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/qt-opensource-linux-x64-${QT_VERSION}.run
-          chmod +x qt-opensource-linux-x64-${QT_VERSION}.run
-          ./qt-opensource-linux-x64-${QT_VERSION}.run --script qt-noninteractive.qs
-          echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> $GITHUB_PATH
+          python3 -m pip install --upgrade pip
+          python3 -m pip install aqtinstall
+          # Install Qt (static version if available)
+          aqt install-qt linux desktop ${QT_VERSION} gcc_64 -m all
+          # Add Qt binaries to PATH
+          echo "$HOME/.local/share/Qt/${QT_VERSION}/gcc_64/bin" >> $GITHUB_PATH
 
       - name: Configure and build
         run: |
