@@ -50,7 +50,7 @@ jobs:
           # Install Qt (static version if available)
           aqt install-qt linux desktop ${QT_VERSION} gcc_64 -m all
           # Add Qt binaries to PATH
-          echo "$HOME/.local/share/Qt/${QT_VERSION}/gcc_64/bin" >> $GITHUB_PATH
+          echo "$HOME/${QT_VERSION}/gcc_64/bin" >> $GITHUB_PATH
 
       - name: Configure and build
         run: |
