@@ -36,9 +36,12 @@ jobs:
             build-essential cmake \
             patchelf dpkg fakeroot \
             squashfs-tools xz-utils \
-            linuxdeploy \
             software-properties-common \
             wget curl
+          # Download linuxdeploy
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/latest/download/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy-x86_64.AppImage
+          sudo mv linuxdeploy-x86_64.AppImage /usr/local/bin/linuxdeploy
 
       - name: Install static Qt (if needed)
         run: |
@@ -96,8 +99,8 @@ jobs:
           name: ${{ env.APP_NAME }}-artifacts
           path: |
             build/${{ env.APP_NAME }}
-            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION#v }}.deb
-            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION#v }}.AppImage
+            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.deb
+            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage
 
   release:
     needs: build
@@ -115,13 +118,13 @@ jobs:
       - name: Download built artifacts
         uses: actions/download-artifact@v4
         with:
-          name: myapp-artifacts
+          name: subtivals-artifacts
           path: release/
 
       - name: Rename artifacts with version
         run: |
-          mv release/myapp.deb release/myapp-${PACKAGE_VERSION#v}.deb
-          mv release/myapp.AppImage release/myapp-${PACKAGE_VERSION#v}.AppImage
+          mv release/subtivals.deb release/subtivals-${PACKAGE_VERSION#v}.deb
+          mv release/subtivals.AppImage release/subtivals-${PACKAGE_VERSION#v}.AppImage
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
