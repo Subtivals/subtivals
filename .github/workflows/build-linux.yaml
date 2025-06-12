@@ -52,7 +52,7 @@ jobs:
       - name: Configure and build
         run: |
           mkdir -p build && cd build
-          qmake ../src/${APP_NAME}.pro CONFIG+=release CONFIG+=static
+          qmake6 ../src/${APP_NAME}.pro CONFIG+=release CONFIG+=static
           make -j$(nproc)
 
       - name: Prepare AppDir for AppImage
