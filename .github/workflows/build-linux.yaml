@@ -55,6 +55,9 @@ jobs:
 
       - name: Configure and build
         run: |
+          which qmake6
+          qmake6 --version
+          qmake6 -query QT_INSTALL_LIBS
           mkdir -p build && cd build
           qmake6 ../src/${APP_NAME}.pro CONFIG+=release CONFIG+=static
           make -j$(nproc)
