@@ -517,7 +517,7 @@ void Script::loadFromXml(QString content) {
         fontNode.toElement().attribute("Size", "DEFAULT_FONT_SIZE").toInt());
     defaultFont.setUnderline(
         (fontNode.toElement().attribute("Underlined", "no") != "no"));
-    defaultColor = QColor::fromString(QString("#%1").arg(
+    defaultColor = QColor(QString("#%1").arg(
         fontNode.toElement().attribute("Color", "FFFFFFFF")));
   }
 
