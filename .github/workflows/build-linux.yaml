@@ -29,14 +29,33 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y \
-            libgl1-mesa-dev \
             build-essential cmake \
             patchelf dpkg fakeroot \
             squashfs-tools xz-utils \
             libfuse2 \
-            libxcb-cursor0 libxcb-cursor-dev \
-            libxkbcommon-x11-0 libxkbcommon-x11-dev \
-            libxcb-icccm4 libxcb-icccm4-dev \
+            file \
+            desktop-file-utils \
+            libgl1-mesa-dev \
+            libx11-6 \
+            libx11-xcb1 \
+            libxcb1 \
+            libxcb-util1 \
+            libxcb-image0 \
+            libxcb-shm0 \
+            libxcb-icccm4 \
+            libxcb-keysyms1 \
+            libxcb-render0 \
+            libxcb-render-util0 \
+            libxcb-xinerama0 \
+            libxcb-xkb1 \
+            libxcb-cursor0 \
+            libxkbcommon0 \
+            libxkbcommon-x11-0 \
+            libxrender1 \
+            libglib2.0-0 \
+            zlib1g \
+            libssl3 \
+            libpng16-16 \
             wget curl python3-pip imagemagick
 
       - name: Install Qt using aqtinstall
