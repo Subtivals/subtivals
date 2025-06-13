@@ -39,6 +39,8 @@ jobs:
             patchelf dpkg fakeroot \
             squashfs-tools xz-utils \
             libfuse2 \
+            libxcb-cursor0 \
+            libxcb-cursor-dev \
             wget curl python3-pip imagemagick
 
       - name: Install Qt using aqtinstall
