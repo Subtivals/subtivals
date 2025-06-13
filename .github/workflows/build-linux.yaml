@@ -44,7 +44,7 @@ jobs:
       - name: Install Qt using aqtinstall
         run: |
           python3 -m pip install --upgrade pip aqtinstall
-          aqt install-qt linux desktop "$QT_VERSION" gcc_64 -m all
+          aqt install-qt --outputdir "$HOME/Qt" linux desktop "$QT_VERSION" gcc_64 -m all
           echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> $GITHUB_PATH
 
       - name: Download linuxdeployqt
