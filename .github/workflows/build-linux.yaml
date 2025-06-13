@@ -38,6 +38,7 @@ jobs:
             build-essential cmake \
             patchelf dpkg fakeroot \
             squashfs-tools xz-utils \
+            libfuse2 \
             wget curl python3-pip imagemagick
 
       - name: Install Qt using aqtinstall
