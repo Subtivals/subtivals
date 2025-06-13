@@ -77,6 +77,7 @@ jobs:
           cp build/${APP_NAME} $APPDIR/usr/bin/
 
           # Convert .ico to .png and copy it
+          cp resources/subtivals.png $APPDIR/subtivals.png
           convert resources/${APP_NAME}.ico -resize 256x256 $APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png
 
           # Create .desktop file
