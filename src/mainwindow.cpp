@@ -35,7 +35,6 @@
 #include <QThread>
 #include <QWidget>
 
-
 #include "configeditor.h"
 #include "mainwindow.h"
 #include "player.h"
@@ -43,49 +42,54 @@
 #include "ui_mainwindow.h"
 #include "wizard.h"
 
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 /**
  * A small delegate class to allow rich text rendering in main table cells.
  */
 class SubtitleTextDelegate : public QStyledItemDelegate {
   void paint(QPainter *painter, const QStyleOptionViewItem &option,
-             const QModelIndex &index) const {
+             const QModelIndex &index) const override {
     QTextDocument document;
     QVariant value = index.data(Qt::DisplayRole);
+
     // Draw background with cell style
-    QStyleOptionViewItemV4 options = option;
-    initStyleOption(&options, index);
-    options.text = "";
-    options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options,
-                                         painter);
+    QStyleOptionViewItem opt(option);
+    initStyleOption(&opt, index);
+    opt.text = QString(); // remove default text drawing
+
+    if (opt.widget)
+      opt.widget->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, opt.widget);
+
     // Render rich text
     if (value.isValid() && !value.isNull()) {
-      QString html(value.toString());
-      // Bold if selected
+      QString html = value.toString();
+      // Show current subtitle with bold font.
       if (index.data(Qt::UserRole).toBool())
         html = QString("<b>%1</b>").arg(html);
       document.setHtml(html);
+      painter->save();
       painter->translate(option.rect.topLeft());
       document.drawContents(painter);
-      painter->translate(-option.rect.topLeft());
+      painter->restore();
     }
-    // Draw icon on the right
-    if (!index.data(Qt::DecorationRole).isNull())
-      options.widget->style()->drawItemPixmap(
+
+    // Show icon if too many chars per sec.
+    if (!index.data(Qt::DecorationRole).isNull()) {
+      QPixmap icon(index.data(Qt::DecorationRole).toString());
+      opt.widget->style()->drawItemPixmap(
           painter, option.rect.translated(QPoint(-5, 0)),
-          Qt::AlignRight | Qt::AlignVCenter,
-          QPixmap(index.data(Qt::DecorationRole).toString()));
+          Qt::AlignRight | Qt::AlignVCenter, icon);
+    }
   }
 };
 
 class SubtitleDurationDelegate : public QStyledItemDelegate {
   void paint(QPainter *painter, const QStyleOptionViewItem &option,
-             const QModelIndex &index) const {
+             const QModelIndex &index) const override {
     QStyledItemDelegate::paint(painter, option, index);
-    // Progression is stored in cell user data
     qreal progression = index.data(Qt::UserRole).toReal();
     if (progression == 0.0)
       return;
+
     // Paint progression of subtitle
     painter->save();
     QPen pen(option.palette.highlightedText().color());
@@ -94,18 +98,19 @@ class SubtitleDurationDelegate : public QStyledItemDelegate {
     QPoint startLine(option.rect.bottomLeft());
     startLine.setX(startLine.x() + int(option.rect.width() * progression) - 1);
     QPoint endLine = option.rect.bottomRight();
+
     if (progression < 0) {
       pen.setColor(option.palette.text().color());
       startLine = option.rect.bottomLeft();
       endLine = option.rect.bottomRight();
       endLine.setX(endLine.x() + int(option.rect.width() * progression) + 1);
     }
+
     painter->setPen(pen);
     painter->drawLine(startLine, endLine);
     painter->restore();
   }
 };
-#endif
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), m_script(nullptr),
@@ -117,14 +122,14 @@ MainWindow::MainWindow(QWidget *parent)
       m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)) {
   ui->setupUi(this);
   m_defaultPalette = qApp->palette();
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+
   ui->tableWidget->setItemDelegateForColumn(COLUMN_START,
                                             new SubtitleDurationDelegate());
   ui->tableWidget->setItemDelegateForColumn(COLUMN_END,
                                             new SubtitleDurationDelegate());
   ui->tableWidget->setItemDelegateForColumn(COLUMN_TEXT,
                                             new SubtitleTextDelegate());
-#endif
+
   ui->tableWidget->hideColumn(COLUMN_COMMENTS);
 
   ui->tableWidget->installEventFilter(this);
@@ -508,6 +513,7 @@ void MainWindow::openFile(const QString &p_fileName) {
         textItem->setToolTip(
             tr("Unreadable (%1 chars/sec)").arg(subtitle->charsRate()));
       }
+      // This is drawn by the delegate.
       textItem->setData(Qt::DecorationRole, icon);
     }
     row++;
