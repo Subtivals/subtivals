@@ -34,6 +34,8 @@
 #include <QTextCodec>
 #include <QThread>
 #include <QWidget>
+#include <QStyleHints>
+#include <QStyleFactory>
 
 #include "configeditor.h"
 #include "mainwindow.h"
@@ -50,6 +52,9 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
              const QModelIndex &index) const override {
     QTextDocument document;
     QVariant value = index.data(Qt::DisplayRole);
+    QString textColor = option.state & QStyle::State_Selected ?
+      option.palette.color(QPalette::HighlightedText).name() :
+      option.palette.color(QPalette::Text).name();
 
     // Draw background with cell style
     QStyleOptionViewItem opt(option);
@@ -63,9 +68,10 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
     if (value.isValid() && !value.isNull()) {
       QString html = value.toString();
       // Show current subtitle with bold font.
-      if (index.data(Qt::UserRole).toBool())
-        html = QString("<b>%1</b>").arg(html);
-      document.setHtml(html);
+      if (index.data(Qt::UserRole).toBool()) {
+        html = QString("<b>%2</b>").arg(html);
+      }
+      document.setHtml(QString("<span style='color:%1;'>%2</span>").arg(textColor, html));
       painter->save();
       painter->translate(option.rect.topLeft());
       document.drawContents(painter);
@@ -1185,32 +1191,9 @@ void MainWindow::actionAdvancedSettings() {
 
 void MainWindow::actionToggleDarkMode(bool p_enabled) {
   if (p_enabled) {
-    QColor darkGray(53, 53, 53);
-    QColor gray(128, 128, 128);
-    QColor black(25, 25, 25);
-    QColor blue(42, 130, 218);
-
-    QPalette darkPalette;
-    darkPalette.setColor(QPalette::Window, darkGray);
-    darkPalette.setColor(QPalette::WindowText, Qt::white);
-    darkPalette.setColor(QPalette::Base, black);
-    darkPalette.setColor(QPalette::AlternateBase, darkGray);
-    darkPalette.setColor(QPalette::ToolTipBase, blue);
-    darkPalette.setColor(QPalette::ToolTipText, Qt::white);
-    darkPalette.setColor(QPalette::Text, Qt::white);
-    darkPalette.setColor(QPalette::Button, darkGray);
-    darkPalette.setColor(QPalette::ButtonText, Qt::white);
-    darkPalette.setColor(QPalette::Link, blue);
-    darkPalette.setColor(QPalette::Highlight, blue);
-    darkPalette.setColor(QPalette::HighlightedText, Qt::black);
-
-    darkPalette.setColor(QPalette::Active, QPalette::Button, gray.darker());
-    darkPalette.setColor(QPalette::Disabled, QPalette::ButtonText, gray);
-    darkPalette.setColor(QPalette::Disabled, QPalette::WindowText, gray);
-    darkPalette.setColor(QPalette::Disabled, QPalette::Text, gray);
-    darkPalette.setColor(QPalette::Disabled, QPalette::Light, darkGray);
-    qApp->setPalette(darkPalette);
+    qApp->styleHints()->setColorScheme(Qt::ColorScheme::Dark);
   } else {
-    qApp->setPalette(m_defaultPalette);
+    // System default.
+    qApp->styleHints()->setColorScheme(Qt::ColorScheme::Unknown);
   }
 }
