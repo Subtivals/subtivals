@@ -311,6 +311,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("charsRate", m_charsRate);
   settings.setValue("subtitleInterval", m_subtitleInterval);
   settings.setValue("subtitleMinDuration", m_subtitleMinDuration);
+  settings.setValue("delayMilliseconds", m_delayMilliseconds);
   settings.endGroup();
 
   // When the main window is close : end of the app
@@ -361,7 +362,30 @@ void MainWindow::showEvent(QShowEvent *) {
   m_charsRate = settings.value("charsRate", 12).toInt();
   m_subtitleInterval = settings.value("subtitleInterval", 1000).toInt();
   m_subtitleMinDuration = settings.value("subtitleMinDuration", 1000).toInt();
+  m_delayMilliseconds = settings.value("delayMilliseconds", 250).toInt();
   settings.endGroup();
+
+  // Reflect the configured add/sub delay on the action text.
+  QString text;
+  switch (m_delayMilliseconds) {
+  case 100:
+    text = "1/10 sec";
+    break;
+  case 250:
+    text = "1/4 sec";
+    break;
+  case 500:
+    text = "1/2 sec";
+    break;
+  case 1000:
+    text = "1 sec";
+    break;
+  default:
+    text = QString::number(m_delayMilliseconds) + " msec";
+    break;
+  }
+  ui->actionAddDelay->setText("+" + text);
+  ui->actionSubDelay->setText("-" + text);
 }
 
 ConfigEditor *MainWindow::configEditor() { return m_preferences; }
