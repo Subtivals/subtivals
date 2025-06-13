@@ -36,6 +36,7 @@ jobs:
             libfuse2 \
             libxcb-cursor0 libxcb-cursor-dev \
             libxkbcommon-x11-0 libxkbcommon-x11-dev \
+            libxcb-icccm4 libxcb-icccm4-dev \
             wget curl python3-pip imagemagick
 
       - name: Install Qt using aqtinstall
