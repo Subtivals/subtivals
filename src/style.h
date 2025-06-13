@@ -39,7 +39,7 @@ public:
   explicit Style(const Style &p_oth, const QFont &f,
                  QObject *p_parent = nullptr);
   // Disables copying
-  Style(const Style&) = delete;
+  Style(const Style &) = delete;
 
   const QString &name() const;
   void setName(const QString &p_name);

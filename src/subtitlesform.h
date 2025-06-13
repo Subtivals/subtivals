@@ -26,7 +26,7 @@
 #include "subtitle.h"
 
 namespace Ui {
-class SubtitlesForm;
+  class SubtitlesForm;
 }
 
 class SubtitlesForm : public QWidget {

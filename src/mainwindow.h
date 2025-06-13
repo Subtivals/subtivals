@@ -41,8 +41,7 @@
 
 typedef QPair<double, double> Factor;
 static QList<Factor> FACTORS_VALUES = {
-    {23.976, 24}, {23.976, 25}, {24, 23.976}, {24, 25},
-    {25, 23.976}, {25, 24},
+    {23.976, 24}, {23.976, 25}, {24, 23.976}, {24, 25}, {25, 23.976}, {25, 24},
 };
 
 class ConfigEditor;
@@ -50,7 +49,7 @@ class ShortcutEditor;
 class Player;
 
 namespace Ui {
-class MainWindow;
+  class MainWindow;
 }
 
 class MainWindow : public QMainWindow {

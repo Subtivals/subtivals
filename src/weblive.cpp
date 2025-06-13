@@ -160,8 +160,8 @@ void WebLive::addSubtitle(Subtitle *p_subtitle) {
   jsonPosition["margin"] = jsonMargins;
 
   if (p_subtitle->nbLines() > 0) {
-    const QList<SubtitleLine> lines = p_subtitle->lines();  // Capture the list
-    const SubtitleLine &firstLine = lines.at(0);            // Now safe to take a reference
+    const QList<SubtitleLine> lines = p_subtitle->lines(); // Capture the list
+    const SubtitleLine &firstLine = lines.at(0); // Now safe to take a reference
     // XXX: second line is ignored.
     if (firstLine.position().x() <= 0)
       jsonPosition["x"] = firstLine.position().x();

@@ -672,7 +672,7 @@
     <string>Dark mode</string>
    </property>
    <property name="toolTip">
-    <string>Toggle dark mode</string>
+    <string>Force dark mode</string>
    </property>
   </action>
  </widget>

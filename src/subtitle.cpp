@@ -122,16 +122,19 @@ void Subtitle::setText(const QList<SubtitleLine> p_lines) {
     QRegularExpressionMatch match;
     QString lineText = line.text();
     while ((match = rx.match(unpaired, pos)).hasMatch()) {
-        QString capturedTag = match.captured(1); // Captures the group (e.g., "b" or "i")
-        lineText = QString("<%1>").arg(capturedTag) + lineText;
-        pos = match.capturedEnd(); // Update position to continue matching
+      QString capturedTag =
+          match.captured(1); // Captures the group (e.g., "b" or "i")
+      lineText = QString("<%1>").arg(capturedTag) + lineText;
+      pos = match.capturedEnd(); // Update position to continue matching
     }
     m_lines.append(SubtitleLine(lineText, line.position()));
   }
 
   // Build flat strings from list
   QStringList lines;
-  foreach (SubtitleLine line, m_lines) { lines.append(line.text()); }
+  foreach (SubtitleLine line, m_lines) {
+    lines.append(line.text());
+  }
 
   m_text = lines.join("<br/>");
   // Strip everything for character count

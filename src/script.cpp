@@ -39,11 +39,11 @@ bool compareSubtitleStartTime(const Subtitle *s1, const Subtitle *s2) {
 }
 
 QString sp2nbsp(const QString s) {
-    // Replace multiple spaces between words by non breakable spaces
-    if (QRegularExpression("\\S\\s{2,}\\S").match(s).hasMatch()) {
-        return QString(s).replace(" ", "&nbsp;");
-    }
-    return s;
+  // Replace multiple spaces between words by non breakable spaces
+  if (QRegularExpression("\\S\\s{2,}\\S").match(s).hasMatch()) {
+    return QString(s).replace(" ", "&nbsp;");
+  }
+  return s;
 }
 
 Script::Script(const QString &p_fileName, int p_charsRate,
@@ -182,7 +182,9 @@ const QList<Subtitle *> Script::previousSubtitles(qlonglong elapsed) const {
 }
 
 void Script::correctSubtitlesDuration(bool p_state) {
-  foreach (Subtitle *e, m_subtitles) { e->correct(p_state); }
+  foreach (Subtitle *e, m_subtitles) {
+    e->correct(p_state);
+  }
 }
 
 void Script::loadFromAss(QStringList content) {
@@ -303,10 +305,10 @@ void Script::loadFromAss(QStringList content) {
           QRegularExpression rx("\\{\\\\pos\\((\\d+)(,(\\d+))?\\)\\}");
           QRegularExpressionMatch match = rx.match(line);
           if (match.hasMatch()) {
-              x = match.captured(1).toInt(); // Group 1: The first number (x)
-              if (!match.captured(3).isEmpty()) {
-                  y = match.captured(3).toInt(); // Group 3: The second number (y)
-              }
+            x = match.captured(1).toInt(); // Group 1: The first number (x)
+            if (!match.captured(3).isEmpty()) {
+              y = match.captured(3).toInt(); // Group 3: The second number (y)
+            }
           }
 
           // Color HTML-ification
@@ -327,8 +329,8 @@ void Script::loadFromAss(QStringList content) {
           }
 
           // Drop others hints that cannot be translated in HTML
-          lines.append(SubtitleLine(line.replace(QRegularExpression("\\{.*\\}"), ""),
-                                    QPoint(x, y)));
+          lines.append(SubtitleLine(
+              line.replace(QRegularExpression("\\{.*\\}"), ""), QPoint(x, y)));
         }
 
         // Instantiate subtitle !
@@ -382,7 +384,8 @@ void Script::loadFromSrt(QStringList content) {
   int start = 0;
   int end = 0;
   foreach (QString line, content) {
-    if (section == SECTION_NONE && QRegularExpression("^[0-9]+$").match(line).hasMatch()) {
+    if (section == SECTION_NONE &&
+        QRegularExpression("^[0-9]+$").match(line).hasMatch()) {
       section = SECTION_INFOS;
     } else if (section == SECTION_INFOS) {
       QStringList subparts = line.split(QRegularExpression("\\s+\\-\\->\\s+"));
@@ -438,10 +441,10 @@ void Script::loadFromTxt(QStringList content) {
       QRegularExpression times("^([0-9:]+) ([0-9:]+)");
       QRegularExpressionMatch match = times.match(line);
       if (match.hasMatch()) {
-        start =
-            QTime(0, 0, 0).msecsTo(QTime::fromString(match.captured(1), "h:mm:ss:z"));
-        end =
-            QTime(0, 0, 0).msecsTo(QTime::fromString(match.captured(2), "h:mm:ss:z"));
+        start = QTime(0, 0, 0).msecsTo(
+            QTime::fromString(match.captured(1), "h:mm:ss:z"));
+        end = QTime(0, 0, 0).msecsTo(
+            QTime::fromString(match.captured(2), "h:mm:ss:z"));
         continue;
       }
     }
@@ -463,7 +466,8 @@ void Script::loadFromTxt(QStringList content) {
         // In TXT format : <word> is equivalent to <i>word</i>
         line = line.replace(QRegularExpression("<([^i/][^>]+)>"), "<i>\\1</i>");
         // and *word* is equivalent to <b>word</b>
-        line = line.replace(QRegularExpression("\\*([^\\*]+)\\*"), "<b>\\1</b>");
+        line =
+            line.replace(QRegularExpression("\\*([^\\*]+)\\*"), "<b>\\1</b>");
         line = sp2nbsp(line);
         text.append(line);
       }

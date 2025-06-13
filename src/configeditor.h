@@ -29,7 +29,7 @@
 #define DEFAULT_OUTLINE_WIDTH 0
 
 namespace Ui {
-class ConfigEditor;
+  class ConfigEditor;
 }
 
 class Script;

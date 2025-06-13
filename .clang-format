@@ -1,0 +1,14 @@
+BasedOnStyle: LLVM
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+AlignAfterOpenBracket: Align
+AllowShortFunctionsOnASingleLine: All
+ColumnLimit: 80
+DerivePointerAlignment: false
+PointerAlignment: Right
+IncludeBlocks: Preserve
+NamespaceIndentation: All
+SortIncludes: false
+SpaceAfterCStyleCast: true
+

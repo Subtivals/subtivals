@@ -63,8 +63,9 @@ void SubtitlesForm::toggleHide(bool state) {
 }
 
 void SubtitlesForm::toggleHideDesktop(bool state) {
-    int idxPrimary = QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
-    m_hideDesktop = (state && QGuiApplication::screens().length() > 1 &&
+  int idxPrimary =
+      QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
+  m_hideDesktop = (state && QGuiApplication::screens().length() > 1 &&
                    m_monitor != idxPrimary);
   if (m_hideDesktop)
     setGeometry(m_screenGeom);

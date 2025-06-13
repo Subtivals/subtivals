@@ -1,0 +1,26 @@
+name: Lint C++ Code with clang-format
+
+on:
+  pull_request:
+    paths:
+      - '**/*.cpp'
+      - '**/*.h'
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  clang-format-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
+
+      - name: Check formatting
+        run: |
+          FILES=$(find . -regex '.*\.\(cpp\|h\)')
+          clang-format --dry-run --Werror -style=file $FILES

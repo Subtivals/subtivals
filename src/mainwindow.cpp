@@ -52,9 +52,10 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
              const QModelIndex &index) const override {
     QTextDocument document;
     QVariant value = index.data(Qt::DisplayRole);
-    QString textColor = option.state & QStyle::State_Selected ?
-      option.palette.color(QPalette::HighlightedText).name() :
-      option.palette.color(QPalette::Text).name();
+    QString textColor =
+        option.state & QStyle::State_Selected
+            ? option.palette.color(QPalette::HighlightedText).name()
+            : option.palette.color(QPalette::Text).name();
 
     // Draw background with cell style
     QStyleOptionViewItem opt(option);
@@ -62,7 +63,8 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
     opt.text = QString(); // remove default text drawing
 
     if (opt.widget)
-      opt.widget->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, opt.widget);
+      opt.widget->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter,
+                                       opt.widget);
 
     // Render rich text
     if (value.isValid() && !value.isNull()) {
@@ -71,7 +73,8 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
       if (index.data(Qt::UserRole).toBool()) {
         html = QString("<b>%2</b>").arg(html);
       }
-      document.setHtml(QString("<span style='color:%1;'>%2</span>").arg(textColor, html));
+      document.setHtml(
+          QString("<span style='color:%1;'>%2</span>").arg(textColor, html));
       painter->save();
       painter->translate(option.rect.topLeft());
       document.drawContents(painter);
@@ -404,8 +407,8 @@ void MainWindow::actionOperatorPrintout() {
   file.close();
   QMessageBox::information(this, tr("Saved successfully"),
                            tr("Subtitles exported to <a href=\"%1\">%2</a>")
-                             .arg(QUrl::fromLocalFile(fileName).toString())
-                             .arg(fileName));
+                               .arg(QUrl::fromLocalFile(fileName).toString())
+                               .arg(fileName));
 }
 
 void MainWindow::actionShowCalibration(bool p_state) {
@@ -991,7 +994,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
       int row = m_tableMapping[e];
       for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
         QTableWidgetItem *item = ui->tableWidget->item(row, col);
-          item->setBackground(next);
+        item->setBackground(next);
       }
     }
     // Finally highlight current subtitles
@@ -1181,9 +1184,10 @@ void MainWindow::actionAdvancedSettings() {
 
   QMessageBox msgBox;
   msgBox.setText("Opening external editor...");
-  msgBox.setInformativeText(QString("Will open configuration file at<br><a href=\"file://%1\">%2</a>")
-                              .arg(QUrl::fromLocalFile(filename).toString())
-                              .arg(filename));
+  msgBox.setInformativeText(
+      QString("Will open configuration file at<br><a href=\"file://%1\">%2</a>")
+          .arg(QUrl::fromLocalFile(filename).toString())
+          .arg(filename));
   msgBox.exec();
 
   QDesktopServices::openUrl(QUrl::fromLocalFile(filename));

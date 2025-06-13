@@ -12,7 +12,7 @@ class QTableWidgetItem;
 class QAbstractButton;
 
 namespace Ui {
-class ShortcutEditor;
+  class ShortcutEditor;
 }
 
 class ShortcutEditor : public QDialog {
