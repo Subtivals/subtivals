@@ -11,7 +11,7 @@ TEMPLATE = app
 CONFIG += qt
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+    mainwindow.cpp \
     script.cpp \
     style.cpp \
     subtitle.cpp \

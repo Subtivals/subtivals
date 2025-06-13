@@ -1,0 +1,160 @@
+name: Build Qt6 App for Linux
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      QT_VERSION: 6.6.0
+      APP_NAME: subtivals
+      BUILD_TYPE: Release
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag version
+        run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            build-essential cmake \
+            patchelf dpkg fakeroot \
+            squashfs-tools xz-utils \
+            libfuse2 \
+            file \
+            desktop-file-utils \
+            libgl1-mesa-dev \
+            libx11-6 \
+            libx11-xcb1 \
+            libxcb1 \
+            libxcb-util1 \
+            libxcb-image0 \
+            libxcb-shm0 \
+            libxcb-icccm4 \
+            libxcb-keysyms1 \
+            libxcb-render0 \
+            libxcb-render-util0 \
+            libxcb-xinerama0 \
+            libxcb-xkb1 \
+            libxcb-cursor0 \
+            libxcb-shape0 \
+            libxkbcommon0 \
+            libxkbcommon-x11-0 \
+            libxrender1 \
+            libglib2.0-0 \
+            zlib1g \
+            libssl3 \
+            libpng16-16 \
+            wget curl python3-pip imagemagick
+
+      - name: Install Qt using aqtinstall
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install aqtinstall
+          python3 -m aqt list-qt linux desktop --long-modules "$QT_VERSION" gcc_64
+          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "$QT_VERSION" gcc_64 -m qt5compat qtwebsockets
+          echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> $GITHUB_PATH
+
+      - name: Download linuxdeployqt
+        run: |
+          wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+          chmod +x linuxdeployqt-continuous-x86_64.AppImage
+          sudo mv linuxdeployqt-continuous-x86_64.AppImage /usr/local/bin/linuxdeployqt
+
+      - name: Configure and build
+        run: |
+          which qmake6
+          qmake6 --version
+          qmake6 -query QT_INSTALL_LIBS
+          mkdir -p build && cd build
+          qmake6 ../src/${APP_NAME}.pro CONFIG+=release CONFIG+=static
+          make -j$(nproc)
+
+      - name: Prepare AppDir for AppImage
+        run: |
+          APPDIR=AppDir
+          mkdir -p $APPDIR/usr/bin
+          mkdir -p $APPDIR/usr/share/applications
+          mkdir -p $APPDIR/usr/share/icons/hicolor/256x256/apps
+
+          # Copy binary
+          cp build/${APP_NAME} $APPDIR/usr/bin/
+
+          # Convert .ico to .png and copy it
+          cp resources/subtivals.png $APPDIR/subtivals.png
+          convert resources/${APP_NAME}.ico -resize 256x256 $APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png
+
+          # Create .desktop file
+          cat <<EOF > $APPDIR/usr/share/applications/${APP_NAME}.desktop
+          [Desktop Entry]
+          Name=${APP_NAME}
+          Exec=${APP_NAME}
+          Icon=${APP_NAME}
+          Type=Application
+          Categories=Utility;
+          EOF
+
+      - name: Run linuxdeployqt
+        run: |
+          linuxdeployqt AppDir/usr/share/applications/${APP_NAME}.desktop -appimage
+
+          # Rename output
+          mv *.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
+
+      - name: Package as .deb
+        run: |
+          mkdir -p package/DEBIAN package/usr/local/bin
+          cp build/${APP_NAME} package/usr/local/bin/
+
+          cat <<EOF > package/DEBIAN/control
+          Package: ${APP_NAME}
+          Version: ${PACKAGE_VERSION}
+          Architecture: amd64
+          Maintainer: Mathieu Leplatre <contact@subtivals.org>
+          Description: A program to project subtitles.
+          EOF
+
+          dpkg-deb --build package "${APP_NAME}-${PACKAGE_VERSION}.deb"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-artifacts
+          path: |
+            build/${{ env.APP_NAME }}
+            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.deb
+            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download built artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: subtivals-artifacts
+          path: release/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+          tag_name: ${{ github.ref_name }}
+          name: "Release ${{ github.ref_name }}"
+          body: "Automated release for version ${{ github.ref_name }}"
+          draft: false
+          prerelease: false
