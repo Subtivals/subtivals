@@ -68,7 +68,9 @@ void ShortcutEditor::reset() {
 void ShortcutEditor::restore() {
   QSettings settings;
   settings.beginGroup(QString("Shortcuts"));
-  foreach (QString key, settings.allKeys()) { settings.remove(key); }
+  foreach (QString key, settings.allKeys()) {
+    settings.remove(key);
+  }
   settings.endGroup();
   reset();
 }

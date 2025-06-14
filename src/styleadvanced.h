@@ -6,7 +6,7 @@
 class Style;
 
 namespace Ui {
-class StyleAdvanced;
+  class StyleAdvanced;
 }
 
 class StyleAdvanced : public QDialog {

@@ -289,9 +289,9 @@
   </connection>
  </connections>
  <slots>
-  <slot>styleSelected(int)</slot>
   <slot>apply()</slot>
   <slot>chooseColour()</slot>
   <slot>advancedConfig()</slot>
+  <slot>styleSelected()</slot>
  </slots>
 </ui>

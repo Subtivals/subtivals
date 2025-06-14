@@ -18,6 +18,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QTextDocument>
 #include <QtGui/QTextFrame>
+#include <QRegularExpression>
 
 #include "script.h"
 #include "style.h"
@@ -99,7 +100,7 @@ const QPoint Style::textAnchor(const QPoint &p_point,
   QPoint offset(0, 0);
   // Make sure text contains no HTML
   QString strip(p_text);
-  strip.remove(QRegExp("<[^>]*>"));
+  strip.remove(QRegularExpression("<[^>]*>"));
   // alignment becomes text anchor
   if (m_alignment & Qt::AlignVCenter) {
     offset.setY(m_metrics.height() / 2);
@@ -107,9 +108,9 @@ const QPoint Style::textAnchor(const QPoint &p_point,
     offset.setY(m_metrics.height());
   }
   if (m_alignment & Qt::AlignHCenter) {
-    offset.setX(-m_metrics.width(strip) / 2);
+    offset.setX(-m_metrics.boundingRect(strip).width() / 2);
   } else if (m_alignment & Qt::AlignRight) {
-    offset.setX(-m_metrics.width(strip));
+    offset.setX(-m_metrics.boundingRect(strip).width());
   }
   return p_point + offset;
 }

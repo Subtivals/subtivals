@@ -14,25 +14,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
  **/
-#include <QtCore/QByteArray>
-#include <QtCore/QFile>
-#include <QtCore/QSettings>
-#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtCore/QThread>
 #include <QtCore/QUrl>
 #include <QtCore/QtGlobal>
 
 #include <QDesktopServices>
-#include <QDesktopWidget>
+#include <QFile>
 #include <QFileDialog>
+#include <QFileSystemWatcher>
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPainter>
 #include <QScrollBar>
+#include <QSettings>
 #include <QStyle>
 #include <QStyledItemDelegate>
+#include <QStringDecoder>
+#include <QThread>
+#include <QWidget>
+#include <QStyleHints>
+#include <QStyleFactory>
 
 #include "configeditor.h"
 #include "mainwindow.h"
@@ -46,43 +49,56 @@
  */
 class SubtitleTextDelegate : public QStyledItemDelegate {
   void paint(QPainter *painter, const QStyleOptionViewItem &option,
-             const QModelIndex &index) const {
+             const QModelIndex &index) const override {
     QTextDocument document;
     QVariant value = index.data(Qt::DisplayRole);
+    QString textColor =
+        option.state & QStyle::State_Selected
+            ? option.palette.color(QPalette::HighlightedText).name()
+            : option.palette.color(QPalette::Text).name();
+
     // Draw background with cell style
-    QStyleOptionViewItemV4 options = option;
-    initStyleOption(&options, index);
-    options.text = "";
-    options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options,
-                                         painter);
+    QStyleOptionViewItem opt(option);
+    initStyleOption(&opt, index);
+    opt.text = QString(); // remove default text drawing
+
+    if (opt.widget)
+      opt.widget->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter,
+                                       opt.widget);
+
     // Render rich text
     if (value.isValid() && !value.isNull()) {
-      QString html(value.toString());
-      // Bold if selected
-      if (index.data(Qt::UserRole).toBool())
-        html = QString("<b>%1</b>").arg(html);
-      document.setHtml(html);
+      QString html = value.toString();
+      // Show current subtitle with bold font.
+      if (index.data(Qt::UserRole).toBool()) {
+        html = QString("<b>%2</b>").arg(html);
+      }
+      document.setHtml(
+          QString("<span style='color:%1;'>%2</span>").arg(textColor, html));
+      painter->save();
       painter->translate(option.rect.topLeft());
       document.drawContents(painter);
-      painter->translate(-option.rect.topLeft());
+      painter->restore();
     }
-    // Draw icon on the right
-    if (!index.data(Qt::DecorationRole).isNull())
-      options.widget->style()->drawItemPixmap(
+
+    // Show icon if too many chars per sec.
+    if (!index.data(Qt::DecorationRole).isNull()) {
+      QPixmap icon(index.data(Qt::DecorationRole).toString());
+      opt.widget->style()->drawItemPixmap(
           painter, option.rect.translated(QPoint(-5, 0)),
-          Qt::AlignRight | Qt::AlignVCenter,
-          QPixmap(index.data(Qt::DecorationRole).toString()));
+          Qt::AlignRight | Qt::AlignVCenter, icon);
+    }
   }
 };
 
 class SubtitleDurationDelegate : public QStyledItemDelegate {
   void paint(QPainter *painter, const QStyleOptionViewItem &option,
-             const QModelIndex &index) const {
+             const QModelIndex &index) const override {
     QStyledItemDelegate::paint(painter, option, index);
-    // Progression is stored in cell user data
     qreal progression = index.data(Qt::UserRole).toReal();
     if (progression == 0.0)
       return;
+
     // Paint progression of subtitle
     painter->save();
     QPen pen(option.palette.highlightedText().color());
@@ -91,12 +107,14 @@ class SubtitleDurationDelegate : public QStyledItemDelegate {
     QPoint startLine(option.rect.bottomLeft());
     startLine.setX(startLine.x() + int(option.rect.width() * progression) - 1);
     QPoint endLine = option.rect.bottomRight();
+
     if (progression < 0) {
       pen.setColor(option.palette.text().color());
       startLine = option.rect.bottomLeft();
       endLine = option.rect.bottomRight();
       endLine.setX(endLine.x() + int(option.rect.width() * progression) + 1);
     }
+
     painter->setPen(pen);
     painter->drawLine(startLine, endLine);
     painter->restore();
@@ -113,12 +131,14 @@ MainWindow::MainWindow(QWidget *parent)
       m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)) {
   ui->setupUi(this);
   m_defaultPalette = qApp->palette();
+
   ui->tableWidget->setItemDelegateForColumn(COLUMN_START,
                                             new SubtitleDurationDelegate());
   ui->tableWidget->setItemDelegateForColumn(COLUMN_END,
                                             new SubtitleDurationDelegate());
   ui->tableWidget->setItemDelegateForColumn(COLUMN_TEXT,
                                             new SubtitleTextDelegate());
+
   ui->tableWidget->hideColumn(COLUMN_COMMENTS);
 
   ui->tableWidget->installEventFilter(this);
@@ -306,7 +326,7 @@ void MainWindow::showEvent(QShowEvent *) {
   resize(settings.value("size", size()).toSize());
 
   // Place window at center, below black screen by default.
-  QRect screenGeom = qApp->desktop()->screenGeometry();
+  QRect screenGeom = qApp->primaryScreen()->geometry();
   int center = (screenGeom.width() - geometry().width()) / 2;
   int decorationHeight = style()->pixelMetric(QStyle::PM_TitleBarHeight);
   QPoint pos(center, DEFAULT_HEIGHT + decorationHeight);
@@ -382,14 +402,13 @@ void MainWindow::actionOperatorPrintout() {
   }
 
   QTextStream out(&file);
-  out.setCodec("UTF-8");
   out.setGenerateByteOrderMark(true);
   out << m_script->exportList(Script::CSV);
   file.close();
   QMessageBox::information(this, tr("Saved successfully"),
                            tr("Subtitles exported to <a href=\"%1\">%2</a>")
-                             .arg(QUrl::fromLocalFile(fileName).toString())
-                             .arg(fileName));
+                               .arg(QUrl::fromLocalFile(fileName).toString())
+                               .arg(fileName));
 }
 
 void MainWindow::actionShowCalibration(bool p_state) {
@@ -424,10 +443,12 @@ void MainWindow::openFile(const QString &p_fileName) {
   QFile file(p_fileName);
   if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     QByteArray byteArray = file.readAll();
-    QTextCodec::ConverterState state;
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    codec->toUnicode(byteArray.constData(), byteArray.size(), &state);
-    if (state.invalidChars > 0) {
+
+    QStringDecoder decoder(QStringDecoder::Utf8);
+    QString decoded = decoder(byteArray);
+
+    // Check for decoding errors
+    if (decoder.hasError()) {
       QMessageBox::warning(
           this, tr("Encoding error"),
           tr("Looks like the subtitles were not saved in a valid UTF-8 file."));
@@ -503,6 +524,7 @@ void MainWindow::openFile(const QString &p_fileName) {
         textItem->setToolTip(
             tr("Unreadable (%1 chars/sec)").arg(subtitle->charsRate()));
       }
+      // This is drawn by the delegate.
       textItem->setData(Qt::DecorationRole, icon);
     }
     row++;
@@ -951,15 +973,15 @@ void MainWindow::subtitleChanged(QList<Subtitle *> p_currentSubtitles) {
 }
 
 void MainWindow::highlightSubtitles(qlonglong elapsed) {
-  QColor off = qApp->palette().color(QPalette::Base);
-  QColor on = qApp->palette().color(QPalette::Highlight).lighter(130);
-  QColor next = qApp->palette().color(QPalette::Highlight).lighter(170);
+  QBrush off = QBrush(qApp->palette().color(QPalette::Base));
+  QBrush on = QBrush(qApp->palette().color(QPalette::Highlight).lighter(130));
+  QBrush next = QBrush(qApp->palette().color(QPalette::Highlight).lighter(170));
 
   // First reset all
   for (int row = 0; row < ui->tableWidget->rowCount(); row++) {
     for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
       QTableWidgetItem *item = ui->tableWidget->item(row, col);
-      item->setBackgroundColor(off);
+      item->setBackground(off);
       QFont f = item->font();
       f.setBold(false);
       item->setFont(f);
@@ -974,7 +996,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
       int row = m_tableMapping[e];
       for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
         QTableWidgetItem *item = ui->tableWidget->item(row, col);
-        item->setBackgroundColor(next);
+        item->setBackground(next);
       }
     }
     // Finally highlight current subtitles
@@ -987,7 +1009,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
           f.setBold(true);
           item->setFont(f);
         }
-        item->setBackgroundColor(on);
+        item->setBackground(on);
         if (col == COLUMN_TEXT)
           item->setData(Qt::UserRole, !ui->actionHide->isChecked());
       }
@@ -1154,7 +1176,7 @@ void MainWindow::enableKnownFactors(bool p_state) {
     ui->knownFactors->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   } else {
     ui->knownFactors->setSizeAdjustPolicy(
-        QComboBox::AdjustToMinimumContentsLength);
+        QComboBox::AdjustToMinimumContentsLengthWithIcon);
   }
 }
 
@@ -1164,9 +1186,10 @@ void MainWindow::actionAdvancedSettings() {
 
   QMessageBox msgBox;
   msgBox.setText("Opening external editor...");
-  msgBox.setInformativeText(QString("Will open configuration file at<br><a href=\"file://%1\">%2</a>")
-                              .arg(QUrl::fromLocalFile(filename).toString())
-                              .arg(filename));
+  msgBox.setInformativeText(
+      QString("Will open configuration file at<br><a href=\"file://%1\">%2</a>")
+          .arg(QUrl::fromLocalFile(filename).toString())
+          .arg(filename));
   msgBox.exec();
 
   QDesktopServices::openUrl(QUrl::fromLocalFile(filename));
@@ -1174,32 +1197,9 @@ void MainWindow::actionAdvancedSettings() {
 
 void MainWindow::actionToggleDarkMode(bool p_enabled) {
   if (p_enabled) {
-    QColor darkGray(53, 53, 53);
-    QColor gray(128, 128, 128);
-    QColor black(25, 25, 25);
-    QColor blue(42, 130, 218);
-
-    QPalette darkPalette;
-    darkPalette.setColor(QPalette::Window, darkGray);
-    darkPalette.setColor(QPalette::WindowText, Qt::white);
-    darkPalette.setColor(QPalette::Base, black);
-    darkPalette.setColor(QPalette::AlternateBase, darkGray);
-    darkPalette.setColor(QPalette::ToolTipBase, blue);
-    darkPalette.setColor(QPalette::ToolTipText, Qt::white);
-    darkPalette.setColor(QPalette::Text, Qt::white);
-    darkPalette.setColor(QPalette::Button, darkGray);
-    darkPalette.setColor(QPalette::ButtonText, Qt::white);
-    darkPalette.setColor(QPalette::Link, blue);
-    darkPalette.setColor(QPalette::Highlight, blue);
-    darkPalette.setColor(QPalette::HighlightedText, Qt::black);
-
-    darkPalette.setColor(QPalette::Active, QPalette::Button, gray.darker());
-    darkPalette.setColor(QPalette::Disabled, QPalette::ButtonText, gray);
-    darkPalette.setColor(QPalette::Disabled, QPalette::WindowText, gray);
-    darkPalette.setColor(QPalette::Disabled, QPalette::Text, gray);
-    darkPalette.setColor(QPalette::Disabled, QPalette::Light, darkGray);
-    qApp->setPalette(darkPalette);
+    qApp->styleHints()->setColorScheme(Qt::ColorScheme::Dark);
   } else {
-    qApp->setPalette(m_defaultPalette);
+    // System default.
+    qApp->styleHints()->setColorScheme(Qt::ColorScheme::Unknown);
   }
 }

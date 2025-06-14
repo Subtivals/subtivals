@@ -14,11 +14,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
  **/
-#include <QDesktopWidget>
 #include <QtCore/QSettings>
 #include <QtCore/qmath.h>
 #include <QtGui/QCursor>
 #include <QtGui/QPainter>
+#include <QGuiApplication>
 
 #include "style.h"
 #include "subtitlesform.h"
@@ -63,8 +63,10 @@ void SubtitlesForm::toggleHide(bool state) {
 }
 
 void SubtitlesForm::toggleHideDesktop(bool state) {
-  m_hideDesktop = (state && QApplication::desktop()->screenCount() > 1 &&
-                   m_monitor != QApplication::desktop()->primaryScreen());
+  int idxPrimary =
+      QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
+  m_hideDesktop = (state && QGuiApplication::screens().length() > 1 &&
+                   m_monitor != idxPrimary);
   if (m_hideDesktop)
     setGeometry(m_screenGeom);
   else
@@ -74,7 +76,7 @@ void SubtitlesForm::toggleHideDesktop(bool state) {
 
 void SubtitlesForm::changeGeometry(int monitor, const QRect &r) {
   m_monitor = monitor;
-  m_screenGeom = QApplication::desktop()->screenGeometry(monitor);
+  m_screenGeom = QGuiApplication::screens().at(monitor)->geometry();
   // This is sent from UI, add screen geometry
   m_subtitlesGeom =
       QRect(m_screenGeom.x() + r.x(),
@@ -125,7 +127,7 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
 }
 
 void SubtitlesForm::mousePressEvent(QMouseEvent *e) {
-  m_mouseOffset = e->globalPos() - geometry().topLeft();
+  m_mouseOffset = e->globalPosition() - geometry().topLeft();
 }
 
 void SubtitlesForm::mouseMoveEvent(QMouseEvent *e) {
@@ -137,8 +139,8 @@ void SubtitlesForm::mouseMoveEvent(QMouseEvent *e) {
 
   // Simply move the window on mouse drag
   QRect current = geometry();
-  QPoint moveTo = e->globalPos() - m_mouseOffset;
-  current.moveTopLeft(moveTo);
+  QPointF moveTo = e->globalPosition() - m_mouseOffset;
+  current.moveTopLeft(moveTo.toPoint());
 
   changeGeometry(current);
 }
@@ -154,9 +156,8 @@ void SubtitlesForm::wheelEvent(QWheelEvent *event) {
   int step = 24;
   if (event->modifiers().testFlag(Qt::ShiftModifier))
     step = 60;
-  int factor = event->delta() / step;
-  if (event->orientation() == Qt::Horizontal ||
-      event->modifiers().testFlag(Qt::ControlModifier)) {
+  int factor = event->angleDelta().y() / step;
+  if (event->modifiers().testFlag(Qt::ControlModifier)) {
     current.setHeight(current.height() + factor);
   } else {
     current.moveLeft(current.left() - factor / 2); // Keep centered

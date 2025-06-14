@@ -5,10 +5,11 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 
+#include "subtitle.h"
+
 #define DELAY_OFFSET 250
 
 class Script;
-class Subtitle;
 
 class Player : public QObject {
   Q_OBJECT

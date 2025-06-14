@@ -21,7 +21,7 @@
 #include <QWidget>
 
 namespace Ui {
-class StyleEditor;
+  class StyleEditor;
 }
 
 class Script;

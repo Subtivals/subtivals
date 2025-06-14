@@ -16,12 +16,12 @@
  **/
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QRegExp>
 #include <QtCore/QSettings>
 #include <QtCore/QStringList>
 #include <QtCore/QTime>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomNodeList>
+#include <QRegularExpression>
 
 #include "script.h"
 
@@ -39,11 +39,11 @@ bool compareSubtitleStartTime(const Subtitle *s1, const Subtitle *s2) {
 }
 
 QString sp2nbsp(const QString s) {
-    // Replace multiple spaces between words by non breakable spaces
-    if (QRegExp("\\S\\s{2,}\\S").exactMatch(s)) {
-        return QString(s).replace(" ", "&nbsp;");
-    }
-    return s;
+  // Replace multiple spaces between words by non breakable spaces
+  if (QRegularExpression("\\S\\s{2,}\\S").match(s).hasMatch()) {
+    return QString(s).replace(" ", "&nbsp;");
+  }
+  return s;
 }
 
 Script::Script(const QString &p_fileName, int p_charsRate,
@@ -88,7 +88,7 @@ Script::Script(const QString &p_fileName, int p_charsRate,
     m_format = XML;
     loadFromXml(content.join(""));
   }
-  qSort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
+  std::sort(m_subtitles.begin(), m_subtitles.end(), compareSubtitleStartTime);
 }
 
 Script::ScriptFormat Script::format() const { return m_format; }
@@ -182,7 +182,9 @@ const QList<Subtitle *> Script::previousSubtitles(qlonglong elapsed) const {
 }
 
 void Script::correctSubtitlesDuration(bool p_state) {
-  foreach (Subtitle *e, m_subtitles) { e->correct(p_state); }
+  foreach (Subtitle *e, m_subtitles) {
+    e->correct(p_state);
+  }
 }
 
 void Script::loadFromAss(QStringList content) {
@@ -283,7 +285,7 @@ void Script::loadFromAss(QStringList content) {
         QString text = value.mid(p + 1);
         text = text.trimmed();
         // New-lines : ignore at start
-        text = text.replace(QRegExp("^(\\\\[nN])+"), "");
+        text = text.replace(QRegularExpression("^(\\\\[nN])+"), "");
 
         // Transform the hints in the text into HTML:
         // Italic HTML-ification
@@ -295,17 +297,18 @@ void Script::loadFromAss(QStringList content) {
         text = sp2nbsp(text);
 
         QList<SubtitleLine> lines;
-        foreach (QString line, text.split(QRegExp("\\\\[nN]"))) {
+        foreach (QString line, text.split(QRegularExpression("\\\\[nN]"))) {
           // Absolute positioning
           int x = -1;
           int y = -1;
           //{\pos(x,y)} or {\pos(x)} in the beginning of the line
-          QRegExp rx("\\{\\\\pos\\((\\d+)(,(\\d+))?\\)\\}");
-          if (rx.indexIn(line) >= 0) {
-            QStringList strpos = rx.capturedTexts();
-            x = strpos[1].toInt();
-            if (!strpos[3].isEmpty())
-              y = strpos[3].toInt();
+          QRegularExpression rx("\\{\\\\pos\\((\\d+)(,(\\d+))?\\)\\}");
+          QRegularExpressionMatch match = rx.match(line);
+          if (match.hasMatch()) {
+            x = match.captured(1).toInt(); // Group 1: The first number (x)
+            if (!match.captured(3).isEmpty()) {
+              y = match.captured(3).toInt(); // Group 3: The second number (y)
+            }
           }
 
           // Color HTML-ification
@@ -326,8 +329,8 @@ void Script::loadFromAss(QStringList content) {
           }
 
           // Drop others hints that cannot be translated in HTML
-          lines.append(SubtitleLine(line.replace(QRegExp("\\{.*\\}"), ""),
-                                    QPoint(x, y)));
+          lines.append(SubtitleLine(
+              line.replace(QRegularExpression("\\{.*\\}"), ""), QPoint(x, y)));
         }
 
         // Instantiate subtitle !
@@ -381,10 +384,11 @@ void Script::loadFromSrt(QStringList content) {
   int start = 0;
   int end = 0;
   foreach (QString line, content) {
-    if (section == SECTION_NONE && QRegExp("^[0-9]+$").exactMatch(line)) {
+    if (section == SECTION_NONE &&
+        QRegularExpression("^[0-9]+$").match(line).hasMatch()) {
       section = SECTION_INFOS;
     } else if (section == SECTION_INFOS) {
-      QStringList subparts = line.split(QRegExp("\\s+\\-\\->\\s+"));
+      QStringList subparts = line.split(QRegularExpression("\\s+\\-\\->\\s+"));
       start =
           QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[0], "h:mm:ss,z"));
       end = QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[1], "h:mm:ss,z"));
@@ -434,13 +438,13 @@ void Script::loadFromTxt(QStringList content) {
     if (section == SECTION_NONE) {
       section = SECTION_EVENTS;
 
-      QRegExp times("^([0-9:]+) ([0-9:]+)");
-      if (times.indexIn(line) >= 0) {
-        QStringList subparts = times.capturedTexts();
-        start =
-            QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[1], "h:mm:ss:z"));
-        end =
-            QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[2], "h:mm:ss:z"));
+      QRegularExpression times("^([0-9:]+) ([0-9:]+)");
+      QRegularExpressionMatch match = times.match(line);
+      if (match.hasMatch()) {
+        start = QTime(0, 0, 0).msecsTo(
+            QTime::fromString(match.captured(1), "h:mm:ss:z"));
+        end = QTime(0, 0, 0).msecsTo(
+            QTime::fromString(match.captured(2), "h:mm:ss:z"));
         continue;
       }
     }
@@ -460,9 +464,10 @@ void Script::loadFromTxt(QStringList content) {
         comments = line.replace("#", "");
       } else {
         // In TXT format : <word> is equivalent to <i>word</i>
-        line = line.replace(QRegExp("<([^i/][^>]+)>"), "<i>\\1</i>");
+        line = line.replace(QRegularExpression("<([^i/][^>]+)>"), "<i>\\1</i>");
         // and *word* is equivalent to <b>word</b>
-        line = line.replace(QRegExp("\\*([^\\*]+)\\*"), "<b>\\1</b>");
+        line =
+            line.replace(QRegularExpression("\\*([^\\*]+)\\*"), "<b>\\1</b>");
         line = sp2nbsp(line);
         text.append(line);
       }
@@ -516,7 +521,7 @@ void Script::loadFromXml(QString content) {
         fontNode.toElement().attribute("Size", "DEFAULT_FONT_SIZE").toInt());
     defaultFont.setUnderline(
         (fontNode.toElement().attribute("Underlined", "no") != "no"));
-    defaultColor.setNamedColor(QString("#%1").arg(
+    defaultColor = QColor(QString("#%1").arg(
         fontNode.toElement().attribute("Color", "FFFFFFFF")));
   }
 

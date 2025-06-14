@@ -4,7 +4,7 @@
 #include <QWizard>
 
 namespace Ui {
-class Wizard;
+  class Wizard;
 }
 
 class Wizard : public QWizard {

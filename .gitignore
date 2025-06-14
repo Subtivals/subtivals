@@ -6,6 +6,7 @@ qrc_*
 ui_*.h
 Makefile
 subtivals
-
+.qmake.stash
+build*
 .DS_Store
 

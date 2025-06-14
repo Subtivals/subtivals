@@ -212,7 +212,9 @@ void StyleEditor::restore() {
   // Remove all styles from settings
   QSettings settings;
   settings.beginGroup(QString("Styles-%1").arg(m_preset));
-  foreach (QString key, settings.allKeys()) { settings.remove(key); }
+  foreach (QString key, settings.allKeys()) {
+    settings.remove(key);
+  }
   settings.endGroup();
   m_overidden.clear();
   reset();

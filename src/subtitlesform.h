@@ -26,7 +26,7 @@
 #include "subtitle.h"
 
 namespace Ui {
-class SubtitlesForm;
+  class SubtitlesForm;
 }
 
 class SubtitlesForm : public QWidget {
@@ -61,7 +61,7 @@ private:
   Ui::SubtitlesForm *ui;
   QList<Subtitle *> m_currentSubtitles;
   bool m_visible;
-  QPoint m_mouseOffset;
+  QPointF m_mouseOffset;
   QRect m_screenGeom;
   QRect m_subtitlesGeom;
   bool m_hideDesktop;

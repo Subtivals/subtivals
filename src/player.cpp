@@ -3,7 +3,6 @@
 #include "player.h"
 
 #include "script.h"
-#include "subtitle.h"
 
 Player::Player(QObject *parent)
     : QObject(parent), m_script(nullptr), m_speedFactor(1.0),
