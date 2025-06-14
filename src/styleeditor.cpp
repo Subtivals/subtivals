@@ -22,7 +22,7 @@
 #include <QSettings>
 
 #include "script.h"
-#include "style.h"
+#include "subtitlestyle.h"
 #include "styleadvanced.h"
 
 StyleEditor::StyleEditor(QWidget *parent)
@@ -37,7 +37,7 @@ void StyleEditor::setPreset(int p_preset) { m_preset = p_preset; }
 
 void StyleEditor::advancedConfig() {
   QString styleName = ui->stylesNames->selectedItems().first()->text();
-  Style *style = m_script->style(styleName);
+  SubtitleStyle *style = m_script->style(styleName);
   StyleAdvanced config(style, this);
   connect(&config, SIGNAL(styleChanged()), SLOT(apply()));
   config.move(this->parentWidget()->geometry().center());
@@ -46,12 +46,12 @@ void StyleEditor::advancedConfig() {
 
 void StyleEditor::setScript(Script *script) {
   m_script = script;
-  foreach (Style *style, m_backup)
+  foreach (SubtitleStyle *style, m_backup)
     delete style;
   m_backup.clear();
   if (m_script) {
-    foreach (Style *style, m_script->styles()) {
-      m_backup.append(new Style(*style, style->font()));
+    foreach (SubtitleStyle *style, m_script->styles()) {
+      m_backup.append(new SubtitleStyle(*style, style->font()));
     }
   }
   initComponents();
@@ -73,7 +73,7 @@ void StyleEditor::styleSelected() {
   ui->fontSize->blockSignals(true);
 
   // Load style from script
-  Style *first = m_script->style(selected.first()->text());
+  SubtitleStyle *first = m_script->style(selected.first()->text());
   m_colour = first->primaryColour();
   QFont font(first->font());
   font.setPixelSize(12); // fixed size in combo
@@ -84,7 +84,7 @@ void StyleEditor::styleSelected() {
 
   foreach (QListWidgetItem *item, selected) {
     // If any style differs from first, clear fields
-    Style *style = m_script->style(item->text());
+    SubtitleStyle *style = m_script->style(item->text());
     if (style->font().family() != first->font().family())
       ui->fontName->setCurrentIndex(-1);
     if (style->font().pixelSize() != first->font().pixelSize())
@@ -103,7 +103,7 @@ void StyleEditor::save() {
   settings.beginGroup(QString("Styles-%1").arg(m_preset));
   // Save overidden styles into settings
   QString line;
-  foreach (Style *style, m_overidden) {
+  foreach (SubtitleStyle *style, m_overidden) {
     line = QString("%1/%2/%3/%4/%5/%7/%8/%9/%10/%11")
                .arg(style->font().family())
                .arg(style->font().pixelSize())
@@ -130,8 +130,8 @@ void StyleEditor::reset() {
   QSettings settings;
   settings.beginGroup(QString("Styles-%1").arg(m_preset));
   for (int i = 0; i < m_backup.size(); i++) {
-    Style *original = m_backup.at(i);
-    Style *style = m_script->style(original->name());
+    SubtitleStyle *original = m_backup.at(i);
+    SubtitleStyle *style = m_script->style(original->name());
 
     QStringList overriden =
         settings.value(style->name(), "").toString().split("/");
@@ -178,7 +178,7 @@ void StyleEditor::apply() {
     return;
 
   foreach (QListWidgetItem *item, selected) {
-    Style *style = m_script->style(item->text());
+    SubtitleStyle *style = m_script->style(item->text());
 
     int fontSize = style->font().pixelSize();
     QFont font = style->font();
@@ -269,7 +269,7 @@ void StyleEditor::initComponents() {
     return;
 
   ui->stylesNames->clear();
-  foreach (Style *style, m_script->styles()) {
+  foreach (SubtitleStyle *style, m_script->styles()) {
     // Add to the list
     QListWidgetItem *item = new QListWidgetItem(style->name());
     ui->stylesNames->addItem(item);

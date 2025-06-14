@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QString>
 
-#include "style.h"
+#include "subtitlestyle.h"
 #include "subtitle.h"
 
 /*
@@ -50,11 +50,11 @@ public:
   /*
    * Returns a style from its name.
    */
-  Style *style(const QString &p_name) const;
+  SubtitleStyle *style(const QString &p_name) const;
   /*
    * Returns the list of styles
    */
-  QList<Style *> styles() const;
+  QList<SubtitleStyle *> styles() const;
   /*
    * Return the number of subtitles in the script.
    */
@@ -109,7 +109,7 @@ private:
   /*
    * Script styles map.
    */
-  QMap<QString, Style *> m_styles;
+  QMap<QString, SubtitleStyle *> m_styles;
   /*
    * Script subtitles list.
    */

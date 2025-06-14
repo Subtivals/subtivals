@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-class Style;
+class SubtitleStyle;
 
 namespace Ui {
   class StyleAdvanced;
@@ -13,7 +13,7 @@ class StyleAdvanced : public QDialog {
   Q_OBJECT
 
 public:
-  explicit StyleAdvanced(Style *p_style, QWidget *parent = nullptr);
+  explicit StyleAdvanced(SubtitleStyle *p_style, QWidget *parent = nullptr);
   ~StyleAdvanced();
 signals:
   void styleChanged();
@@ -22,7 +22,7 @@ protected slots:
 
 private:
   Ui::StyleAdvanced *ui;
-  Style *m_style;
+  SubtitleStyle *m_style;
 };
 
 #endif // STYLEADVANCED_H

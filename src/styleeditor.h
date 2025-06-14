@@ -25,7 +25,7 @@ namespace Ui {
 }
 
 class Script;
-class Style;
+class SubtitleStyle;
 
 class StyleEditor : public QWidget {
   Q_OBJECT
@@ -55,8 +55,8 @@ protected:
 
 private:
   Script *m_script;
-  QList<Style *> m_backup;
-  QList<Style *> m_overidden;
+  QList<SubtitleStyle *> m_backup;
+  QList<SubtitleStyle *> m_overidden;
   QColor m_colour;
   int m_preset;
   Ui::StyleEditor *ui;

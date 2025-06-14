@@ -101,14 +101,14 @@ int Script::charsRate() const { return m_charsRate; };
 int Script::subtitleInterval() const { return m_subtitleInterval; };
 int Script::subtitleMinDuration() const { return m_subtitleMinDuration; };
 
-Style *Script::style(const QString &p_name) const {
+SubtitleStyle *Script::style(const QString &p_name) const {
   // If style is unknown, return first one.
   if (!m_styles.contains(p_name))
     return m_styles[m_styles.keys().at(0)];
   return m_styles[p_name];
 }
 
-QList<Style *> Script::styles() const { return m_styles.values(); }
+QList<SubtitleStyle *> Script::styles() const { return m_styles.values(); }
 
 int Script::subtitlesCount() const { return m_subtitles.size(); }
 
@@ -249,7 +249,7 @@ void Script::loadFromAss(QStringList content) {
             if (alignment % 3 == 2)
               position |= Qt::AlignHCenter;
 
-            Style *style = new Style(name, font, color, this);
+            SubtitleStyle *style = new SubtitleStyle(name, font, color, this);
             style->setAlignment(position);
             style->setMargins(marginL, marginR, marginV);
             m_styles[style->name()] = style;
@@ -271,7 +271,7 @@ void Script::loadFromAss(QStringList content) {
         int end =
             QTime(0, 0, 0).msecsTo(QTime::fromString(subparts[2], "h:mm:ss.z"));
 
-        Style *style = this->style(subparts[3].trimmed());
+        SubtitleStyle *style = this->style(subparts[3].trimmed());
         int marginL = subparts[5].toInt();
         int marginR = subparts[6].toInt();
         int marginV = subparts[7].toInt();
@@ -364,7 +364,8 @@ void Script::loadFromSrt(QStringList content) {
   QFont font(DEFAULT_FONT_NAME);
   font.setPixelSize(DEFAULT_FONT_SIZE);
 
-  Style *style = new Style(tr("Default"), font, Qt::white, this);
+  SubtitleStyle *style =
+      new SubtitleStyle(tr("Default"), font, Qt::white, this);
   m_styles[style->name()] = style;
 
   // Make sure its ends with empty line
@@ -411,7 +412,8 @@ void Script::loadFromTxt(QStringList content) {
   QFont font(DEFAULT_FONT_NAME);
   font.setPixelSize(DEFAULT_FONT_SIZE);
 
-  Style *style = new Style(tr("Default"), font, Qt::white, this);
+  SubtitleStyle *style =
+      new SubtitleStyle(tr("Default"), font, Qt::white, this);
   m_styles[style->name()] = style;
 
   // Make sure its ends with empty line
@@ -488,13 +490,13 @@ void Script::loadFromXml(QString content) {
     movieName = movies.at(0).toElement().text();
   }
 
-  QString defaultStyleName(tr("Default"));
+  QString defaultSubtitleStyleName(tr("Default"));
 
   // XXX: Take first font tag.
   QDomNodeList fonts = doc.elementsByTagName(nameSpace + "Font");
   if (fonts.length() > 0) {
     // Font is set, show specific name for style.
-    defaultStyleName = movieName;
+    defaultSubtitleStyleName = movieName;
 
     QDomNode fontNode = fonts.at(0);
     defaultFont.setFamily(fontNode.toElement().attribute("Id"));
@@ -510,9 +512,9 @@ void Script::loadFromXml(QString content) {
         fontNode.toElement().attribute("Color", "FFFFFFFF")));
   }
 
-  Style *defaultStyle =
-      new Style(defaultStyleName, defaultFont, defaultColor, this);
-  m_styles[defaultStyle->name()] = defaultStyle;
+  SubtitleStyle *defaultSubtitleStyle = new SubtitleStyle(
+      defaultSubtitleStyleName, defaultFont, defaultColor, this);
+  m_styles[defaultSubtitleStyle->name()] = defaultSubtitleStyle;
 
   for (int i = 0; i < subtitles.length(); i++) {
     QDomNode node = subtitles.at(i);
@@ -530,7 +532,7 @@ void Script::loadFromXml(QString content) {
         continue;
       }
 
-      Style *style = defaultStyle;
+      SubtitleStyle *style = defaultSubtitleStyle;
       QFont font(style->font());
       QString color;
 
@@ -574,16 +576,16 @@ void Script::loadFromXml(QString content) {
            (!vPosition.isEmpty()) || (!hPosition.isEmpty()));
       if (isOverriden) {
         QStringList tokens;
-        tokens << defaultStyle->name() << hAlign << vAlign << vPosition
+        tokens << defaultSubtitleStyle->name() << hAlign << vAlign << vPosition
                << hPosition << color;
         QString styleName = tokens.join("-");
         if (!m_styles.contains(styleName)) {
           // Not yet encountered. Built it!
-          Style *newStyle = new Style(*style, font);
-          newStyle->setName(styleName);
+          SubtitleStyle *newSubtitleStyle = new SubtitleStyle(*style, font);
+          newSubtitleStyle->setName(styleName);
 
           if (!color.isEmpty()) {
-            newStyle->setPrimaryColour(QColor(color));
+            newSubtitleStyle->setPrimaryColour(QColor(color));
           }
 
           Qt::Alignment alignment = Qt::AlignVCenter;
@@ -597,13 +599,13 @@ void Script::loadFromXml(QString content) {
             alignment |= Qt::AlignTop;
 
           // XXX: should inherit.
-          newStyle->setAlignment(alignment);
+          newSubtitleStyle->setAlignment(alignment);
 
           // XXX: should inherit.
-          newStyle->setOffsets(hPosition.toDouble() / 100.0,
-                               vPosition.toDouble() / 100.0);
+          newSubtitleStyle->setOffsets(hPosition.toDouble() / 100.0,
+                                       vPosition.toDouble() / 100.0);
 
-          m_styles[styleName] = newStyle;
+          m_styles[styleName] = newSubtitleStyle;
         }
         style = m_styles[styleName];
       }
@@ -625,7 +627,7 @@ const QString Script::exportList(Script::ScriptFormat p_format) const {
 
     // CSV Headers
     QStringList headers;
-    headers << tr("Row") << tr("Start") << tr("End") << tr("Style")
+    headers << tr("Row") << tr("Start") << tr("End") << tr("SubtitleStyle")
             << tr("Text") << tr("Comments");
     output.append(QString("\"%1\"\n").arg(headers.join("\" ; \"")));
 

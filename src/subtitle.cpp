@@ -83,9 +83,9 @@ void Subtitle::correct(bool p_state) {
   m_corrected = p_state && (m_autoDuration > (m_msseEnd - m_msseStart));
 }
 
-void Subtitle::setStyle(Style *p_style) { m_style = p_style; }
+void Subtitle::setStyle(SubtitleStyle *p_style) { m_style = p_style; }
 
-const Style *Subtitle::style() const { return m_style; }
+const SubtitleStyle *Subtitle::style() const { return m_style; }
 
 const Script *Subtitle::script() const { return m_script; }
 

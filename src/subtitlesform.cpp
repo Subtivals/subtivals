@@ -20,7 +20,7 @@
 #include <QtGui/QPainter>
 #include <QGuiApplication>
 
-#include "style.h"
+#include "subtitlestyle.h"
 #include "subtitlesform.h"
 #include "ui_subtitlesform.h"
 

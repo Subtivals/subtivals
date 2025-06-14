@@ -22,7 +22,7 @@
 #include <QPoint>
 #include <QString>
 
-class Style;
+class SubtitleStyle;
 class Script;
 
 class SubtitleLine : public QPair<QString, QPoint> {
@@ -46,8 +46,8 @@ public:
   qint64 duration() const;
   qint64 autoDuration() const;
   int charsRate() const;
-  void setStyle(Style *p_style);
-  const Style *style() const;
+  void setStyle(SubtitleStyle *p_style);
+  const SubtitleStyle *style() const;
   const Script *script() const;
   void setText(const QStringList &p_text);
   void setText(const QList<SubtitleLine> p_lines);
@@ -74,7 +74,7 @@ private:
   int m_msseStart;
   int m_msseEnd;
   int m_autoDuration;
-  const Style *m_style;
+  const SubtitleStyle *m_style;
   QString m_text;
   QString m_prettyText;
   QString m_pureText;

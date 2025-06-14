@@ -21,11 +21,11 @@
 #include <QRegularExpression>
 
 #include "script.h"
-#include "style.h"
+#include "subtitlestyle.h"
 #include "subtitle.h"
 
-Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color,
-             QObject *p_parent)
+SubtitleStyle::SubtitleStyle(const QString &p_name, const QFont &p_font,
+                             const QColor &p_color, QObject *p_parent)
     : QObject(p_parent), m_name(p_name), m_metrics(p_font),
       m_primaryColour(p_color), m_lineSpacing(DEFAULT_LINESPACING),
       m_alignment(Qt::AlignTop | Qt::AlignHCenter), m_marginL(0), m_marginR(0),
@@ -33,7 +33,8 @@ Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color,
   setFont(p_font);
 }
 
-Style::Style(const Style &p_oth, const QFont &f, QObject *p_parent)
+SubtitleStyle::SubtitleStyle(const SubtitleStyle &p_oth, const QFont &f,
+                             QObject *p_parent)
     : QObject(p_parent), m_name(p_oth.m_name),
       m_metrics(QFontMetrics(p_oth.font())),
       m_primaryColour(p_oth.m_primaryColour),
@@ -44,59 +45,59 @@ Style::Style(const Style &p_oth, const QFont &f, QObject *p_parent)
   setFont(f);
 }
 
-void Style::setAlignment(Qt::Alignment p_alignment) {
+void SubtitleStyle::setAlignment(Qt::Alignment p_alignment) {
   m_alignment = p_alignment;
 }
 
-void Style::setOffsets(double p_h, double p_v) {
+void SubtitleStyle::setOffsets(double p_h, double p_v) {
   m_offsetH = p_h;
   m_offsetV = p_v;
 }
 
-int Style::marginL() const { return m_marginL; }
+int SubtitleStyle::marginL() const { return m_marginL; }
 
-int Style::marginR() const { return m_marginR; }
+int SubtitleStyle::marginR() const { return m_marginR; }
 
-int Style::marginV() const { return m_marginV; }
+int SubtitleStyle::marginV() const { return m_marginV; }
 
-Qt::Alignment Style::alignment() const { return m_alignment; }
+Qt::Alignment SubtitleStyle::alignment() const { return m_alignment; }
 
-void Style::setMargins(int p_marginL, int p_marginR, int p_marginV) {
+void SubtitleStyle::setMargins(int p_marginL, int p_marginR, int p_marginV) {
   m_marginL = p_marginL;
   m_marginR = p_marginR;
   m_marginV = p_marginV;
 }
 
-const QString &Style::name() const { return m_name; }
+const QString &SubtitleStyle::name() const { return m_name; }
 
-void Style::setName(const QString &p_name) { m_name = p_name; }
+void SubtitleStyle::setName(const QString &p_name) { m_name = p_name; }
 
-const QFont &Style::font() const { return m_font; }
+const QFont &SubtitleStyle::font() const { return m_font; }
 
-void Style::setFont(const QFont &f) {
+void SubtitleStyle::setFont(const QFont &f) {
   m_font = f;
   m_font.setStyleStrategy(QFont::PreferAntialias);
   m_metrics = QFontMetrics(f);
 }
 
-const QColor &Style::primaryColour() const { return m_primaryColour; }
+const QColor &SubtitleStyle::primaryColour() const { return m_primaryColour; }
 
-void Style::setPrimaryColour(const QColor &c) { m_primaryColour = c; }
+void SubtitleStyle::setPrimaryColour(const QColor &c) { m_primaryColour = c; }
 
-qreal Style::lineSpacing() const { return m_lineSpacing; }
+qreal SubtitleStyle::lineSpacing() const { return m_lineSpacing; }
 
-void Style::setLineSpacing(qreal p_lineSpacing) {
+void SubtitleStyle::setLineSpacing(qreal p_lineSpacing) {
   m_lineSpacing = p_lineSpacing;
 }
 
-int Style::subtitleHeight(const Subtitle &subtitle) const {
+int SubtitleStyle::subtitleHeight(const Subtitle &subtitle) const {
   int h = m_metrics.height();
   int nb = subtitle.nbLines();
   return (h * nb) + (m_lineSpacing * h * (nb - 1));
 }
 
-const QPoint Style::textAnchor(const QPoint &p_point,
-                               const QString &p_text) const {
+const QPoint SubtitleStyle::textAnchor(const QPoint &p_point,
+                                       const QString &p_text) const {
   QPoint offset(0, 0);
   // Make sure text contains no HTML
   QString strip(p_text);
@@ -115,8 +116,9 @@ const QPoint Style::textAnchor(const QPoint &p_point,
   return p_point + offset;
 }
 
-void Style::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
-                         const QRect &bounds, const QPen &outline) const {
+void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
+                                 const QRect &bounds,
+                                 const QPen &outline) const {
   QSize resolution = subtitle.script()->resolution();
   QPointF scale = QPointF(1.0, 1.0);
   if (resolution.width() > 0)

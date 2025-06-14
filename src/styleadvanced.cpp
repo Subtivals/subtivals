@@ -2,9 +2,9 @@
 #include "ui_styleadvanced.h"
 
 #include "script.h"
-#include "style.h"
+#include "subtitlestyle.h"
 
-StyleAdvanced::StyleAdvanced(Style *p_style, QWidget *parent)
+StyleAdvanced::StyleAdvanced(SubtitleStyle *p_style, QWidget *parent)
     : QDialog(parent), ui(new Ui::StyleAdvanced), m_style(p_style) {
   ui->setupUi(this);
 

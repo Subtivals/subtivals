@@ -6,7 +6,7 @@
 #include <QSslSocket>
 #include <QFile>
 
-#include "style.h"
+#include "subtitlestyle.h"
 #include "weblive.h"
 
 #define DEFAULT_PLAYER_URL "https://live.subtivals.org"
@@ -127,7 +127,7 @@ void WebLive::addSubtitle(Subtitle *p_subtitle) {
   json["comments"] = p_subtitle->comments();
   json["channel"] = m_secret;
 
-  const Style *style = p_subtitle->style();
+  const SubtitleStyle *style = p_subtitle->style();
   QJsonObject jsonStyle;
   jsonStyle["name"] = style->name();
   jsonStyle["color"] = style->primaryColour().name();

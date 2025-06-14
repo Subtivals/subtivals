@@ -14,8 +14,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
  **/
-#ifndef STYLE_H
-#define STYLE_H
+#ifndef SUBTITLESTYLE_H
+#define SUBTITLESTYLE_H
 
 #include <QColor>
 #include <QFont>
@@ -30,16 +30,17 @@ class Subtitle;
 /*
  * Style to use to show an subtitle.
  */
-class Style : public QObject {
+class SubtitleStyle : public QObject {
   Q_OBJECT
 public:
-  explicit Style(const QString &p_name, const QFont &p_font,
-                 const QColor &p_color, QObject *p_parent);
-  explicit Style(const Style &p_oth, QObject *p_parent = nullptr);
-  explicit Style(const Style &p_oth, const QFont &f,
-                 QObject *p_parent = nullptr);
+  explicit SubtitleStyle(const QString &p_name, const QFont &p_font,
+                         const QColor &p_color, QObject *p_parent);
+  explicit SubtitleStyle(const SubtitleStyle &p_oth,
+                         QObject *p_parent = nullptr);
+  explicit SubtitleStyle(const SubtitleStyle &p_oth, const QFont &f,
+                         QObject *p_parent = nullptr);
   // Disables copying
-  Style(const Style &) = delete;
+  SubtitleStyle(const SubtitleStyle &) = delete;
 
   const QString &name() const;
   void setName(const QString &p_name);
@@ -89,4 +90,4 @@ private:
   double m_offsetV;
 };
 
-#endif // STYLE_H
+#endif // SUBTITLESTYLE_H
