@@ -64,6 +64,7 @@ public:
   ConfigEditor *configEditor();
   const Player *player();
 signals:
+  void hideDesktop(bool state);
   void toggleHide(bool state);
   void screenResizable(bool state);
 public slots:
