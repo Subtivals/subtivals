@@ -48,7 +48,6 @@ public:
   bool eventFilter(QObject *object, QEvent *event);
 signals:
   // Live options
-  void hideDesktop(bool);
   void webliveEnabled(bool);
 
   // Presets

@@ -279,6 +279,7 @@
     <addaction name="actionShowMilliseconds"/>
     <addaction name="actionPersistentHide"/>
     <addaction name="actionDarkMode"/>
+    <addaction name="actionHideDesktop"/>
     <addaction name="actionEditShortcuts"/>
     <addaction name="actionAdvancedSettings"/>
    </widget>
@@ -673,6 +674,17 @@
    </property>
    <property name="toolTip">
     <string>Force dark mode</string>
+   </property>
+  </action>
+   <action name="actionHideDesktop">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Hide desktop</string>
+   </property>
+   <property name="toolTip">
+    <string>Fill screen with color</string>
    </property>
   </action>
  </widget>
