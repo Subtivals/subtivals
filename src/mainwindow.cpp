@@ -437,13 +437,7 @@ void MainWindow::actionOperatorPrintout() {
 
 void MainWindow::actionShowCalibration(bool p_state) {
   if (p_state) {
-    QString fileExt = "ass";
-    if (m_script) {
-      m_lastScript = m_script->fileName();
-      if (m_script->format() == Script::SRT)
-        fileExt = "srt";
-    }
-    openFile(QString(":/samples/M.%1").arg(fileExt));
+    openFile(QString(":/samples/M.ass"));
     m_player->jumpTo(0);
     m_player->enableAutoHide(false); // disable auto-hide for calibration
     actionToggleHide(false);

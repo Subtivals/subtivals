@@ -15,15 +15,36 @@ Video Position: 0
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Up-Left,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,7,0,0,0,1
-Style: Up-Center,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,8,0,0,0,1
-Style: Up-Right,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,9,0,0,0,1
-Style: Center-Left,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,4,0,0,0,1
-Style: Center,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
-Style: Center-Right,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,6,0,0,0,1
-Style: Down-Left,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,1,0,0,0,1
-Style: Down-Center,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,0,0,0,1
-Style: Down-Right,Verdana,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,3,0,0,0,1
+Style: Up-Left,Tiresias Signfont,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,7,0,0,0,1
+Style: Up-Center,Tiresias Signfont,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,8,0,0,0,1
+Style: Up-Right,Tiresias Signfont,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,9,0,0,0,1
+Style: Center-Left,Tiresias Signfont,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,4,0,0,0,1
+Style: Center,Tiresias Signfont,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Center-Right,Tiresias Signfont,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,6,0,0,0,1
+Style: Down-Left,Tiresias Signfont,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,1,0,0,0,1
+Style: Down-Center,Tiresias Signfont,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,0,0,0,1
+Style: Down-Right,Tiresias Signfont,22,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,3,0,0,0,1
+
+Style: English,Tiresias Signfont,30,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Spanish,Tiresias Signfont,30,&H000080FF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: French,Tiresias Signfont,30,&H0000FFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: German,Tiresias Signfont,30,&H0000FF80,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Italian,Tiresias Signfont,30,&H00FF0000,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Portuguese,Tiresias Signfont,30,&H0080FF00,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Russian,Tiresias Signfont,30,&H00FFFF00,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Hindi,Tiresias Signfont,30,&H00FF8000,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Japanese,Tiresias Signfont,30,&H00FF0080,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Chinese,Tiresias Signfont,30,&H00FF00FF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Korean,Tiresias Signfont,30,&H008000FF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Arabic,Tiresias Signfont,30,&H008eff9b,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,0,0,0,0,1
+Style: Hebrew,Tiresias Signfont,30,&H0000A0FF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Thai,Tiresias Signfont,30,&H0000FFC0,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Vietnamese,Tiresias Signfont,30,&H0000FF40,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Armenian,Tiresias Signfont,30,&H0000C000,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Kazakh,Tiresias Signfont,30,&H00808080,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Amharic,Tiresias Signfont,30,&H00C000FF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Tamil,Tiresias Signfont,30,&H00FF99CC,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
+Style: Swedish,Tiresias Signfont,30,&H004000FF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -36,3 +57,24 @@ Dialogue: 0,0:00:00.00,0:00:11.00,Down-Left,,0000,0000,0000,,Down-Left 1\NDown-L
 Dialogue: 0,0:00:00.00,0:00:11.25,Down-Center,,0000,0000,0000,,Down-Center 1\NDown-Center 2
 Dialogue: 0,0:00:00.00,0:00:11.50,Down-Right,,0000,0000,0000,,Down-Right 1\NDown-Right 2
 Dialogue: 0,0:00:00.00,0:00:11.75,Center-Right,,0000,0000,0000,,Center-Right 1\NCenter-Right 2
+
+Dialogue: 0,0:00:12.00,0:00:15.10,English,,0000,0000,0000,,Hello everyone!
+Dialogue: 0,0:00:12.00,0:00:15.20,French,,0000,0000,0000,,{\pos(500,250)}Bonjour à tous!
+Dialogue: 0,0:00:12.20,0:00:13.40,Spanish,,0000,0000,0000,,{\pos(500,80)}Hola a todos!
+Dialogue: 0,0:00:12.30,0:00:13.50,German,,0000,0000,0000,,{\pos(300,200)}Hallo zusammen!
+Dialogue: 0,0:00:12.40,0:00:13.60,Italian,,0000,0000,0000,,{\pos(900,150)}Ciao a tutti!
+Dialogue: 0,0:00:12.50,0:00:13.70,Portuguese,,0000,0000,0000,,{\pos(120,250)}Olá a todos!
+Dialogue: 0,0:00:12.60,0:00:13.80,Russian,,0000,0000,0000,,{\pos(620,50)}Привет всем!
+Dialogue: 0,0:00:12.70,0:00:13.90,Hindi,,0000,0000,0000,,{\pos(420,200)}नमस्ते सब लोग!
+Dialogue: 0,0:00:12.80,0:00:14.00,Japanese,,0000,0000,0000,,{\pos(700,280)}こんにちは皆さん！
+Dialogue: 0,0:00:12.90,0:00:14.10,Chinese,,0000,0000,0000,,{\pos(250,150)}大家好！
+Dialogue: 0,0:00:13.00,0:00:14.20,Korean,,0000,0000,0000,,{\pos(850,80)}안녕하세요 여러분!
+Dialogue: 0,0:00:13.10,0:00:14.30,Arabic,,0000,0000,0000,,{\pos(200,0)}مرحباً بالجميع!
+Dialogue: 0,0:00:13.20,0:00:14.40,Hebrew,,0000,0000,0000,,{\pos(600,200)}שלום לכולם!
+Dialogue: 0,0:00:13.30,0:00:14.50,Thai,,0000,0000,0000,,{\pos(350,50)}สวัสดีทุกคน!
+Dialogue: 0,0:00:13.40,0:00:14.60,Vietnamese,,0000,0000,0000,,{\pos(500,250)}Chào mọi người!
+Dialogue: 0,0:00:13.50,0:00:14.70,Armenian,,0000,0000,0000,,{\pos(950,220)}Բարեւ բոլորին!
+Dialogue: 0,0:00:13.60,0:00:14.80,Kazakh,,0000,0000,0000,,{\pos(150,120)}Сәлем, бәріңе!
+Dialogue: 0,0:00:13.70,0:00:14.90,Amharic,,0000,0000,0000,,{\pos(720,220)}ሰላም ለሁላችሁ!
+Dialogue: 0,0:00:13.80,0:00:15.00,Tamil,,0000,0000,0000,,{\pos(370,100)}வணக்கம் அனைவருக்கும்!
+Dialogue: 0,0:00:13.90,0:00:15.10,Swedish,,0000,0000,0000,,{\pos(640,170)}Hej allihopa!
