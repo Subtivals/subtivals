@@ -24,6 +24,7 @@
 #include <QByteArray>
 #include <QIODevice>
 #include <QLocale>
+#include <QFontDatabase>
 
 #include "configeditor.h"
 #include "mainwindow.h"
@@ -50,6 +51,11 @@ int main(int argc, char *argv[]) {
   QTranslator translator;
   if (translator.load(locale, TRANSLATIONS_PATH)) {
     a.installTranslator(&translator);
+  }
+
+  // Load packages fonts.
+  if (QFontDatabase::addApplicationFont(":/fonts/TiresiasSignFont.ttf") < 0) {
+    qWarning("Failed to load 'TiresiasSignFont'");
   }
 
   SubtitlesForm f;
