@@ -77,9 +77,11 @@ jobs:
           which qmake6
           qmake6 --version
           qmake6 -query QT_INSTALL_LIBS
-          ls -lRa
           mkdir -p build && cd build
           qmake6 ../src/${APP_NAME}.pro CONFIG+=release CONFIG+=static
+          ls -l ../resources/
+          ls -l ../resources/TiresiasSignFont.ttf
+          realpath ../resources/TiresiasSignFont.ttf
           make -j$(nproc)
 
       - name: Prepare AppDir for AppImage
