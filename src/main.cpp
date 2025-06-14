@@ -31,6 +31,41 @@
 #include "subtitlesform.h"
 #include "weblive.h"
 
+#ifdef Q_OS_MACOS
+#include <IOKit/pwr_mgt/IOPMLib.h>
+
+static IOPMAssertionID assertionID;
+void disableScreensaver() {
+  IOPMAssertionCreateWithName(
+      kIOPMAssertionTypeNoDisplaySleep, kIOPMAssertionLevelOn,
+      CFSTR("Prevent display sleep for Subtivals"), &assertionID);
+}
+#endif
+#ifdef Q_OS_WIN
+#include <windows.h>
+
+void disableScreensaver() {
+  SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED);
+}
+#endif
+#ifdef Q_OS_LINUX
+#include <xcb/dpms.h>
+#include <xcb/screensaver.h>
+
+void disableScreensaver() {
+  if (auto *x11Application =
+          qGuiApp->nativeInterface<QNativeInterface::QX11Application>()) {
+    Display *display = x11Application->display();
+    xcb_connection_t *connection = x11Application->connection();
+    xcb_dpms_set_timeouts(connection, 0, 0, 0);
+    xcb_screensaver_suspend(connection, XCB_SCREENSAVER_SUSPEND);
+  } else {
+    // Wayland?
+    qWarning() << "Could not disable screensaver on this platform";
+  }
+}
+#endif
+
 int main(int argc, char *argv[]) {
   // Load settings from profile.
   QSettings::setDefaultFormat(QSettings::IniFormat);
@@ -43,7 +78,8 @@ int main(int argc, char *argv[]) {
 
   QApplication a(argc, argv);
   a.setQuitOnLastWindowClosed(true);
-  a.setStyle(QStyleFactory::create("Fusion"));
+  // Disable screensaver
+  disableScreensaver();
 
   // Load translations (i18n) from system locale
   QString locale = QLocale::system().name();
