@@ -3,7 +3,7 @@ name: Build Qt6 App for Linux
 on:
   push:
     branches:
-      - master
+      - main
     tags:
       - "*"
   pull_request:
