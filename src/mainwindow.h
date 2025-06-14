@@ -150,6 +150,7 @@ private:
   int m_charsRate;
   int m_subtitleInterval;
   int m_subtitleMinDuration;
+  int m_delayMilliseconds;
 };
 
 #endif // MAINWINDOW_H
