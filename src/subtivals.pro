@@ -48,7 +48,8 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     ../resources/icons.qrc \
     ../resources/samples.qrc \
-    ../resources/ssl.qrc
+    ../resources/ssl.qrc \
+    ../resources/fonts.qrc
 
 TRANSLATIONS = ../locale/fr_FR.ts \
     ../locale/es_ES.ts \
@@ -102,7 +103,10 @@ TRANSLATIONS_PATH_STR = '\\"$${TRANSLATIONS_PATH}\\"'
 DEFINES += TRANSLATIONS_PATH=\"$${TRANSLATIONS_PATH_STR}\"
 
 VERSION = 1.10.0
-DEFINES += VERSION=\\\"$$VERSION\\\"
+DEFINES += VERSION=\\\"$$VERSION\\\" \
+ DEFAULT_FONT_SIZE=36 \
+ DEFAULT_FONT_NAME='\\"Tiresias\ Signfont\ Z\\"' \
+ DEFAULT_LINESPACING=0.3
 
 OTHER_FILES += \
     ../debian/control \

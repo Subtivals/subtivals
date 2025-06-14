@@ -27,7 +27,7 @@
 Style::Style(const QString &p_name, const QFont &p_font, const QColor &p_color,
              QObject *p_parent)
     : QObject(p_parent), m_name(p_name), m_metrics(p_font),
-      m_primaryColour(p_color), m_lineSpacing(0.0),
+      m_primaryColour(p_color), m_lineSpacing(DEFAULT_LINESPACING),
       m_alignment(Qt::AlignTop | Qt::AlignHCenter), m_marginL(0), m_marginR(0),
       m_marginV(0), m_offsetH(0), m_offsetV(0) {
   setFont(p_font);

@@ -25,8 +25,6 @@
 
 #include "script.h"
 
-#define DEFAULT_FONT_SIZE 18
-
 enum SectionType {
   SECTION_NONE,
   SECTION_INFOS,
@@ -363,13 +361,7 @@ void Script::loadFromAss(QStringList content) {
 }
 
 void Script::loadFromSrt(QStringList content) {
-  SectionType section = SECTION_NONE;
-
-#ifdef WIN32
-  QFont font("MS Sans Serif");
-#else
-  QFont font("Sans");
-#endif
+  QFont font(DEFAULT_FONT_NAME);
   font.setPixelSize(DEFAULT_FONT_SIZE);
 
   Style *style = new Style(tr("Default"), font, Qt::white, this);
@@ -383,6 +375,7 @@ void Script::loadFromSrt(QStringList content) {
   QString comments;
   int start = 0;
   int end = 0;
+  SectionType section = SECTION_NONE;
   foreach (QString line, content) {
     if (section == SECTION_NONE &&
         QRegularExpression("^[0-9]+$").match(line).hasMatch()) {
@@ -415,11 +408,7 @@ void Script::loadFromSrt(QStringList content) {
 }
 
 void Script::loadFromTxt(QStringList content) {
-#ifdef WIN32
-  QFont font("MS Sans Serif");
-#else
-  QFont font("Sans");
-#endif
+  QFont font(DEFAULT_FONT_NAME);
   font.setPixelSize(DEFAULT_FONT_SIZE);
 
   Style *style = new Style(tr("Default"), font, Qt::white, this);
@@ -477,11 +466,7 @@ void Script::loadFromTxt(QStringList content) {
 
 void Script::loadFromXml(QString content) {
   QColor defaultColor(Qt::white);
-#ifdef WIN32
-  QFont defaultFont("MS Sans Serif");
-#else
-  QFont defaultFont("Sans");
-#endif
+  QFont defaultFont(DEFAULT_FONT_NAME);
   defaultFont.setPixelSize(DEFAULT_FONT_SIZE);
 
   QDomDocument doc;

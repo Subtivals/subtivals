@@ -1,5 +1,4 @@
 <RCC>
-    <qresource prefix="/"/>
     <qresource prefix="/ssl">
         <file>lets-encrypt-r3.pem</file>
     </qresource>
