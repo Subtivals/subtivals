@@ -85,6 +85,10 @@ unix {
     translations.files = ../locale/*.qm
 }
 
+unix:!macx {
+    LIBS += -lxcb -lxcb-screensaver -lxcb-dpms
+}
+
 win32 {
     TRANSLATIONS_PATH = locale
 }
