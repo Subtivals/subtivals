@@ -53,6 +53,7 @@ jobs:
             libxkbcommon0 \
             libxkbcommon-x11-0 \
             libxcb-dpms0-dev \
+            libxcb1-dev \
             libxcb-screensaver0-dev \
             libxrender1 \
             libglib2.0-0 \
