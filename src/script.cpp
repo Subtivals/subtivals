@@ -311,18 +311,35 @@ void Script::loadFromAss(QStringList content) {
 
           // Color HTML-ification
           {
-            int idxAccOpenColor = line.indexOf("{\\1c&H");
-            while (idxAccOpenColor != -1) {
-              int idxAccCloseColor = line.indexOf("}", idxAccOpenColor);
-              if (idxAccCloseColor != -1) {
-                QString htmlColor = "<font color=\"#" +
-                                    line.mid(idxAccOpenColor + 6 + 4, 2) +
-                                    line.mid(idxAccOpenColor + 6 + 2, 2) +
-                                    line.mid(idxAccOpenColor + 6, 2) + "\">";
-                line = line.left(idxAccOpenColor) + htmlColor +
-                       line.mid(idxAccCloseColor + 1) + "</font>";
+            QRegularExpression colorTagRegex(
+                R"(\{\\(?:1c|c)&H([0-9A-Fa-f]{6})&\})");
+            QRegularExpressionMatch match;
+
+            int offset = 0;
+            while ((match = colorTagRegex.match(line, offset)).hasMatch()) {
+              int start = match.capturedStart();
+              int end = match.capturedEnd();
+              QString assColor = match.captured(1); // BBGGRR
+              if (assColor.length() == 6) {
+                QString rr = assColor.mid(4, 2);
+                QString gg = assColor.mid(2, 2);
+                QString bb = assColor.mid(0, 2);
+                QString htmlColor = "<font color=\"#" + rr + gg + bb + "\">";
+
+                // Find where to insert </font>, right after the color tag scope
+                int closeBrace = line.indexOf('}', end - 1);
+                if (closeBrace != -1) {
+                  line = line.left(start) + htmlColor +
+                         line.mid(closeBrace + 1) + "</font>";
+                  offset = start +
+                           htmlColor.length(); // Move past the inserted color
+                } else {
+                  // Incomplete tag, break to avoid infinite loop
+                  break;
+                }
+              } else {
+                offset = end;
               }
-              idxAccOpenColor = line.indexOf("{\\1c&H");
             }
           }
 
