@@ -1,0 +1,41 @@
+name: Check Translations
+
+on:
+  push:
+    paths:
+      - '**.ts'
+      - '**.ui'
+      - '**.cpp'
+      - '**.h'
+      - '.github/workflows/l10n.yaml'
+  pull_request:
+
+jobs:
+  check-translations:
+    runs-on: ubuntu-latest
+
+    env:
+      QT_VERSION: 6.9.1
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: ${{ env.QT_VERSION }}
+
+      - name: Generate .ts files with lupdate
+        run: |
+          lupdate src/ -ts locale/*.ts
+
+      - name: Check for unfinished translations
+        run: |
+          if grep -q 'type="unfinished"' locale/fr_FR.ts; then
+            echo "::error ::Unfinished locale found:"
+            grep -Hn 'type="unfinished"' locale/fr_FR.ts
+            exit 1
+          else
+            echo "✅ All translations are complete."
+          fi

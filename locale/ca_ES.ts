@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/configeditor.ui" line="355"/>
         <source>Live options:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opcions de directe:</translation>
     </message>
     <message>
         <location filename="../src/configeditor.ui" line="68"/>
@@ -42,43 +42,6 @@
         <translation>Alçada:</translation>
     </message>
     <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Using the mouse:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;wheel&lt;/span&gt; : resize horizontally ;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-&lt;span style=&quot; font-weight:600;&quot;&gt; Ctrl + wheel&lt;/span&gt; : resize vertically ;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;first&lt;/span&gt; &lt;span style=&quot; font-weight:600;&quot;&gt;double-clic : &lt;/span&gt;expand horizontally ;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;second&lt;/span&gt; &lt;span style=&quot; font-weight:600;&quot;&gt;double-clic&lt;/span&gt; :  expand vertically to the top ;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Utilizant el ratolí:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;roda&lt;/span&gt; : redimensionar horitzontalment ;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-&lt;span style=&quot; font-weight:600;&quot;&gt; Ctrl + roda&lt;/span&gt; : redimensionar verticalment ;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;primer&lt;/span&gt; &lt;span style=&quot; font-weight:600;&quot;&gt;doble-clic : &lt;/span&gt;expandir horitzontalment ;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;segon&lt;/span&gt; &lt;span style=&quot; font-weight:600;&quot;&gt;doble-clic&lt;/span&gt; : expandir verticalment fins dalt ;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Using the mouse:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;wheel&lt;/span&gt; : resize horizontally ;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-&lt;span style=&quot; font-weight:600;&quot;&gt; Ctrl + wheel&lt;/span&gt; : resize vertically ;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Utilizant el ratolí:&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;roda&lt;/span&gt; : redimensionar horitzontalment ;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-&lt;span style=&quot; font-weight:600;&quot;&gt; Ctrl + roda&lt;/span&gt; : redimensionar verticalment ;&lt;/p&gt;
-&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/configeditor.ui" line="207"/>
         <source>Rotation:</source>
         <translation>Rotació:</translation>
@@ -96,7 +59,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/configeditor.ui" line="35"/>
         <source>Right click to rename preset</source>
-        <translation type="unfinished"></translation>
+        <translation>Feu clic amb el botó dret per canviar el nom preestablert</translation>
     </message>
     <message>
         <location filename="../src/configeditor.ui" line="194"/>
@@ -107,7 +70,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Using the mouse:&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:bold;&quot;&gt;wheel&lt;/span&gt; : resize horizontally ;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-&lt;span style=&quot; font-weight:bold;&quot;&gt; Ctrl + wheel&lt;/span&gt; : resize vertically ;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-weight:normal; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Utilitzant el ratolí:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:bold;&quot;&gt;roda&lt;/span&gt; : redimensionar horizontalment ;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-&lt;span style=&quot; font-weight:bold;&quot;&gt; Ctrl + roda&lt;/span&gt; : redimensionar verticalment ;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/configeditor.ui" line="253"/>
@@ -144,12 +113,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/configeditor.ui" line="361"/>
         <source>Web live</source>
-        <translation type="unfinished"></translation>
+        <translation>Web en directe</translation>
     </message>
     <message>
-        <location filename="../src/configeditor.ui" line="384"/>
         <source>Hide desktop</source>
-        <translation>Amagar escriptori</translation>
+        <translation type="vanished">Amagar escriptori</translation>
     </message>
     <message>
         <location filename="../src/configeditor.ui" line="347"/>
@@ -162,17 +130,17 @@ p, li { white-space: pre-wrap; }
         <translation>Ajustaments en memoria:</translation>
     </message>
     <message>
-        <location filename="../src/configeditor.cpp" line="56"/>
+        <location filename="../src/configeditor.cpp" line="52"/>
         <source>Monitor %1</source>
         <translation>Monitor %1</translation>
     </message>
     <message>
-        <location filename="../src/configeditor.cpp" line="65"/>
+        <location filename="../src/configeditor.cpp" line="60"/>
         <source>Preset %1</source>
         <translation>Registrat %1</translation>
     </message>
     <message>
-        <location filename="../src/configeditor.cpp" line="165"/>
+        <location filename="../src/configeditor.cpp" line="160"/>
         <source>Select Color</source>
         <translation>Seleccionar el color</translation>
     </message>
@@ -181,7 +149,7 @@ p, li { white-space: pre-wrap; }
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="14"/>
-        <location filename="../src/mainwindow.cpp" line="550"/>
+        <location filename="../src/mainwindow.cpp" line="601"/>
         <source>Subtivals</source>
         <translation>Subtivals</translation>
     </message>
@@ -213,7 +181,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="27"/>
         <location filename="../src/mainwindow.ui" line="80"/>
-        <location filename="../src/mainwindow.ui" line="452"/>
+        <location filename="../src/mainwindow.ui" line="453"/>
         <source>-</source>
         <translation>-</translation>
     </message>
@@ -235,7 +203,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="120"/>
         <source>Common framerates conversions</source>
-        <translation type="unfinished"></translation>
+        <translation>Les conversions de framerates comunes</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="136"/>
@@ -245,12 +213,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="152"/>
         <source>Use prefix &quot;:&quot; and number to jump to line</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilitzeu el prefix &quot;:&quot; i el número per saltar a la línia</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="231"/>
         <source>Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Comentaris</translation>
     </message>
     <message>
         <source>File</source>
@@ -265,48 +233,48 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Ajuda</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="348"/>
+        <location filename="../src/mainwindow.ui" line="349"/>
         <source>Open...</source>
         <translation>Obrir...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="351"/>
+        <location filename="../src/mainwindow.ui" line="352"/>
         <source>Open</source>
         <translation>Obrir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="354"/>
+        <location filename="../src/mainwindow.ui" line="355"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="359"/>
+        <location filename="../src/mainwindow.ui" line="360"/>
         <source>Exit</source>
         <translation>Tancar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="362"/>
+        <location filename="../src/mainwindow.ui" line="363"/>
         <source>Quit</source>
         <translation>Tancar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="365"/>
+        <location filename="../src/mainwindow.ui" line="366"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="377"/>
-        <location filename="../src/mainwindow.ui" line="380"/>
+        <location filename="../src/mainwindow.ui" line="378"/>
+        <location filename="../src/mainwindow.ui" line="381"/>
         <source>Play</source>
         <translation>Lectura</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="383"/>
+        <location filename="../src/mainwindow.ui" line="384"/>
         <source>L</source>
         <translation>L</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="395"/>
+        <location filename="../src/mainwindow.ui" line="396"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
@@ -317,240 +285,250 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="264"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Arxiu</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="276"/>
         <source>&amp;Options</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Opcions</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="287"/>
+        <location filename="../src/mainwindow.ui" line="288"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajuda</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="333"/>
+        <location filename="../src/mainwindow.ui" line="334"/>
         <source>toolBar</source>
-        <translation type="unfinished"></translation>
+        <translation>barra d’eines</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="398"/>
+        <location filename="../src/mainwindow.ui" line="399"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="410"/>
+        <location filename="../src/mainwindow.ui" line="411"/>
         <source>Preferences</source>
         <translation>Preferències</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="413"/>
+        <location filename="../src/mainwindow.ui" line="414"/>
         <source>Show preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra les preferències</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="416"/>
+        <location filename="../src/mainwindow.ui" line="417"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="428"/>
-        <location filename="../src/mainwindow.ui" line="431"/>
+        <location filename="../src/mainwindow.ui" line="429"/>
+        <location filename="../src/mainwindow.ui" line="432"/>
         <source>+1/4 sec</source>
         <translation>+1/4 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="434"/>
+        <location filename="../src/mainwindow.ui" line="435"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="446"/>
-        <location filename="../src/mainwindow.ui" line="449"/>
+        <location filename="../src/mainwindow.ui" line="447"/>
+        <location filename="../src/mainwindow.ui" line="450"/>
         <source>-1/4 sec</source>
         <translation>-1/4 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="464"/>
+        <location filename="../src/mainwindow.ui" line="465"/>
         <source>Pause</source>
-        <translation>Pause</translation>
+        <translation>Pausa</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="467"/>
+        <location filename="../src/mainwindow.ui" line="468"/>
         <source>P</source>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="479"/>
+        <location filename="../src/mainwindow.ui" line="480"/>
         <source>Next</source>
         <translation>Següent</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="482"/>
+        <location filename="../src/mainwindow.ui" line="483"/>
         <source>Activate current or go to next</source>
-        <translation type="unfinished"></translation>
+        <translation>Activeu el corrent o aneu al següent</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="485"/>
+        <location filename="../src/mainwindow.ui" line="486"/>
         <source>Space</source>
-        <translation type="unfinished">Espai</translation>
+        <translation>Espai</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="497"/>
+        <location filename="../src/mainwindow.ui" line="498"/>
         <source>Hide</source>
-        <translation>Amagar</translation>
+        <translation>Ocultar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="500"/>
+        <location filename="../src/mainwindow.ui" line="501"/>
         <source>H</source>
         <translation>H</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="512"/>
-        <location filename="../src/mainwindow.ui" line="515"/>
+        <location filename="../src/mainwindow.ui" line="513"/>
+        <location filename="../src/mainwindow.ui" line="516"/>
         <source>Previous</source>
         <translation>Anterior</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="518"/>
+        <location filename="../src/mainwindow.ui" line="519"/>
         <source>PgUp</source>
         <translation>PgUp</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="526"/>
+        <location filename="../src/mainwindow.ui" line="527"/>
         <source>Auto reload</source>
         <translation>Recàrrega automàtica</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="529"/>
+        <location filename="../src/mainwindow.ui" line="530"/>
         <source>Auto reload subtitle file on external change</source>
-        <translation type="unfinished"></translation>
+        <translation>Fitxer de subtítols de recàrrega automàtica al canvi extern</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="541"/>
+        <location filename="../src/mainwindow.ui" line="542"/>
         <source>Calibration</source>
         <translation>Calibratge</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="544"/>
+        <location filename="../src/mainwindow.ui" line="545"/>
         <source>Show calibration</source>
         <translation>Mostrar calibratge</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="549"/>
+        <location filename="../src/mainwindow.ui" line="550"/>
         <source>About Subtivals...</source>
         <translation>Sobre Subtivals...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="561"/>
+        <location filename="../src/mainwindow.ui" line="562"/>
         <source>Timeout</source>
-        <translation>Esgotació</translation>
+        <translation>Caducat</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="564"/>
+        <location filename="../src/mainwindow.ui" line="565"/>
         <source>Hide timeout subtitles (manual mode)</source>
-        <translation type="unfinished"></translation>
+        <translation>Oculta els subtítols caducats (mode manual)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="567"/>
+        <location filename="../src/mainwindow.ui" line="568"/>
         <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+T</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="591"/>
+        <location filename="../src/mainwindow.ui" line="592"/>
         <source>Speed up (+1%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Accelerar (+1%)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="594"/>
+        <location filename="../src/mainwindow.ui" line="595"/>
         <source>Adjust speed up (+1%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajusteu la velocitat (+1%)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="597"/>
+        <location filename="../src/mainwindow.ui" line="598"/>
         <source>Right</source>
-        <translation type="unfinished">Dreta</translation>
+        <translation>Dret</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="602"/>
+        <location filename="../src/mainwindow.ui" line="603"/>
         <source>Slow down (-1%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Alentiment (-1%)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="605"/>
+        <location filename="../src/mainwindow.ui" line="606"/>
         <source>Adjust slow down  (-1%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajusteu la desacceleració (-1%)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="608"/>
+        <location filename="../src/mainwindow.ui" line="609"/>
         <source>Left</source>
-        <translation type="unfinished">Esquera</translation>
+        <translation>Esquerre</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="613"/>
+        <location filename="../src/mainwindow.ui" line="614"/>
         <source>Edit shortcuts...</source>
-        <translation type="unfinished"></translation>
+        <translation>Edita dreceres ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="616"/>
+        <location filename="../src/mainwindow.ui" line="617"/>
         <source>Edit shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Edita dreceres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="624"/>
+        <location filename="../src/mainwindow.ui" line="625"/>
         <source>Show milliseconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Ensenyar millisegons</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="629"/>
+        <location filename="../src/mainwindow.ui" line="630"/>
         <source>Introduction...</source>
-        <translation type="unfinished"></translation>
+        <translation>Introducció ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="632"/>
+        <location filename="../src/mainwindow.ui" line="633"/>
         <source>Show introduction wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>Ensenyar finestra d&apos;introducció</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="637"/>
+        <location filename="../src/mainwindow.ui" line="638"/>
         <source>Operator listing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Llista de l&apos;operador ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="645"/>
+        <location filename="../src/mainwindow.ui" line="646"/>
         <source>Persistent hide</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantenar ocultat</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="648"/>
+        <location filename="../src/mainwindow.ui" line="649"/>
         <source>Hide mode is fully manual</source>
-        <translation type="unfinished"></translation>
+        <translation>El mode Hide és completament manual</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="656"/>
+        <location filename="../src/mainwindow.ui" line="657"/>
         <source>Jump to longest line</source>
-        <translation type="unfinished"></translation>
+        <translation>Saltar a la línia més llarga</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="659"/>
+        <location filename="../src/mainwindow.ui" line="660"/>
         <source>Highlight the longest line among all subtitles</source>
-        <translation type="unfinished"></translation>
+        <translation>Ressalteu la línia més llarga entre tots els subtítols</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="664"/>
+        <location filename="../src/mainwindow.ui" line="665"/>
         <source>Advanced settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuració avançada ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="672"/>
+        <location filename="../src/mainwindow.ui" line="673"/>
         <source>Dark mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode fosc</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="675"/>
-        <source>Toggle dark mode</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mainwindow.ui" line="676"/>
+        <source>Force dark mode</source>
+        <translation>Força el mode fosc</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="684"/>
+        <source>Hide desktop</source>
+        <translation>Amaga l&apos;escriptori</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="687"/>
+        <source>Fill screen with color</source>
+        <translation>Ompliu la pantalla de color</translation>
     </message>
     <message>
         <source>Hide timeout subtitles</source>
@@ -561,131 +539,156 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Amagar subtítols asgotats</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="572"/>
+        <location filename="../src/mainwindow.ui" line="573"/>
         <source>Online help...</source>
         <translation>Ajuda en línia...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="575"/>
+        <location filename="../src/mainwindow.ui" line="576"/>
         <source>F1</source>
-        <translation type="unfinished"></translation>
+        <translation>F1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="583"/>
+        <location filename="../src/mainwindow.ui" line="584"/>
         <source>Duration correction</source>
-        <translation type="unfinished"></translation>
+        <translation>Correcció de durada</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="586"/>
+        <location filename="../src/mainwindow.ui" line="587"/>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="367"/>
-        <source>Save list as spreadsheet</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mainwindow.cpp" line="377"/>
+        <source>1/10 sec</source>
+        <translation>1/10 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="368"/>
-        <source>spreadsheet</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mainwindow.cpp" line="380"/>
+        <source>1/4 sec</source>
+        <translation>1/4 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="369"/>
-        <source>Comma-separated files (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mainwindow.cpp" line="383"/>
+        <source>1/2 sec</source>
+        <translation>1/2 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="379"/>
-        <source>Unable to write file</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mainwindow.cpp" line="386"/>
+        <source>1 sec</source>
+        <translation>1 seg</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="389"/>
-        <source>Saved successfully</source>
-        <translation type="unfinished"></translation>
+        <source> msec</source>
+        <translation> mseg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="390"/>
-        <source>Subtitles exported to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mainwindow.cpp" line="416"/>
+        <source>Save list as spreadsheet</source>
+        <translation>Desar la llista com a full de càlcul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="432"/>
-        <source>Encoding error</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mainwindow.cpp" line="417"/>
+        <source>spreadsheet</source>
+        <translation>full de càlcul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="433"/>
-        <source>Looks like the subtitles were not saved in a valid UTF-8 file.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/mainwindow.cpp" line="418"/>
+        <source>Comma-separated files (*.csv)</source>
+        <translation>Fitxers separats per comes (*.csv)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="428"/>
+        <source>Unable to write file</source>
+        <translation>No es pot escriure el fitxer</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="437"/>
-        <source>Error with subtitles</source>
-        <translation type="unfinished"></translation>
+        <source>Saved successfully</source>
+        <translation>S&apos;ha salvat amb èxit</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="438"/>
-        <source>Could not read the file specified.</source>
-        <translation type="unfinished"></translation>
+        <source>Subtitles exported to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
+        <translation>Subtítols exportats a &lt;a href = &quot;%1&quot;&gt;%2 &lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="472"/>
+        <location filename="../src/mainwindow.cpp" line="482"/>
+        <source>Encoding error</source>
+        <translation>Error de codificació</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="483"/>
+        <source>Looks like the subtitles were not saved in a valid UTF-8 file.</source>
+        <translation>Sembla que els subtítols no es van desar en un fitxer UTF-8 vàlid.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="487"/>
+        <source>Error with subtitles</source>
+        <translation>Error amb subtítols</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="488"/>
+        <source>Could not read the file specified.</source>
+        <translation>No s&apos;ha pogut llegir el fitxer especificat.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="522"/>
         <source>%1 subtitles, %2 - %3</source>
         <translation>%1 subtitols, %2 - %3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="495"/>
+        <location filename="../src/mainwindow.cpp" line="545"/>
         <source>%1 chars/sec</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 cars/seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="500"/>
+        <location filename="../src/mainwindow.cpp" line="550"/>
         <source>Fast (%1 chars/sec)</source>
-        <translation>Rapid (%1 cars/sec)</translation>
+        <translation>Rapid (%1 cars/seg)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="504"/>
+        <location filename="../src/mainwindow.cpp" line="554"/>
         <source>Unreadable (%1 chars/sec)</source>
-        <translation>Il·legible (%1 cars/sec) </translation>
+        <translation>Il·legible (%1 cars/seg) </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="562"/>
+        <location filename="../src/mainwindow.cpp" line="613"/>
         <source>&amp;%1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="627"/>
+        <location filename="../src/mainwindow.cpp" line="678"/>
         <source>Some styles are currently overriden in preferences.</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualment, alguns estils estan sobredimitats en les preferències.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="651"/>
+        <location filename="../src/mainwindow.cpp" line="702"/>
         <source>Subtitle file reloaded.</source>
         <translation>Fitxer de subtítols recarregat.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="664"/>
+        <location filename="../src/mainwindow.cpp" line="715"/>
         <source>Open subtitles</source>
         <translation>Obrir subtítols</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="665"/>
+        <location filename="../src/mainwindow.cpp" line="716"/>
         <source>Subtitle Files (*.ass *.srt *.txt *.xml)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fitxers de subtítols ( *.ass *.srt *.txt *.xml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1123"/>
+        <location filename="../src/mainwindow.cpp" line="1174"/>
         <source>&lt;h1&gt;Subtivals %1&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %2&lt;/h2&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h1&gt; Subtivals %1 &lt;/h1&gt; &lt;p&gt; Subtivals, un programa per projectar subtítols. &lt;/p&gt; &lt;h2&gt; Autors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %2&lt;/h2&gt;</translation>
     </message>
     <message>
         <source>Subtitle Files (*.ass *.srt)</source>
         <translation type="vanished">Arxius de subtítols (*.ass *.srt)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="889"/>
+        <location filename="../src/mainwindow.cpp" line="940"/>
         <source>Remaining: %1</source>
         <translation>Restant: %1</translation>
     </message>
@@ -698,7 +701,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Arxius de subtítols (*.ass)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1122"/>
+        <location filename="../src/mainwindow.cpp" line="1173"/>
         <source>About Subtivals</source>
         <translation>Sobre Subtivals</translation>
     </message>
@@ -710,42 +713,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Script</name>
     <message>
-        <location filename="../src/script.cpp" line="372"/>
-        <location filename="../src/script.cpp" line="421"/>
-        <location filename="../src/script.cpp" line="494"/>
-        <location filename="../src/script.cpp" line="501"/>
+        <location filename="../src/script.cpp" line="368"/>
+        <location filename="../src/script.cpp" line="416"/>
+        <location filename="../src/script.cpp" line="486"/>
+        <location filename="../src/script.cpp" line="493"/>
         <source>Default</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="638"/>
+        <location filename="../src/script.cpp" line="630"/>
         <source>Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Linya</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="638"/>
+        <location filename="../src/script.cpp" line="630"/>
         <source>Start</source>
-        <translation type="unfinished">Inici</translation>
+        <translation>Inici</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="638"/>
+        <location filename="../src/script.cpp" line="630"/>
         <source>End</source>
-        <translation type="unfinished">Fi</translation>
+        <translation>Final</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="638"/>
+        <location filename="../src/script.cpp" line="630"/>
         <source>Style</source>
-        <translation type="unfinished">Estil</translation>
+        <translation>Estil</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="639"/>
+        <location filename="../src/script.cpp" line="631"/>
         <source>Text</source>
-        <translation type="unfinished">Texte</translation>
+        <translation>Texte</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="639"/>
+        <location filename="../src/script.cpp" line="631"/>
         <source>Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Comentaris</translation>
     </message>
 </context>
 <context>
@@ -753,17 +756,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/shortcuteditor.ui" line="14"/>
         <source>Edit keyboard shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Edita dreceres del teclat</translation>
     </message>
     <message>
         <location filename="../src/shortcuteditor.ui" line="21"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripció</translation>
     </message>
     <message>
         <location filename="../src/shortcuteditor.ui" line="26"/>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Drecera</translation>
     </message>
 </context>
 <context>
@@ -837,12 +840,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/styleadvanced.ui" line="162"/>
         <source>Line spacing:</source>
-        <translation type="unfinished"></translation>
+        <translation>Espai entre la línia:</translation>
     </message>
     <message>
         <location filename="../src/styleadvanced.ui" line="197"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>Textlabel</translation>
     </message>
 </context>
 <context>
@@ -865,7 +868,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/styleeditor.ui" line="83"/>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>Negreta</translation>
     </message>
     <message>
         <location filename="../src/styleeditor.ui" line="132"/>
@@ -885,7 +888,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/styleeditor.ui" line="145"/>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>Cursiva</translation>
     </message>
     <message>
         <location filename="../src/styleeditor.ui" line="162"/>
@@ -898,7 +901,7 @@ p, li { white-space: pre-wrap; }
         <translation>Avançat...</translation>
     </message>
     <message>
-        <location filename="../src/styleeditor.cpp" line="230"/>
+        <location filename="../src/styleeditor.cpp" line="232"/>
         <source>Select Color</source>
         <translation>Seleccionar el color</translation>
     </message>
@@ -916,99 +919,100 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/wizard.ui" line="14"/>
         <source>Subtivals introduction</source>
-        <translation type="unfinished"></translation>
+        <translation>Introducció a Subtivals</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="21"/>
         <source>Thank you for choosing Subtivals!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gràcies per triar Subtivals!</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="45"/>
         <source>Let&apos;s go through a few hightlights to get started quickly!</source>
-        <translation type="unfinished"></translation>
+        <translation>Passem per uns quants aspectes destacats per començar ràpidament!</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="58"/>
         <source>Preferences</source>
-        <translation type="unfinished">Preferències</translation>
+        <translation>Preferències</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="61"/>
         <source>Projection screen options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opcions de pantalla de projecció</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="69"/>
         <source>When the preferences are opened, you can move the projection screen with the mouse.</source>
-        <translation type="unfinished"></translation>
+        <translation>Quan s’obren les preferències, podeu moure la pantalla de projecció amb el ratolí.</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="92"/>
         <source>Special characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Personatges especials</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="95"/>
         <source>Universal and international characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Personatges universals i internacionals</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="113"/>
         <source>&lt;p&gt;Subtivals supports &lt;b&gt;every&lt;/b&gt; international character.&lt;/p&gt;
 &lt;p&gt;Make sure your files are saved with &lt;b&gt;UTF-8&lt;/b&gt; encoding.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt; Subtivals suporta &lt;b&gt; tots els caràcters internacionals. &lt;/p&gt;
+&lt;p&gt; Assegureu-vos que els vostres fitxers es desen amb &lt;b&gt; utf-8 &lt;/b&gt; codificació. &lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="127"/>
         <source>Keyboard shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreceres del teclat</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="130"/>
         <source>Become a power user!</source>
-        <translation type="unfinished"></translation>
+        <translation>Converteix -te en usuari de potència!</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="148"/>
         <source>&lt;p&gt;Every action can be performed with the keyboard . Change the shortcurts in the &lt;b&gt;Edit&lt;/b&gt; menu.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt; Totes les accions es poden realitzar amb el teclat. Canvieu les dreceres al menú &lt;b&gt; edit &lt;/b&gt;. &lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="161"/>
         <source>Simple text files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fitxers de text senzills</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="164"/>
         <source>Basic subtitles easily! </source>
-        <translation type="unfinished"></translation>
+        <translation>Subtítols bàsics fàcilment!</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="182"/>
         <source>Subtivals can read plain .txt files, where subtitles are just texts separated by a blank line.</source>
-        <translation type="unfinished"></translation>
+        <translation>Subtivals poden llegir fitxers .txt simples, on els subtítols són només textos separats per una línia en blanc.</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="195"/>
         <source>Timeout mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode de temps d&apos;espera</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="198"/>
         <source>Semi-automatic projection</source>
-        <translation type="unfinished"></translation>
+        <translation>Projecció semiautomàtica</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="216"/>
         <source>&lt;p&gt;Subtitles appear with space bar, and disappear automatically according to their length.&lt;/p&gt;
 </source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt; Els subtítols apareixen amb barra d&apos;espai i desapareixen automàticament segons la seva longitud. &lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="230"/>
         <source>Enjoy!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaudeix!</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="241"/>
@@ -1022,7 +1026,15 @@ p, li { white-space: pre-wrap; }
 &lt;/ul&gt;
 &lt;p&gt;&lt;a href=&quot;http://community.subtivals.org&quot;&gt;http://community.subtivals.org&lt;/a&gt;&lt;/p&gt;
 </source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt; Uniu -vos a la comunitat d&apos;usuaris! &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt; Fer preguntes &lt;/li&gt;
+&lt;li&gt; Comenta noves funcions &lt;/li&gt;
+&lt;li&gt; Consells i trucs &lt;/li&gt;
+&lt;li&gt; Comparteix la teva experiència &lt;/li&gt;
+&lt;li&gt; &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt; &lt;a href = &quot;http://community.subtivals.org&quot;&gt; http://community.subtivals.org &lt;/a&gt; &lt;/p&gt;</translation>
     </message>
 </context>
 </TS>
