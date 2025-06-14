@@ -81,7 +81,10 @@ ConfigEditor::~ConfigEditor() {
 
 void ConfigEditor::setScript(Script *script) {
   m_styleEditor->setScript(script);
-  reset();
+  // Refresh the list of styles from script
+  m_styleEditor->reset();
+  // Emit events as if current config was changed
+  apply();
 }
 
 void ConfigEditor::mouseReleaseEvent(QMouseEvent *event) {
