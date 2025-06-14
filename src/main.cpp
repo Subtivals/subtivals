@@ -52,13 +52,10 @@ void disableScreensaver() {
 #include <xcb/dpms.h>
 #include <xcb/screensaver.h>
 
-void disableScreensaver(QWidget *widget) {
-  Display *display = nullptr;
-  xcb_connection_t *connection = nullptr;
-
+void disableScreensaver() {
   if (auto *x11Application =
           qGuiApp->nativeInterface<QNativeInterface::QX11Application>()) {
-    display = x11Application->display();
+    Display *display = x11Application->display();
     xcb_connection_t *connection = x11Application->connection();
     xcb_dpms_set_timeouts(connection, 0, 0, 0);
     xcb_screensaver_suspend(connection, XCB_SCREENSAVER_SUSPEND);
