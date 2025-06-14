@@ -257,7 +257,7 @@ void ConfigEditor::save() {
   settings.setValue("y", ui->y->text());
   settings.setValue("w", ui->w->text());
   settings.setValue("h", ui->h->text());
-  settings.setValue("rotation", ui->rotation->text());
+  settings.setValue("rotation", ui->rotation->value());
   settings.setValue("color", m_color.name());
   settings.setValue("outline-color", m_outlineColor.name());
   settings.setValue("outline-width", ui->outlineWidth->value());
