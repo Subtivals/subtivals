@@ -31,7 +31,7 @@
 #include <QSettings>
 #include <QStyle>
 #include <QStyledItemDelegate>
-#include <QTextCodec>
+#include <QStringDecoder>
 #include <QThread>
 #include <QWidget>
 #include <QStyleHints>
@@ -443,10 +443,12 @@ void MainWindow::openFile(const QString &p_fileName) {
   QFile file(p_fileName);
   if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     QByteArray byteArray = file.readAll();
-    QTextCodec::ConverterState state;
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    codec->toUnicode(byteArray.constData(), byteArray.size(), &state);
-    if (state.invalidChars > 0) {
+
+    QStringDecoder decoder(QStringDecoder::Utf8);
+    QString decoded = decoder(byteArray);
+
+    // Check for decoding errors
+    if (decoder.hasError()) {
       QMessageBox::warning(
           this, tr("Encoding error"),
           tr("Looks like the subtitles were not saved in a valid UTF-8 file."));

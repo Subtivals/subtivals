@@ -63,7 +63,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install "aqtinstall<4"
-          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "$QT_VERSION" gcc_64 -m qt5compat qtwebsockets
+          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "$QT_VERSION" gcc_64 -m qtwebsockets
           echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> $GITHUB_PATH
 
       - name: Download linuxdeployqt
