@@ -4,6 +4,12 @@
 #
 #-------------------------------------------------
 
+VERSION = 1.10.0
+DEFINES += VERSION=\\\"$$VERSION\\\" \
+ DEFAULT_FONT_SIZE=36 \
+ DEFAULT_FONT_NAME='\\"Tiresias\ Signfont\\"' \
+ DEFAULT_LINESPACING=0.3
+
 QT += core gui widgets websockets xml
 
 TARGET = subtivals
@@ -51,17 +57,16 @@ RESOURCES += \
     ../resources/ssl.qrc \
     ../resources/fonts.qrc
 
+# Linux librairies to disable screensaver
+unix:!macx {
+    LIBS += -lxcb -lxcb-screensaver -lxcb-dpms
+}
+
+RC_FILE = ../resources/subtivals.rc
+
 TRANSLATIONS = ../locale/fr_FR.ts \
     ../locale/es_ES.ts \
     ../locale/ca_ES.ts
-
-isEmpty(QMAKE_LRELEASE) {
-    win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease.exe
-    else: QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
-}
-QMAKE_POST_LINK += $$QMAKE_LRELEASE $$_PRO_FILE_
-
-RC_FILE = ../resources/subtivals.rc
 
 # Default translation path (used for Windows and fallback)
 TRANSLATIONS_PATH = $$PWD/../locale
@@ -112,6 +117,12 @@ win32 {
     message("Using Windows path: $$TRANSLATIONS_PATH")
 }
 
+isEmpty(QMAKE_LRELEASE) {
+    win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease.exe
+    else: QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+}
+QMAKE_POST_LINK += $$QMAKE_LRELEASE $$_PRO_FILE_
+
 # Make sure the destination directory exists and copy .qm files
 unix {
     QMAKE_POST_LINK += && $$quote(mkdir -p $$TRANSLATIONS_PATH && cp ../locale/*.qm $$TRANSLATIONS_PATH)
@@ -124,12 +135,6 @@ win32 {
 # Embed the translation path as a preprocessor define
 TRANSLATIONS_PATH_STR = '\"$$TRANSLATIONS_PATH\"'
 DEFINES += TRANSLATIONS_PATH=\\\"$$TRANSLATIONS_PATH_STR\\\"
-
-VERSION = 1.10.0
-DEFINES += VERSION=\\\"$$VERSION\\\" \
- DEFAULT_FONT_SIZE=36 \
- DEFAULT_FONT_NAME='\\"Tiresias\ Signfont\ Z\\"' \
- DEFAULT_LINESPACING=0.3
 
 OTHER_FILES += \
     ../debian/control \
