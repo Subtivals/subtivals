@@ -330,6 +330,12 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("delayMilliseconds", m_delayMilliseconds);
   settings.endGroup();
 
+  settings.beginGroup("PreviewPanel");
+  QList<int> sizes = ui->tableAndPreview->sizes();
+  settings.setValue("tableHeight", sizes[0]);
+  settings.setValue("previewHeight", sizes[1]);
+  settings.endGroup();
+
   // When the main window is close : end of the app
   qApp->exit();
 }
@@ -359,8 +365,8 @@ void MainWindow::showEvent(QShowEvent *) {
   ui->actionAutoHideEnded->setChecked(autoHide);
   ui->actionPreferences->setChecked(
       settings.value("showPreferences", true).toBool());
-  ui->actionShowPreview->setChecked(
-      settings.value("showPreview", false).toBool());
+  bool showPreview = settings.value("showPreview", false).toBool();
+  ui->actionShowPreview->setChecked(showPreview);
   ui->actionDurationCorrection->setChecked(
       settings.value("durationCorrection", false).toBool());
   ui->actionShowMilliseconds->setChecked(
@@ -384,7 +390,14 @@ void MainWindow::showEvent(QShowEvent *) {
   settings.endGroup();
 
   settings.beginGroup("PreviewPanel");
+  QList<int> sizes;
+  sizes.append(settings.value("tableHeight", 100).toInt());
+  sizes.append(settings.value("previewHeight", 30).toInt());
+  if (showPreview) {
+    ui->tableAndPreview->setSizes(sizes);
+  }
   m_previewpanel->opacity(settings.value("opacity", 0.7).toDouble());
+  settings.endGroup();
 
   // Reflect the configured add/sub delay on the action text.
   QString text;
