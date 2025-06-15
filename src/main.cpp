@@ -82,11 +82,18 @@ int main(int argc, char *argv[]) {
   // Disable screensaver
   disableScreensaver();
 
-  // Load translations (i18n) from system locale
-  QString locale = QLocale::system().name();
+  // Load translations (i18n) from system locale, but allow to override
+  // from configuration.
+  settings.beginGroup("Language");
+  QString locale = settings.value("locale", QLocale::system().name()).toString();
+  settings.setValue("locale", locale);
+  settings.endGroup();
+
   QTranslator translator;
-  if (translator.load(locale, TRANSLATIONS_PATH)) {
+  if (translator.load(locale, QString::fromUtf8(TRANSLATIONS_PATH))) {
     a.installTranslator(&translator);
+  } else {
+    qWarning() << "No translations found for" << locale << "in" << TRANSLATIONS_PATH;
   }
 
   // Load packages fonts.

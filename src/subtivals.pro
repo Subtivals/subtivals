@@ -63,44 +63,67 @@ QMAKE_POST_LINK += $$QMAKE_LRELEASE $$_PRO_FILE_
 
 RC_FILE = ../resources/subtivals.rc
 
-unix {
+# Default translation path (used for Windows and fallback)
+TRANSLATIONS_PATH = $$PWD/../locale
+
+# Platform-specific install paths
+unix:!macx {
     isEmpty(PREFIX) {
         PREFIX = /usr
     }
-    BINDIR = $${PREFIX}/bin
-    DATADIR =$${PREFIX}/share
-    SHAREDIR = $${DATADIR}/$${TARGET}
-    TRANSLATIONS_PATH = $${SHAREDIR}/translations
+
+    BINDIR = $$PREFIX/bin
+    DATADIR = $$PREFIX/share
+    SHAREDIR = $$DATADIR/$$TARGET
+    TRANSLATIONS_PATH = $$SHAREDIR/translations
 
     INSTALLS += target desktop icon translations
 
-    target.path = $${BINDIR}
-    
-    desktop.path = $${DATADIR}/applications
-    desktop.files += ../resources/$${TARGET}.desktop
+    target.path = $$BINDIR
 
-    icon.path = $${DATADIR}/icons/hicolor/scalable/apps
-    icon.files += ../resources/$${TARGET}.svg
-    
-    translations.path = $${TRANSLATIONS_PATH}
+    desktop.path = $$DATADIR/applications
+    desktop.files += ../resources/$$TARGET.desktop
+
+    icon.path = $$DATADIR/icons/hicolor/scalable/apps
+    icon.files += ../resources/$$TARGET.svg
+
+    translations.path = $$TRANSLATIONS_PATH
     translations.files = ../locale/*.qm
+
+    message("Using Unix install path: $$TRANSLATIONS_PATH")
 }
 
-unix:!macx {
-    LIBS += -lxcb -lxcb-screensaver -lxcb-dpms
+macx {
+    ICON = ../resources/subtivals.icns
+    TRANSLATIONS_PATH = $$OUT_PWD/$${TARGET}.app/Contents/Resources/locale
+    translations.files = ../locale/*.qm
+    translations.path = $$TRANSLATIONS_PATH
+    INSTALLS += translations
+
+    message("Using macOS bundle path: $$TRANSLATIONS_PATH")
 }
 
 win32 {
-    TRANSLATIONS_PATH = locale
+    TRANSLATIONS_PATH = $$OUT_PWD/locale
+    translations.files = ../locale/*.qm
+    translations.path = $$TRANSLATIONS_PATH
+    INSTALLS += translations
+
+    message("Using Windows path: $$TRANSLATIONS_PATH")
 }
 
-mac {
-    QT += svg
-    ICON = ../resources/subtivals.icns
+# Make sure the destination directory exists and copy .qm files
+unix {
+    QMAKE_POST_LINK += && $$quote(mkdir -p $$TRANSLATIONS_PATH && cp ../locale/*.qm $$TRANSLATIONS_PATH)
+}
+win32 {
+    QMAKE_POST_LINK += && $$quote(if not exist $$TRANSLATIONS_PATH mkdir $$TRANSLATIONS_PATH)
+    QMAKE_POST_LINK += && $$quote(copy /Y ..\\locale\\*.qm $$TRANSLATIONS_PATH)
 }
 
-TRANSLATIONS_PATH_STR = '\\"$${TRANSLATIONS_PATH}\\"'
-DEFINES += TRANSLATIONS_PATH=\"$${TRANSLATIONS_PATH_STR}\"
+# Embed the translation path as a preprocessor define
+TRANSLATIONS_PATH_STR = '\"$$TRANSLATIONS_PATH\"'
+DEFINES += TRANSLATIONS_PATH=\\\"$$TRANSLATIONS_PATH_STR\\\"
 
 VERSION = 1.10.0
 DEFINES += VERSION=\\\"$$VERSION\\\" \
