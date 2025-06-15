@@ -157,12 +157,17 @@ MainWindow::MainWindow(QWidget *parent)
           SLOT(disableActionNext()));
   connect(m_player, SIGNAL(autoHide()), this, SLOT(actionToggleHide()));
 
+  connect(ui->actionHideDesktop, SIGNAL(toggled(bool)), this,
+          SIGNAL(hideDesktop(bool)));
   connect(ui->actionAddDelay, SIGNAL(triggered()), m_player, SLOT(addDelay()));
   connect(ui->actionSubDelay, SIGNAL(triggered()), m_player, SLOT(subDelay()));
   connect(ui->enableSpeedFactor, SIGNAL(toggled(bool)), m_player,
           SLOT(enableSpeedFactor(bool)));
   connect(ui->speedFactor, SIGNAL(valueChanged(double)), m_player,
           SLOT(setSpeedFactor(double)));
+
+  // Prevent hiding desktop if only one screen!
+  ui->actionHideDesktop->setEnabled(QGuiApplication::screens().size() > 1);
 
   setState(NODATA);
   ui->tableWidget->setFocus();

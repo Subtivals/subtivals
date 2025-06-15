@@ -38,9 +38,6 @@ ConfigEditor::ConfigEditor(QWidget *parent)
   connect(m_styleEditor, SIGNAL(styleOverriden(bool)), this,
           SIGNAL(styleOverriden(bool)));
   connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
-  connect(ui->hideDesktop, SIGNAL(toggled(bool)), this,
-          SIGNAL(hideDesktop(bool)));
-
   connect(ui->enableWeblive, SIGNAL(toggled(bool)), this,
           SIGNAL(webliveEnabled(bool)));
 
@@ -54,7 +51,6 @@ ConfigEditor::ConfigEditor(QWidget *parent)
                                                                           " ");
     ui->screens->addItem(QString(tr("Monitor %1")).arg(screenName));
   }
-  ui->hideDesktop->setEnabled(screens.size() > 1);
 
   // Load known presets.
   QSettings settings;
@@ -187,6 +183,7 @@ void ConfigEditor::setColor(QPushButton *button, const QColor &c) {
 }
 
 void ConfigEditor::enableWeblive(bool p_state) {
+  ui->groupWebLive->setVisible(p_state);
   ui->iconWeblive->setVisible(p_state);
   ui->urlWeblive->setVisible(p_state);
   ui->enableWeblive->setEnabled(p_state);
