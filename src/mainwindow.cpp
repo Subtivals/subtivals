@@ -124,7 +124,8 @@ class SubtitleDurationDelegate : public QStyledItemDelegate {
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), m_script(nullptr),
       m_player(new Player()), m_playerThread(new QThread()),
-      m_preferences(new ConfigEditor(this)), m_previewpanel(new QWidget(this)),
+      m_preferences(new ConfigEditor(this)),
+      m_previewpanel(new SubtitlesForm(this)),
       m_shortcutEditor(new ShortcutEditor(this)), m_selectSubtitle(true),
       m_rowChanged(false), m_reloadEnabled(false),
       m_filewatcher(new QFileSystemWatcher),
@@ -194,6 +195,8 @@ MainWindow::MainWindow(QWidget *parent)
 
   // Preview panel
   m_previewpanel->setVisible(false);
+  m_previewpanel->setMinimumWidth(800);
+  this->connectProjectionEvents(m_previewpanel);
   ui->mainLayout->addWidget(m_previewpanel);
 
   // Add preferences dock
@@ -831,6 +834,23 @@ void MainWindow::actionConfig(bool state) {
   // Save when user hides it
   if (!state)
     m_preferences->save();
+}
+
+void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
+  QObject::connect(m_player, SIGNAL(on(Subtitle *)), f,
+                   SLOT(addSubtitle(Subtitle *)));
+  QObject::connect(m_player, SIGNAL(off(Subtitle *)), f,
+                   SLOT(remSubtitle(Subtitle *)));
+  QObject::connect(m_player, SIGNAL(clear()), f, SLOT(clearSubtitles()),
+                   Qt::DirectConnection);
+  QObject::connect(this, SIGNAL(toggleHide(bool)), f, SLOT(toggleHide(bool)));
+  QObject::connect(m_preferences, SIGNAL(color(QColor)), f,
+                   SLOT(color(QColor)));
+  QObject::connect(m_preferences, SIGNAL(outline(QColor, int)), f,
+                   SLOT(outline(QColor, int)));
+  QObject::connect(m_preferences, SIGNAL(styleChanged()), f, SLOT(repaint()));
+  QObject::connect(m_preferences, SIGNAL(rotate(double)), f,
+                   SLOT(rotate(double)));
 }
 
 void MainWindow::actionShowPreview(bool state) {

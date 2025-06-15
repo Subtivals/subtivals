@@ -14,50 +14,45 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
  **/
-#ifndef SUBTITLESFORM_H
-#define SUBTITLESFORM_H
+#ifndef PROJECTION_WINDOW_H
+#define PROJECTION_WINDOW_H
 
-#include <QColor>
-#include <QList>
 #include <QMouseEvent>
-#include <QPen>
 #include <QWidget>
 
-#include "subtitle.h"
+#include "subtitlesform.h"
 
 namespace Ui {
-  class SubtitlesForm;
+  class ProjectionWindow;
 }
 
-class SubtitlesForm : public QWidget {
+class ProjectionWindow : public SubtitlesForm {
   Q_OBJECT
 
 public:
-  explicit SubtitlesForm(QWidget *parent = nullptr);
-  ~SubtitlesForm();
+  explicit ProjectionWindow(QWidget *parent = nullptr);
+  ~ProjectionWindow();
 signals:
   void geometryChanged(QRect);
 public slots:
-  void paintEvent(QPaintEvent *p_event);
-  void addSubtitle(Subtitle *p_subtitle);
-  void remSubtitle(Subtitle *p_subtitle);
-  void clearSubtitles();
-  void toggleHide(bool state);
-  void rotate(double);
-  void color(QColor);
-  void outline(QColor, int);
+  void toggleHideDesktop(bool state);
+  void screenResizable(bool state);
+  void changeGeometry(int, const QRect &);
 
 protected:
-  QPoint m_topleft;
-  QRect m_subtitlesGeom;
+  void changeGeometry(const QRect &);
+  void mouseMoveEvent(QMouseEvent *e);
+  void mousePressEvent(QMouseEvent *e);
+  void mouseReleaseEvent(QMouseEvent *e);
+  void wheelEvent(QWheelEvent *e);
 
 private:
-  Ui::SubtitlesForm *ui;
-  QList<Subtitle *> m_currentSubtitles;
-  bool m_visible;
-  qreal m_rotation;
-  QColor m_color;
-  QPen m_outline;
+  Ui::ProjectionWindow *ui;
+  QPointF m_mouseOffset;
+  QRect m_screenGeom;
+  bool m_hideDesktop;
+  int m_monitor;
+  bool m_resizable;
 };
 
-#endif // SUBTITLESFORM_H
+#endif // PROJECTION_WINDOW_H

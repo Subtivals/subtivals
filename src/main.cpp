@@ -29,7 +29,7 @@
 #include "configeditor.h"
 #include "mainwindow.h"
 #include "player.h"
-#include "subtitlesform.h"
+#include "projectionwindow.h"
 #include "weblive.h"
 
 #ifdef Q_OS_MACOS
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     qWarning("Failed to load 'TiresiasSignFont'");
   }
 
-  SubtitlesForm f;
+  ProjectionWindow f;
   MainWindow w;
   WebLive live;
 
@@ -120,14 +120,10 @@ int main(int argc, char *argv[]) {
                    SLOT(webliveConnected(bool, QString)));
   w.configEditor()->enableWeblive(live.configured());
 
-  // Projection screen
-  QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &f,
-                   SLOT(addSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(off(Subtitle *)), &f,
-                   SLOT(remSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(clear()), &f, SLOT(clearSubtitles()),
-                   Qt::DirectConnection);
-  QObject::connect(&w, SIGNAL(toggleHide(bool)), &f, SLOT(toggleHide(bool)));
+  // Showing subtitles
+  w.connectProjectionEvents(&f);
+
+  // Projection Window
   QObject::connect(&w, SIGNAL(screenResizable(bool)), &f,
                    SLOT(screenResizable(bool)));
   QObject::connect(&w, SIGNAL(hideDesktop(bool)), &f,
@@ -136,14 +132,6 @@ int main(int argc, char *argv[]) {
                    SLOT(screenChanged(QRect)));
   QObject::connect(w.configEditor(), SIGNAL(changeScreen(int, QRect)), &f,
                    SLOT(changeGeometry(int, QRect)));
-  QObject::connect(w.configEditor(), SIGNAL(rotate(double)), &f,
-                   SLOT(rotate(double)));
-  QObject::connect(w.configEditor(), SIGNAL(color(QColor)), &f,
-                   SLOT(color(QColor)));
-  QObject::connect(w.configEditor(), SIGNAL(outline(QColor, int)), &f,
-                   SLOT(outline(QColor, int)));
-  QObject::connect(w.configEditor(), SIGNAL(styleChanged()), &f,
-                   SLOT(repaint()));
 
   f.show();
   w.show();

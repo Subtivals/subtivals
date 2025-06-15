@@ -26,18 +26,9 @@
 
 SubtitlesForm::SubtitlesForm(QWidget *parent)
     : QWidget(parent), ui(new Ui::SubtitlesForm), m_visible(true),
-      m_hideDesktop(false), m_monitor(-1), m_resizable(false), m_rotation(0),
-      m_color(Qt::black) {
-  Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
-                          Qt::X11BypassWindowManagerHint;
-#ifdef WIN32
-  flags |= Qt::SubWindow;
-#endif
+      m_rotation(0), m_color(Qt::black) {
   setStyleSheet("background:transparent;");
-  setAttribute(Qt::WA_TranslucentBackground);
-  setWindowFlags(flags);
   ui->setupUi(this);
-  setCursor(QCursor(Qt::BlankCursor));
 }
 
 SubtitlesForm::~SubtitlesForm() { delete ui; }
@@ -62,40 +53,6 @@ void SubtitlesForm::toggleHide(bool state) {
   repaint();
 }
 
-void SubtitlesForm::toggleHideDesktop(bool state) {
-  int idxPrimary =
-      QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
-  m_hideDesktop = (state && QGuiApplication::screens().length() > 1 &&
-                   m_monitor != idxPrimary);
-  if (m_hideDesktop)
-    setGeometry(m_screenGeom);
-  else
-    setGeometry(m_subtitlesGeom);
-  repaint();
-}
-
-void SubtitlesForm::changeGeometry(int monitor, const QRect &r) {
-  m_monitor = monitor;
-  m_screenGeom = QGuiApplication::screens().at(monitor)->geometry();
-  // This is sent from UI, add screen geometry
-  m_subtitlesGeom =
-      QRect(m_screenGeom.x() + r.x(),
-            m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
-            r.width(), r.height());
-  toggleHideDesktop(m_hideDesktop);
-}
-
-void SubtitlesForm::changeGeometry(const QRect &r) {
-  m_subtitlesGeom = r;
-  if (!m_hideDesktop)
-    setGeometry(r);
-  // This is sent back to UI, substract screen geometry
-  emit geometryChanged(
-      QRect(r.x() - m_screenGeom.x(),
-            m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
-            r.width(), r.height()));
-}
-
 void SubtitlesForm::paintEvent(QPaintEvent *) {
   QPainter p(this);
   // Black background
@@ -113,60 +70,15 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
     p.rotate(m_rotation);
   }
 
-  // Rectangle where subtitles are drawn : should be relative to current window
-  QRect subtitlesBounds(0, 0, m_subtitlesGeom.width(),
-                        m_subtitlesGeom.height());
-  if (m_hideDesktop) {
-    subtitlesBounds.moveTopLeft(m_subtitlesGeom.topLeft() -
-                                m_screenGeom.topLeft());
-  }
+  // Rectangle where subtitles are drawn
+  QRect subtitlesBounds(m_topleft.x(), m_topleft.y(), width(), height());
+  qInfo() << subtitlesBounds << m_currentSubtitles.size();
   foreach (Subtitle *e, m_currentSubtitles) {
-    if (e && e->style())
+    if (e && e->style()) {
       e->style()->drawSubtitle(&p, *e, subtitlesBounds, m_outline);
+    }
   }
 }
-
-void SubtitlesForm::mousePressEvent(QMouseEvent *e) {
-  m_mouseOffset = e->globalPosition() - geometry().topLeft();
-}
-
-void SubtitlesForm::mouseMoveEvent(QMouseEvent *e) {
-  if (m_mouseOffset.isNull())
-    return;
-
-  if (!m_resizable)
-    return;
-
-  // Simply move the window on mouse drag
-  QRect current = geometry();
-  QPointF moveTo = e->globalPosition() - m_mouseOffset;
-  current.moveTopLeft(moveTo.toPoint());
-
-  changeGeometry(current);
-}
-
-void SubtitlesForm::mouseReleaseEvent(QMouseEvent *) {
-  m_mouseOffset = QPoint();
-}
-
-void SubtitlesForm::wheelEvent(QWheelEvent *event) {
-  if (!m_resizable)
-    return;
-  QRect current = geometry();
-  int step = 24;
-  if (event->modifiers().testFlag(Qt::ShiftModifier))
-    step = 60;
-  int factor = event->angleDelta().y() / step;
-  if (event->modifiers().testFlag(Qt::ControlModifier)) {
-    current.setHeight(current.height() + factor);
-  } else {
-    current.moveLeft(current.left() - factor / 2); // Keep centered
-    current.setWidth(current.width() + factor);
-  }
-  changeGeometry(current);
-}
-
-void SubtitlesForm::screenResizable(bool state) { m_resizable = state; }
 
 void SubtitlesForm::rotate(double p_rotation) {
   m_rotation = p_rotation;

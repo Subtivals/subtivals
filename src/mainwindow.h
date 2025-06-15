@@ -30,6 +30,7 @@
 #include <QTimer>
 
 #include "script.h"
+#include "subtitlesform.h"
 
 #define COLUMN_START 0
 #define COLUMN_END 1
@@ -63,6 +64,7 @@ public:
   void closeFile();
   ConfigEditor *configEditor();
   const Player *player();
+  void connectProjectionEvents(SubtitlesForm *f);
 signals:
   void hideDesktop(bool state);
   void toggleHide(bool state);
@@ -134,7 +136,7 @@ private:
   QString m_lastScript;
   QString m_lastFolder;
   ConfigEditor *m_preferences;
-  QWidget *m_previewpanel;
+  SubtitlesForm *m_previewpanel;
   ShortcutEditor *m_shortcutEditor;
   QMap<Subtitle *, int> m_tableMapping;
   bool m_selectSubtitle;
