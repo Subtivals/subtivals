@@ -40,16 +40,19 @@ public slots:
   void changeGeometry(int, const QRect &);
 
 protected:
-  void changeGeometry(const QRect &);
   void mouseMoveEvent(QMouseEvent *e);
   void mousePressEvent(QMouseEvent *e);
   void mouseReleaseEvent(QMouseEvent *e);
   void wheelEvent(QWheelEvent *e);
+  QRect subtitlesBounds();
 
 private:
+  void applyGeometry(const QRect &);
+
   Ui::ProjectionWindow *ui;
   QPointF m_mouseOffset;
   QRect m_screenGeom;
+  QRect m_subtitlesGeomBottomScreenRelative;
   bool m_hideDesktop;
   int m_monitor;
   bool m_resizable;

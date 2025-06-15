@@ -39,42 +39,52 @@ ProjectionWindow::ProjectionWindow(QWidget *parent)
 
 ProjectionWindow::~ProjectionWindow() {}
 
+void ProjectionWindow::screenResizable(bool state) { m_resizable = state; }
+
 void ProjectionWindow::toggleHideDesktop(bool state) {
+  // Do not hide desktop if projection window is on primary screen.
   int idxPrimary =
       QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
   m_hideDesktop = (state && QGuiApplication::screens().length() > 1 &&
                    m_monitor != idxPrimary);
+
   if (m_hideDesktop) {
     setGeometry(m_screenGeom);
-    m_topleft = (m_subtitlesGeom.topLeft() - m_screenGeom.topLeft());
   } else {
-    setGeometry(m_subtitlesGeom);
-    m_topleft = QPoint(0, 0);
+    QRect widgetGeom = QRect(m_subtitlesGeomBottomScreenRelative);
+    // Convert relative to screen (bottom-aligned) to absolute on desktop
+    // (top-aligned)
+    widgetGeom.moveTo(m_screenGeom.x() + widgetGeom.x(),
+                      m_screenGeom.y() + m_screenGeom.height() -
+                          (widgetGeom.y() + widgetGeom.height()));
+
+    setGeometry(widgetGeom);
   }
 
   repaint();
 }
 
+QRect ProjectionWindow::subtitlesBounds() {
+  if (!m_hideDesktop) {
+    // If we don't hide desktop, we just fill the window.
+    return QRect(0, 0, width(), height());
+  }
+  // The rectangle in which the subtitles are drawn is relative to current
+  // widget, and top-aligned.
+  QRect subtitlesBounds = QRect(m_subtitlesGeomBottomScreenRelative);
+  subtitlesBounds.moveTop(m_screenGeom.height() -
+                          (m_subtitlesGeomBottomScreenRelative.y() +
+                           m_subtitlesGeomBottomScreenRelative.height()));
+  return subtitlesBounds;
+}
+
+// Slot called when UI tells us to change geometry relative to a given screen.
 void ProjectionWindow::changeGeometry(int monitor, const QRect &r) {
   m_monitor = monitor;
   m_screenGeom = QGuiApplication::screens().at(monitor)->geometry();
-  // This is sent from UI, add screen geometry
-  m_subtitlesGeom =
-      QRect(m_screenGeom.x() + r.x(),
-            m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
-            r.width(), r.height());
+  m_subtitlesGeomBottomScreenRelative = r;
+  // Refresh widget (will call `setGeometry()`):
   toggleHideDesktop(m_hideDesktop);
-}
-
-void ProjectionWindow::changeGeometry(const QRect &r) {
-  m_subtitlesGeom = r;
-  if (!m_hideDesktop)
-    setGeometry(r);
-  // This is sent back to UI, substract screen geometry
-  emit geometryChanged(
-      QRect(r.x() - m_screenGeom.x(),
-            m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y(),
-            r.width(), r.height()));
 }
 
 void ProjectionWindow::mousePressEvent(QMouseEvent *e) {
@@ -85,7 +95,7 @@ void ProjectionWindow::mouseMoveEvent(QMouseEvent *e) {
   if (m_mouseOffset.isNull())
     return;
 
-  if (!m_resizable)
+  if (!m_resizable || m_hideDesktop)
     return;
 
   // Simply move the window on mouse drag
@@ -93,7 +103,7 @@ void ProjectionWindow::mouseMoveEvent(QMouseEvent *e) {
   QPointF moveTo = e->globalPosition() - m_mouseOffset;
   current.moveTopLeft(moveTo.toPoint());
 
-  changeGeometry(current);
+  applyGeometry(current);
 }
 
 void ProjectionWindow::mouseReleaseEvent(QMouseEvent *) {
@@ -101,8 +111,9 @@ void ProjectionWindow::mouseReleaseEvent(QMouseEvent *) {
 }
 
 void ProjectionWindow::wheelEvent(QWheelEvent *event) {
-  if (!m_resizable)
+  if (!m_resizable || m_hideDesktop)
     return;
+
   QRect current = geometry();
   int step = 24;
   if (event->modifiers().testFlag(Qt::ShiftModifier))
@@ -114,7 +125,18 @@ void ProjectionWindow::wheelEvent(QWheelEvent *event) {
     current.moveLeft(current.left() - factor / 2); // Keep centered
     current.setWidth(current.width() + factor);
   }
-  changeGeometry(current);
+  applyGeometry(current);
 }
 
-void ProjectionWindow::screenResizable(bool state) { m_resizable = state; }
+void ProjectionWindow::applyGeometry(const QRect &r) {
+  setGeometry(r);
+
+  // Convert back from absolute (top-aligned) to relative to screen
+  // (bottom-aligned)
+  m_subtitlesGeomBottomScreenRelative = r;
+  m_subtitlesGeomBottomScreenRelative.moveTo(
+      r.x() - m_screenGeom.x(),
+      m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y());
+
+  emit geometryChanged(m_subtitlesGeomBottomScreenRelative);
+}

@@ -21,6 +21,7 @@
 #include <QList>
 #include <QMouseEvent>
 #include <QPen>
+#include <QRect>
 #include <QWidget>
 
 #include "subtitle.h"
@@ -48,8 +49,7 @@ public slots:
   void outline(QColor, int);
 
 protected:
-  QPoint m_topleft;
-  QRect m_subtitlesGeom;
+  virtual QRect subtitlesBounds();
 
 private:
   Ui::SubtitlesForm *ui;

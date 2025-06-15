@@ -70,14 +70,17 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
     p.rotate(m_rotation);
   }
 
-  // Rectangle where subtitles are drawn
-  QRect subtitlesBounds(m_topleft.x(), m_topleft.y(), width(), height());
-  qInfo() << subtitlesBounds << m_currentSubtitles.size();
+  // Rectangle where subtitles are drawn : should be relative to widget
   foreach (Subtitle *e, m_currentSubtitles) {
     if (e && e->style()) {
-      e->style()->drawSubtitle(&p, *e, subtitlesBounds, m_outline);
+      e->style()->drawSubtitle(&p, *e, subtitlesBounds(), m_outline);
     }
   }
+}
+
+QRect SubtitlesForm::subtitlesBounds() {
+  // By default subtitles occupy the whole widget area.
+  return QRect(0, 0, width(), height());
 }
 
 void SubtitlesForm::rotate(double p_rotation) {
