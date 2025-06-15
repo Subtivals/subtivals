@@ -315,6 +315,7 @@
    <addaction name="actionOpen"/>
    <addaction name="actionShowCalibration"/>
    <addaction name="actionPreferences"/>
+   <addaction name="actionShowPreview"/>
    <addaction name="separator"/>
    <addaction name="actionPlay"/>
    <addaction name="actionPause"/>
@@ -415,6 +416,24 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionShowPreview">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources/icons.qrc">
+     <normaloff>:/icons/show-preview.svg</normaloff>:/icons/show-preview.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Preview</string>
+   </property>
+   <property name="toolTip">
+    <string>Show operator preview panel</string>
+   </property>
+   <property name="shortcut">
+    <string>v</string>
    </property>
   </action>
   <action name="actionAddDelay">
@@ -762,6 +781,22 @@
    <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
    <slot>actionConfig(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShowPreview</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionShowPreview(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1221,5 +1256,6 @@
   <slot>knownFactorChosen(int)</slot>
   <slot>actionToggleDarkMode(bool)</slot>
   <slot>enableKnownFactors(bool)</slot>
+  <slot>actionShowPreview(bool)</slot>
  </slots>
 </ui>

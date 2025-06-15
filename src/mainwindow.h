@@ -75,6 +75,7 @@ public slots:
   void actionPlay();
   void actionStop();
   void actionConfig(bool);
+  void actionShowPreview(bool);
   void actionPause();
   void actionNext();
   void actionPrevious();
@@ -133,6 +134,7 @@ private:
   QString m_lastScript;
   QString m_lastFolder;
   ConfigEditor *m_preferences;
+  QWidget *m_previewpanel;
   ShortcutEditor *m_shortcutEditor;
   QMap<Subtitle *, int> m_tableMapping;
   bool m_selectSubtitle;

@@ -124,7 +124,7 @@ class SubtitleDurationDelegate : public QStyledItemDelegate {
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), m_script(nullptr),
       m_player(new Player()), m_playerThread(new QThread()),
-      m_preferences(new ConfigEditor(this)),
+      m_preferences(new ConfigEditor(this)), m_previewpanel(new QWidget(this)),
       m_shortcutEditor(new ShortcutEditor(this)), m_selectSubtitle(true),
       m_rowChanged(false), m_reloadEnabled(false),
       m_filewatcher(new QFileSystemWatcher),
@@ -143,6 +143,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->tableWidget->installEventFilter(this);
   ui->speedFactor->installEventFilter(this);
+  m_previewpanel->installEventFilter(this);
   m_preferences->installEventFilter(this);
   connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this,
           SLOT(disableSubtitleSelection()));
@@ -190,6 +191,10 @@ MainWindow::MainWindow(QWidget *parent)
 
   // Disable print out by default.
   ui->actionOperatorPrintout->setEnabled(false);
+
+  // Preview panel
+  m_previewpanel->setVisible(false);
+  ui->mainLayout->addWidget(m_previewpanel);
 
   // Add preferences dock
   m_preferences->setVisible(false);
@@ -241,6 +246,7 @@ MainWindow::MainWindow(QWidget *parent)
   m_shortcutEditor->registerAction(ui->actionAutoHideEnded);
   m_shortcutEditor->registerAction(ui->actionShowCalibration);
   m_shortcutEditor->registerAction(ui->actionPreferences);
+  m_shortcutEditor->registerAction(ui->actionShowPreview);
   m_shortcutEditor->registerAction(ui->actionEnableReload);
   m_shortcutEditor->registerAction(ui->actionShowHelp);
   m_shortcutEditor->registerAction(ui->actionDarkMode);
@@ -256,6 +262,7 @@ MainWindow::~MainWindow() {
   delete m_player;
   delete m_playerThread;
   delete m_preferences;
+  delete m_previewpanel;
   delete m_filewatcher;
   delete m_scriptProperties;
   delete m_countDown;
@@ -303,6 +310,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("reloadEnabled", m_reloadEnabled);
   settings.setValue("autoHideEnabled", m_player->isAutoHideEnabled());
   settings.setValue("showPreferences", ui->actionPreferences->isChecked());
+  settings.setValue("showPreview", ui->actionShowPreview->isChecked());
   settings.setValue("durationCorrection",
                     ui->actionDurationCorrection->isChecked());
   settings.setValue("showMilliseconds",
@@ -348,6 +356,8 @@ void MainWindow::showEvent(QShowEvent *) {
   ui->actionAutoHideEnded->setChecked(autoHide);
   ui->actionPreferences->setChecked(
       settings.value("showPreferences", true).toBool());
+  ui->actionShowPreview->setChecked(
+      settings.value("showPreview", false).toBool());
   ui->actionDurationCorrection->setChecked(
       settings.value("durationCorrection", false).toBool());
   ui->actionShowMilliseconds->setChecked(
@@ -821,6 +831,10 @@ void MainWindow::actionConfig(bool state) {
   // Save when user hides it
   if (!state)
     m_preferences->save();
+}
+
+void MainWindow::actionShowPreview(bool state) {
+  m_previewpanel->setVisible(state);
 }
 
 void MainWindow::actionPause() { setState(PAUSED); }
