@@ -26,7 +26,7 @@
 
 SubtitlesForm::SubtitlesForm(QWidget *parent)
     : QWidget(parent), ui(new Ui::SubtitlesForm), m_visible(true),
-      m_rotation(0), m_color(Qt::black) {
+      m_rotation(0), m_color(Qt::black), m_opacity(1.0) {
   setStyleSheet("background:transparent;");
   ui->setupUi(this);
 }
@@ -76,6 +76,11 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
       e->style()->drawSubtitle(&p, *e, subtitlesBounds(), m_outline);
     }
   }
+
+  if (m_opacity < 1.0) {
+    p.fillRect(QRect(0, 0, width(), height()),
+               QColor(0, 0, 0, 255 * (1.0 - m_opacity)));
+  }
 }
 
 QRect SubtitlesForm::subtitlesBounds() {
@@ -90,6 +95,11 @@ void SubtitlesForm::rotate(double p_rotation) {
 
 void SubtitlesForm::color(QColor c) {
   m_color = c;
+  repaint();
+}
+
+void SubtitlesForm::opacity(double p_opacity) {
+  m_opacity = p_opacity;
   repaint();
 }
 

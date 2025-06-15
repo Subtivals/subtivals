@@ -45,6 +45,7 @@ public slots:
   void clearSubtitles();
   void toggleHide(bool state);
   void rotate(double);
+  void opacity(double);
   void color(QColor);
   void outline(QColor, int);
 
@@ -58,6 +59,7 @@ private:
   qreal m_rotation;
   QColor m_color;
   QPen m_outline;
+  qreal m_opacity;
 };
 
 #endif // SUBTITLESFORM_H

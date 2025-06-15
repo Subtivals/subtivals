@@ -195,9 +195,9 @@ MainWindow::MainWindow(QWidget *parent)
 
   // Preview panel
   m_previewpanel->setVisible(false);
-  m_previewpanel->setMinimumWidth(800);
+  m_previewpanel->setMinimumHeight(50);
   this->connectProjectionEvents(m_previewpanel);
-  ui->mainLayout->addWidget(m_previewpanel);
+  ui->tableAndPreview->replaceWidget(1, m_previewpanel);
 
   // Add preferences dock
   m_preferences->setVisible(false);
@@ -382,6 +382,9 @@ void MainWindow::showEvent(QShowEvent *) {
   m_subtitleMinDuration = settings.value("subtitleMinDuration", 1000).toInt();
   m_delayMilliseconds = settings.value("delayMilliseconds", 250).toInt();
   settings.endGroup();
+
+  settings.beginGroup("PreviewPanel");
+  m_previewpanel->opacity(settings.value("opacity", 0.7).toDouble());
 
   // Reflect the configured add/sub delay on the action text.
   QString text;
