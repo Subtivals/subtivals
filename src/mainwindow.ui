@@ -245,7 +245,7 @@
           </column>
           </widget>
           <widget class="QWidget" name="widget" native="true"/>
-        </widget> 
+        </widget>
       </item>
      </layout>
     </item>
