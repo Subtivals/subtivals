@@ -644,7 +644,7 @@ const QString Script::exportList(Script::ScriptFormat p_format) const {
 
     // CSV Headers
     QStringList headers;
-    headers << tr("Row") << tr("Start") << tr("End") << tr("SubtitleStyle")
+    headers << tr("Row") << tr("Start") << tr("End") << tr("Style")
             << tr("Text") << tr("Comments");
     output.append(QString("\"%1\"\n").arg(headers.join("\" ; \"")));
 

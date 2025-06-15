@@ -374,19 +374,19 @@ void MainWindow::showEvent(QShowEvent *) {
   QString text;
   switch (m_delayMilliseconds) {
   case 100:
-    text = "1/10 sec";
+    text = tr("1/10 sec");
     break;
   case 250:
-    text = "1/4 sec";
+    text = tr("1/4 sec");
     break;
   case 500:
-    text = "1/2 sec";
+    text = tr("1/2 sec");
     break;
   case 1000:
-    text = "1 sec";
+    text = tr("1 sec");
     break;
   default:
-    text = QString::number(m_delayMilliseconds) + " msec";
+    text = QString::number(m_delayMilliseconds) + tr(" msec");
     break;
   }
   ui->actionAddDelay->setText("+" + text);
