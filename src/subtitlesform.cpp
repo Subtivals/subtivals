@@ -85,7 +85,8 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
 
 QRect SubtitlesForm::subtitlesBounds() {
   // By default subtitles occupy the whole widget area.
-  return QRect(0, 0, width(), height());
+  int margin = 5;
+  return QRect(margin, margin, width() - margin * 2, height() - margin * 2);
 }
 
 void SubtitlesForm::rotate(double p_rotation) {
