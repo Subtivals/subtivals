@@ -36,6 +36,8 @@ class SubtitlesForm : public QWidget {
 public:
   explicit SubtitlesForm(QWidget *parent = nullptr);
   ~SubtitlesForm();
+  double opacity() { return m_opacity; }
+
 signals:
   void geometryChanged(QRect);
 public slots:

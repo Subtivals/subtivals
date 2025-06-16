@@ -332,6 +332,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
 
   settings.beginGroup("PreviewPanel");
   QList<int> sizes = ui->tableAndPreview->sizes();
+  settings.setValue("opacity", m_previewpanel->opacity());
   settings.setValue("tableHeight", sizes[0]);
   settings.setValue("previewHeight", sizes[1]);
   settings.endGroup();
