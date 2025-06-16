@@ -115,6 +115,18 @@ void ProjectionWindow::mouseMoveEvent(QMouseEvent *e) {
   QPointF moveTo = e->globalPosition() - m_mouseOffset;
   current.moveTopLeft(moveTo.toPoint());
 
+  const auto screens = QGuiApplication::screens();
+  int halfAreaWindow = this->width() * this->height() / 2;
+  for (int i = 0; i < screens.size(); ++i) {
+    QRect intersected = this->geometry().intersected(screens[i]->geometry());
+    int intersectionArea = intersected.width() * intersected.height();
+    if (intersectionArea > halfAreaWindow) {
+      m_monitor = i;
+      m_screenGeom = screens[i]->geometry();
+      break;
+    }
+  }
+
   applyGeometry(current);
 }
 
@@ -150,5 +162,5 @@ void ProjectionWindow::applyGeometry(const QRect &r) {
       r.x() - m_screenGeom.x(),
       m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y());
 
-  emit geometryChanged(m_subtitlesGeomBottomScreenRelative);
+  emit geometryChanged(m_monitor, m_subtitlesGeomBottomScreenRelative);
 }

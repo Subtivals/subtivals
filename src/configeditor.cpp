@@ -143,8 +143,11 @@ void ConfigEditor::presetRenamed(QString text) {
   save();
 }
 
-void ConfigEditor::screenChanged(const QRect &r) {
+void ConfigEditor::projectionWindowChanged(int monitor, const QRect &r) {
   // Show values in form
+  ui->screens->blockSignals(true);
+  ui->screens->setCurrentIndex(monitor);
+  ui->screens->blockSignals(false);
   ui->x->blockSignals(true);
   ui->x->setValue(r.x());
   ui->x->blockSignals(false);
@@ -243,7 +246,7 @@ void ConfigEditor::reset() {
   settings.endGroup();
   // Update the UI with the reloaded settings
   ui->screens->setCurrentIndex(screen);
-  screenChanged(QRect(x, y, w, h));
+  this->projectionWindowChanged(screen, QRect(x, y, w, h));
   ui->rotation->setValue(rotation);
   setColor(ui->btnColor, color);
   m_color = color;

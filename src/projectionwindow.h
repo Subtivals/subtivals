@@ -33,7 +33,7 @@ public:
   explicit ProjectionWindow(QWidget *parent = nullptr);
   ~ProjectionWindow();
 signals:
-  void geometryChanged(QRect);
+  void geometryChanged(int, QRect);
 public slots:
   void toggleHideDesktop(bool state);
   void screenResizable(bool state);

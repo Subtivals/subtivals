@@ -60,7 +60,7 @@ signals:
   void styleOverriden(bool);
 public slots:
   void presetChanged(int);
-  void screenChanged(const QRect &r);
+  void projectionWindowChanged(int, const QRect &r);
   void restore();
   void reset();
   void apply();
