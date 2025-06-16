@@ -76,6 +76,9 @@ protected slots:
                        bool save = true);
   void setColor(QPushButton *button, const QColor &c);
 
+private slots:
+  void refreshScreensList();
+
 private:
   Ui::ConfigEditor *ui;
   StyleEditor *m_styleEditor;

@@ -44,13 +44,11 @@ ConfigEditor::ConfigEditor(QWidget *parent)
   adjustSize();
   setMaximumSize(size());
 
-  QList<QScreen *> screens = QGuiApplication::screens();
-  for (int i = 0; i < screens.size(); i++) {
-    QString screenName =
-        screens.at(i)->name().replace("\\", "").replace(".", " ").replace("  ",
-                                                                          " ");
-    ui->screens->addItem(QString(tr("Monitor %1")).arg(screenName));
-  }
+  connect(qApp, SIGNAL(screenAdded(QScreen *)), this,
+          SLOT(refreshScreensList()));
+  connect(qApp, SIGNAL(screenRemoved(QScreen *)), this,
+          SLOT(refreshScreensList()));
+  refreshScreensList();
 
   // Load known presets.
   QSettings settings;
@@ -73,6 +71,17 @@ ConfigEditor::~ConfigEditor() {
   settings.setValue("preset", m_preset);
   delete m_styleEditor;
   delete ui;
+}
+
+void ConfigEditor::refreshScreensList() {
+  QList<QScreen *> screens = QGuiApplication::screens();
+  ui->screens->clear();
+  for (int i = 0; i < screens.size(); i++) {
+    QString screenName =
+        screens.at(i)->name().replace("\\", "").replace(".", " ").replace("  ",
+                                                                          " ");
+    ui->screens->addItem(QString(tr("Monitor %1")).arg(screenName));
+  }
 }
 
 void ConfigEditor::setScript(Script *script) {

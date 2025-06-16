@@ -80,8 +80,20 @@ QRect ProjectionWindow::subtitlesBounds() {
 
 // Slot called when UI tells us to change geometry relative to a given screen.
 void ProjectionWindow::changeGeometry(int monitor, const QRect &r) {
+  const auto screens = QGuiApplication::screens();
+  // Validate monitor index
+  if (monitor < 0 || monitor >= screens.size()) {
+    qWarning() << "Invalid monitor index:" << monitor;
+    return;
+  }
+  // Validate rectangle
+  if (!r.isValid()) {
+    qWarning() << "Invalid geometry rectangle:" << r;
+    return;
+  }
+
   m_monitor = monitor;
-  m_screenGeom = QGuiApplication::screens().at(monitor)->geometry();
+  m_screenGeom = screens.at(monitor)->geometry();
   m_subtitlesGeomBottomScreenRelative = r;
   // Refresh widget (will call `setGeometry()`):
   toggleHideDesktop(m_hideDesktop);
