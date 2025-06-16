@@ -861,6 +861,9 @@ void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
   QObject::connect(m_player, SIGNAL(clear()), f, SLOT(clearSubtitles()),
                    Qt::DirectConnection);
   QObject::connect(this, SIGNAL(toggleHide(bool)), f, SLOT(toggleHide(bool)));
+
+  QObject::connect(m_preferences, SIGNAL(changeScreen(int, QRect)), f,
+                   SLOT(changeGeometry(int, QRect)));
   QObject::connect(m_preferences, SIGNAL(color(QColor)), f,
                    SLOT(color(QColor)));
   QObject::connect(m_preferences, SIGNAL(outline(QColor, int)), f,

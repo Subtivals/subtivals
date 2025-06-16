@@ -22,9 +22,12 @@
 #include <QMouseEvent>
 #include <QPen>
 #include <QRect>
+#include <QSize>
 #include <QWidget>
 
 #include "subtitle.h"
+
+#define PANEL_MARGINS_PIXELS 5
 
 namespace Ui {
   class SubtitlesForm;
@@ -41,7 +44,7 @@ public:
 signals:
   void geometryChanged(QRect);
 public slots:
-  void paintEvent(QPaintEvent *p_event);
+  void changeGeometry(int monitor, const QRect &);
   void addSubtitle(Subtitle *p_subtitle);
   void remSubtitle(Subtitle *p_subtitle);
   void clearSubtitles();
@@ -52,6 +55,7 @@ public slots:
   void outline(QColor, int);
 
 protected:
+  void paintEvent(QPaintEvent *p_event);
   virtual QRect subtitlesBounds();
 
 private:
@@ -62,6 +66,7 @@ private:
   QColor m_color;
   QPen m_outline;
   qreal m_opacity;
+  QSize m_subtitlesSize;
 };
 
 #endif // SUBTITLESFORM_H

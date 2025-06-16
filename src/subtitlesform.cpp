@@ -19,6 +19,7 @@
 #include <QtGui/QCursor>
 #include <QtGui/QPainter>
 #include <QGuiApplication>
+#include <QMargins>
 
 #include "subtitlestyle.h"
 #include "subtitlesform.h"
@@ -83,10 +84,19 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
   }
 }
 
+void SubtitlesForm::changeGeometry(int, const QRect &r) {
+  m_subtitlesSize = QSize(r.width(), r.height());
+}
+
 QRect SubtitlesForm::subtitlesBounds() {
-  // By default subtitles occupy the whole widget area.
-  int margin = 5;
-  return QRect(margin, margin, width() - margin * 2, height() - margin * 2);
+  QSize widgetSize = this->size();
+  QSize scaledSize =
+      m_subtitlesSize.scaled(widgetSize, Qt::KeepAspectRatio)
+          .shrunkBy(QMargins(PANEL_MARGINS_PIXELS, PANEL_MARGINS_PIXELS,
+                             PANEL_MARGINS_PIXELS, PANEL_MARGINS_PIXELS));
+  int x = (widgetSize.width() - scaledSize.width()) / 2;
+  int y = (widgetSize.height() - scaledSize.height()) / 2;
+  return QRect(QPoint(x, y), scaledSize);
 }
 
 void SubtitlesForm::rotate(double p_rotation) {
