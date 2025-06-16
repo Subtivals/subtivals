@@ -57,16 +57,17 @@ public:
   int marginR() const;
   int marginV() const;
   Qt::Alignment alignment() const;
-
-  void drawSubtitle(QPainter *, const Subtitle &, const QRect &,
-                    const QPen &) const;
-  int subtitleHeight(const Subtitle &subtitle) const;
-  const QPoint textAnchor(const QPoint &p_point, const QString &p_text) const;
+  void drawSubtitle(QPainter *, const Subtitle &, const QRect &, const QPen &,
+                    const QPointF & = QPointF(1.0, 1.0)) const;
 
 private:
+  int subtitleHeight(const Subtitle &subtitle,
+                     const QFontMetrics &metrics) const;
+  const QPoint textAnchor(const QPoint &p_point, const QString &p_text,
+                          const QFontMetrics &metrics) const;
+
   QString m_name;
   QFont m_font;
-  QFontMetrics m_metrics;
   QColor m_primaryColour;
   qreal m_lineSpacing;
   /*

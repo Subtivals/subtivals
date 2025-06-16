@@ -21,9 +21,13 @@
 #include <QList>
 #include <QMouseEvent>
 #include <QPen>
+#include <QRect>
+#include <QSize>
 #include <QWidget>
 
 #include "subtitle.h"
+
+#define PANEL_MARGINS_PIXELS 5
 
 namespace Ui {
   class SubtitlesForm;
@@ -35,41 +39,34 @@ class SubtitlesForm : public QWidget {
 public:
   explicit SubtitlesForm(QWidget *parent = nullptr);
   ~SubtitlesForm();
+  double opacity() { return m_opacity; }
+
 signals:
   void geometryChanged(QRect);
 public slots:
+  void changeGeometry(int monitor, const QRect &);
   void addSubtitle(Subtitle *p_subtitle);
   void remSubtitle(Subtitle *p_subtitle);
   void clearSubtitles();
   void toggleHide(bool state);
-  void toggleHideDesktop(bool state);
-  void screenResizable(bool state);
-  void changeGeometry(int, const QRect &);
   void rotate(double);
+  void opacity(double);
   void color(QColor);
   void outline(QColor, int);
 
 protected:
-  void changeGeometry(const QRect &);
   void paintEvent(QPaintEvent *p_event);
-  void mouseMoveEvent(QMouseEvent *e);
-  void mousePressEvent(QMouseEvent *e);
-  void mouseReleaseEvent(QMouseEvent *e);
-  void wheelEvent(QWheelEvent *e);
+  virtual QRect subtitlesBounds();
 
 private:
   Ui::SubtitlesForm *ui;
   QList<Subtitle *> m_currentSubtitles;
   bool m_visible;
-  QPointF m_mouseOffset;
-  QRect m_screenGeom;
-  QRect m_subtitlesGeom;
-  bool m_hideDesktop;
-  int m_monitor;
-  bool m_resizable;
   qreal m_rotation;
   QColor m_color;
   QPen m_outline;
+  qreal m_opacity;
+  QSize m_subtitlesSize;
 };
 
 #endif // SUBTITLESFORM_H

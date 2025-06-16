@@ -125,6 +125,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), m_script(nullptr),
       m_player(new Player()), m_playerThread(new QThread()),
       m_preferences(new ConfigEditor(this)),
+      m_previewpanel(new SubtitlesForm(this)),
       m_shortcutEditor(new ShortcutEditor(this)), m_selectSubtitle(true),
       m_rowChanged(false), m_reloadEnabled(false),
       m_filewatcher(new QFileSystemWatcher),
@@ -143,6 +144,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->tableWidget->installEventFilter(this);
   ui->speedFactor->installEventFilter(this);
+  m_previewpanel->installEventFilter(this);
   m_preferences->installEventFilter(this);
   connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this,
           SLOT(disableSubtitleSelection()));
@@ -190,6 +192,12 @@ MainWindow::MainWindow(QWidget *parent)
 
   // Disable print out by default.
   ui->actionOperatorPrintout->setEnabled(false);
+
+  // Preview panel
+  m_previewpanel->setVisible(false);
+  m_previewpanel->setMinimumHeight(50);
+  this->connectProjectionEvents(m_previewpanel);
+  ui->tableAndPreview->replaceWidget(1, m_previewpanel);
 
   // Add preferences dock
   m_preferences->setVisible(false);
@@ -241,6 +249,7 @@ MainWindow::MainWindow(QWidget *parent)
   m_shortcutEditor->registerAction(ui->actionAutoHideEnded);
   m_shortcutEditor->registerAction(ui->actionShowCalibration);
   m_shortcutEditor->registerAction(ui->actionPreferences);
+  m_shortcutEditor->registerAction(ui->actionShowPreview);
   m_shortcutEditor->registerAction(ui->actionEnableReload);
   m_shortcutEditor->registerAction(ui->actionShowHelp);
   m_shortcutEditor->registerAction(ui->actionDarkMode);
@@ -256,6 +265,7 @@ MainWindow::~MainWindow() {
   delete m_player;
   delete m_playerThread;
   delete m_preferences;
+  delete m_previewpanel;
   delete m_filewatcher;
   delete m_scriptProperties;
   delete m_countDown;
@@ -303,6 +313,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("reloadEnabled", m_reloadEnabled);
   settings.setValue("autoHideEnabled", m_player->isAutoHideEnabled());
   settings.setValue("showPreferences", ui->actionPreferences->isChecked());
+  settings.setValue("showPreview", ui->actionShowPreview->isChecked());
   settings.setValue("durationCorrection",
                     ui->actionDurationCorrection->isChecked());
   settings.setValue("showMilliseconds",
@@ -317,6 +328,13 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("subtitleInterval", m_subtitleInterval);
   settings.setValue("subtitleMinDuration", m_subtitleMinDuration);
   settings.setValue("delayMilliseconds", m_delayMilliseconds);
+  settings.endGroup();
+
+  settings.beginGroup("PreviewPanel");
+  QList<int> sizes = ui->tableAndPreview->sizes();
+  settings.setValue("opacity", m_previewpanel->opacity());
+  settings.setValue("tableHeight", sizes[0]);
+  settings.setValue("previewHeight", sizes[1]);
   settings.endGroup();
 
   // When the main window is close : end of the app
@@ -348,6 +366,8 @@ void MainWindow::showEvent(QShowEvent *) {
   ui->actionAutoHideEnded->setChecked(autoHide);
   ui->actionPreferences->setChecked(
       settings.value("showPreferences", true).toBool());
+  bool showPreview = settings.value("showPreview", false).toBool();
+  ui->actionShowPreview->setChecked(showPreview);
   ui->actionDurationCorrection->setChecked(
       settings.value("durationCorrection", false).toBool());
   ui->actionShowMilliseconds->setChecked(
@@ -368,6 +388,16 @@ void MainWindow::showEvent(QShowEvent *) {
   m_subtitleInterval = settings.value("subtitleInterval", 1000).toInt();
   m_subtitleMinDuration = settings.value("subtitleMinDuration", 1000).toInt();
   m_delayMilliseconds = settings.value("delayMilliseconds", 250).toInt();
+  settings.endGroup();
+
+  settings.beginGroup("PreviewPanel");
+  QList<int> sizes;
+  sizes.append(settings.value("tableHeight", 100).toInt());
+  sizes.append(settings.value("previewHeight", 30).toInt());
+  if (showPreview) {
+    ui->tableAndPreview->setSizes(sizes);
+  }
+  m_previewpanel->opacity(settings.value("opacity", 0.7).toDouble());
   settings.endGroup();
 
   // Reflect the configured add/sub delay on the action text.
@@ -821,6 +851,30 @@ void MainWindow::actionConfig(bool state) {
   // Save when user hides it
   if (!state)
     m_preferences->save();
+}
+
+void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
+  QObject::connect(m_player, SIGNAL(on(Subtitle *)), f,
+                   SLOT(addSubtitle(Subtitle *)));
+  QObject::connect(m_player, SIGNAL(off(Subtitle *)), f,
+                   SLOT(remSubtitle(Subtitle *)));
+  QObject::connect(m_player, SIGNAL(clear()), f, SLOT(clearSubtitles()),
+                   Qt::DirectConnection);
+  QObject::connect(this, SIGNAL(toggleHide(bool)), f, SLOT(toggleHide(bool)));
+
+  QObject::connect(m_preferences, SIGNAL(changeScreen(int, QRect)), f,
+                   SLOT(changeGeometry(int, QRect)));
+  QObject::connect(m_preferences, SIGNAL(color(QColor)), f,
+                   SLOT(color(QColor)));
+  QObject::connect(m_preferences, SIGNAL(outline(QColor, int)), f,
+                   SLOT(outline(QColor, int)));
+  QObject::connect(m_preferences, SIGNAL(styleChanged()), f, SLOT(repaint()));
+  QObject::connect(m_preferences, SIGNAL(rotate(double)), f,
+                   SLOT(rotate(double)));
+}
+
+void MainWindow::actionShowPreview(bool state) {
+  m_previewpanel->setVisible(state);
 }
 
 void MainWindow::actionPause() { setState(PAUSED); }

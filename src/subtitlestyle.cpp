@@ -26,8 +26,8 @@
 
 SubtitleStyle::SubtitleStyle(const QString &p_name, const QFont &p_font,
                              const QColor &p_color, QObject *p_parent)
-    : QObject(p_parent), m_name(p_name), m_metrics(p_font),
-      m_primaryColour(p_color), m_lineSpacing(DEFAULT_LINESPACING),
+    : QObject(p_parent), m_name(p_name), m_primaryColour(p_color),
+      m_lineSpacing(DEFAULT_LINESPACING),
       m_alignment(Qt::AlignTop | Qt::AlignHCenter), m_marginL(0), m_marginR(0),
       m_marginV(0), m_offsetH(0), m_offsetV(0) {
   setFont(p_font);
@@ -36,7 +36,6 @@ SubtitleStyle::SubtitleStyle(const QString &p_name, const QFont &p_font,
 SubtitleStyle::SubtitleStyle(const SubtitleStyle &p_oth, const QFont &f,
                              QObject *p_parent)
     : QObject(p_parent), m_name(p_oth.m_name),
-      m_metrics(QFontMetrics(p_oth.font())),
       m_primaryColour(p_oth.m_primaryColour),
       m_lineSpacing(p_oth.m_lineSpacing), m_alignment(p_oth.m_alignment),
       m_marginL(p_oth.m_marginL), m_marginR(p_oth.m_marginR),
@@ -77,7 +76,6 @@ const QFont &SubtitleStyle::font() const { return m_font; }
 void SubtitleStyle::setFont(const QFont &f) {
   m_font = f;
   m_font.setStyleStrategy(QFont::PreferAntialias);
-  m_metrics = QFontMetrics(f);
 }
 
 const QColor &SubtitleStyle::primaryColour() const { return m_primaryColour; }
@@ -90,41 +88,47 @@ void SubtitleStyle::setLineSpacing(qreal p_lineSpacing) {
   m_lineSpacing = p_lineSpacing;
 }
 
-int SubtitleStyle::subtitleHeight(const Subtitle &subtitle) const {
-  int h = m_metrics.height();
+int SubtitleStyle::subtitleHeight(const Subtitle &subtitle,
+                                  const QFontMetrics &metrics) const {
+  int h = metrics.height();
   int nb = subtitle.nbLines();
   return (h * nb) + (m_lineSpacing * h * (nb - 1));
 }
 
 const QPoint SubtitleStyle::textAnchor(const QPoint &p_point,
-                                       const QString &p_text) const {
+                                       const QString &p_text,
+                                       const QFontMetrics &metrics) const {
   QPoint offset(0, 0);
   // Make sure text contains no HTML
   QString strip(p_text);
   strip.remove(QRegularExpression("<[^>]*>"));
   // alignment becomes text anchor
   if (m_alignment & Qt::AlignVCenter) {
-    offset.setY(m_metrics.height() / 2);
+    offset.setY(metrics.height() / 2);
   } else if (m_alignment & Qt::AlignBottom) {
-    offset.setY(m_metrics.height());
+    offset.setY(metrics.height());
   }
   if (m_alignment & Qt::AlignHCenter) {
-    offset.setX(-m_metrics.boundingRect(strip).width() / 2);
+    offset.setX(-metrics.boundingRect(strip).width() / 2);
   } else if (m_alignment & Qt::AlignRight) {
-    offset.setX(-m_metrics.boundingRect(strip).width());
+    offset.setX(-metrics.boundingRect(strip).width());
   }
   return p_point + offset;
 }
 
 void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
-                                 const QRect &bounds,
-                                 const QPen &outline) const {
+                                 const QRect &bounds, const QPen &outline,
+                                 const QPointF &p_scale) const {
   QSize resolution = subtitle.script()->resolution();
-  QPointF scale = QPointF(1.0, 1.0);
+  QPointF scale(p_scale);
   if (resolution.width() > 0)
     scale.setX(double(bounds.width()) / resolution.width());
   if (resolution.height() > 0)
     scale.setY(double(bounds.height()) / resolution.height());
+
+  QFont textFont(m_font);
+  textFont.setPixelSize(scale.x() * textFont.pixelSize());
+  QFontMetrics fontMetrics(textFont);
 
   int stack = 0;
 
@@ -138,7 +142,7 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
       // absolute positioning : (x, y)
       position.setX(position.x() * scale.x());
       position.setY(position.y() * scale.y());
-      final.setTopLeft(textAnchor(position, line.text()));
+      final.setTopLeft(textAnchor(position, line.text(), fontMetrics));
     } else {
       int marginV = (m_marginV + subtitle.marginV()) * scale.y();
       int marginL = 0;
@@ -160,7 +164,7 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
         // Horizontal positioning : (x, ?)
         position.setX(position.x() * scale.x());
         html = html.replace("align=\"HORIZONTAL\"", "");
-        final.moveLeft(textAnchor(position, line.text()).x());
+        final.moveLeft(textAnchor(position, line.text(), fontMetrics).x());
       }
 
       // Apply margins
@@ -168,10 +172,11 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
 
       // Vertical positioning
       if (m_alignment & Qt::AlignBottom) {
-        final.moveTop(final.bottom() - subtitleHeight(subtitle) + stack);
-      } else if (m_alignment & Qt::AlignVCenter) {
-        final.moveTop(final.center().y() - subtitleHeight(subtitle) / 2 +
+        final.moveTop(final.bottom() - subtitleHeight(subtitle, fontMetrics) +
                       stack);
+      } else if (m_alignment & Qt::AlignVCenter) {
+        final.moveTop(final.center().y() -
+                      subtitleHeight(subtitle, fontMetrics) / 2 + stack);
       } else { // AlignTop
         final.moveTop(final.top() + stack);
       }
@@ -181,14 +186,14 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
       final.moveLeft(final.left() + (m_offsetH * bounds.width()));
 
       // Stack lines
-      stack += m_metrics.height() * (1.0 + m_lineSpacing);
+      stack += fontMetrics.height() * (1.0 + m_lineSpacing * scale.y());
     }
 
     html = html.replace("TEXT", line.text());
     QTextDocument doc;
     doc.setPageSize(QSize(final.width(), final.height()));
     doc.setHtml(html);
-    doc.setDefaultFont(m_font);
+    doc.setDefaultFont(textFont);
 
     // Reduce document margins to 0
     QTextFrame *tf = doc.rootFrame();
@@ -197,7 +202,7 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
     tf->setFrameFormat(tff);
 
     QAbstractTextDocumentLayout *layout = doc.documentLayout();
-    painter->setFont(m_font);
+    painter->setFont(textFont);
     painter->setPen(m_primaryColour);
     QAbstractTextDocumentLayout::PaintContext context;
     context.palette.setColor(QPalette::Text, painter->pen().color());

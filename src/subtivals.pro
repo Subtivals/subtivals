@@ -22,6 +22,7 @@ SOURCES += main.cpp\
     subtitlestyle.cpp \
     subtitle.cpp \
     subtitlesform.cpp \
+    projectionwindow.cpp \
     styleeditor.cpp \
     configeditor.cpp \
     player.cpp \
@@ -35,6 +36,7 @@ HEADERS  += mainwindow.h \
     subtitlestyle.h \
     subtitle.h \
     subtitlesform.h \
+    projectionwindow.h \
     styleeditor.h \
     configeditor.h \
     player.h \
