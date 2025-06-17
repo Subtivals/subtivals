@@ -22,6 +22,7 @@
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomNodeList>
 #include <QRegularExpression>
+#include <QFont>
 
 #include "script.h"
 

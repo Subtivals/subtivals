@@ -136,10 +136,10 @@ QMAKE_POST_LINK += $$QMAKE_LRELEASE $$_PRO_FILE_
 unix {
     QMAKE_POST_LINK += && $$quote(mkdir -p $$TRANSLATIONS_PATH && cp ../locale/*.qm $$TRANSLATIONS_PATH)
 }
-win32 {
-    QMAKE_POST_LINK += && $$quote(if not exist $$TRANSLATIONS_PATH mkdir $$TRANSLATIONS_PATH)
-    QMAKE_POST_LINK += && $$quote(copy /Y ..\\locale\\*.qm $$TRANSLATIONS_PATH)
-}
+#win32 {
+#    QMAKE_POST_LINK += && $$quote(if not exist $$TRANSLATIONS_PATH mkdir $$TRANSLATIONS_PATH)
+#    QMAKE_POST_LINK += && $$quote(copy /Y ..\\locale\\*.qm $$TRANSLATIONS_PATH)
+#}
 
 # Embed the translation path as a preprocessor define
 TRANSLATIONS_PATH_STR = '\"$$TRANSLATIONS_PATH\"'

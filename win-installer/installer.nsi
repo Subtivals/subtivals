@@ -26,13 +26,10 @@ RequestExecutionLevel admin
 !define setup "subtivals-setup-2.0.0-pre2.exe"
 
 ; change this to wherever the files to be packaged reside
-!define srcdir "..\subtivals-build-desktop\release"
+!define srcdir "..\deploy"
 
 !define prodname "Subtivals"
 !define exec "subtivals.exe"
-
-!define qtdirdesktop "C:\Qt\5.15.2\mingw81_64"
-!define mingwdir "C:\Qt\Tools\mingw810_64"
 
 ; optional stuff
  
