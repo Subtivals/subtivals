@@ -43,7 +43,14 @@ HEADERS  += mainwindow.h \
     styleadvanced.h \
     shortcuteditor.h \
     wizard.h \
-    weblive.h
+    weblive.h \
+    macwindowhelper.h
+
+OBJECTIVE_SOURCES += macwindowhelper.mm
+
+macx {
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+}
 
 FORMS    += mainwindow.ui \
     subtitlesform.ui \
