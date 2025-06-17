@@ -234,9 +234,12 @@ void ConfigEditor::reset() {
   int screen = qBound(0, presetScreen, nbScreens);
   QRect screenGeom = screens.at(screen)->geometry();
   int x = settings.value("x", 0).toInt();
-  int y = settings.value("y", screenGeom.height() - DEFAULT_HEIGHT).toInt();
+  int y =
+      settings
+          .value("y", screenGeom.height() - DEFAULT_PROJECTION_WINDOW_HEIGHT)
+          .toInt();
   int w = settings.value("w", screenGeom.width()).toInt();
-  int h = settings.value("h", DEFAULT_HEIGHT).toInt();
+  int h = settings.value("h", DEFAULT_PROJECTION_WINDOW_HEIGHT).toInt();
   double rotation = settings.value("rotation", 0).toDouble();
   QColor color(settings.value("color", DEFAULT_COLOR).toString());
   QColor outlineColor(

@@ -349,11 +349,12 @@ void MainWindow::showEvent(QShowEvent *) {
   m_lastFolder = settings.value("lastFolder", "").toString();
   resize(settings.value("size", size()).toSize());
 
-  // Place window at center, below black screen by default.
+  // Do our best to avoid overlapping of black screen.
   QRect screenGeom = qApp->primaryScreen()->geometry();
-  int center = (screenGeom.width() - geometry().width()) / 2;
   int decorationHeight = style()->pixelMetric(QStyle::PM_TitleBarHeight);
-  QPoint pos(center, DEFAULT_HEIGHT + decorationHeight);
+  int centerH = (screenGeom.width() - geometry().width()) / 2;
+  QPoint pos(centerH,
+             screenGeom.height() - geometry().height() - decorationHeight);
   move(settings.value("pos", pos).toPoint());
 
   m_preferences->reset();

@@ -21,8 +21,6 @@
 #include <QColor>
 #include <QDockWidget>
 
-#define NB_PRESETS 6
-#define DEFAULT_HEIGHT 200
 #define DEFAULT_COLOR "#000000"
 
 #define DEFAULT_OUTLINE_COLOR "#000000"
