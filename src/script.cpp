@@ -25,7 +25,7 @@
 
 #include "script.h"
 
-#define DEFAULT_FONT_SIZE 22
+#define DEFAULT_FONT_SIZE 27
 #define DEFAULT_FONT_NAME "Tiresias Signfont"
 
 enum SectionType {
