@@ -14,6 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
  **/
+
 #include <QtCore/QSettings>
 #include <QtCore/qmath.h>
 #include <QtGui/QCursor>
@@ -22,19 +23,23 @@
 
 #include "subtitlestyle.h"
 #include "projectionwindow.h"
+#include "macwindowhelper.h"
 
 ProjectionWindow::ProjectionWindow(QWidget *parent)
     : SubtitlesForm(parent), m_hideDesktop(false), m_monitor(-1),
       m_resizable(false) {
-  Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
-                          Qt::X11BypassWindowManagerHint;
+  Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint;
 #ifdef WIN32
   flags |= Qt::SubWindow;
+#endif
+#ifdef Q_OS_LINUX
+  flags |= Qt::X11BypassWindowManagerHint;
 #endif
   setStyleSheet("background:transparent;");
   setAttribute(Qt::WA_TranslucentBackground);
   setWindowFlags(flags);
   setCursor(QCursor(Qt::BlankCursor));
+  makeWindowCoverMenuBar(this);
 }
 
 ProjectionWindow::~ProjectionWindow() {}
