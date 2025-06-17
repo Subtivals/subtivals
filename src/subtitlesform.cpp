@@ -71,10 +71,15 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
     p.rotate(m_rotation);
   }
 
-  // Rectangle where subtitles are drawn : should be relative to widget
+  // Rectangle where subtitles are drawn.
+  QRect bounds = subtitlesBounds();
+  QPointF scale(static_cast<qreal>(bounds.width()) / this->size().width(),
+                static_cast<qreal>(bounds.height()) / this->size().height());
+  QPointF uniformScale(qMin(scale.x(), scale.y()), qMin(scale.x(), scale.y()));
+
   foreach (Subtitle *e, m_currentSubtitles) {
     if (e && e->style()) {
-      e->style()->drawSubtitle(&p, *e, subtitlesBounds(), m_outline);
+      e->style()->drawSubtitle(&p, *e, bounds, m_outline, uniformScale);
     }
   }
 
