@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-VERSION = 2.0.0-pre2
+VERSION = 2.0.0-pre3
 DEFINES += VERSION=\\\"$$VERSION\\\" \
  DEFAULT_LINESPACING=0.3 \
  NB_PRESETS=6 \

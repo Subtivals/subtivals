@@ -23,7 +23,7 @@
 
 RequestExecutionLevel admin
 
-!define setup "subtivals-setup-2.0.0-pre2.exe"
+!define setup "subtivals-2.0.0-pre3.exe"
 
 ; change this to wherever the files to be packaged reside
 !define srcdir "..\deploy"
