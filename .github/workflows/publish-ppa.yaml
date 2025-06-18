@@ -1,0 +1,92 @@
+name: Build and Upload PPA
+
+on:
+  # release:
+  #   types: [published]
+  push:
+    branches:
+      - publish-ppa-gha
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        flavor:
+        - noble
+        - oracular
+        - plucky
+
+    env:
+      PPA_USERNAME: mathieu.leplatre
+      PACKAGE_NAME: subtivals-dev
+      DEBEMAIL: contact@mathieu-leplatre.info
+      DEBFULLNAME: Mathieu Leplatre
+      GPG_TTY: $(tty)
+      PPA_SECRET_KEY: ${{ secrets.PPA_SECRET_KEY }}
+      PPA_KEY_ID: ${{ secrets.PPA_KEY_ID }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # get tags and branches
+
+    - name: Cache APT packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          /var/cache/apt/archives
+          /var/lib/apt/lists
+        key: ${{ runner.os }}-apt-${{ hashFiles('**/debian/control') }}
+        restore-keys: |
+          ${{ runner.os }}-apt-
+
+    - name: Set up dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y devscripts debhelper dput gnupg
+
+    - name: Import GPG key
+      run: |
+        echo "$PPA_SECRET_KEY" | gpg --batch --import
+        echo "$PPA_KEY_ID:6:" | gpg --import-ownertrust
+
+    - name: Configure dput
+      run: |
+        mkdir -p ~/.dput.cf.d/
+        cat <<EOF > "$HOME/.dput.cf.d/${PACKAGE_NAME}.cf"
+        [${PACKAGE_NAME}]
+        fqdn = ppa.launchpad.net
+        incoming = ~${PPA_USERNAME}/ubuntu/${PACKAGE_NAME}/
+        method = ftp
+        login = anonymous
+        allow_unsigned_uploads = 0
+        post_upload_command = echo "Upload completed"
+        EOF
+
+    - name: Build and Upload for ${{ matrix.flavor }}
+      run: |
+        set -e
+        flavor=${{ matrix.flavor }}
+        version=$(git describe --tags --abbrev=0)
+        tag_commit=$(git rev-list -n 1 "$version")
+
+        TMP_DIST="/tmp/${PACKAGE_NAME}"
+        mkdir -p "$TMP_DIST"
+
+        git checkout -b "$flavor" "$tag_commit"
+        sed -i "s/) stable/~$flavor) $flavor/" debian/changelog
+        git commit -a -m "$flavor package $version" || true
+
+        git archive --format=tar --prefix="$flavor"/ HEAD | (cd "$TMP_DIST" && tar -xf -)
+        cd "$TMP_DIST/$flavor"
+        debuild -S -sa
+
+        srcpckg=$(find "${TMP_DIST}" -name "${PACKAGE_NAME}_${version}-*~${flavor}_source.changes" | sort -r | head -n1)
+        if [ -f "$srcpckg" ]; then
+            dput "${PACKAGE_NAME}" "$srcpckg"
+        else
+            echo "No source package created for $flavor"
+        fi
