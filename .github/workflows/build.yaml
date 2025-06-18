@@ -1,4 +1,4 @@
-name: Build Qt6 App for Linux
+name: Build app binaries
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-22.04
     env:
       QT_VERSION: "6.9.1"
@@ -126,35 +126,16 @@ jobs:
           ./${APP_NAME}-${PACKAGE_VERSION}.AppImage --appimage-extract
           ldd squashfs-root/usr/bin/${APP_NAME}
 
-      - name: Package as .deb
-        run: |
-          mkdir -p package/DEBIAN package/usr
-          cp -r $APPDIR/usr package/usr
-
-          cat <<EOF > package/DEBIAN/control
-          Package: ${APP_NAME}
-          Version: ${PACKAGE_VERSION}
-          Architecture: amd64
-          Maintainer: Mathieu Leplatre <contact@subtivals.org>
-          Description: A program to project subtitles.
-          EOF
-
-          cp debian/copyright package/DEBIAN/
-          cp debian/changelog package/DEBIAN/
-
-          dpkg-deb --build package "${APP_NAME}-${PACKAGE_VERSION}.deb"
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP_NAME }}-artifacts
           path: |
             build/${{ env.APP_NAME }}
-            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.deb
             ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage
 
   release:
-    needs: build
+    needs: build-linux
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
