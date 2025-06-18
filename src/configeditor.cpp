@@ -231,7 +231,7 @@ void ConfigEditor::reset() {
   QSettings settings;
   settings.beginGroup(QString("ScreenGeometry-%1").arg(m_preset));
   int presetScreen = settings.value("screen", defaultScreen).toInt();
-  int screen = qBound(0, presetScreen, nbScreens);
+  int screen = qBound(0, presetScreen, nbScreens - 1);
   QRect screenGeom = screens.at(screen)->geometry();
   int x = settings.value("x", 0).toInt();
   int y =
