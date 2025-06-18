@@ -1,3 +1,24 @@
+subtivals (2.0.0-1) stable; urgency=low
+
+  * Upgrade to Qt6
+  * Better support for HDPi monitors
+  * Fix #333: Add preview panel for operator
+  * Detect when monitor is added or removed
+  * Detect changed when moving projection window
+  * Fix #332: make delay configurable
+  * Fix #329: Disable screensaver
+  * Fix #328: ship good default font
+  * Fix #322: fix save of double value for rotation
+  * Fix #331: prevent current config to be lost on file load
+  * Fix hex color parsing in `.ass` files
+  * Fix #229: remove MMMM for srt calibration
+  * Move hide desktop to options, hide web live if not configured
+  * Update fr, es, cat translations
+  * Allow override of UI language in config
+  * Fix #323: fix screen lost when minimized or re-open
+
+ -- Mathieu Leplatre <contact@mathieu-leplatre.info>  Fri, 18 Jun 2025 16:12:00 +0100
+
 subtivals (1.10.0-1) stable; urgency=low
 
   * Adjust size of wizard automatically (#389)

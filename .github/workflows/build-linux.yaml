@@ -128,8 +128,8 @@ jobs:
 
       - name: Package as .deb
         run: |
-          mkdir -p package/DEBIAN package/usr/local/bin
-          cp build/${APP_NAME} package/usr/local/bin/
+          mkdir -p package/DEBIAN package/usr
+          cp -r $APPDIR/usr package/usr
 
           cat <<EOF > package/DEBIAN/control
           Package: ${APP_NAME}
@@ -138,6 +138,9 @@ jobs:
           Maintainer: Mathieu Leplatre <contact@subtivals.org>
           Description: A program to project subtitles.
           EOF
+
+          cp debian/copyright package/DEBIAN/
+          cp debian/changelog package/DEBIAN/
 
           dpkg-deb --build package "${APP_NAME}-${PACKAGE_VERSION}.deb"
 
