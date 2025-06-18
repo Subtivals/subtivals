@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install clang-format
         run: sudo apt-get install -y clang-format
@@ -22,4 +22,5 @@ jobs:
       - name: Check formatting
         run: |
           FILES=$(find . -regex '.*\.\(cpp\|h\)')
+          # shellcheck disable=SC2086
           clang-format --dry-run --Werror -style=file $FILES

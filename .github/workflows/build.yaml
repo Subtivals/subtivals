@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get latest tag version
-        run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> $GITHUB_ENV
+        run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
 
       - name: Install dependencies
         run: |
@@ -67,7 +67,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install "aqtinstall<4"
           python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "$QT_VERSION" linux_gcc_64 -m qtwebsockets
-          echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> $GITHUB_PATH
+          echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
 
       - name: Download linuxdeployqt
         run: |
@@ -81,25 +81,25 @@ jobs:
           qmake6 --version
           qmake6 -query QT_INSTALL_LIBS
           mkdir -p build && cd build
-          qmake6 ../src/${APP_NAME}.pro CONFIG+=release CONFIG+=static
-          make -j$(nproc)
+          qmake6 "../src/${APP_NAME}.pro" CONFIG+=release CONFIG+=static
+          make "-j$(nproc)"
 
       - name: Prepare AppDir for AppImage
         run: |
           APPDIR=AppDir
-          mkdir -p $APPDIR/usr/bin
-          mkdir -p $APPDIR/usr/share/applications
-          mkdir -p $APPDIR/usr/share/icons/hicolor/256x256/apps
+          mkdir -p "$APPDIR/usr/bin"
+          mkdir -p "$APPDIR/usr/share/applications"
+          mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
 
           # Copy binary
-          cp build/${APP_NAME} $APPDIR/usr/bin/
+          cp "build/${APP_NAME}" "$APPDIR/usr/bin/"
 
           # Convert .ico to .png and copy it
           cp resources/subtivals.png $APPDIR/subtivals.png
-          convert resources/${APP_NAME}.ico -resize 256x256 $APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png
+          convert "resources/${APP_NAME}.ico" -resize 256x256 "$APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png"
 
           # Create .desktop file
-          cat <<EOF > $APPDIR/usr/share/applications/${APP_NAME}.desktop
+          cat <<EOF > "$APPDIR/usr/share/applications/${APP_NAME}.desktop"
           [Desktop Entry]
           Name=${APP_NAME}
           Exec=${APP_NAME}
@@ -110,29 +110,29 @@ jobs:
 
       - name: Check dynamic dependencies
         run: |
-          ldd $APPDIR/usr/bin/${APP_NAME} || true
+          ldd "$APPDIR/usr/bin/${APP_NAME}" || true
 
       - name: Run linuxdeployqt
         run: |
-          linuxdeployqt AppDir/usr/share/applications/${APP_NAME}.desktop -appimage -bundle-non-qt-libs
+          linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
 
-          chmod +x *.AppImage
+          chmod +x ./*.AppImage
 
           # Rename output
-          mv *.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
+          mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
 
       - name: Check AppImage
         run: |
-          ./${APP_NAME}-${PACKAGE_VERSION}.AppImage --appimage-extract
-          ldd squashfs-root/usr/bin/${APP_NAME}
+          "./${APP_NAME}-${PACKAGE_VERSION}.AppImage" --appimage-extract
+          ldd "squashfs-root/usr/bin/${APP_NAME}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APP_NAME }}-artifacts
+          name: "${{ env.APP_NAME }}-artifacts"
           path: |
-            build/${{ env.APP_NAME }}
-            ${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage
+            "build/${{ env.APP_NAME }}"
+            "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage"
 
   release:
     needs: build-linux
@@ -150,7 +150,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: release/*
-          tag_name: ${{ github.ref_name }}
+          tag_name: "${{ github.ref_name }}"
           name: "Release ${{ github.ref_name }}"
           body: "Automated release for version ${{ github.ref_name }}"
           draft: true
