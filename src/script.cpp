@@ -417,6 +417,7 @@ void Script::loadFromSrt(QStringList content) {
         subtitle->setComments(comments);
         m_subtitles.append(subtitle);
         text.clear();
+        comments.clear();
 
         section = SECTION_NONE;
       } else if (line.startsWith("#")) {
