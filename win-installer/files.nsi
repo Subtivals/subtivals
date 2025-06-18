@@ -1,2 +1,2 @@
 SetOutPath $INSTDIR
-File /r "*.*"
+File /r "${srcdir}\*.*"
