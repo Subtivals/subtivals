@@ -4,18 +4,20 @@ on:
   push:
     branches:
       - main
+      - build-mac-win
     tags:
       - "*"
   pull_request:
 
+env:
+  QT_VERSION: "6.8.3"
+  APP_NAME: subtivals
+  APP_LABEL: Subtivals
+  BUILD_TYPE: release
+
 jobs:
   build-linux:
     runs-on: ubuntu-22.04
-    env:
-      QT_VERSION: "6.9.1"
-      APP_NAME: subtivals
-      BUILD_TYPE: Release
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -66,7 +68,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install "aqtinstall<4"
-          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "$QT_VERSION" linux_gcc_64 -m qtwebsockets
+          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
           echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
 
       - name: Download linuxdeployqt
@@ -81,7 +83,7 @@ jobs:
           qmake6 --version
           qmake6 -query QT_INSTALL_LIBS
           mkdir -p build && cd build
-          qmake6 "../src/${APP_NAME}.pro" CONFIG+=release CONFIG+=static
+          qmake6 "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE" CONFIG+=static
           make "-j$(nproc)"
 
       - name: Prepare AppDir for AppImage
@@ -115,11 +117,8 @@ jobs:
       - name: Run linuxdeployqt
         run: |
           linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
-
-          chmod +x ./*.AppImage
-
-          # Rename output
           mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
+          chmod +x "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
 
       - name: Check AppImage
         run: |
@@ -130,12 +129,87 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "${{ env.APP_NAME }}-artifacts"
-          path: |
-            "build/${{ env.APP_NAME }}"
-            "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage"
+          path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage"
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+
+      - name: Compile
+        run: |
+          mkdir -p build && cd build
+          qmake "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE"
+          make "-j$(nproc)"
+
+      - name: Deploy
+        run: |
+          macdeployqt "${APP_LABEL}.app" -dmg
+          mv "${APP_LABEL}.dmg" "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ env.APP_NAME }}-artifacts"
+          path: "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+
+      - name: Compile
+        run: |
+          mkdir build
+          cd build
+          qmake "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE"
+          make "-j$(nproc)"
+
+      - name: Deploy
+        run: |
+          mkdir deploy
+          move "release/${APP_NAME}.exe" deploy
+          cd deploy
+          windeployqt.exe "${APP_NAME}.exe"
+      
+      - name: Install NSIS
+        run: |
+          iwr -useb get.scoop.sh -outfile 'install.ps1'
+          .\install.ps1 -RunAsAdmin
+          scoop update
+          scoop bucket add extras
+          scoop install nsis
+
+      - name: Print NSIS version
+        run: makensis -VERSION
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ env.APP_NAME }}-artifacts"
+          path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
 
   release:
-    needs: build-linux
+    needs:
+    - build-linux
+    - build-mac
+    - build-windows
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
