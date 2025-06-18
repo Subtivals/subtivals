@@ -108,12 +108,23 @@ jobs:
           Categories=Utility;
           EOF
 
+      - name: Check dynamic dependencies
+        run: |
+          ldd $APPDIR/usr/bin/${APP_NAME} || true
+
       - name: Run linuxdeployqt
         run: |
-          linuxdeployqt AppDir/usr/share/applications/${APP_NAME}.desktop -appimage
+          linuxdeployqt AppDir/usr/share/applications/${APP_NAME}.desktop -appimage -bundle-non-qt-libs
+
+          chmod +x *.AppImage
 
           # Rename output
           mv *.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
+
+      - name: Check AppImage
+        run: |
+          ./${APP_NAME}-${PACKAGE_VERSION}.AppImage --appimage-extract
+          ldd squashfs-root/usr/bin/${APP_NAME}
 
       - name: Package as .deb
         run: |
@@ -158,5 +169,5 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: "Release ${{ github.ref_name }}"
           body: "Automated release for version ${{ github.ref_name }}"
-          draft: false
-          prerelease: false
+          draft: true
+          prerelease: true
