@@ -169,42 +169,49 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Install Qt
+  
+      - name: Install Qt (MinGW)
         uses: jurplel/install-qt-action@v4
         with:
           version: ${{ env.QT_VERSION }}
+          target: 'desktop'
+          arch: 'win64_mingw'
           modules: 'qtwebsockets'
-
-      - name: Compile
+          tools: 'tools_mingw'
+  
+      - name: Add MinGW to PATH
+        run: |
+          echo "${{ env.QtToolsDir }}/Tools/mingw1120_64/bin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
+  
+      - name: Compile with MinGW
         run: |
           mkdir build
           cd build
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="$BUILD_TYPE"
-          make "-j$(nproc)"
-
-      - name: Deploy
+          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
+          mingw32-make -j$(nproc)
+  
+      - name: Deploy with windeployqt
         run: |
           mkdir deploy
           move "release/${{ env.APP_NAME }}.exe" deploy
           cd deploy
           windeployqt.exe "${{ env.APP_NAME }}.exe"
-      
-      - name: Install NSIS
+  
+      - name: Install NSIS via Scoop
         run: |
           iwr -useb get.scoop.sh -outfile 'install.ps1'
           .\install.ps1 -RunAsAdmin
           scoop update
           scoop bucket add extras
           scoop install nsis
-
+  
       - name: Print NSIS version
         run: makensis -VERSION
-
+  
       - name: Create NSIS installer
         run: |
           makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" ..\win-installer.nsi
-
+  
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
