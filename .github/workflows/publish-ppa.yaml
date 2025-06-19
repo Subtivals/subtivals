@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    environment: publish-ppa
     strategy:
       matrix:
         flavor:
