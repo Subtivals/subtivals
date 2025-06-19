@@ -153,6 +153,7 @@ jobs:
 
       - name: Deploy
         run: |
+          ls -la
           macdeployqt "${APP_NAME}.app" -dmg
           mv "${APP_NAME}.dmg" "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
 
