@@ -46,7 +46,7 @@ jobs:
     - name: Set up dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y devscripts debhelper dput gnupg
+        sudo apt-get install -y devscripts debhelper dput gnupg build-essential qt6-base-dev qt6-base-dev-tools qt6-tools-dev-tools qmake6 libqt6websockets6-dev
 
     - name: Import GPG key
       run: |
