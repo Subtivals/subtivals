@@ -153,8 +153,8 @@ jobs:
 
       - name: Deploy
         run: |
-          macdeployqt "${APP_LABEL}.app" -dmg
-          mv "${APP_LABEL}.dmg" "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
+          macdeployqt "${APP_NAME}.app" -dmg
+          mv "${APP_NAME}.dmg" "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -180,15 +180,15 @@ jobs:
         run: |
           mkdir build
           cd build
-          qmake "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE"
+          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="$BUILD_TYPE"
           make "-j$(nproc)"
 
       - name: Deploy
         run: |
           mkdir deploy
-          move "release/${APP_NAME}.exe" deploy
+          move "release/${{ env.APP_NAME }}.exe" deploy
           cd deploy
-          windeployqt.exe "${APP_NAME}.exe"
+          windeployqt.exe "${{ env.APP_NAME }}.exe"
       
       - name: Install NSIS
         run: |
@@ -200,6 +200,10 @@ jobs:
 
       - name: Print NSIS version
         run: makensis -VERSION
+
+      - name: Create NSIS installer
+        run: |
+          makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" ..\win-installer.nsi
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
