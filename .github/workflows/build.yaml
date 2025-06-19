@@ -153,7 +153,7 @@ jobs:
 
       - name: Deploy
         run: |
-          ls -la
+          cd build/
           macdeployqt "${APP_NAME}.app" -dmg
           mv "${APP_NAME}.dmg" "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
 
@@ -189,7 +189,7 @@ jobs:
           mkdir build
           cd build
           qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
-          mingw32-make -j$(nproc)
+          mingw32-make -j4
   
       - name: Deploy with windeployqt
         run: |
