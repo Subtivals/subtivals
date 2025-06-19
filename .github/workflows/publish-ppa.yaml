@@ -69,6 +69,8 @@ jobs:
     - name: Build and Upload for ${{ matrix.flavor }}
       run: |
         set -e
+        git config --global user.email "$DEBEMAIL"
+        git config --global user.name "$DEBFULLNAME"
         flavor=${{ matrix.flavor }}
         version=$(git describe --tags --abbrev=0)
         tag_commit=$(git rev-list -n 1 "$version")
