@@ -130,6 +130,7 @@ jobs:
         with:
           name: "${{ env.APP_NAME }}-artifacts"
           path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage"
+          if-no-files-found: error
 
   build-mac:
     runs-on: macos-latest
@@ -150,24 +151,30 @@ jobs:
 
       - name: Compile
         run: |
-          mkdir -p build && cd build
+          mkdir -p build && cd build/
           qmake "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE"
           make "-j$(nproc)"
 
       - name: Deploy
-        run: |
-          cd build/
-          macdeployqt "${APP_NAME}.app" -dmg
-          mv "${APP_NAME}.dmg" "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
+        run: macdeployqt "build/${APP_NAME}.app" -dmg -verbose=2
+
+      - run: |
+          mv "build/${APP_NAME}.dmg" "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
+          ls -la
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: "${{ env.APP_NAME }}-artifacts"
           path: "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
+          if-no-files-found: error
 
   build-windows:
     runs-on: windows-latest
+
+    env:
+      QT_DIR: ${{ github.workspace }}\Qt
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -177,16 +184,19 @@ jobs:
       - name: Install Qt (MinGW)
         uses: jurplel/install-qt-action@v4
         with:
+          aqtversion: '==3.1.19'
           version: ${{ env.QT_VERSION }}
           target: 'desktop'
           arch: 'win64_mingw'
+          dir: ${{ env.QT_DIR }}
           modules: 'qtwebsockets'
-          tools: 'tools_mingw1120'
+          tools: 'tools_mingw1310'
 
-      - name: Add MinGW to PATH
-        run: |
-          echo "${{ env.QtToolsDir }}/Tools/mingw1120_64/bin" | Out-File -Append -Encoding ascii $env:GITHUB_PATH
-  
+      - name: Add Qt-bundled MinGW to PATH
+        shell: powershell
+        run: |  
+          echo "${{ env.QT_DIR }}\Tools\mingw1310_64\bin" >> $env:GITHUB_PATH
+
       - name: Compile with MinGW
         run: |
           mkdir build
@@ -228,6 +238,7 @@ jobs:
         with:
           name: "${{ env.APP_NAME }}-artifacts"
           path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
+          if-no-files-found: error
 
   release:
     needs:
