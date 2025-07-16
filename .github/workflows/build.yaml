@@ -152,21 +152,21 @@ jobs:
       - name: Compile
         run: |
           mkdir -p build && cd build/
-          qmake "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE"
+          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="$BUILD_TYPE"
           make "-j$(nproc)"
 
       - name: Deploy
-        run: macdeployqt "build/${APP_NAME}.app" -dmg -verbose=2
+        run: macdeployqt "build/${{ env.APP_NAME }}.app" -dmg -verbose=2
 
       - run: |
-          mv "build/${APP_NAME}.dmg" "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
+          mv "build/${{ env.APP_NAME }}.dmg" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.dmg"
           ls -la
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: "${{ env.APP_NAME }}-artifacts"
-          path: "${APP_LABEL}-${{ env.PACKAGE_VERSION }}.dmg"
+          path: "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}.dmg"
           if-no-files-found: error
 
   build-windows:
