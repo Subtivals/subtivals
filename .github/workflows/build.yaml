@@ -152,7 +152,7 @@ jobs:
       - name: Compile
         run: |
           mkdir -p build && cd build/
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="$BUILD_TYPE"
+          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
           make "-j$(nproc)"
 
       - name: Deploy
@@ -206,10 +206,11 @@ jobs:
   
       - name: Deploy with windeployqt
         run: |
+          cd build
           mkdir deploy
-          move "release/${{ env.APP_NAME }}.exe" deploy
+          move "${{ env.BUILD_TYPE }}\${{ env.APP_NAME }}.exe" deploy
           cd deploy
-          windeployqt.exe "${{ env.APP_NAME }}.exe"
+          windeployqt.exe --verbose 1 "${{ env.APP_NAME }}.exe"
   
       - name: Install NSIS via Scoop
         run: |
