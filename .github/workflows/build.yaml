@@ -180,7 +180,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-  
+
+      - name: Get latest tag version
+        shell: pwsh
+        run: |
+          $tag = git describe --tags --abbrev=0
+          echo "PACKAGE_VERSION=$tag" >> $env:GITHUB_ENV
+
       - name: Install Qt (MinGW)
         uses: jurplel/install-qt-action@v4
         with:
@@ -230,7 +236,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "${{ env.APP_NAME }}-artifacts-win"
-          path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
+          path: "win-installer/${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
           if-no-files-found: error
 
   release:
