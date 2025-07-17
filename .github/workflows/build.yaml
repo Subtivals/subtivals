@@ -128,7 +128,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ env.APP_NAME }}-artifacts"
+          name: "${{ env.APP_NAME }}-artifacts-linux"
           path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage"
           if-no-files-found: error
 
@@ -165,7 +165,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ env.APP_NAME }}-artifacts"
+          name: "${{ env.APP_NAME }}-artifacts-mac"
           path: "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}.dmg"
           if-no-files-found: error
 
@@ -195,21 +195,20 @@ jobs:
       - name: Add Qt-bundled MinGW to PATH
         shell: powershell
         run: |  
-          echo "${{ env.QT_DIR }}\Tools\mingw1310_64\bin" >> $env:GITHUB_PATH
+          ECHO "${{ env.QT_DIR }}\Tools\mingw1310_64\bin" >> $env:GITHUB_PATH
 
       - name: Compile with MinGW
         run: |
-          mkdir build
-          cd build
+          MKDIR build
+          CD build
           qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
           mingw32-make -j4
   
       - name: Deploy with windeployqt
         run: |
-          cd build
-          mkdir deploy
-          move "${{ env.BUILD_TYPE }}\${{ env.APP_NAME }}.exe" deploy
-          cd deploy
+          MKDIR deploy
+          MOVE "build\${{ env.BUILD_TYPE }}\${{ env.APP_NAME }}.exe" deploy
+          CD deploy
           windeployqt.exe --verbose 1 "${{ env.APP_NAME }}.exe"
   
       - name: Install NSIS via Scoop
@@ -223,21 +222,14 @@ jobs:
       - name: Print NSIS version
         run: makensis -VERSION
 
-      - name: Write NSI file
-        shell: pwsh
-        run: |
-          $env:NSI_SRC | Out-File -FilePath installer.nsi -Encoding ascii
-        env:
-          NSI_SRC: ${{ secrets.NSI_SRC }}
-
       - name: Create NSIS installer
         run: |
-          makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" installer.nsi
+          makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer\installer.nsi
   
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ env.APP_NAME }}-artifacts"
+          name: "${{ env.APP_NAME }}-artifacts-win"
           path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
           if-no-files-found: error
 
@@ -253,13 +245,15 @@ jobs:
       - name: Download built artifacts
         uses: actions/download-artifact@v4
         with:
-          name: subtivals-artifacts
-          path: release/
+          path: artifacts
+
+      - name: Display downloaded files
+        run: ls -R artifacts
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: release/*
+          files: artifacts/**/*.*
           tag_name: "${{ github.ref_name }}"
           name: "Release ${{ github.ref_name }}"
           body: "Automated release for version ${{ github.ref_name }}"
