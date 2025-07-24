@@ -35,7 +35,8 @@ jobs:
       - name: Check formatting
         run: |
           FILES=$(find . -regex '.*\.\(cpp\|h\)')
-          clang-format --dry-run --Werror -style=file "$FILES"
+          # shellcheck disable=SC2086
+          clang-format --dry-run --Werror -style=file $FILES
 
   check-translations:
     runs-on: ubuntu-latest
