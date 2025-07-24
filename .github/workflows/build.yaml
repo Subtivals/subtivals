@@ -27,6 +27,11 @@ jobs:
       - name: Get latest tag version
         run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
 
+      - name: Patch
+        run: |
+          git diff main..demo > demo.patch
+          git apply demo.patch
+
       - name: Install dependencies
         run: |
           sudo apt update
@@ -143,6 +148,11 @@ jobs:
       - name: Get latest tag version
         run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
 
+      - name: Patch
+        run: |
+          git diff main..demo > demo.patch
+          git apply demo.patch
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -186,6 +196,11 @@ jobs:
         run: |
           $tag = git describe --tags --abbrev=0
           echo "PACKAGE_VERSION=$tag" >> $env:GITHUB_ENV
+
+      - name: Patch
+        run: |
+          git diff main..demo > demo.patch
+          git apply demo.patch
 
       - name: Install Qt (MinGW)
         uses: jurplel/install-qt-action@v4
