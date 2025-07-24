@@ -215,7 +215,7 @@ jobs:
 
       - name: Add Qt-bundled MinGW to PATH
         shell: powershell
-        run: |  
+        run: |
           ECHO "${{ env.QT_DIR }}\Tools\mingw1310_64\bin" >> $env:GITHUB_PATH
 
       - name: Compile with MinGW
@@ -224,14 +224,14 @@ jobs:
           CD build
           qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
           mingw32-make -j4
-  
+
       - name: Deploy with windeployqt
         run: |
           MKDIR deploy
           MOVE "build\${{ env.BUILD_TYPE }}\${{ env.APP_NAME }}.exe" deploy
           CD deploy
           windeployqt.exe --verbose 1 "${{ env.APP_NAME }}.exe"
-  
+
       - name: Install NSIS via Scoop
         run: |
           iwr -useb get.scoop.sh -outfile 'install.ps1'
@@ -239,14 +239,14 @@ jobs:
           scoop update
           scoop bucket add extras
           scoop install nsis
-  
+
       - name: Print NSIS version
         run: makensis -VERSION
 
       - name: Create NSIS installer
         run: |
           makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer\installer.nsi
-  
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:

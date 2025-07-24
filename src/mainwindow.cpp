@@ -129,7 +129,8 @@ MainWindow::MainWindow(QWidget *parent)
       m_shortcutEditor(new ShortcutEditor(this)), m_selectSubtitle(true),
       m_rowChanged(false), m_reloadEnabled(false),
       m_filewatcher(new QFileSystemWatcher),
-      m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)) {
+      m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)),
+      m_windowShown(false) {
   ui->setupUi(this);
   m_defaultPalette = qApp->palette();
 
@@ -342,6 +343,12 @@ void MainWindow::closeEvent(QCloseEvent *) {
 }
 
 void MainWindow::showEvent(QShowEvent *) {
+  if (m_windowShown) {
+    // No need to restore settings on each show event.
+    // (eg. when restoring window after minized state)
+    return;
+  }
+
   // Restore settings
   QSettings settings;
 
@@ -422,6 +429,8 @@ void MainWindow::showEvent(QShowEvent *) {
   }
   ui->actionAddDelay->setText("+" + text);
   ui->actionSubDelay->setText("-" + text);
+
+  m_windowShown = true;
 }
 
 ConfigEditor *MainWindow::configEditor() { return m_preferences; }
@@ -848,7 +857,9 @@ void MainWindow::actionConfig(bool state) {
   }
   // Show/Hide the config dialog
   m_preferences->setVisible(state);
-  emit screenResizable(state);
+  // Prevent moving/resizing the projection window when there
+  // are more than 1 screen and the preference is closed.
+  emit screenResizable(state || QGuiApplication::screens().size() < 2);
   // Save when user hides it
   if (!state)
     m_preferences->save();
