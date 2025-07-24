@@ -40,6 +40,7 @@ ProjectionWindow::ProjectionWindow(QWidget *parent)
   setWindowFlags(flags);
   setCursor(QCursor(Qt::BlankCursor));
   makeWindowCoverMenuBar(this);
+  screenResizable(QGuiApplication::screens().size() < 2);
 }
 
 ProjectionWindow::~ProjectionWindow() {}
