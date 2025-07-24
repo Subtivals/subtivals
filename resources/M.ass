@@ -4,8 +4,6 @@
 Title: CALIBRATION
 ScriptType: v4.00+
 WrapStyle: 2
-PlayResX: 1280
-PlayResY: 200
 ScaledBorderAndShadow: yes
 Collisions: Normal
 Last Style Storage: Default
