@@ -156,6 +156,7 @@ private:
   int m_subtitleInterval;
   int m_subtitleMinDuration;
   int m_delayMilliseconds;
+  bool m_windowShown;
 };
 
 #endif // MAINWINDOW_H
