@@ -848,7 +848,9 @@ void MainWindow::actionConfig(bool state) {
   }
   // Show/Hide the config dialog
   m_preferences->setVisible(state);
-  emit screenResizable(state);
+  // Prevent moving/resizing the projection window when there
+  // are more than 1 screen and the preference is closed.
+  emit screenResizable(state || QGuiApplication::screens().size() < 2);
   // Save when user hides it
   if (!state)
     m_preferences->save();
