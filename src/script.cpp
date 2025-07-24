@@ -420,8 +420,8 @@ void Script::loadFromSrt(QStringList content) {
         comments.clear();
 
         section = SECTION_NONE;
-      } else if (line.startsWith("#")) {
-        comments = line.replace("#", "");
+      } else if (line.startsWith("//")) {
+        comments = line.replace("//", "");
       } else {
         line = sp2nbsp(line);
         text.append(line);
@@ -473,8 +473,8 @@ void Script::loadFromTxt(QStringList content) {
         comments.clear();
 
         section = SECTION_NONE;
-      } else if (line.startsWith("#")) {
-        comments = line.replace("#", "");
+      } else if (line.startsWith("//")) {
+        comments = line.replace("//", "");
       } else {
         // In TXT format : <word> is equivalent to <i>word</i>
         line = line.replace(QRegularExpression("<([^i/][^>]+)>"), "<i>\\1</i>");
