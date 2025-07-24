@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - build-mac-win
+      - demo-mac-win
     tags:
       - "*"
   pull_request:
@@ -16,7 +16,7 @@ env:
   BUILD_TYPE: release
 
 jobs:
-  build-linux:
+  demo-linux:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
@@ -137,7 +137,7 @@ jobs:
           path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage"
           if-no-files-found: error
 
-  build-mac:
+  demo-mac:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
@@ -179,7 +179,7 @@ jobs:
           path: "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}.dmg"
           if-no-files-found: error
 
-  build-windows:
+  demo-windows:
     runs-on: windows-latest
 
     env:
@@ -256,9 +256,9 @@ jobs:
 
   release:
     needs:
-    - build-linux
-    - build-mac
-    - build-windows
+    - demo-linux
+    - demo-mac
+    - demo-windows
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
