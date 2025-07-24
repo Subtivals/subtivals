@@ -29,7 +29,7 @@ jobs:
 
       - name: Patch
         run: |
-          git diff main..demo > demo.patch
+          git diff origin/demo > demo.patch
           git apply demo.patch
 
       - name: Install dependencies
@@ -150,7 +150,7 @@ jobs:
 
       - name: Patch
         run: |
-          git diff main..demo > demo.patch
+          git diff origin/demo > demo.patch
           git apply demo.patch
 
       - name: Install Qt
@@ -199,7 +199,7 @@ jobs:
 
       - name: Patch
         run: |
-          git diff main..demo > demo.patch
+          git diff origin/demo > demo.patch
           git apply demo.patch
 
       - name: Install Qt (MinGW)
