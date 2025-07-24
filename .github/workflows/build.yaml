@@ -4,18 +4,20 @@ on:
   push:
     branches:
       - main
+      - demo-mac-win
     tags:
       - "*"
   pull_request:
 
-jobs:
-  build-linux:
-    runs-on: ubuntu-22.04
-    env:
-      QT_VERSION: "6.9.1"
-      APP_NAME: subtivals
-      BUILD_TYPE: Release
+env:
+  QT_VERSION: "6.8.3"
+  APP_NAME: subtivals
+  APP_LABEL: Subtivals
+  BUILD_TYPE: release
 
+jobs:
+  demo-linux:
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,6 +26,11 @@ jobs:
 
       - name: Get latest tag version
         run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
+
+      - name: Patch
+        run: |
+          git diff origin/main..origin/demo > demo.patch
+          git apply demo.patch
 
       - name: Install dependencies
         run: |
@@ -66,7 +73,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install "aqtinstall<4"
-          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "$QT_VERSION" linux_gcc_64 -m qtwebsockets
+          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
           echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
 
       - name: Download linuxdeployqt
@@ -81,7 +88,7 @@ jobs:
           qmake6 --version
           qmake6 -query QT_INSTALL_LIBS
           mkdir -p build && cd build
-          qmake6 "../src/${APP_NAME}.pro" CONFIG+=release CONFIG+=static
+          qmake6 "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE" CONFIG+=static
           make "-j$(nproc)"
 
       - name: Prepare AppDir for AppImage
@@ -115,11 +122,8 @@ jobs:
       - name: Run linuxdeployqt
         run: |
           linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
-
-          chmod +x ./*.AppImage
-
-          # Rename output
           mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
+          chmod +x "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
 
       - name: Check AppImage
         run: |
@@ -129,13 +133,132 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ env.APP_NAME }}-artifacts"
-          path: |
-            "build/${{ env.APP_NAME }}"
-            "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage"
+          name: "${{ env.APP_NAME }}-artifacts-linux"
+          path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage"
+          if-no-files-found: error
+
+  demo-mac:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag version
+        run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
+
+      - name: Patch
+        run: |
+          git diff origin/main..origin/demo > demo.patch
+          git apply demo.patch
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          modules: 'qtwebsockets'
+
+      - name: Compile
+        run: |
+          mkdir -p build && cd build/
+          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
+          make "-j$(nproc)"
+
+      - name: Deploy
+        run: macdeployqt "build/${{ env.APP_NAME }}.app" -dmg -verbose=2
+
+      - run: |
+          mv "build/${{ env.APP_NAME }}.dmg" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.dmg"
+          ls -la
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ env.APP_NAME }}-artifacts-mac"
+          path: "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}.dmg"
+          if-no-files-found: error
+
+  demo-windows:
+    runs-on: windows-latest
+
+    env:
+      QT_DIR: ${{ github.workspace }}\Qt
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag version
+        shell: pwsh
+        run: |
+          $tag = git describe --tags --abbrev=0
+          echo "PACKAGE_VERSION=$tag" >> $env:GITHUB_ENV
+
+      - name: Patch
+        run: |
+          git diff origin/main..origin/demo > demo.patch
+          git apply demo.patch
+
+      - name: Install Qt (MinGW)
+        uses: jurplel/install-qt-action@v4
+        with:
+          aqtversion: '==3.1.19'
+          version: ${{ env.QT_VERSION }}
+          target: 'desktop'
+          arch: 'win64_mingw'
+          dir: ${{ env.QT_DIR }}
+          modules: 'qtwebsockets'
+          tools: 'tools_mingw1310'
+
+      - name: Add Qt-bundled MinGW to PATH
+        shell: powershell
+        run: |
+          ECHO "${{ env.QT_DIR }}\Tools\mingw1310_64\bin" >> $env:GITHUB_PATH
+
+      - name: Compile with MinGW
+        run: |
+          MKDIR build
+          CD build
+          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
+          mingw32-make -j4
+
+      - name: Deploy with windeployqt
+        run: |
+          MKDIR deploy
+          MOVE "build\${{ env.BUILD_TYPE }}\${{ env.APP_NAME }}.exe" deploy
+          CD deploy
+          windeployqt.exe --verbose 1 "${{ env.APP_NAME }}.exe"
+
+      - name: Install NSIS via Scoop
+        run: |
+          iwr -useb get.scoop.sh -outfile 'install.ps1'
+          .\install.ps1 -RunAsAdmin
+          scoop update
+          scoop bucket add extras
+          scoop install nsis
+
+      - name: Print NSIS version
+        run: makensis -VERSION
+
+      - name: Create NSIS installer
+        run: |
+          makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer\installer.nsi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ env.APP_NAME }}-artifacts-win"
+          path: "win-installer/${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
+          if-no-files-found: error
 
   release:
-    needs: build-linux
+    needs:
+    - demo-linux
+    - demo-mac
+    - demo-windows
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
@@ -143,13 +266,15 @@ jobs:
       - name: Download built artifacts
         uses: actions/download-artifact@v4
         with:
-          name: subtivals-artifacts
-          path: release/
+          path: artifacts
+
+      - name: Display downloaded files
+        run: ls -R artifacts
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: release/*
+          files: artifacts/**/*.*
           tag_name: "${{ github.ref_name }}"
           name: "Release ${{ github.ref_name }}"
           body: "Automated release for version ${{ github.ref_name }}"

@@ -23,7 +23,12 @@
 
 RequestExecutionLevel admin
 
-!define setup "subtivals-2.0.0-pre4.exe"
+!ifndef PACKAGE_VERSION
+  !define PACKAGE_VERSION "dev"
+!endif
+!echo "Building Subtivals version ${PACKAGE_VERSION}"
+
+!define setup "subtivals-${PACKAGE_VERSION}.exe"
 
 ; change this to wherever the files to be packaged reside
 !define srcdir "..\deploy"
