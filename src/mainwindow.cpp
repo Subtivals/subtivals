@@ -36,6 +36,7 @@
 #include <QWidget>
 #include <QStyleHints>
 #include <QStyleFactory>
+#include <QAbstractTextDocumentLayout>
 
 #include "configeditor.h"
 #include "mainwindow.h"
@@ -76,7 +77,13 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
       document.setHtml(
           QString("<span style='color:%1;'>%2</span>").arg(textColor, html));
       painter->save();
-      painter->translate(option.rect.topLeft());
+      // Center text vertically in the cell.
+      QAbstractTextDocumentLayout *layout = document.documentLayout();
+      QSizeF docSize = layout->documentSize();
+      QPointF paintPos(option.rect.left(),
+                       option.rect.top() +
+                           (option.rect.height() - docSize.height()) / 2.0);
+      painter->translate(paintPos);
       document.drawContents(painter);
       painter->restore();
     }
