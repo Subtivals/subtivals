@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - demo-mac-win
+      - publish-demo-binaries
     tags:
       - "*"
   pull_request:
@@ -16,8 +16,12 @@ env:
   BUILD_TYPE: release
 
 jobs:
-  demo-linux:
+  build-linux:
     runs-on: ubuntu-22.04
+    environment: build
+    strategy:
+      matrix:
+        demo: [false, true]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,7 +31,8 @@ jobs:
       - name: Get latest tag version
         run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
 
-      - name: Patch
+      - name: Apply patch
+        if: matrix.demo == true
         run: |
           git diff origin/main..origin/demo > demo.patch
           git apply demo.patch
@@ -122,23 +127,32 @@ jobs:
       - name: Run linuxdeployqt
         run: |
           linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
-          mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
-          chmod +x "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
+          mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage"
+          chmod +x "${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage"
 
       - name: Check AppImage
         run: |
-          "./${APP_NAME}-${PACKAGE_VERSION}.AppImage" --appimage-extract
+          "./${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage" --appimage-extract
           ldd "squashfs-root/usr/bin/${APP_NAME}"
+
+      - name: Zip builds
+        if: matrix.demo == false
+        run: |
+          zip -P "${{ secrets.ZIP_PASSWORD }}" "${APP_NAME}-${PACKAGE_VERSION}.zip" "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ env.APP_NAME }}-artifacts-linux"
-          path: "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.AppImage"
+          name: "${{ env.APP_NAME }}-artifacts-linux${{ matrix.demo && '-demo' || '' }}"
+          path: ${{ matrix.demo && '*.AppImage' || '*.zip' }}
           if-no-files-found: error
 
-  demo-mac:
+  build-mac:
     runs-on: macos-latest
+    environment: build
+    strategy:
+      matrix:
+        demo: [false, true]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -148,7 +162,8 @@ jobs:
       - name: Get latest tag version
         run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
 
-      - name: Patch
+      - name: Apply patch
+        if: matrix.demo == true
         run: |
           git diff origin/main..origin/demo > demo.patch
           git apply demo.patch
@@ -163,25 +178,38 @@ jobs:
         run: |
           mkdir -p build && cd build/
           qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
-          make "-j$(nproc)"
+          make "-j$(sysctl -n hw.ncpu)"
 
       - name: Deploy
-        run: macdeployqt "build/${{ env.APP_NAME }}.app" -dmg -verbose=2
+        run: |
+          macdeployqt "build/${{ env.APP_NAME }}.app" -verbose=2
 
-      - run: |
-          mv "build/${{ env.APP_NAME }}.dmg" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.dmg"
-          ls -la
+      - name: Removing extended attributes...
+        run: |
+          mv "build/${{ env.APP_NAME }}.app" "${{ env.APP_LABEL }}.app"
+          xattr -rc "${{ env.APP_LABEL }}.app"
+
+      - name: Zip builds
+        if: matrix.demo == true
+        run: zip -r "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}-demo.zip" "${{ env.APP_LABEL }}.app"
+
+      - name: Zip builds
+        if: matrix.demo == false
+        run: zip -r -P "${{ secrets.ZIP_PASSWORD }}" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_LABEL }}.app"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ env.APP_NAME }}-artifacts-mac"
-          path: "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}.dmg"
+          name: "${{ env.APP_NAME }}-artifacts-mac${{ matrix.demo && '-demo' || '' }}"
+          path: '*.zip'
           if-no-files-found: error
 
-  demo-windows:
+  build-windows:
     runs-on: windows-latest
-
+    environment: build
+    strategy:
+      matrix:
+        demo: [false, true]
     env:
       QT_DIR: ${{ github.workspace }}\Qt
 
@@ -197,7 +225,8 @@ jobs:
           $tag = git describe --tags --abbrev=0
           echo "PACKAGE_VERSION=$tag" >> $env:GITHUB_ENV
 
-      - name: Patch
+      - name: Apply patch
+        if: matrix.demo == true
         run: |
           git diff origin/main..origin/demo > demo.patch
           git apply demo.patch
@@ -238,7 +267,7 @@ jobs:
           .\install.ps1 -RunAsAdmin
           scoop update
           scoop bucket add extras
-          scoop install nsis
+          scoop install nsis 7zip
 
       - name: Print NSIS version
         run: makensis -VERSION
@@ -247,18 +276,26 @@ jobs:
         run: |
           makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer\installer.nsi
 
+      - run: |
+          MOVE "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo == 'true' && '-demo' || '' }}.exe"
+
+      - name: Zip builds
+        if: matrix.demo == false
+        run: |
+          7z a -p"${{ secrets.ZIP_PASSWORD }}" -tzip "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ env.APP_NAME }}-artifacts-win"
-          path: "win-installer/${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
+          name: "${{ env.APP_NAME }}-artifacts-win${{ matrix.demo && '-demo' || '' }}"
+          path: ${{ matrix.demo && '*.exe' || '*.zip' }}
           if-no-files-found: error
 
   release:
     needs:
-    - demo-linux
-    - demo-mac
-    - demo-windows
+    - build-linux
+    - build-mac
+    - build-windows
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
@@ -274,7 +311,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/**/*.*
+          files: artifacts/**/*-demo*
           tag_name: "${{ github.ref_name }}"
           name: "Release ${{ github.ref_name }}"
           body: "Automated release for version ${{ github.ref_name }}"
