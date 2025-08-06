@@ -76,6 +76,11 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
       }
       document.setHtml(
           QString("<span style='color:%1;'>%2</span>").arg(textColor, html));
+
+      QFont font = document.defaultFont();
+      font.setPointSizeF(font.pointSizeF() * m_zoomFactor);
+      document.setDefaultFont(font);
+
       painter->save();
       // Center text vertically in the cell.
       QAbstractTextDocumentLayout *layout = document.documentLayout();
@@ -96,6 +101,12 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
           Qt::AlignRight | Qt::AlignVCenter, icon);
     }
   }
+
+public:
+  void setZoomFactor(qreal factor) { m_zoomFactor = factor; }
+
+private:
+  qreal m_zoomFactor = 1.0;
 };
 
 class SubtitleDurationDelegate : public QStyledItemDelegate {
@@ -140,7 +151,6 @@ MainWindow::MainWindow(QWidget *parent)
       m_windowShown(false) {
   ui->setupUi(this);
   m_defaultPalette = qApp->palette();
-
   ui->tableWidget->setItemDelegateForColumn(COLUMN_START,
                                             new SubtitleDurationDelegate());
   ui->tableWidget->setItemDelegateForColumn(COLUMN_END,
@@ -327,6 +337,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("showMilliseconds",
                     ui->actionShowMilliseconds->isChecked());
   settings.setValue("persistentHide", ui->actionPersistentHide->isChecked());
+  settings.setValue("largeTextPercent", m_largeTextPercent);
   settings.endGroup();
 
   settings.beginGroup("AdvancedOptions");
@@ -389,6 +400,9 @@ void MainWindow::showEvent(QShowEvent *) {
       settings.value("showMilliseconds", false).toBool());
   ui->actionPersistentHide->setChecked(
       settings.value("persistentHide", false).toBool());
+  m_largeTextPercent = settings.value("largeTextPercent", 150).toInt();
+  ui->actionLargeText->setChecked(
+      settings.value("showLargeText", false).toBool());
 
   if (settings.value("wizard", true).toBool()) {
     ui->actionShowWizard->trigger();
@@ -950,6 +964,25 @@ void MainWindow::actionToggleHide(bool state) {
     ui->actionHide->setChecked(state);
   highlightSubtitles(m_player->elapsedTime());
   emit toggleHide(state);
+}
+
+void MainWindow::actionToggleLargeText(bool state) {
+  qreal largeTextFactor = m_largeTextPercent / 100.0;
+
+  SubtitleTextDelegate *textDelegate =
+      (SubtitleTextDelegate *) ui->tableWidget->itemDelegateForColumn(
+          COLUMN_TEXT);
+  textDelegate->setZoomFactor(state ? largeTextFactor : 1.0);
+
+  QFont font = ui->tableWidget->font();
+  qreal zoomFactor = state ? largeTextFactor : 1 / largeTextFactor;
+  font.setPointSizeF(font.pointSizeF() * zoomFactor);
+  ui->tableWidget->setFont(font);
+
+  // Recalculate and resize columns to fit new font size
+  ui->tableWidget->resizeColumnsToContents();
+  ui->tableWidget->resizeRowsToContents();
+  ui->tableWidget->viewport()->update();
 }
 
 void MainWindow::disableSubtitleSelection() {

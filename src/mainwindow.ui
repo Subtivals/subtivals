@@ -293,6 +293,7 @@
     <addaction name="actionShowMilliseconds"/>
     <addaction name="actionPersistentHide"/>
     <addaction name="actionDarkMode"/>
+    <addaction name="actionLargeText"/>
     <addaction name="actionHideDesktop"/>
     <addaction name="actionEditShortcuts"/>
     <addaction name="actionAdvancedSettings"/>
@@ -707,6 +708,17 @@
    </property>
    <property name="toolTip">
     <string>Force dark mode</string>
+   </property>
+  </action>
+  <action name="actionLargeText">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Large text</string>
+   </property>
+   <property name="toolTip">
+    <string>Use large text in listing</string>
    </property>
   </action>
    <action name="actionHideDesktop">
@@ -1223,6 +1235,22 @@
    </hints>
   </connection>
   <connection>
+   <sender>actionLargeText</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionToggleLargeText(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>enableSpeedFactor</sender>
    <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
@@ -1269,6 +1297,7 @@
   <slot>speedFactorChanged(double)</slot>
   <slot>knownFactorChosen(int)</slot>
   <slot>actionToggleDarkMode(bool)</slot>
+  <slot>actionToggleLargeText(bool)</slot>
   <slot>enableKnownFactors(bool)</slot>
   <slot>actionShowPreview(bool)</slot>
  </slots>
