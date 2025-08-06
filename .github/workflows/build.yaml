@@ -144,9 +144,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "${{ env.APP_NAME }}-artifacts-linux${{ matrix.demo && '-demo' || '' }}"
-          path: |
-            *.AppImage
-            *.zip
+          path: ${{ matrix.demo && '*.AppImage' || '*.zip' }}
           if-no-files-found: error
 
   build-mac:
@@ -185,7 +183,39 @@ jobs:
       - name: Deploy
         run: |
           macdeployqt "build/${{ env.APP_NAME }}.app" -dmg -verbose=2
-          mv "build/${{ env.APP_NAME }}.dmg" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo' || '' }}.dmg"
+
+      - name: Remove xattr attributes from dmg
+        run: |
+          set -e
+          dmgfile="build/${{ env.APP_NAME }}.dmg"
+          # 1. Mount the .dmg if it exists
+          if [ -f "$dmgfile" ]; then
+            echo "Mounting '${dmgfile}'..."
+            hdiutil attach "${dmgfile}"
+          else
+            echo "'${dmgfile}' file does not exist."
+            exit 1
+          fi
+
+          # 2. Copy the app to /tmp
+          echo "Copying the application from the mounted volume..."
+          cp -R "/Volumes/build:${{ env.APP_NAME }}.app/${{ env.APP_NAME }}.app" "/tmp/${{ env.APP_NAME }}.app"
+
+          # 3. Remove extended attributes (quarantine, etc.)
+          echo "Removing extended attributes..."
+          xattr -rc "/tmp/${{ env.APP_NAME }}.app"
+
+          # 4. Create a new clean
+          echo "Creating the clean .dmg..."
+          mv "/tmp/${{ env.APP_NAME }}.app" "/tmp/${{ env.APP_LABEL }}.app"
+          hdiutil create -volname "${{ env.APP_LABEL }}" \
+            -srcfolder"/tmp/${{ env.APP_LABEL }}.app" \
+            -format UDZO \
+            -ov "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo' || '' }}.dmg"
+
+          # 5. Detach the mounted volume
+          echo "Detaching the volume..."
+          hdiutil detach "/Volumes/build:${{ env.APP_NAME }}"
 
       - name: Zip builds
         if: matrix.demo == false
@@ -196,9 +226,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "${{ env.APP_NAME }}-artifacts-mac${{ matrix.demo && '-demo' || '' }}"
-          path: |
-            *.dmg
-            *.zip
+          path: ${{ matrix.demo && '*.dmg' || '*.zip' }}
           if-no-files-found: error
 
   build-windows:
@@ -272,7 +300,9 @@ jobs:
       - name: Create NSIS installer
         run: |
           makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer\installer.nsi
-          REN "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo' || '' }}.exe"
+
+      - run: |
+          MOVE "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo == 'true' && '-demo' || '' }}.exe"
 
       - name: Zip builds
         if: matrix.demo == false
@@ -283,9 +313,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "${{ env.APP_NAME }}-artifacts-win${{ matrix.demo && '-demo' || '' }}"
-          path: |
-            *.exe
-            *.zip
+          path: ${{ matrix.demo && '*.exe' || '*.zip' }}
           if-no-files-found: error
 
   release:
