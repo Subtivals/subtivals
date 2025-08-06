@@ -18,6 +18,7 @@ env:
 jobs:
   build-linux:
     runs-on: ubuntu-22.04
+    environment: build
     strategy:
       matrix:
         demo: [false, true]
@@ -150,6 +151,7 @@ jobs:
 
   build-mac:
     runs-on: macos-latest
+    environment: build
     strategy:
       matrix:
         demo: [false, true]
@@ -201,6 +203,7 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
+    environment: build
     strategy:
       matrix:
         demo: [false, true]
