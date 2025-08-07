@@ -16,136 +16,136 @@ env:
   BUILD_TYPE: release
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-22.04
-    environment: build
-    strategy:
-      matrix:
-        demo: [false, true]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # build-linux:
+  #   runs-on: ubuntu-22.04
+  #   environment: build
+  #   strategy:
+  #     matrix:
+  #       demo: [false, true]
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Get latest tag version
-        run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
+  #     - name: Get latest tag version
+  #       run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
 
-      - name: Apply patch
-        if: matrix.demo == true
-        run: |
-          git diff origin/main..origin/demo > demo.patch
-          git apply demo.patch
+  #     - name: Apply patch
+  #       if: matrix.demo == true
+  #       run: |
+  #         git diff origin/main..origin/demo > demo.patch
+  #         git apply demo.patch
 
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y \
-            build-essential cmake \
-            patchelf dpkg fakeroot \
-            squashfs-tools xz-utils \
-            libfuse2 \
-            file \
-            desktop-file-utils \
-            libgl1-mesa-dev \
-            libx11-6 \
-            libx11-xcb1 \
-            libxcb1 \
-            libxcb-util1 \
-            libxcb-image0 \
-            libxcb-shm0 \
-            libxcb-icccm4 \
-            libxcb-keysyms1 \
-            libxcb-render0 \
-            libxcb-render-util0 \
-            libxcb-xinerama0 \
-            libxcb-xkb1 \
-            libxcb-cursor0 \
-            libxcb-shape0 \
-            libxkbcommon0 \
-            libxkbcommon-x11-0 \
-            libxcb-dpms0-dev \
-            libxcb1-dev \
-            libxcb-screensaver0-dev \
-            libxrender1 \
-            libglib2.0-0 \
-            zlib1g \
-            libssl3 \
-            libpng16-16 \
-            wget curl python3-pip imagemagick
+  #     - name: Install dependencies
+  #       run: |
+  #         sudo apt update
+  #         sudo apt install -y \
+  #           build-essential cmake \
+  #           patchelf dpkg fakeroot \
+  #           squashfs-tools xz-utils \
+  #           libfuse2 \
+  #           file \
+  #           desktop-file-utils \
+  #           libgl1-mesa-dev \
+  #           libx11-6 \
+  #           libx11-xcb1 \
+  #           libxcb1 \
+  #           libxcb-util1 \
+  #           libxcb-image0 \
+  #           libxcb-shm0 \
+  #           libxcb-icccm4 \
+  #           libxcb-keysyms1 \
+  #           libxcb-render0 \
+  #           libxcb-render-util0 \
+  #           libxcb-xinerama0 \
+  #           libxcb-xkb1 \
+  #           libxcb-cursor0 \
+  #           libxcb-shape0 \
+  #           libxkbcommon0 \
+  #           libxkbcommon-x11-0 \
+  #           libxcb-dpms0-dev \
+  #           libxcb1-dev \
+  #           libxcb-screensaver0-dev \
+  #           libxrender1 \
+  #           libglib2.0-0 \
+  #           zlib1g \
+  #           libssl3 \
+  #           libpng16-16 \
+  #           wget curl python3-pip imagemagick
 
-      - name: Install Qt using aqtinstall
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install "aqtinstall<4"
-          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
-          echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
+  #     - name: Install Qt using aqtinstall
+  #       run: |
+  #         python3 -m pip install --upgrade pip
+  #         python3 -m pip install "aqtinstall<4"
+  #         python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
+  #         echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
 
-      - name: Download linuxdeployqt
-        run: |
-          wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-          chmod +x linuxdeployqt-continuous-x86_64.AppImage
-          sudo mv linuxdeployqt-continuous-x86_64.AppImage /usr/local/bin/linuxdeployqt
+  #     - name: Download linuxdeployqt
+  #       run: |
+  #         wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+  #         chmod +x linuxdeployqt-continuous-x86_64.AppImage
+  #         sudo mv linuxdeployqt-continuous-x86_64.AppImage /usr/local/bin/linuxdeployqt
 
-      - name: Configure and build
-        run: |
-          which qmake6
-          qmake6 --version
-          qmake6 -query QT_INSTALL_LIBS
-          mkdir -p build && cd build
-          qmake6 "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE" CONFIG+=static
-          make "-j$(nproc)"
+  #     - name: Configure and build
+  #       run: |
+  #         which qmake6
+  #         qmake6 --version
+  #         qmake6 -query QT_INSTALL_LIBS
+  #         mkdir -p build && cd build
+  #         qmake6 "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE" CONFIG+=static
+  #         make "-j$(nproc)"
 
-      - name: Prepare AppDir for AppImage
-        run: |
-          APPDIR=AppDir
-          mkdir -p "$APPDIR/usr/bin"
-          mkdir -p "$APPDIR/usr/share/applications"
-          mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
+  #     - name: Prepare AppDir for AppImage
+  #       run: |
+  #         APPDIR=AppDir
+  #         mkdir -p "$APPDIR/usr/bin"
+  #         mkdir -p "$APPDIR/usr/share/applications"
+  #         mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
 
-          # Copy binary
-          cp "build/${APP_NAME}" "$APPDIR/usr/bin/"
+  #         # Copy binary
+  #         cp "build/${APP_NAME}" "$APPDIR/usr/bin/"
 
-          # Convert .ico to .png and copy it
-          cp resources/subtivals.png $APPDIR/subtivals.png
-          convert "resources/${APP_NAME}.ico" -resize 256x256 "$APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png"
+  #         # Convert .ico to .png and copy it
+  #         cp resources/subtivals.png $APPDIR/subtivals.png
+  #         convert "resources/${APP_NAME}.ico" -resize 256x256 "$APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png"
 
-          # Create .desktop file
-          cat <<EOF > "$APPDIR/usr/share/applications/${APP_NAME}.desktop"
-          [Desktop Entry]
-          Name=${APP_NAME}
-          Exec=${APP_NAME}
-          Icon=${APP_NAME}
-          Type=Application
-          Categories=Utility;
-          EOF
+  #         # Create .desktop file
+  #         cat <<EOF > "$APPDIR/usr/share/applications/${APP_NAME}.desktop"
+  #         [Desktop Entry]
+  #         Name=${APP_NAME}
+  #         Exec=${APP_NAME}
+  #         Icon=${APP_NAME}
+  #         Type=Application
+  #         Categories=Utility;
+  #         EOF
 
-      - name: Check dynamic dependencies
-        run: |
-          ldd "$APPDIR/usr/bin/${APP_NAME}" || true
+  #     - name: Check dynamic dependencies
+  #       run: |
+  #         ldd "$APPDIR/usr/bin/${APP_NAME}" || true
 
-      - name: Run linuxdeployqt
-        run: |
-          linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
-          mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage"
-          chmod +x "${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage"
+  #     - name: Run linuxdeployqt
+  #       run: |
+  #         linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
+  #         mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage"
+  #         chmod +x "${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage"
 
-      - name: Check AppImage
-        run: |
-          "./${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage" --appimage-extract
-          ldd "squashfs-root/usr/bin/${APP_NAME}"
+  #     - name: Check AppImage
+  #       run: |
+  #         "./${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage" --appimage-extract
+  #         ldd "squashfs-root/usr/bin/${APP_NAME}"
 
-      - name: Zip builds
-        if: matrix.demo == false
-        run: |
-          zip -P "${{ secrets.ZIP_PASSWORD }}" "${APP_NAME}-${PACKAGE_VERSION}.zip" "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
+  #     - name: Zip builds
+  #       if: matrix.demo == false
+  #       run: |
+  #         zip -P "${{ secrets.ZIP_PASSWORD }}" "${APP_NAME}-${PACKAGE_VERSION}.zip" "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: "${{ env.APP_NAME }}-artifacts-linux${{ matrix.demo && '-demo' || '' }}"
-          path: ${{ matrix.demo && '*.AppImage' || '*.zip' }}
-          if-no-files-found: error
+  #     - name: Upload artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: "${{ env.APP_NAME }}-artifacts-linux${{ matrix.demo && '-demo' || '' }}"
+  #         path: ${{ matrix.demo && '*.AppImage' || '*.zip' }}
+  #         if-no-files-found: error
 
   build-mac:
     runs-on: macos-latest
@@ -191,31 +191,33 @@ jobs:
           # 1. Mount the .dmg if it exists
           if [ -f "$dmgfile" ]; then
             echo "Mounting '${dmgfile}'..."
-            hdiutil attach "${dmgfile}"
+            hdiutil attach "${dmgfile}" -mountpoint /Volumes/appmount
           else
             echo "'${dmgfile}' file does not exist."
             exit 1
           fi
-
           # 2. Copy the app to /tmp
           echo "Copying the application from the mounted volume..."
-          cp -R "/Volumes/build:${{ env.APP_NAME }}.app/${{ env.APP_NAME }}.app" "/tmp/${{ env.APP_NAME }}.app"
+          cp -R "/Volumes/appmount/${{ env.APP_NAME }}.app" "/tmp/${{ env.APP_LABEL }}.app"
 
           # 3. Remove extended attributes (quarantine, etc.)
           echo "Removing extended attributes..."
-          xattr -rc "/tmp/${{ env.APP_NAME }}.app"
+          xattr -rc "/tmp/${{ env.APP_LABEL }}.app"
 
           # 4. Create a new clean
           echo "Creating the clean .dmg..."
-          mv "/tmp/${{ env.APP_NAME }}.app" "/tmp/${{ env.APP_LABEL }}.app"
           hdiutil create -volname "${{ env.APP_LABEL }}" \
-            -srcfolder"/tmp/${{ env.APP_LABEL }}.app" \
+            -srcfolder "/tmp/${{ env.APP_LABEL }}.app" \
             -format UDZO \
             -ov "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo' || '' }}.dmg"
 
-          # 5. Detach the mounted volume
+          # 5. Removing extended attributes from the .dmg...
+          echo "Removing extended attributes from the DMG..."
+          xattr -d com.apple.quarantine "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo' || '' }}.dmg" || true
+
+          # 6. Detach the mounted volume
           echo "Detaching the volume..."
-          hdiutil detach "/Volumes/build:${{ env.APP_NAME }}"
+          hdiutil detach "/Volumes/appmount"
 
       - name: Zip builds
         if: matrix.demo == false
@@ -229,98 +231,98 @@ jobs:
           path: ${{ matrix.demo && '*.dmg' || '*.zip' }}
           if-no-files-found: error
 
-  build-windows:
-    runs-on: windows-latest
-    environment: build
-    strategy:
-      matrix:
-        demo: [false, true]
-    env:
-      QT_DIR: ${{ github.workspace }}\Qt
+  # build-windows:
+  #   runs-on: windows-latest
+  #   environment: build
+  #   strategy:
+  #     matrix:
+  #       demo: [false, true]
+  #   env:
+  #     QT_DIR: ${{ github.workspace }}\Qt
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Get latest tag version
-        shell: pwsh
-        run: |
-          $tag = git describe --tags --abbrev=0
-          echo "PACKAGE_VERSION=$tag" >> $env:GITHUB_ENV
+  #     - name: Get latest tag version
+  #       shell: pwsh
+  #       run: |
+  #         $tag = git describe --tags --abbrev=0
+  #         echo "PACKAGE_VERSION=$tag" >> $env:GITHUB_ENV
 
-      - name: Apply patch
-        if: matrix.demo == true
-        run: |
-          git diff origin/main..origin/demo > demo.patch
-          git apply demo.patch
+  #     - name: Apply patch
+  #       if: matrix.demo == true
+  #       run: |
+  #         git diff origin/main..origin/demo > demo.patch
+  #         git apply demo.patch
 
-      - name: Install Qt (MinGW)
-        uses: jurplel/install-qt-action@v4
-        with:
-          aqtversion: '==3.1.19'
-          version: ${{ env.QT_VERSION }}
-          target: 'desktop'
-          arch: 'win64_mingw'
-          dir: ${{ env.QT_DIR }}
-          modules: 'qtwebsockets'
-          tools: 'tools_mingw1310'
+  #     - name: Install Qt (MinGW)
+  #       uses: jurplel/install-qt-action@v4
+  #       with:
+  #         aqtversion: '==3.1.19'
+  #         version: ${{ env.QT_VERSION }}
+  #         target: 'desktop'
+  #         arch: 'win64_mingw'
+  #         dir: ${{ env.QT_DIR }}
+  #         modules: 'qtwebsockets'
+  #         tools: 'tools_mingw1310'
 
-      - name: Add Qt-bundled MinGW to PATH
-        shell: powershell
-        run: |
-          ECHO "${{ env.QT_DIR }}\Tools\mingw1310_64\bin" >> $env:GITHUB_PATH
+  #     - name: Add Qt-bundled MinGW to PATH
+  #       shell: powershell
+  #       run: |
+  #         ECHO "${{ env.QT_DIR }}\Tools\mingw1310_64\bin" >> $env:GITHUB_PATH
 
-      - name: Compile with MinGW
-        run: |
-          MKDIR build
-          CD build
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
-          mingw32-make -j4
+  #     - name: Compile with MinGW
+  #       run: |
+  #         MKDIR build
+  #         CD build
+  #         qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
+  #         mingw32-make -j4
 
-      - name: Deploy with windeployqt
-        run: |
-          MKDIR deploy
-          MOVE "build\${{ env.BUILD_TYPE }}\${{ env.APP_NAME }}.exe" deploy
-          CD deploy
-          windeployqt.exe --verbose 1 "${{ env.APP_NAME }}.exe"
+  #     - name: Deploy with windeployqt
+  #       run: |
+  #         MKDIR deploy
+  #         MOVE "build\${{ env.BUILD_TYPE }}\${{ env.APP_NAME }}.exe" deploy
+  #         CD deploy
+  #         windeployqt.exe --verbose 1 "${{ env.APP_NAME }}.exe"
 
-      - name: Install NSIS via Scoop
-        run: |
-          iwr -useb get.scoop.sh -outfile 'install.ps1'
-          .\install.ps1 -RunAsAdmin
-          scoop update
-          scoop bucket add extras
-          scoop install nsis 7zip
+  #     - name: Install NSIS via Scoop
+  #       run: |
+  #         iwr -useb get.scoop.sh -outfile 'install.ps1'
+  #         .\install.ps1 -RunAsAdmin
+  #         scoop update
+  #         scoop bucket add extras
+  #         scoop install nsis 7zip
 
-      - name: Print NSIS version
-        run: makensis -VERSION
+  #     - name: Print NSIS version
+  #       run: makensis -VERSION
 
-      - name: Create NSIS installer
-        run: |
-          makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer\installer.nsi
+  #     - name: Create NSIS installer
+  #       run: |
+  #         makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer\installer.nsi
 
-      - run: |
-          MOVE "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo == 'true' && '-demo' || '' }}.exe"
+  #     - run: |
+  #         MOVE "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo == 'true' && '-demo' || '' }}.exe"
 
-      - name: Zip builds
-        if: matrix.demo == false
-        run: |
-          7z a -p"${{ secrets.ZIP_PASSWORD }}" -tzip "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
+  #     - name: Zip builds
+  #       if: matrix.demo == false
+  #       run: |
+  #         7z a -p"${{ secrets.ZIP_PASSWORD }}" -tzip "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: "${{ env.APP_NAME }}-artifacts-win${{ matrix.demo && '-demo' || '' }}"
-          path: ${{ matrix.demo && '*.exe' || '*.zip' }}
-          if-no-files-found: error
+  #     - name: Upload artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: "${{ env.APP_NAME }}-artifacts-win${{ matrix.demo && '-demo' || '' }}"
+  #         path: ${{ matrix.demo && '*.exe' || '*.zip' }}
+  #         if-no-files-found: error
 
   release:
     needs:
-    - build-linux
+    # - build-linux
     - build-mac
-    - build-windows
+    # - build-windows
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
