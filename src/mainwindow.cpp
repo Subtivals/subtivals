@@ -338,6 +338,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
                     ui->actionShowMilliseconds->isChecked());
   settings.setValue("persistentHide", ui->actionPersistentHide->isChecked());
   settings.setValue("largeTextPercent", m_largeTextPercent);
+  settings.setValue("showLargeText", ui->actionLargeText->isChecked());
   settings.endGroup();
 
   settings.beginGroup("AdvancedOptions");
@@ -615,6 +616,7 @@ void MainWindow::openFile(const QString &p_fileName) {
   }
 
   refreshDurations();
+  ui->tableWidget->resizeColumnsToContents();
 
   // Refresh the state of the comments column
   actionConfig(m_preferences->isVisible());
