@@ -164,7 +164,8 @@ void ProjectionWindow::applyGeometry(const QRect &r) {
   // Hide menu bar if not single and main screen.
   int idxPrimary =
       QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
-  bool notMainScreen = QGuiApplication::screens().length() > 1 && m_monitor != idxPrimary;
+  bool notMainScreen =
+      QGuiApplication::screens().length() > 1 && m_monitor != idxPrimary;
   makeWindowCoverMenuBar(this, notMainScreen);
 
   // Convert back from absolute (top-aligned) to relative to screen
