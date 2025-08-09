@@ -58,7 +58,7 @@ public:
   int marginV() const;
   Qt::Alignment alignment() const;
   void drawSubtitle(QPainter *, const Subtitle &, const QRect &, const QPen &,
-                    const QPointF & = QPointF(1.0, 1.0)) const;
+                    const qreal) const;
 
 private:
   int subtitleHeight(const Subtitle &subtitle,

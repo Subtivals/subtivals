@@ -26,8 +26,9 @@
 #include "ui_subtitlesform.h"
 
 SubtitlesForm::SubtitlesForm(QWidget *parent)
-    : QWidget(parent), ui(new Ui::SubtitlesForm), m_visible(true),
-      m_rotation(0), m_color(Qt::black), m_opacity(1.0) {
+    : QWidget(parent), m_drawBounds(true), m_fixedScale(false),
+      ui(new Ui::SubtitlesForm), m_visible(true), m_rotation(0),
+      m_color(Qt::black), m_opacity(1.0) {
   setStyleSheet("background:transparent;");
   ui->setupUi(this);
 }
@@ -73,9 +74,19 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
 
   // Rectangle where subtitles are drawn.
   QRect bounds = subtitlesBounds();
-  QPointF scale(static_cast<qreal>(bounds.width()) / this->size().width(),
-                static_cast<qreal>(bounds.height()) / this->size().height());
-  QPointF uniformScale(qMin(scale.x(), scale.y()), qMin(scale.x(), scale.y()));
+  if (m_drawBounds) {
+    // Draw a dark gray rectangle with dotted points to represent subtitles
+    // bounds.
+    QPen pen(Qt::darkGray);
+    pen.setStyle(Qt::DashLine);
+    p.setPen(pen);
+    p.drawRect(bounds);
+  }
+
+  qreal uniformScale = 1.0;
+  if (!m_fixedScale) {
+    uniformScale = static_cast<qreal>(bounds.width()) / m_subtitlesSize.width();
+  }
 
   foreach (Subtitle *e, m_currentSubtitles) {
     if (e && e->style()) {
@@ -91,6 +102,7 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
 
 void SubtitlesForm::changeGeometry(int, const QRect &r) {
   m_subtitlesSize = QSize(r.width(), r.height());
+  this->repaint();
 }
 
 QRect SubtitlesForm::subtitlesBounds() {

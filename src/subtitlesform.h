@@ -57,6 +57,8 @@ public slots:
 protected:
   void paintEvent(QPaintEvent *p_event);
   virtual QRect subtitlesBounds();
+  bool m_drawBounds;
+  bool m_fixedScale;
 
 private:
   Ui::SubtitlesForm *ui;

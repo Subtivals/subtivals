@@ -40,6 +40,8 @@ ProjectionWindow::ProjectionWindow(QWidget *parent)
   setWindowFlags(flags);
   setCursor(QCursor(Qt::BlankCursor));
   makeWindowCoverMenuBar(this, true);
+  m_drawBounds = false;
+  m_fixedScale = true;
 }
 
 ProjectionWindow::~ProjectionWindow() {}

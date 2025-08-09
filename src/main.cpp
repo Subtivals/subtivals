@@ -128,8 +128,6 @@ int main(int argc, char *argv[]) {
                    SLOT(screenResizable(bool)));
   QObject::connect(&w, SIGNAL(hideDesktop(bool)), &f,
                    SLOT(toggleHideDesktop(bool)));
-  QObject::connect(&f, SIGNAL(geometryChanged(int, QRect)), w.configEditor(),
-                   SLOT(projectionWindowChanged(int, QRect)));
 
   f.show();
   w.show();

@@ -118,9 +118,9 @@ const QPoint SubtitleStyle::textAnchor(const QPoint &p_point,
 
 void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
                                  const QRect &bounds, const QPen &outline,
-                                 const QPointF &p_scale) const {
+                                 const qreal p_scale) const {
   QSize resolution = subtitle.script()->resolution();
-  QPointF scale(p_scale);
+  QPointF scale(p_scale, p_scale);
   if (resolution.width() > 0)
     scale.setX(double(bounds.width()) / resolution.width());
   if (resolution.height() > 0)

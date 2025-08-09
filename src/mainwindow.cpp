@@ -899,6 +899,12 @@ void MainWindow::actionConfig(bool state) {
 }
 
 void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
+  if (f != m_previewpanel) {
+    QObject::connect(f, SIGNAL(geometryChanged(int, QRect)), m_preferences,
+                     SLOT(projectionWindowChanged(int, QRect)));
+    QObject::connect(f, SIGNAL(geometryChanged(int, QRect)), m_previewpanel,
+                     SLOT(changeGeometry(int, QRect)));
+  }
   QObject::connect(m_player, SIGNAL(on(Subtitle *)), f,
                    SLOT(addSubtitle(Subtitle *)));
   QObject::connect(m_player, SIGNAL(off(Subtitle *)), f,
