@@ -1027,106 +1027,97 @@ p, li { white-space: pre-wrap; }
         <translation>Merci d&apos;avoir choisi Subtivals !</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="45"/>
+        <location filename="../src/wizard.ui" line="47"/>
         <source>Let&apos;s go through a few hightlights to get started quickly!</source>
         <translation>Nous allons parcourir quelques fonctionnalités pour demarrer rapidement !</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="58"/>
+        <location filename="../src/wizard.ui" line="60"/>
         <source>Preferences</source>
         <translation>Préférences</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="61"/>
+        <location filename="../src/wizard.ui" line="63"/>
         <source>Projection screen options</source>
         <translation>Options de l&apos;écran d&apos;affichage</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="69"/>
+        <location filename="../src/wizard.ui" line="71"/>
         <source>When the preferences are opened, you can move the projection screen with the mouse.</source>
         <translation>Quand le panneau de préférences est ouvert, vous pouvez déplacer l&apos;écran de projection avec la souris.</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="92"/>
+        <location filename="../src/wizard.ui" line="96"/>
         <source>Special characters</source>
         <translation>Caractères spéciaux</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="95"/>
+        <location filename="../src/wizard.ui" line="99"/>
         <source>Universal and international characters</source>
         <translation>Caractères internationaux et universels</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="113"/>
+        <location filename="../src/wizard.ui" line="119"/>
         <source>&lt;p&gt;Subtivals supports &lt;b&gt;every&lt;/b&gt; international character.&lt;/p&gt;
 &lt;p&gt;Make sure your files are saved with &lt;b&gt;UTF-8&lt;/b&gt; encoding.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Subtivals supporte &lt;b&gt;tous&lt;/b&gt; les caractères internationaux.&lt;/p&gt;
 &lt;p&gt;Assurez-vous de sauvegarder les fichiers avec l&apos;encodage &lt;b&gt;UTF-8&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="127"/>
+        <location filename="../src/wizard.ui" line="133"/>
         <source>Keyboard shortcuts</source>
         <translation>Raccourcis clavier</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="130"/>
+        <location filename="../src/wizard.ui" line="136"/>
         <source>Become a power user!</source>
         <translation>Devenons un utilisateur expert !</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="148"/>
+        <location filename="../src/wizard.ui" line="156"/>
         <source>&lt;p&gt;Every action can be performed with the keyboard . Change the shortcurts in the &lt;b&gt;Edit&lt;/b&gt; menu.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Toutes les actions peuvent être effectuées avec le clavier. Changer les raccourcis dans le menu &lt;b&gt;Edit&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="161"/>
+        <location filename="../src/wizard.ui" line="169"/>
         <source>Simple text files</source>
         <translation>Fichiers texte simples</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="164"/>
+        <location filename="../src/wizard.ui" line="172"/>
         <source>Basic subtitles easily! </source>
         <translation>Sous-titrage basique facilité! </translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="182"/>
+        <location filename="../src/wizard.ui" line="192"/>
         <source>Subtivals can read plain .txt files, where subtitles are just texts separated by a blank line.</source>
         <translation>Subtivals peut lire de simples fichiers .txt, où les sous-titres sont juste de phrases séparées par une ligne vide.</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="195"/>
+        <location filename="../src/wizard.ui" line="205"/>
         <source>Timeout mode</source>
         <translation>Mode expiration</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="198"/>
+        <location filename="../src/wizard.ui" line="208"/>
         <source>Semi-automatic projection</source>
         <translation>Projection semi-automatique</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="216"/>
+        <location filename="../src/wizard.ui" line="228"/>
         <source>&lt;p&gt;Subtitles appear with space bar, and disappear automatically according to their length.&lt;/p&gt;
 </source>
         <translation>&lt;p&gt;Les sous-titres apparaissent en appuyant sur Espace, et disparaissent automatiquement en fonction de leur longueur..&lt;/p&gt;
 </translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="230"/>
+        <location filename="../src/wizard.ui" line="242"/>
         <source>Enjoy!</source>
         <translation>Amusez-vous !</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="241"/>
-        <source>&lt;p&gt;Join the user community!&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Ask questions&lt;/li&gt;
-&lt;li&gt;Discuss new features&lt;/li&gt;
-&lt;li&gt;Tips and tricks&lt;/li&gt;
-&lt;li&gt;Share your experience&lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;http://community.subtivals.org&quot;&gt;http://community.subtivals.org&lt;/a&gt;&lt;/p&gt;
-</source>
+        <location filename="../src/wizard.ui" line="253"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Join the user community!&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ask questions&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Discuss new features&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tips and tricks&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Share your experience&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;a href=&quot;https://community.subtivals.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#094fd1;&quot;&gt;https://community.subtivals.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;p&gt;Rejoignez la communauté des utilisateurs !&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Posez vos questions&lt;/li&gt;
@@ -1135,7 +1126,7 @@ p, li { white-space: pre-wrap; }
 &lt;li&gt;Partagez votre experience&lt;/li&gt;
 &lt;li&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;http://community.subtivals.org&quot;&gt;http://community.subtivals.org&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://community.subtivals.org&quot;&gt;https://community.subtivals.org&lt;/a&gt;&lt;/p&gt;
 </translation>
     </message>
 </context>
