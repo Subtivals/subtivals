@@ -19,9 +19,6 @@ jobs:
   build-linux:
     runs-on: ubuntu-22.04
     environment: build
-    strategy:
-      matrix:
-        demo: [false, true]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,14 +27,6 @@ jobs:
 
       - name: Get latest tag version
         run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
-
-      - name: Apply patch
-        if: matrix.demo == true
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
-          git apply demo.patch
 
       - name: Install dependencies
         run: |
@@ -129,18 +118,18 @@ jobs:
       - name: Run linuxdeployqt
         run: |
           linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
-          mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage"
-          chmod +x "${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo' || '' }}.AppImage"
+          mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
+          chmod +x "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
 
       - name: Check AppImage
         run: |
-          "./${APP_NAME}-${PACKAGE_VERSION}${{ matrix.demo && '-demo-linux' || '' }}.AppImage" --appimage-extract
+          "./${APP_NAME}-${PACKAGE_VERSION}.AppImage" --appimage-extract
           ldd "squashfs-root/usr/bin/${APP_NAME}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APP_NAME }}-artifacts-linux${{ matrix.demo && '-demo' || '' }}
+          name: ${{ env.APP_NAME }}-artifacts-linux
           path: "*.AppImage"
           if-no-files-found: error
 
