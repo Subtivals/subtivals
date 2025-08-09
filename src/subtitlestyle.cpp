@@ -140,8 +140,8 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
     QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
     if (position.x() >= 0 && position.y() >= 0) {
       // absolute positioning : (x, y)
-      position.setX(position.x() * scale.x());
-      position.setY(position.y() * scale.y());
+      position.setX(bounds.x() + position.x() * scale.x());
+      position.setY(bounds.y() + position.y() * scale.y());
       final.setTopLeft(textAnchor(position, line.text(), fontMetrics));
     } else {
       int marginV = (m_marginV + subtitle.marginV()) * scale.y();
@@ -162,7 +162,7 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
         }
       } else {
         // Horizontal positioning : (x, ?)
-        position.setX(position.x() * scale.x());
+        position.setX(bounds.x() + position.x() * scale.x());
         html = html.replace("align=\"HORIZONTAL\"", "");
         final.moveLeft(textAnchor(position, line.text(), fontMetrics).x());
       }
