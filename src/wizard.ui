@@ -66,7 +66,7 @@
       <item row="0" column="1">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>When the preferences are opened, you can move the projection screen with the mouse.</string>
+         <string>You can move the projection screen with the mouse.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>

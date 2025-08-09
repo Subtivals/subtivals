@@ -983,8 +983,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/wizard.ui" line="71"/>
-        <source>When the preferences are opened, you can move the projection screen with the mouse.</source>
-        <translation>Quan s’obren les preferències, podeu moure la pantalla de projecció amb el ratolí.</translation>
+        <source>You can move the projection screen with the mouse.</source>
+        <translation>Podeu moure la pantalla de projecció amb el ratolí.</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="96"/>
