@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - build-mac-win
+      - build-linux-arm
     tags:
       - "*"
   pull_request:
@@ -17,8 +17,18 @@ env:
 
 jobs:
   build-linux:
-    runs-on: ubuntu-22.04
     environment: build
+
+    strategy:
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-22.04
+          - arch: aarch64
+            runner: ubuntu-22.04-arm64
+
+    runs-on: ${{ matrix.runner }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -69,14 +79,20 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install "aqtinstall<4"
-          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
-          echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
+          # Adjust Qt target if needed for cross compilation
+          if [ "${{ matrix.arch }}" = "x86_64" ]; then
+            python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
+            echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
+          else
+            python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_arm64 -m qtwebsockets
+            echo "$HOME/Qt/${QT_VERSION}/arm64/bin" >> "$GITHUB_PATH"
+          fi
 
       - name: Download linuxdeployqt
         run: |
-          wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-          chmod +x linuxdeployqt-continuous-x86_64.AppImage
-          sudo mv linuxdeployqt-continuous-x86_64.AppImage /usr/local/bin/linuxdeployqt
+          wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-${{ matrix.arch }}.AppImage
+          chmod +x linuxdeployqt-continuous-${{ matrix.arch }}.AppImage
+          sudo mv linuxdeployqt-continuous-${{ matrix.arch }}.AppImage /usr/local/bin/linuxdeployqt
 
       - name: Configure and build
         run: |
@@ -118,18 +134,18 @@ jobs:
       - name: Run linuxdeployqt
         run: |
           linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
-          mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
-          chmod +x "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
+          mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}-${{ matrix.arch }}.AppImage"
+          chmod +x "${APP_NAME}-${PACKAGE_VERSION}-${{ matrix.arch }}.AppImage"
 
       - name: Check AppImage
         run: |
-          "./${APP_NAME}-${PACKAGE_VERSION}.AppImage" --appimage-extract
+          "./${APP_NAME}-${PACKAGE_VERSION}-${{ matrix.arch }}.AppImage" --appimage-extract
           ldd "squashfs-root/usr/bin/${APP_NAME}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APP_NAME }}-artifacts-linux
+          name: ${{ env.APP_NAME }}-artifacts-linux-${{ matrix.arch }}
           path: "*.AppImage"
           if-no-files-found: error
 
