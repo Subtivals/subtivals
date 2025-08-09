@@ -10,7 +10,7 @@ DEFINES += VERSION=\\\"$$VERSION\\\" \
  NB_PRESETS=6 \
  DEFAULT_PROJECTION_WINDOW_HEIGHT=200
 
-QT += core gui widgets websockets xml
+QT += core gui widgets websockets xml svg
 
 TARGET = subtivals
 TEMPLATE = app

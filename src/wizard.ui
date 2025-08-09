@@ -30,12 +30,9 @@
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="labelHelp">
         <property name="text">
          <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="../resources/icons.qrc">:/icons/help.svg</pixmap>
         </property>
        </widget>
       </item>
@@ -74,12 +71,9 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="labelScreen">
         <property name="text">
          <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="../resources/icons.qrc">:/icons/preferences-desktop.svg</pixmap>
         </property>
        </widget>
       </item>
@@ -98,12 +92,9 @@
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_9" columnstretch="0,1">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_14">
+       <widget class="QLabel" name="labelCharacters">
         <property name="text">
          <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="../resources/icons.qrc">:/icons/characters.svg</pixmap>
         </property>
        </widget>
       </item>
@@ -133,12 +124,9 @@
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_12" columnstretch="0,1">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_16">
+       <widget class="QLabel" name="labelShortcuts">
         <property name="text">
          <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="../resources/icons.qrc">:/icons/shortcuts.svg</pixmap>
         </property>
        </widget>
       </item>
@@ -167,12 +155,9 @@
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_7" columnstretch="0,1">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_11">
+       <widget class="QLabel" name="labelTextIcon">
         <property name="text">
          <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="../resources/icons.qrc">:/icons/text-icon.svg</pixmap>
         </property>
        </widget>
       </item>
@@ -201,12 +186,9 @@
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_5" columnstretch="0,1">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_8">
+       <widget class="QLabel" name="labelAutohide">
         <property name="text">
          <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="../resources/icons.qrc">:/icons/auto-hide.svg</pixmap>
         </property>
        </widget>
       </item>
@@ -247,8 +229,6 @@
    </layout>
   </widget>
  </widget>
- <resources>
-  <include location="../resources/icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
