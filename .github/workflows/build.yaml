@@ -269,11 +269,15 @@ jobs:
         run: |
           makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer\installer.nsi
 
-      - run: MOVE "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo == 'true' && '-demo-windows' || '' }}.exe"
+      - name: Rename installer
+        if: matrix.demo == true
+        run: |
+          MOVE "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}-demo.exe"
 
       - name: Zip builds
         if: matrix.demo == false
         run: |
+          MOVE "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
           7z a -p"${{ secrets.ZIP_PASSWORD }}" -tzip "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
 
       - name: Upload artifacts (demo)
