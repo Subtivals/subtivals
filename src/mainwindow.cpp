@@ -1268,7 +1268,6 @@ void MainWindow::search() {
 
 void MainWindow::searchTextChanged(QString) {
   ui->searchField->setStyleSheet("");
-  ui->searchButton->setEnabled(!ui->searchField->text().isEmpty());
 }
 
 void MainWindow::actionJumpLongest() {

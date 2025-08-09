@@ -148,34 +148,11 @@
           <height>0</height>
          </size>
         </property>
+        <property name="placeholderText">
+         <string>keywords (or jump to :line)</string>
+        </property>
         <property name="toolTip">
          <string>Use prefix &quot;:&quot; and number to jump to line</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="searchButton">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>28</width>
-          <height>27</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../resources/icons.qrc">
-          <normaloff>:/icons/search.svg</normaloff>:/icons/search.svg</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
         </property>
        </widget>
       </item>
