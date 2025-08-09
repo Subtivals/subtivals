@@ -27,7 +27,7 @@
 
 ProjectionWindow::ProjectionWindow(QWidget *parent)
     : SubtitlesForm(parent), m_hideDesktop(false), m_monitor(-1),
-      m_resizable(false) {
+      m_resizable(true) {
   Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint;
 #ifdef WIN32
   flags |= Qt::SubWindow;
@@ -40,7 +40,6 @@ ProjectionWindow::ProjectionWindow(QWidget *parent)
   setWindowFlags(flags);
   setCursor(QCursor(Qt::BlankCursor));
   makeWindowCoverMenuBar(this, true);
-  screenResizable(QGuiApplication::screens().size() < 2);
 }
 
 ProjectionWindow::~ProjectionWindow() {}
