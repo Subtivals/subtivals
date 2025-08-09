@@ -111,6 +111,7 @@ public slots:
   void actionToggleDarkMode(bool);
   void enableKnownFactors(bool);
   void actionToggleLargeText(bool);
+  void actionToggleLockScreenOnPlay(bool);
 
 protected:
   bool canNext();

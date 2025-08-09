@@ -294,6 +294,7 @@
     <addaction name="actionPersistentHide"/>
     <addaction name="actionDarkMode"/>
     <addaction name="actionLargeText"/>
+    <addaction name="actionLockScreenOnPlay"/>
     <addaction name="actionHideDesktop"/>
     <addaction name="actionEditShortcuts"/>
     <addaction name="actionAdvancedSettings"/>
@@ -721,7 +722,18 @@
     <string>Use large text in listing</string>
    </property>
   </action>
-   <action name="actionHideDesktop">
+  <action name="actionLockScreenOnPlay">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lock screen on play</string>
+   </property>
+   <property name="toolTip">
+    <string>Screen cannot be moved during play</string>
+   </property>
+  </action>
+  <action name="actionHideDesktop">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1251,6 +1263,22 @@
    </hints>
   </connection>
   <connection>
+   <sender>actionLockScreenOnPlay</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionToggleLockScreenOnPlay(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>enableSpeedFactor</sender>
    <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
@@ -1298,6 +1326,7 @@
   <slot>knownFactorChosen(int)</slot>
   <slot>actionToggleDarkMode(bool)</slot>
   <slot>actionToggleLargeText(bool)</slot>
+  <slot>actionToggleLockScreenOnPlay(bool)</slot>
   <slot>enableKnownFactors(bool)</slot>
   <slot>actionShowPreview(bool)</slot>
  </slots>
