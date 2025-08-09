@@ -339,7 +339,8 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("persistentHide", ui->actionPersistentHide->isChecked());
   settings.setValue("largeTextPercent", m_largeTextPercent);
   settings.setValue("showLargeText", ui->actionLargeText->isChecked());
-  settings.setValue("lockScreenOnPlay", ui->actionLockScreenOnPlay->isChecked());
+  settings.setValue("lockScreenOnPlay",
+                    ui->actionLockScreenOnPlay->isChecked());
   settings.endGroup();
 
   settings.beginGroup("AdvancedOptions");
@@ -792,8 +793,10 @@ void MainWindow::actionPlay() {
     actionToggleHide(false);
     ui->actionDurationCorrection->setChecked(false);
     // Projection window is resizable option disabled or single screen.
-    emit screenResizable(!ui->actionLockScreenOnPlay->isChecked() || QGuiApplication::screens().size() < 2);
-    m_preferences->enableTabScreen(!ui->actionLockScreenOnPlay->isChecked() || QGuiApplication::screens().size() < 2);
+    emit screenResizable(!ui->actionLockScreenOnPlay->isChecked() ||
+                         QGuiApplication::screens().size() < 2);
+    m_preferences->enableTabScreen(!ui->actionLockScreenOnPlay->isChecked() ||
+                                   QGuiApplication::screens().size() < 2);
     break;
   case PAUSED:
     setState(PLAYING);
@@ -1004,7 +1007,7 @@ void MainWindow::actionToggleLockScreenOnPlay(bool state) {
     emit screenResizable(true);
     m_preferences->enableTabScreen(true);
   }
-} 
+}
 
 void MainWindow::disableSubtitleSelection() {
   // Disable selection of subtitles for some time
