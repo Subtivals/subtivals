@@ -33,7 +33,9 @@ jobs:
       - name: Apply patch
         if: matrix.demo == true
         run: |
-          git diff origin/main..origin/demo > demo.patch
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git diff --binary origin/main...origin/demo > demo.patch
           git apply demo.patch
 
       - name: Install dependencies
@@ -164,7 +166,9 @@ jobs:
       - name: Apply patch
         if: matrix.demo == true
         run: |
-          git diff origin/main..origin/demo > demo.patch
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git diff --binary origin/main...origin/demo > demo.patch
           git apply demo.patch
 
       - name: Install Qt
@@ -227,7 +231,9 @@ jobs:
       - name: Apply patch
         if: matrix.demo == true
         run: |
-          git diff origin/main..origin/demo > demo.patch
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git diff --binary origin/main...origin/demo > demo.patch
           git apply demo.patch
 
       - name: Install Qt (MinGW)
