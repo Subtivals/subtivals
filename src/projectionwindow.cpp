@@ -39,7 +39,7 @@ ProjectionWindow::ProjectionWindow(QWidget *parent)
   setAttribute(Qt::WA_TranslucentBackground);
   setWindowFlags(flags);
   setCursor(QCursor(Qt::BlankCursor));
-  makeWindowCoverMenuBar(this);
+  makeWindowCoverMenuBar(this, true);
   screenResizable(QGuiApplication::screens().size() < 2);
 }
 
@@ -160,6 +160,12 @@ void ProjectionWindow::wheelEvent(QWheelEvent *event) {
 
 void ProjectionWindow::applyGeometry(const QRect &r) {
   setGeometry(r);
+
+  // Hide menu bar if not single and main screen.
+  int idxPrimary =
+      QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
+  bool notMainScreen = QGuiApplication::screens().length() > 1 && m_monitor != idxPrimary;
+  makeWindowCoverMenuBar(this, notMainScreen);
 
   // Convert back from absolute (top-aligned) to relative to screen
   // (bottom-aligned)
