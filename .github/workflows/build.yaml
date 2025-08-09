@@ -177,7 +177,7 @@ jobs:
 
       - name: Zip builds
         if: matrix.demo == false
-        run: zip -r -P "${{ secrets.ZIP_PASSWORD }}" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "*.dmg"
+        run: zip -r -P "${{ secrets.ZIP_PASSWORD }}" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo-macos' || '' }}.dmg"
 
       - name: Upload artifacts (demo)
         if: matrix.demo == true
