@@ -331,3 +331,7 @@ void ConfigEditor::enableButtonBox(bool restore, bool cancel, bool save) {
   ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(cancel);
   ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(save);
 }
+
+void ConfigEditor::enableTabScreen(bool p_state) {
+  ui->tabScreen->setEnabled(p_state);
+}

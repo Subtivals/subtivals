@@ -69,6 +69,7 @@ public slots:
 
   void enableWeblive(bool);
   void webliveConnected(bool p_state, QString p_url);
+  void enableTabScreen(bool);
 protected slots:
   void enableButtonBox(bool restore = true, bool cancel = true,
                        bool save = true);

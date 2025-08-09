@@ -339,6 +339,8 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("persistentHide", ui->actionPersistentHide->isChecked());
   settings.setValue("largeTextPercent", m_largeTextPercent);
   settings.setValue("showLargeText", ui->actionLargeText->isChecked());
+  settings.setValue("lockScreenOnPlay",
+                    ui->actionLockScreenOnPlay->isChecked());
   settings.endGroup();
 
   settings.beginGroup("AdvancedOptions");
@@ -404,6 +406,8 @@ void MainWindow::showEvent(QShowEvent *) {
   m_largeTextPercent = settings.value("largeTextPercent", 150).toInt();
   ui->actionLargeText->setChecked(
       settings.value("showLargeText", false).toBool());
+  ui->actionLockScreenOnPlay->setChecked(
+      settings.value("lockScreenOnPlay", false).toBool());
 
   if (settings.value("wizard", true).toBool()) {
     ui->actionShowWizard->trigger();
@@ -788,6 +792,11 @@ void MainWindow::actionPlay() {
     m_player->jumpTo(row);
     actionToggleHide(false);
     ui->actionDurationCorrection->setChecked(false);
+    // Projection window is resizable option disabled or single screen.
+    emit screenResizable(!ui->actionLockScreenOnPlay->isChecked() ||
+                         QGuiApplication::screens().size() < 2);
+    m_preferences->enableTabScreen(!ui->actionLockScreenOnPlay->isChecked() ||
+                                   QGuiApplication::screens().size() < 2);
     break;
   case PAUSED:
     setState(PLAYING);
@@ -805,6 +814,9 @@ void MainWindow::actionStop() {
   ui->timer->setText("-");
   ui->userDelay->setText("-");
   m_countDown->setText("");
+  // Projection window is resizable option disabled or single screen.
+  emit screenResizable(true);
+  m_preferences->enableTabScreen(true);
 }
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event) {
@@ -880,9 +892,7 @@ void MainWindow::actionConfig(bool state) {
   }
   // Show/Hide the config dialog
   m_preferences->setVisible(state);
-  // Prevent moving/resizing the projection window when there
-  // are more than 1 screen and the preference is closed.
-  emit screenResizable(state || QGuiApplication::screens().size() < 2);
+
   // Save when user hides it
   if (!state)
     m_preferences->save();
@@ -985,6 +995,18 @@ void MainWindow::actionToggleLargeText(bool state) {
   ui->tableWidget->resizeColumnsToContents();
   ui->tableWidget->resizeRowsToContents();
   ui->tableWidget->viewport()->update();
+}
+
+void MainWindow::actionToggleLockScreenOnPlay(bool state) {
+  // If currently playing, then lock.
+  if (state) {
+    bool lock = m_state == PLAYING && QGuiApplication::screens().size() > 1;
+    emit screenResizable(!lock);
+    m_preferences->enableTabScreen(!lock);
+  } else {
+    emit screenResizable(true);
+    m_preferences->enableTabScreen(true);
+  }
 }
 
 void MainWindow::disableSubtitleSelection() {
