@@ -755,6 +755,7 @@ void MainWindow::reloadScript() {
   // Store current position
   qint64 msseStartTime = m_player->elapsedTime();
   int userDelay = m_player->delay();
+  QModelIndex currentIndex = ui->tableWidget->currentIndex();
   // Store current playing state
   State previous = m_state;
 
@@ -765,8 +766,16 @@ void MainWindow::reloadScript() {
   // Restore position
   m_player->setElapsedTime(msseStartTime);
   m_player->addDelay(userDelay);
+
   // Restore state
   setState(previous);
+
+  // Simulate double click on same row (if playing, don't disturb flow)
+  if (previous != PLAYING) {
+    if (currentIndex.row() > 0) {
+      emit ui->tableWidget->doubleClicked(currentIndex);
+    }
+  }
 }
 
 void MainWindow::actionOpen() {
