@@ -56,6 +56,8 @@ private:
   bool m_hideDesktop;
   int m_monitor;
   bool m_resizable;
+
+  QTimer *m_geometryChangedDebounceTimer;
 };
 
 #endif // PROJECTION_WINDOW_H

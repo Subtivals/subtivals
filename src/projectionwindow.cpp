@@ -20,6 +20,7 @@
 #include <QtGui/QCursor>
 #include <QtGui/QPainter>
 #include <QGuiApplication>
+#include <QTimer>
 
 #include "subtitlestyle.h"
 #include "projectionwindow.h"
@@ -42,6 +43,12 @@ ProjectionWindow::ProjectionWindow(QWidget *parent)
   makeWindowCoverMenuBar(this, true);
   m_drawBounds = false;
   m_fixedScale = true;
+
+  m_geometryChangedDebounceTimer = new QTimer(this);
+  m_geometryChangedDebounceTimer->setSingleShot(true);
+  connect(m_geometryChangedDebounceTimer, &QTimer::timeout, this, [this]() {
+    emit geometryChanged(m_monitor, m_subtitlesGeomBottomScreenRelative);
+  });
 }
 
 ProjectionWindow::~ProjectionWindow() {}
@@ -177,5 +184,7 @@ void ProjectionWindow::applyGeometry(const QRect &r) {
       r.x() - m_screenGeom.x(),
       m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y());
 
-  emit geometryChanged(m_monitor, m_subtitlesGeomBottomScreenRelative);
+  // Start/restart timer to emit geometryChanged later
+  // Store params for debounce emit
+  m_geometryChangedDebounceTimer->start(100); // debounce delay (e.g., 100ms)
 }
