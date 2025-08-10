@@ -4,8 +4,10 @@
 #
 #-------------------------------------------------
 
-VERSION = 2.0.0-pre4
-DEFINES += VERSION=\\\"$$VERSION\\\" \
+isEmpty(PACKAGE_VERSION) {
+    PACKAGE_VERSION = 0.0.0
+}
+DEFINES += VERSION=\\\"$$PACKAGE_VERSION\\\" \
  DEFAULT_LINESPACING=0.3 \
  NB_PRESETS=6 \
  DEFAULT_PROJECTION_WINDOW_HEIGHT=200
