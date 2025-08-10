@@ -66,6 +66,8 @@ private:
   const QPoint textAnchor(const QPoint &p_point, const QString &p_text,
                           const QFontMetrics &metrics) const;
   const QFont scaledFont(const qreal, const qreal) const;
+  void invalidateCache() const;
+
   QString m_name;
   QFont m_font;
   QColor m_primaryColour;
@@ -89,6 +91,8 @@ private:
    */
   double m_offsetH;
   double m_offsetV;
+
+  mutable QHash<QString, QTextDocument *> m_docCache;
 };
 
 #endif // SUBTITLESTYLE_H

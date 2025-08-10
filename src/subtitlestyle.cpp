@@ -19,6 +19,7 @@
 #include <QtGui/QTextDocument>
 #include <QtGui/QTextFrame>
 #include <QRegularExpression>
+#include <QHash>
 
 #include "script.h"
 #include "subtitlestyle.h"
@@ -46,11 +47,13 @@ SubtitleStyle::SubtitleStyle(const SubtitleStyle &p_oth, const QFont &f,
 
 void SubtitleStyle::setAlignment(Qt::Alignment p_alignment) {
   m_alignment = p_alignment;
+  invalidateCache();
 }
 
 void SubtitleStyle::setOffsets(double p_h, double p_v) {
   m_offsetH = p_h;
   m_offsetV = p_v;
+  invalidateCache();
 }
 
 int SubtitleStyle::marginL() const { return m_marginL; }
@@ -65,6 +68,7 @@ void SubtitleStyle::setMargins(int p_marginL, int p_marginR, int p_marginV) {
   m_marginL = p_marginL;
   m_marginR = p_marginR;
   m_marginV = p_marginV;
+  invalidateCache();
 }
 
 const QString &SubtitleStyle::name() const { return m_name; }
@@ -91,16 +95,21 @@ const QFont &SubtitleStyle::font() const { return m_font; }
 void SubtitleStyle::setFont(const QFont &f) {
   m_font = f;
   m_font.setStyleStrategy(QFont::PreferAntialias);
+  invalidateCache();
 }
 
 const QColor &SubtitleStyle::primaryColour() const { return m_primaryColour; }
 
-void SubtitleStyle::setPrimaryColour(const QColor &c) { m_primaryColour = c; }
+void SubtitleStyle::setPrimaryColour(const QColor &c) {
+  m_primaryColour = c;
+  invalidateCache();
+}
 
 qreal SubtitleStyle::lineSpacing() const { return m_lineSpacing; }
 
 void SubtitleStyle::setLineSpacing(qreal p_lineSpacing) {
   m_lineSpacing = p_lineSpacing;
+  invalidateCache();
 }
 
 int SubtitleStyle::subtitleHeight(const Subtitle &subtitle,
@@ -135,6 +144,11 @@ const QPoint SubtitleStyle::textAnchor(const QPoint &p_point,
   return p_point + offset;
 }
 
+void SubtitleStyle::invalidateCache() const {
+  qDeleteAll(m_docCache);
+  m_docCache.clear();
+}
+
 void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
                                  const QRect &bounds, const QPen &outline,
                                  const qreal p_scale, const qreal p_dpi) const {
@@ -152,12 +166,12 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
 
   int stack = 0;
 
-  foreach (SubtitleLine line, subtitle.lines()) {
+  for (const SubtitleLine &line : subtitle.lines()) {
     QRect final(bounds);
 
     QPoint position = line.position();
 
-    QString horizontalAlign = "";
+    QString horizontalAlign = "center";
     if (position.x() >= 0 && position.y() >= 0) {
       // absolute positioning : (x, y)
       position.setX(bounds.x() + qRound(position.x() * scale.x()));
@@ -210,28 +224,44 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
       stack += qRound(fontMetrics.height() * (1.0 + m_lineSpacing));
     }
 
-    // Replace text and create document with the scaled font
-    QString html =
-        QString("<style>p { font-size: 100%%; }</style><p align=\"%1\">%2</p>")
-            .arg(horizontalAlign)
-            .arg(line.text());
-    QTextDocument doc;
-    // Ensure page size is at least 1x1
-    QSize pageSize(qMax(1, final.width()), qMax(1, final.height()));
-    doc.setPageSize(pageSize);
-    doc.setDefaultFont(scaledFont);
-    doc.setHtml(html);
+    // Prepare cache key (text + font family + font point size + scale +
+    // alignment)
+    QString cacheKey = QString("%1|%2|%3|%4|%5")
+                           .arg(line.text())
+                           .arg(scaledFont.family())
+                           .arg(scaledFont.pointSizeF())
+                           .arg(uniformScale)
+                           .arg(horizontalAlign);
 
-    // Reduce document margins to 0 (all sides)
-    QTextFrame *tf = doc.rootFrame();
-    QTextFrameFormat tff = tf->frameFormat();
-    tff.setTopMargin(0);
-    tff.setBottomMargin(0);
-    tff.setLeftMargin(0);
-    tff.setRightMargin(0);
-    tf->setFrameFormat(tff);
+    QTextDocument *doc = nullptr;
 
-    QAbstractTextDocumentLayout *layout = doc.documentLayout();
+    if (m_docCache.contains(cacheKey)) {
+      doc = m_docCache.value(cacheKey);
+    } else {
+      doc = new QTextDocument();
+      m_docCache.insert(cacheKey, doc);
+
+      // Set font and HTML once
+      doc->setDefaultFont(scaledFont);
+      QString html = QString("<style>p { font-size: 100%%; margin:0; "
+                             "padding:0; }</style><p align=\"%1\">%2</p>")
+                         .arg(horizontalAlign)
+                         .arg(line.text());
+      doc->setHtml(html);
+
+      QTextFrame *tf = doc->rootFrame();
+      QTextFrameFormat tff = tf->frameFormat();
+      tff.setTopMargin(0);
+      tff.setBottomMargin(0);
+      tff.setLeftMargin(0);
+      tff.setRightMargin(0);
+      tf->setFrameFormat(tff);
+    }
+
+    // Set page size to fit final rect
+    doc->setPageSize(QSize(qMax(1, final.width()), qMax(1, final.height())));
+
+    QAbstractTextDocumentLayout *layout = doc->documentLayout();
     painter->setFont(scaledFont);
     painter->setPen(m_primaryColour);
     QAbstractTextDocumentLayout::PaintContext context;
@@ -241,8 +271,7 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
     painter->translate(final.x(), final.y());
 
     if (outline.width() > 0) {
-      // Paint outline by applying a text outline format to the whole document
-      QTextCursor cursor(&doc);
+      QTextCursor cursor(doc);
       cursor.select(QTextCursor::Document);
       QTextCharFormat format;
       format.setTextOutline(outline);
