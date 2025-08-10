@@ -71,6 +71,21 @@ const QString &SubtitleStyle::name() const { return m_name; }
 
 void SubtitleStyle::setName(const QString &p_name) { m_name = p_name; }
 
+const QFont SubtitleStyle::scaledFont(const qreal p_dpi,
+                                      const qreal p_scale) const {
+  QFont temp = m_font;
+  if (m_font.pixelSize() > 0) {
+    qreal pts = (temp.pixelSize() * 72.0) / p_dpi;
+    temp.setPointSizeF(pts * p_scale);
+  } else {
+    qreal ptSize = temp.pointSizeF();
+    if (ptSize <= 0)
+      ptSize = 12.0; // fallback default font size
+    temp.setPointSizeF(ptSize * p_scale);
+  }
+  return temp;
+}
+
 const QFont &SubtitleStyle::font() const { return m_font; }
 
 void SubtitleStyle::setFont(const QFont &f) {
@@ -99,26 +114,30 @@ const QPoint SubtitleStyle::textAnchor(const QPoint &p_point,
                                        const QString &p_text,
                                        const QFontMetrics &metrics) const {
   QPoint offset(0, 0);
-  // Make sure text contains no HTML
+  // strip HTML
   QString strip(p_text);
   strip.remove(QRegularExpression("<[^>]*>"));
-  // alignment becomes text anchor
+
+  // vertical position
   if (m_alignment & Qt::AlignVCenter) {
     offset.setY(metrics.height() / 2);
   } else if (m_alignment & Qt::AlignBottom) {
     offset.setY(metrics.height());
   }
+
+  // horizontal: use horizontalAdvance for accurate width
+  int textW = metrics.horizontalAdvance(strip);
   if (m_alignment & Qt::AlignHCenter) {
-    offset.setX(-metrics.boundingRect(strip).width() / 2);
+    offset.setX(-(textW / 2));
   } else if (m_alignment & Qt::AlignRight) {
-    offset.setX(-metrics.boundingRect(strip).width());
+    offset.setX(-textW);
   }
   return p_point + offset;
 }
 
 void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
                                  const QRect &bounds, const QPen &outline,
-                                 const qreal p_scale) const {
+                                 const qreal p_scale, const qreal p_dpi) const {
   QSize resolution = subtitle.script()->resolution();
   QPointF scale(p_scale, p_scale);
   if (resolution.width() > 0)
@@ -126,9 +145,10 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
   if (resolution.height() > 0)
     scale.setY(double(bounds.height()) / resolution.height());
 
-  QFont textFont(m_font);
-  textFont.setPixelSize(scale.x() * textFont.pixelSize());
-  QFontMetrics fontMetrics(textFont);
+  // Build scaled font deterministically:
+  qreal uniformScale = qMin(scale.x(), scale.y());
+  QFont scaledFont = this->scaledFont(p_dpi, uniformScale);
+  QFontMetrics fontMetrics(scaledFont);
 
   int stack = 0;
 
@@ -137,40 +157,41 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
 
     QPoint position = line.position();
 
-    QString html = "<p align=\"HORIZONTAL\">TEXT</p>";
+    QString horizontalAlign = "";
     if (position.x() >= 0 && position.y() >= 0) {
       // absolute positioning : (x, y)
-      position.setX(bounds.x() + position.x() * scale.x());
-      position.setY(bounds.y() + position.y() * scale.y());
+      position.setX(bounds.x() + qRound(position.x() * scale.x()));
+      position.setY(bounds.y() + qRound(position.y() * scale.y()));
       final.setTopLeft(textAnchor(position, line.text(), fontMetrics));
     } else {
-      int marginV = (m_marginV + subtitle.marginV()) * scale.y();
+      // scale margins (round to ints)
+      int marginV = qRound((m_marginV + subtitle.marginV()) * scale.y());
       int marginL = 0;
       int marginR = 0;
 
       if (position.x() < 0) { // If position is not set
         // Horizontal margins
-        marginL = (m_marginL + subtitle.marginL()) * scale.x();
-        marginR = (m_marginR + subtitle.marginR()) * scale.x();
+        marginL = qRound((m_marginL + subtitle.marginL()) * scale.x());
+        marginR = qRound((m_marginR + subtitle.marginR()) * scale.x());
         // Same for alignment
         if (m_alignment & Qt::AlignLeft) {
-          html = html.replace("HORIZONTAL", "left");
+          horizontalAlign = "left";
         } else if (m_alignment & Qt::AlignRight) {
-          html = html.replace("HORIZONTAL", "right");
+          horizontalAlign = "right";
         } else {
-          html = html.replace("HORIZONTAL", "center");
+          horizontalAlign = "center";
         }
       } else {
         // Horizontal positioning : (x, ?)
-        position.setX(bounds.x() + position.x() * scale.x());
-        html = html.replace("align=\"HORIZONTAL\"", "");
+        position.setX(bounds.x() + qRound(position.x() * scale.x()));
         final.moveLeft(textAnchor(position, line.text(), fontMetrics).x());
       }
 
       // Apply margins
       final = final.adjusted(marginL, marginV, -marginR, -marginV);
 
-      // Vertical positioning
+      // Vertical positioning based on final rect and subtitleHeight (using
+      // metrics)
       if (m_alignment & Qt::AlignBottom) {
         final.moveTop(final.bottom() - subtitleHeight(subtitle, fontMetrics) +
                       stack);
@@ -181,36 +202,46 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
         final.moveTop(final.top() + stack);
       }
 
-      // Offsets.
-      final.moveBottom(final.bottom() - (m_offsetV * bounds.height()));
-      final.moveLeft(final.left() + (m_offsetH * bounds.width()));
+      // Offsets (fractions of bounds) - round to nearest pixel
+      final.moveBottom(final.bottom() - qRound(m_offsetV * bounds.height()));
+      final.moveLeft(final.left() + qRound(m_offsetH * bounds.width()));
 
-      // Stack lines
-      stack += fontMetrics.height() * (1.0 + m_lineSpacing * scale.y());
+      // Stack lines: use fontMetrics.height() directly (already scaled)
+      stack += qRound(fontMetrics.height() * (1.0 + m_lineSpacing));
     }
 
-    html = html.replace("TEXT", line.text());
+    // Replace text and create document with the scaled font
+    QString html =
+        QString("<style>p { font-size: 100%%; }</style><p align=\"%1\">%2</p>")
+            .arg(horizontalAlign)
+            .arg(line.text());
     QTextDocument doc;
-    doc.setPageSize(QSize(final.width(), final.height()));
+    // Ensure page size is at least 1x1
+    QSize pageSize(qMax(1, final.width()), qMax(1, final.height()));
+    doc.setPageSize(pageSize);
+    doc.setDefaultFont(scaledFont);
     doc.setHtml(html);
-    doc.setDefaultFont(textFont);
 
-    // Reduce document margins to 0
+    // Reduce document margins to 0 (all sides)
     QTextFrame *tf = doc.rootFrame();
     QTextFrameFormat tff = tf->frameFormat();
     tff.setTopMargin(0);
+    tff.setBottomMargin(0);
+    tff.setLeftMargin(0);
+    tff.setRightMargin(0);
     tf->setFrameFormat(tff);
 
     QAbstractTextDocumentLayout *layout = doc.documentLayout();
-    painter->setFont(textFont);
+    painter->setFont(scaledFont);
     painter->setPen(m_primaryColour);
     QAbstractTextDocumentLayout::PaintContext context;
     context.palette.setColor(QPalette::Text, painter->pen().color());
+
     painter->save();
     painter->translate(final.x(), final.y());
 
     if (outline.width() > 0) {
-      // Paint outline
+      // Paint outline by applying a text outline format to the whole document
       QTextCursor cursor(&doc);
       cursor.select(QTextCursor::Document);
       QTextCharFormat format;
@@ -218,10 +249,11 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
       cursor.mergeCharFormat(format);
       layout->draw(painter, context);
 
+      // remove outline
       format.setTextOutline(Qt::NoPen);
       cursor.mergeCharFormat(format);
     }
-    // Repaint above, without outline
+    // Draw final text (without outline)
     layout->draw(painter, context);
     painter->restore();
   }

@@ -31,6 +31,7 @@ SubtitlesForm::SubtitlesForm(QWidget *parent)
       m_color(Qt::black), m_opacity(1.0) {
   setStyleSheet("background:transparent;");
   ui->setupUi(this);
+  m_dpi = this->screen()->logicalDotsPerInchY();
 }
 
 SubtitlesForm::~SubtitlesForm() { delete ui; }
@@ -85,12 +86,17 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
 
   qreal uniformScale = 1.0;
   if (!m_fixedScale) {
-    uniformScale = static_cast<qreal>(bounds.width()) / m_subtitlesSize.width();
+    if (m_subtitlesSize.width() > 0) {
+      uniformScale =
+          static_cast<qreal>(bounds.width()) / m_subtitlesSize.width();
+    } else {
+      uniformScale = 1.0;
+    }
   }
 
   foreach (Subtitle *e, m_currentSubtitles) {
     if (e && e->style()) {
-      e->style()->drawSubtitle(&p, *e, bounds, m_outline, uniformScale);
+      e->style()->drawSubtitle(&p, *e, bounds, m_outline, uniformScale, m_dpi);
     }
   }
 

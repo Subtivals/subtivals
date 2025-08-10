@@ -101,6 +101,7 @@ void ProjectionWindow::changeGeometry(int monitor, const QRect &r) {
 
   m_monitor = monitor;
   m_screenGeom = screens.at(monitor)->geometry();
+  m_dpi = screens.at(monitor)->logicalDotsPerInchY();
   m_subtitlesGeomBottomScreenRelative = r;
   // Refresh widget (will call `setGeometry()`):
   toggleHideDesktop(m_hideDesktop);

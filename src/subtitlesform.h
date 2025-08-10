@@ -59,6 +59,7 @@ protected:
   virtual QRect subtitlesBounds();
   bool m_drawBounds;
   bool m_fixedScale;
+  qreal m_dpi;
 
 private:
   Ui::SubtitlesForm *ui;
