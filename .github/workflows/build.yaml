@@ -224,6 +224,9 @@ jobs:
           git diff --binary origin/main...origin/demo > demo.patch
           git apply demo.patch
 
+      - name: Get installer source
+        run: git checkout origin/win-installer -- ./win-installer.nsi
+
       - name: Install Qt (MinGW)
         uses: jurplel/install-qt-action@v4
         with:
@@ -267,17 +270,17 @@ jobs:
 
       - name: Create NSIS installer
         run: |
-          makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer\installer.nsi
+          makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer.nsi
 
       - name: Rename installer
         if: matrix.demo == true
         run: |
-          MOVE "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}-demo.exe"
+          MOVE "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}-demo.exe"
 
       - name: Zip builds
         if: matrix.demo == false
         run: |
-          MOVE "win-installer\${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
+          MOVE "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
           7z a -p"${{ secrets.ZIP_PASSWORD }}" -tzip "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
 
       - name: Upload artifacts (demo)
