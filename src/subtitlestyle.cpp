@@ -171,7 +171,7 @@ void SubtitleStyle::drawSubtitle(QPainter *painter, const Subtitle &subtitle,
 
     QPoint position = line.position();
 
-    QString horizontalAlign = "center";
+    QString horizontalAlign = "";
     if (position.x() >= 0 && position.y() >= 0) {
       // absolute positioning : (x, y)
       position.setX(bounds.x() + qRound(position.x() * scale.x()));
