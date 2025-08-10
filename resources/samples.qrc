@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/samples">
-        <file>M.ass</file>
+        <file>Calibration.ass</file>
     </qresource>
 </RCC>

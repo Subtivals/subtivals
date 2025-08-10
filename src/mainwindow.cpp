@@ -508,7 +508,7 @@ void MainWindow::actionOperatorPrintout() {
 
 void MainWindow::actionShowCalibration(bool p_state) {
   if (p_state) {
-    openFile(QString(":/samples/M.ass"));
+    openFile(QString(":/samples/Calibration.ass"));
     m_player->jumpTo(0);
     m_player->enableAutoHide(false); // disable auto-hide for calibration
     actionToggleHide(false);
