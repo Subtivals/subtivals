@@ -20,8 +20,40 @@ function init() {
   tooltips();
   onePageScroll();
   scrollAnchor();
+  cbpAnimatedHeader();
 }
 
+function cbpAnimatedHeader() {
+  var docElem = document.documentElement,
+      header = document.querySelector(".cbp-af-header"),
+      didScroll = false,
+      changeHeaderOn = 300;
+
+  function init() {
+    window.addEventListener("scroll", function() {
+      if (!didScroll) {
+        didScroll = true;
+        setTimeout(scrollPage, 250);
+      }
+    }, false);
+  }
+
+  function scrollPage() {
+    var sy = scrollY();
+    if (sy >= changeHeaderOn) {
+      header.classList.add("cbp-af-header-shrink");
+    } else {
+      header.classList.remove("cbp-af-header-shrink");
+    }
+    didScroll = false;
+  }
+
+  function scrollY() {
+    return window.pageYOffset || docElem.scrollTop;
+  }
+
+  init();
+}
 
 
 /* --- Full Screen Container ------------- */
@@ -180,32 +212,6 @@ function magnificPopup() {
 
 
 
-/* --- Isotope ------------------- */
-
-function isotope() {
-
- var $container = $('#portfolio');
-
- // init
- $container.imagesLoaded( function(){
-   $container.isotope({
-     // options
-     itemSelector: '.portfolio-item',
-     layoutMode: 'fitRows'
-   });
- });
-
- // filter items on button click
- $('#filters').on( 'click', 'button', function( event ) {
-   var filterValue = $(this).attr('data-filter-value');
-   $container.isotope({ filter: filterValue });
-   $('#filters button').removeClass('active');
-   $(this).addClass('active');
- });
-
-}
-
-
 /* --- Scroll to Anchor ------------------- */
 
 function scrollAnchor() {
@@ -222,60 +228,6 @@ function scrollAnchor() {
         return false;
       }
     }
-  });
-
-}
-
-
-/* --- Modal overlay (used for signup form) ------------------- */
-
-function signupOverlay() {
-  var container = document.querySelector( 'div.container' ),
-    triggerBttn = document.getElementsByClassName( 'signup' ),
-    overlay = document.querySelector( 'div#signup' ),
-    closeBttn = overlay.querySelector( 'button.overlay-close' );
-    transEndEventNames = {
-      'WebkitTransition': 'webkitTransitionEnd',
-      'MozTransition': 'transitionend',
-      'OTransition': 'oTransitionEnd',
-      'msTransition': 'MSTransitionEnd',
-      'transition': 'transitionend'
-    },
-    transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
-    support = { transitions : Modernizr.csstransitions };
-
-  function toggleOverlay() {
-    if( classie.has( overlay, 'open' ) ) {
-      classie.remove( overlay, 'open' );
-      classie.remove( container, 'overlay-open' );
-      classie.add( overlay, 'close-me' );
-      var onEndTransitionFn = function( ev ) {
-        if( support.transitions ) {
-          if( ev.propertyName !== 'visibility' ) return;
-          this.removeEventListener( transEndEventName, onEndTransitionFn );
-        }
-        classie.remove( overlay, 'close-me' );
-      };
-      if( support.transitions ) {
-        overlay.addEventListener( transEndEventName, onEndTransitionFn );
-      }
-      else {
-        onEndTransitionFn();
-      }
-    }
-    else if( !classie.has( overlay, 'close-me' ) ) {
-      classie.add( overlay, 'open' );
-      classie.add( container, 'overlay-open' );
-    }
-  }
-
-  for (i = 0; i < triggerBttn.length; i++) {
-      triggerBttn[i].addEventListener( 'click', toggleOverlay );
-  }
-  closeBttn.addEventListener( 'click', toggleOverlay );
-
-  $('.signup').click(function(e) {
-      e.preventDefault();
   });
 }
 
@@ -311,37 +263,3 @@ $(window).scroll(function() {
       $('.nav li.current').removeClass('current');
   }
 });
-
-
-
-//Placeholder fixed for Internet Explorer
-$(function() {
-	var input = document.createElement("input");
-	if(('placeholder' in input)==false) {
-		$('[placeholder]').focus(function() {
-			var i = $(this);
-			if(i.val() == i.attr('placeholder')) {
-				i.val('').removeClass('placeholder');
-				if(i.hasClass('password')) {
-					i.removeClass('password');
-					this.type='password';
-				}
-			}
-		}).blur(function() {
-			var i = $(this);
-			if(i.val() == '' || i.val() == i.attr('placeholder')) {
-				if(this.type=='password') {
-					i.addClass('password');
-					this.type='text';
-				}
-				i.addClass('placeholder').val(i.attr('placeholder'));
-			}
-		}).blur().parents('form').submit(function() {
-			$(this).find('[placeholder]').each(function() {
-				var i = $(this);
-				if(i.val() == i.attr('placeholder'))
-					i.val('');
-			})
-		});
-	}
-	});
