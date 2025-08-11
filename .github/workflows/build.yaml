@@ -63,12 +63,19 @@ jobs:
             zlib1g \
             libssl3 \
             libpng16-16 \
-            wget curl python3-pip imagemagick
+            wget curl python3-pip imagemagick \
+            libwayland-client0 \
+            libwayland-cursor0 \
+            libwayland-egl1 \
+            libwayland-server0 \
+            qtwayland5 \
+            qt6-wayland
 
       - name: Install Qt using aqtinstall
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install "aqtinstall<4"
+          python3 -m aqt list-qt linux desktop --modules "${QT_VERSION}" linux_gcc_64
           python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
           echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
 
@@ -94,14 +101,10 @@ jobs:
           mkdir -p "$APPDIR/usr/share/applications"
           mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
 
-          # Copy binary
           cp "build/${APP_NAME}" "$APPDIR/usr/bin/"
-
-          # Convert .ico to .png and copy it
-          cp resources/subtivals.png $APPDIR/subtivals.png
+          cp resources/subtivals.png "$APPDIR/subtivals.png"
           convert "resources/${APP_NAME}.ico" -resize 256x256 "$APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png"
 
-          # Create .desktop file
           cat <<EOF > "$APPDIR/usr/share/applications/${APP_NAME}.desktop"
           [Desktop Entry]
           Name=${APP_NAME}
@@ -115,9 +118,31 @@ jobs:
         run: |
           ldd "$APPDIR/usr/bin/${APP_NAME}" || true
 
-      - name: Run linuxdeployqt
+      - name: Bundle Wayland plugins & run linuxdeployqt
         run: |
-          linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
+          APPDIR=AppDir
+
+          # Ensure Qt Wayland platform plugins are in AppDir
+          ls -la "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/platforms/"
+          mkdir -p "$APPDIR/usr/plugins/platforms"
+          cp "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/platforms/libqwayland"* "$APPDIR/usr/plugins/platforms/" || true
+
+          # Copy Wayland shell integration plugins
+          mkdir -p "$APPDIR/usr/plugins/wayland-shell-integration"
+          cp "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/wayland-shell-integration/"*.so \
+            "$APPDIR/usr/plugins/wayland-shell-integration/" || true
+
+          # Copy Wayland-related Qt libraries
+          mkdir -p "$APPDIR/usr/lib"
+          cp -u "$HOME/Qt/${QT_VERSION}/gcc_64/lib/libQt6Wayland"* "$APPDIR/usr/lib/" || true
+
+          # Include xcb for fallback
+          cp "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/platforms/libqxcb.so" "$APPDIR/usr/plugins/platforms/" || true
+
+          # Bundle everything
+          linuxdeployqt "$APPDIR/usr/share/applications/${APP_NAME}.desktop" \
+            -appimage -bundle-non-qt-libs
+
           mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
           chmod +x "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
 
