@@ -55,6 +55,31 @@ function cbpAnimatedHeader() {
   init();
 }
 
+  document.addEventListener("DOMContentLoaded", function () {
+    const navLinks = document.querySelectorAll(".navbar-nav a[href^='#']");
+    const header = document.querySelector(".cbp-af-header");
+
+    // Smooth scrolling
+    navLinks.forEach(link => {
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+
+    // Shrink header on scroll
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 50) {
+        header.classList.add("cbp-af-header-shrink");
+      } else {
+        header.classList.remove("cbp-af-header-shrink");
+      }
+    });
+  });
+
 
 /* --- Full Screen Container ------------- */
 
@@ -120,21 +145,6 @@ function owlCarousel() {
 
     });
 }
-
-
-
-/* --- Tooltips ------------------- */
-
-function tooltips() {
-  $('.tooltips').tooltip();
-}
-
-
-
-/* --- scrollReveal ------------------- */
-
-window.scrollReveal = new scrollReveal();
-
 
 
 /* --- magnific popup ------------------- */
@@ -210,56 +220,3 @@ function magnificPopup() {
 	});
 }
 
-
-
-/* --- Scroll to Anchor ------------------- */
-
-function scrollAnchor() {
-
-  // scroll to specific anchor
-  $('.scroll').click(function() {
-    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-      if (target.length) {
-        $('html,body').animate({
-          scrollTop: target.offset().top
-        }, 650);
-        return false;
-      }
-    }
-  });
-}
-
-
-/* --- One Page Scroll ------------------- */
-
-function onePageScroll() {
-  $('.nav').onePageNav({
-      currentClass: 'current',
-      changeHash: false,
-      scrollSpeed: 650,
-      scrollOffset: 30,
-      scrollThreshold: 0.5,
-      filter: ':not(.login, .signup)',
-      easing: 'swing',
-      begin: function() {
-          //I get fired when the animation is starting
-      },
-      end: function() {
-          //I get fired when the animation is ending
-      },
-      scrollChange: function($currentListItem) {
-          //I get fired when you enter a section and I pass the list item of the section
-      }
-  });
-}
-
-
-$(window).scroll(function() {
-  var windowpos = $(window).scrollTop() ;
-
-  if (windowpos <= 500) {
-      $('.nav li.current').removeClass('current');
-  }
-});
