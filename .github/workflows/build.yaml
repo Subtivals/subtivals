@@ -76,7 +76,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install "aqtinstall<4"
           python3 -m aqt list-qt linux desktop --modules "${QT_VERSION}" linux_gcc_64
-          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets qtwayland
+          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
           echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
 
       - name: Download linuxdeployqt
