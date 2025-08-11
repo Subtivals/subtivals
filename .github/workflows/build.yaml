@@ -63,13 +63,19 @@ jobs:
             zlib1g \
             libssl3 \
             libpng16-16 \
-            wget curl python3-pip imagemagick
+            wget curl python3-pip imagemagick \
+            libwayland-client0 \
+            libwayland-cursor0 \
+            libwayland-egl1 \
+            libwayland-server0 \
+            qtwayland5 \
+            qt6-wayland
 
       - name: Install Qt using aqtinstall
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install "aqtinstall<4"
-          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
+          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets qtwayland
           echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
 
       - name: Download linuxdeployqt
@@ -94,14 +100,10 @@ jobs:
           mkdir -p "$APPDIR/usr/share/applications"
           mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
 
-          # Copy binary
           cp "build/${APP_NAME}" "$APPDIR/usr/bin/"
-
-          # Convert .ico to .png and copy it
-          cp resources/subtivals.png $APPDIR/subtivals.png
+          cp resources/subtivals.png "$APPDIR/subtivals.png"
           convert "resources/${APP_NAME}.ico" -resize 256x256 "$APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png"
 
-          # Create .desktop file
           cat <<EOF > "$APPDIR/usr/share/applications/${APP_NAME}.desktop"
           [Desktop Entry]
           Name=${APP_NAME}
@@ -117,7 +119,8 @@ jobs:
 
       - name: Run linuxdeployqt
         run: |
-          linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs
+          linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs \
+            -extra-plugins=wayland
           mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
           chmod +x "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
 
