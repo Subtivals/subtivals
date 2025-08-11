@@ -56,7 +56,6 @@ void disableScreensaver() {
 void disableScreensaver() {
   if (auto *x11Application =
           qGuiApp->nativeInterface<QNativeInterface::QX11Application>()) {
-    Display *display = x11Application->display();
     xcb_connection_t *connection = x11Application->connection();
     xcb_dpms_set_timeouts(connection, 0, 0, 0);
     xcb_screensaver_suspend(connection, XCB_SCREENSAVER_SUSPEND);
