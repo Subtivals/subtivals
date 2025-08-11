@@ -127,14 +127,19 @@ jobs:
           mkdir -p "$APPDIR/usr/plugins/platforms"
           cp "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/platforms/libqwayland"* "$APPDIR/usr/plugins/platforms/" || true
 
-          # Copy any Wayland-related Qt libraries
+          # Copy Wayland shell integration plugins
+          mkdir -p "$APPDIR/usr/plugins/wayland-shell-integration"
+          cp "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/wayland-shell-integration/"*.so \
+            "$APPDIR/usr/plugins/wayland-shell-integration/" || true
+
+          # Copy Wayland-related Qt libraries
           mkdir -p "$APPDIR/usr/lib"
           cp -u "$HOME/Qt/${QT_VERSION}/gcc_64/lib/libQt6Wayland"* "$APPDIR/usr/lib/" || true
 
-          # Also bundle the xcb plugin (for fallback on X11 hosts)
+          # Include xcb for fallback
           cp "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/platforms/libqxcb.so" "$APPDIR/usr/plugins/platforms/" || true
 
-          # Run linuxdeployqt without relying on -extra-plugins
+          # Bundle everything
           linuxdeployqt "$APPDIR/usr/share/applications/${APP_NAME}.desktop" \
             -appimage -bundle-non-qt-libs
 
