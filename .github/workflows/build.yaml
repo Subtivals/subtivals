@@ -118,10 +118,26 @@ jobs:
         run: |
           ldd "$APPDIR/usr/bin/${APP_NAME}" || true
 
-      - name: Run linuxdeployqt
+      - name: Bundle Wayland plugins & run linuxdeployqt
         run: |
-          linuxdeployqt "AppDir/usr/share/applications/${APP_NAME}.desktop" -appimage -bundle-non-qt-libs \
-            -extra-plugins=wayland
+          APPDIR=AppDir
+
+          # Ensure Qt Wayland platform plugins are in AppDir
+          ls -la "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/platforms/"
+          mkdir -p "$APPDIR/usr/plugins/platforms"
+          cp "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/platforms/libqwayland"* "$APPDIR/usr/plugins/platforms/" || true
+
+          # Copy any Wayland-related Qt libraries
+          mkdir -p "$APPDIR/usr/lib"
+          cp -u "$HOME/Qt/${QT_VERSION}/gcc_64/lib/libQt6Wayland"* "$APPDIR/usr/lib/" || true
+
+          # Also bundle the xcb plugin (for fallback on X11 hosts)
+          cp "$HOME/Qt/${QT_VERSION}/gcc_64/plugins/platforms/libqxcb.so" "$APPDIR/usr/plugins/platforms/" || true
+
+          # Run linuxdeployqt without relying on -extra-plugins
+          linuxdeployqt "$APPDIR/usr/share/applications/${APP_NAME}.desktop" \
+            -appimage -bundle-non-qt-libs
+
           mv ./*.AppImage "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
           chmod +x "${APP_NAME}-${PACKAGE_VERSION}.AppImage"
 
@@ -137,177 +153,9 @@ jobs:
           path: "*.AppImage"
           if-no-files-found: error
 
-  build-mac:
-    runs-on: macos-latest
-    environment: build
-    strategy:
-      matrix:
-        demo: [false, true]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Get latest tag version
-        run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
-
-      - name: Apply patch
-        if: matrix.demo == true
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
-          git apply demo.patch
-
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: ${{ env.QT_VERSION }}
-          modules: 'qtwebsockets'
-
-      - name: Compile
-        run: |
-          mkdir -p build && cd build/
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
-          make "-j$(sysctl -n hw.ncpu)"
-
-      - name: Deploy
-        run: |
-          mv "build/${{ env.APP_NAME }}.app" "build/${{ env.APP_LABEL }}.app"
-          macdeployqt "build/${{ env.APP_LABEL }}.app" -dmg -verbose=2
-
-      - run: mv "build/${{ env.APP_LABEL }}.dmg" "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo-macos' || '' }}.dmg"
-
-      - name: Zip builds
-        if: matrix.demo == false
-        run: zip -r -P "${{ secrets.ZIP_PASSWORD }}" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo-macos' || '' }}.dmg"
-
-      - name: Upload artifacts (demo)
-        if: matrix.demo == true
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP_NAME }}-artifacts-mac-demo
-          path: "*.dmg"
-          if-no-files-found: error
-
-      - name: Upload artifacts
-        if: matrix.demo == false
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP_NAME }}-artifacts-mac
-          path: "*.zip"
-          if-no-files-found: error
-
-  build-windows:
-    runs-on: windows-latest
-    environment: build
-    strategy:
-      matrix:
-        demo: [false, true]
-    env:
-      QT_DIR: ${{ github.workspace }}\Qt
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Get latest tag version
-        shell: pwsh
-        run: |
-          $tag = git describe --tags --abbrev=0
-          echo "PACKAGE_VERSION=$tag" >> $env:GITHUB_ENV
-
-      - name: Apply patch
-        if: matrix.demo == true
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
-          git apply demo.patch
-
-      - name: Get installer source
-        run: git checkout origin/win-installer -- ./win-installer.nsi
-
-      - name: Install Qt (MinGW)
-        uses: jurplel/install-qt-action@v4
-        with:
-          aqtversion: '==3.1.19'
-          version: ${{ env.QT_VERSION }}
-          target: 'desktop'
-          arch: 'win64_mingw'
-          dir: ${{ env.QT_DIR }}
-          modules: 'qtwebsockets'
-          tools: 'tools_mingw1310'
-
-      - name: Add Qt-bundled MinGW to PATH
-        shell: powershell
-        run: |
-          ECHO "${{ env.QT_DIR }}\Tools\mingw1310_64\bin" >> $env:GITHUB_PATH
-
-      - name: Compile with MinGW
-        run: |
-          MKDIR build
-          CD build
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
-          mingw32-make -j4
-
-      - name: Deploy with windeployqt
-        run: |
-          MKDIR deploy
-          MOVE "build\${{ env.BUILD_TYPE }}\${{ env.APP_NAME }}.exe" deploy
-          CD deploy
-          windeployqt.exe --verbose 1 "${{ env.APP_NAME }}.exe"
-
-      - name: Install NSIS via Scoop
-        run: |
-          iwr -useb get.scoop.sh -outfile 'install.ps1'
-          .\install.ps1 -RunAsAdmin
-          scoop update
-          scoop bucket add extras
-          scoop install nsis 7zip
-
-      - name: Print NSIS version
-        run: makensis -VERSION
-
-      - name: Create NSIS installer
-        run: |
-          makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer.nsi
-
-      - name: Rename installer
-        if: matrix.demo == true
-        run: |
-          MOVE "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}-demo.exe"
-
-      - name: Zip builds
-        if: matrix.demo == false
-        run: |
-          MOVE "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
-          7z a -p"${{ secrets.ZIP_PASSWORD }}" -tzip "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.exe"
-
-      - name: Upload artifacts (demo)
-        if: matrix.demo == true
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP_NAME }}-artifacts-win-demo
-          path: "*.exe"
-          if-no-files-found: error
-
-      - name: Upload artifacts
-        if: matrix.demo == false
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP_NAME }}-artifacts-win
-          path: "*.zip"
-          if-no-files-found: error
-
   release:
     needs:
     - build-linux
-    - build-mac
-    - build-windows
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
