@@ -33,7 +33,7 @@ SOURCES += main.cpp\
     wizard.cpp \
     weblive.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS += mainwindow.h \
     script.h \
     subtitlestyle.h \
     subtitle.h \
@@ -54,7 +54,7 @@ macx {
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
 }
 
-FORMS    += mainwindow.ui \
+FORMS += mainwindow.ui \
     subtitlesform.ui \
     styleeditor.ui \
     configeditor.ui \
@@ -85,7 +85,7 @@ TRANSLATIONS_PATH = $$PWD/../locale
 # Platform-specific install paths
 unix:!macx {
     isEmpty(PREFIX) {
-        PREFIX = /usr
+        PREFIX = ./usr
     }
 
     BINDIR = $$PREFIX/bin
@@ -138,10 +138,6 @@ QMAKE_POST_LINK += $$QMAKE_LRELEASE $$_PRO_FILE_
 unix {
     QMAKE_POST_LINK += && $$quote(mkdir -p $$TRANSLATIONS_PATH && cp ../locale/*.qm $$TRANSLATIONS_PATH)
 }
-#win32 {
-#    QMAKE_POST_LINK += && $$quote(if not exist $$TRANSLATIONS_PATH mkdir $$TRANSLATIONS_PATH)
-#    QMAKE_POST_LINK += && $$quote(copy /Y ..\\locale\\*.qm $$TRANSLATIONS_PATH)
-#}
 
 # Embed the translation path as a preprocessor define
 TRANSLATIONS_PATH_STR = '\"$$TRANSLATIONS_PATH\"'
@@ -150,7 +146,4 @@ DEFINES += TRANSLATIONS_PATH=\\\"$$TRANSLATIONS_PATH_STR\\\"
 OTHER_FILES += \
     ../debian/control \
     ../debian/rules \
-    ../debian/changelog \
-    ../win-installer/installer.nsi \
-    ../win-installer/files.nsi \
-    ../win-installer/unfiles.nsi
+    ../debian/changelog
