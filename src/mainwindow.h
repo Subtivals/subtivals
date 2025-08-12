@@ -135,6 +135,12 @@ private:
   Player *m_player;
   QThread *m_playerThread;
   QPalette m_defaultPalette;
+  QBrush m_itemColorOffBackground;
+  QBrush m_itemColorOnBackground;
+  QBrush m_itemColorNextBackground;
+  QColor m_itemColorOffText;
+  QColor m_itemColorOnText;
+  QColor m_itemColorNextText;
   QString m_lastScript;
   QString m_lastFolder;
   ConfigEditor *m_preferences;
