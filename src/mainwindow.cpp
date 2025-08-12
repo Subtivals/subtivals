@@ -45,6 +45,24 @@
 #include "ui_mainwindow.h"
 #include "wizard.h"
 
+static QColor bestContrastingTextColor(const QColor &bg) {
+  auto channel = [](double c) {
+    c /= 255.0;
+    return (c <= 0.03928) ? (c / 12.92) : std::pow((c + 0.055) / 1.055, 2.4);
+  };
+
+  double r = channel(bg.red());
+  double g = channel(bg.green());
+  double b = channel(bg.blue());
+  double luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+  double contrastBlack = (luminance + 0.05) / 0.05;
+  double contrastWhite = (1.05) / (luminance + 0.05);
+
+  return (contrastBlack > contrastWhite) ? QColor(Qt::black)
+                                         : QColor(Qt::white);
+}
+
 /**
  * A small delegate class to allow rich text rendering in main table cells.
  */
@@ -53,12 +71,21 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
              const QModelIndex &index) const override {
     QTextDocument document;
     QVariant value = index.data(Qt::DisplayRole);
-    QString textColor =
-        option.state & QStyle::State_Selected
-            ? option.palette.color(QPalette::HighlightedText).name()
-            : option.palette.color(QPalette::Text).name();
 
-    // Draw background with cell style
+    // Decide text color (respecting foreground role)
+    QColor textColor;
+    if (option.state & QStyle::State_Selected) {
+      textColor = option.palette.color(QPalette::HighlightedText);
+    } else {
+      QVariant fg = index.data(Qt::ForegroundRole);
+      if (fg.isValid() && fg.canConvert<QColor>()) {
+        textColor = fg.value<QColor>();
+      } else {
+        textColor = option.palette.color(QPalette::Text);
+      }
+    }
+
+    // Draw background only
     QStyleOptionViewItem opt(option);
     initStyleOption(&opt, index);
     opt.text = QString(); // remove default text drawing
@@ -74,8 +101,8 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
       if (index.data(Qt::UserRole).toBool()) {
         html = QString("<b>%2</b>").arg(html);
       }
-      document.setHtml(
-          QString("<span style='color:%1;'>%2</span>").arg(textColor, html));
+      document.setHtml(QString("<span style='color:%1;'>%2</span>")
+                           .arg(textColor.name(), html));
 
       QFont font = document.defaultFont();
       font.setPointSizeF(font.pointSizeF() * m_zoomFactor);
@@ -151,6 +178,18 @@ MainWindow::MainWindow(QWidget *parent)
       m_windowShown(false) {
   ui->setupUi(this);
   m_defaultPalette = qApp->palette();
+
+  // Precompute contrasting text colors
+  QColor offColor = m_defaultPalette.color(QPalette::Base);
+  QColor onColor = m_defaultPalette.color(QPalette::Highlight).lighter(130);
+  QColor nextColor = m_defaultPalette.color(QPalette::Highlight).lighter(170);
+  m_itemColorOffBackground = QBrush(offColor);
+  m_itemColorOnBackground = QBrush(onColor);
+  m_itemColorNextBackground = QBrush(nextColor);
+  m_itemColorOffText = bestContrastingTextColor(offColor);
+  m_itemColorOnText = bestContrastingTextColor(onColor);
+  m_itemColorNextText = bestContrastingTextColor(nextColor);
+
   ui->tableWidget->setItemDelegateForColumn(COLUMN_START,
                                             new SubtitleDurationDelegate());
   ui->tableWidget->setItemDelegateForColumn(COLUMN_END,
@@ -1141,15 +1180,12 @@ void MainWindow::subtitleChanged(QList<Subtitle *> p_currentSubtitles) {
 }
 
 void MainWindow::highlightSubtitles(qlonglong elapsed) {
-  QBrush off = QBrush(qApp->palette().color(QPalette::Base));
-  QBrush on = QBrush(qApp->palette().color(QPalette::Highlight).lighter(130));
-  QBrush next = QBrush(qApp->palette().color(QPalette::Highlight).lighter(170));
-
-  // First reset all
+  // Reset all
   for (int row = 0; row < ui->tableWidget->rowCount(); row++) {
     for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
       QTableWidgetItem *item = ui->tableWidget->item(row, col);
-      item->setBackground(off);
+      item->setBackground(m_itemColorOffBackground);
+      item->setForeground(m_itemColorOffText);
       QFont f = item->font();
       f.setBold(false);
       item->setFont(f);
@@ -1158,16 +1194,18 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
     }
   }
 
-  // Then highlight next subtitles
   if (m_script) {
+    // Highlight next subtitles
     foreach (Subtitle *e, m_script->nextSubtitles(elapsed)) {
       int row = m_tableMapping[e];
       for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
         QTableWidgetItem *item = ui->tableWidget->item(row, col);
-        item->setBackground(next);
+        item->setBackground(m_itemColorNextBackground);
+        item->setForeground(m_itemColorNextText);
       }
     }
-    // Finally highlight current subtitles
+
+    // Highlight current subtitles
     foreach (Subtitle *e, m_currentSubtitles) {
       int row = m_tableMapping[e];
       for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
@@ -1177,7 +1215,8 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
           f.setBold(true);
           item->setFont(f);
         }
-        item->setBackground(on);
+        item->setBackground(m_itemColorOnBackground);
+        item->setForeground(m_itemColorOnText);
         if (col == COLUMN_TEXT)
           item->setData(Qt::UserRole, !ui->actionHide->isChecked());
       }
