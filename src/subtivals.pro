@@ -65,7 +65,6 @@ FORMS += mainwindow.ui \
 RESOURCES += \
     ../resources/icons.qrc \
     ../resources/samples.qrc \
-    ../resources/ssl.qrc \
     ../resources/fonts.qrc
 
 # Linux librairies to disable screensaver
