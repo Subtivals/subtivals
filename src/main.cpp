@@ -104,21 +104,21 @@ int main(int argc, char *argv[]) {
 
   ProjectionWindow f;
   MainWindow w;
-  WebLive live;
   RemoteService service;
 
-  // Live
-  QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &live,
+  // Remote
+  QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &service,
                    SLOT(addSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(off(Subtitle *)), &live,
+  QObject::connect(w.player(), SIGNAL(off(Subtitle *)), &service,
                    SLOT(remSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(clear()), &live, SLOT(clearSubtitles()),
-                   Qt::DirectConnection);
-  QObject::connect(w.configEditor(), SIGNAL(webliveEnabled(bool)), &live,
-                   SLOT(enable(bool)));
-  QObject::connect(&live, SIGNAL(connected(bool, QString)), w.configEditor(),
-                   SLOT(webliveConnected(bool, QString)));
-  w.configEditor()->enableWeblive(live.configured());
+  QObject::connect(w.player(), SIGNAL(clear()), &service,
+                   SLOT(clearSubtitles()));
+
+  // QObject::connect(w.configEditor(), SIGNAL(webliveEnabled(bool)), &live,
+  //                  SLOT(enable(bool)));
+  // QObject::connect(&live, SIGNAL(connected(bool, QString)), w.configEditor(),
+  //                  SLOT(webliveConnected(bool, QString)));
+  // w.configEditor()->enableWeblive(live.configured());
 
   // Showing subtitles
   w.connectProjectionEvents(&f);
@@ -131,6 +131,9 @@ int main(int argc, char *argv[]) {
 
   f.show();
   w.show();
+
+  // Service now owns persistence & autostart:
+  service.loadSettingsAndMaybeStart();
 
   // If more than one arg and last arg is a file, open it
   if (argc > 1) {

@@ -15,6 +15,8 @@
 #include <QSet>
 #include <QHttpHeaders>
 
+#include "subtitlestyle.h"
+
 RemoteService::RemoteService(QObject *parent) : QObject(parent) {
   // "/" -> redirect.
   m_httpServer.route("/", [](const QHttpServerRequest &) {
@@ -288,11 +290,9 @@ QString RemoteService::buildViewerUrl(const QString &host) const {
       .arg(m_config.uuid);
 }
 
-void RemoteService::sendMessage(const QString &message) {
-  // Iterate a copy to be safe if any socket disconnects while sending
-  const QJsonObject ok{{"event-type", "add-subtitle"}, {"data", message}};
+void RemoteService::sendMessage(const QJsonObject &p_json) {
   const QString encoded =
-      QString::fromUtf8(QJsonDocument(ok).toJson(QJsonDocument::Compact));
+      QString::fromUtf8(QJsonDocument(p_json).toJson(QJsonDocument::Compact));
 
   const auto clients = m_clients;
   for (QWebSocket *socket : clients) {
@@ -305,6 +305,73 @@ void RemoteService::sendMessage(const QString &message) {
 
     socket->sendTextMessage(encoded);
   }
+}
+
+void RemoteService::addSubtitle(Subtitle *p_subtitle) {
+  QJsonObject json;
+  json["type"] = "add-subtitle";
+  json["id"] = p_subtitle->index();
+  json["content"] = p_subtitle->text();
+  json["comments"] = p_subtitle->comments();
+
+  const SubtitleStyle *style = p_subtitle->style();
+  QJsonObject jsonStyle;
+  jsonStyle["name"] = style->name();
+  jsonStyle["color"] = style->primaryColour().name();
+  jsonStyle["linespacing"] = style->lineSpacing();
+  QJsonObject jsonFont;
+  jsonFont["size"] = style->font().pixelSize();
+  jsonFont["name"] = style->font().family();
+  if (style->font().bold())
+    jsonFont["color"] = style->font().bold();
+  if (style->font().italic())
+    jsonFont["italic"] = style->font().italic();
+  jsonStyle["font"] = jsonFont;
+  json["style"] = jsonStyle;
+
+  QJsonObject jsonPosition;
+
+  QJsonObject jsonMargins;
+  if (style->marginL() > 0)
+    jsonMargins["left"] = style->marginL();
+  if (style->marginR() > 0)
+    jsonMargins["right"] = style->marginR();
+  if (style->marginV() > 0)
+    jsonMargins["vertical"] = style->marginV();
+  if (p_subtitle->marginL() > 0)
+    jsonMargins["left"] = p_subtitle->marginL();
+  if (p_subtitle->marginR() > 0)
+    jsonMargins["right"] = p_subtitle->marginR();
+  if (p_subtitle->marginV() > 0)
+    jsonMargins["vertical"] = p_subtitle->marginV();
+  jsonPosition["margin"] = jsonMargins;
+
+  if (p_subtitle->nbLines() > 0) {
+    const QList<SubtitleLine> lines = p_subtitle->lines(); // Capture the list
+    const SubtitleLine &firstLine = lines.at(0); // Now safe to take a reference
+    // XXX: second line is ignored.
+    if (firstLine.position().x() <= 0)
+      jsonPosition["x"] = firstLine.position().x();
+    if (firstLine.position().y() <= 0)
+      jsonPosition["y"] = firstLine.position().y();
+  }
+
+  json["position"] = jsonPosition;
+
+  sendMessage(json);
+}
+
+void RemoteService::remSubtitle(Subtitle *p_subtitle) {
+  QJsonObject json;
+  json["type"] = "rem-subtitle";
+  json["id"] = p_subtitle->index();
+  sendMessage(json);
+}
+
+void RemoteService::clearSubtitles() {
+  QJsonObject json;
+  json["type"] = "clear";
+  sendMessage(json);
 }
 
 void RemoteService::publishMdns() {

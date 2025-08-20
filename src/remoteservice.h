@@ -5,6 +5,8 @@
 #include <QTcpServer>
 #include <memory>
 
+#include "subtitle.h"
+
 struct RemoteScreensConfig {
   bool enabled;
   QString uuid;
@@ -31,7 +33,9 @@ public slots:
   void disable();
 
   // Messages
-  void sendMessage(const QString &message);
+  void addSubtitle(Subtitle *);
+  void remSubtitle(Subtitle *);
+  void clearSubtitles();
 
 signals:
   void started(const QString &url, quint16 httpPort, quint16 webSocketPort);
@@ -42,6 +46,7 @@ signals:
                       quint16 webSocketPort);
 
 private:
+  void sendMessage(const QJsonObject &);
   void saveSettings() const;
   QString effectiveHost() const; // Prefer .local on macOS, else first IPv4
   QString buildViewerUrl(const QString &host) const; // http://host:port/
