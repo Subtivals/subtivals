@@ -30,7 +30,7 @@
 #include "mainwindow.h"
 #include "player.h"
 #include "projectionwindow.h"
-#include "weblive.h"
+#include "remoteservice.h"
 
 #ifdef Q_OS_MACOS
 #include <IOKit/pwr_mgt/IOPMLib.h>
@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
   ProjectionWindow f;
   MainWindow w;
   WebLive live;
+  RemoteService service;
 
   // Live
   QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &live,

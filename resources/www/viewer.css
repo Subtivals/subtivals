@@ -1,0 +1,13 @@
+body {
+  background-color: black;
+  width: 100%;
+}
+
+#main {
+  width: 100%;
+  margin-bottom: 40px;
+
+  text-align: center;
+  color: white;
+  font-size: 5em;
+}
