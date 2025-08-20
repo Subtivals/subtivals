@@ -1,0 +1,64 @@
+2025-08-13 12:04:28,974 - aqt.main - INFO - installer 8386437312 aqtinstall(aqt) v3.3.0 on Python 3.11.12 [CPython Clang 16.0.0 (clang-1600.0.26.6)]
+2025-08-13 12:04:28,975 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/Updates.xml.sha256
+2025-08-13 12:04:29,577 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/extensions/qtwebengine/680/clang_64/Updates.xml.sha256
+2025-08-13 12:04:30,138 - aqt.archives - INFO - archives 8386437312 Found extension qtwebengine
+2025-08-13 12:04:30,139 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/extensions/qtpdf/680/clang_64/Updates.xml.sha256
+2025-08-13 12:04:30,675 - aqt.archives - INFO - archives 8386437312 Found extension qtpdf
+2025-08-13 12:04:31,034 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.addons.qthttpserver.clang_64/6.8.0-0-202410030748qthttpserver-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z.sha256
+2025-08-13 12:04:31,037 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.addons.qtwebsockets.clang_64/6.8.0-0-202410030748qtwebsockets-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z.sha256
+2025-08-13 12:04:31,048 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qtbase-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z.sha256
+2025-08-13 12:04:31,049 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qtdeclarative-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z.sha256
+2025-08-13 12:04:31,296 - aqt.helper - INFO - helper 8386437312 Downloading qtwebsockets...
+2025-08-13 12:04:31,296 - aqt.installer - DEBUG - installer 8386437312 Download URL: https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.addons.qtwebsockets.clang_64/6.8.0-0-202410030748qtwebsockets-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:31,308 - aqt.helper - INFO - helper 8386437312 Downloading qtdeclarative...
+2025-08-13 12:04:31,308 - aqt.helper - INFO - helper 8386437312 Downloading qthttpserver...
+2025-08-13 12:04:31,310 - aqt.installer - DEBUG - installer 8386437312 Download URL: https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.addons.qthttpserver.clang_64/6.8.0-0-202410030748qthttpserver-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:31,310 - aqt.installer - DEBUG - installer 8386437312 Download URL: https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qtdeclarative-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:31,324 - aqt.helper - INFO - helper 8386437312 Downloading qtbase...
+2025-08-13 12:04:31,325 - aqt.installer - DEBUG - installer 8386437312 Download URL: https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qtbase-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:31,581 - aqt.helper - DEBUG - helper 8386437312 Asked to redirect(302) to: https://mirrors.20i.com/pub/qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qtdeclarative-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:31,581 - aqt.helper - INFO - helper 8386437312 Redirected: mirrors.20i.com
+2025-08-13 12:04:31,582 - aqt.helper - DEBUG - helper 8386437312 Asked to redirect(302) to: https://mirrors.20i.com/pub/qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.addons.qtwebsockets.clang_64/6.8.0-0-202410030748qtwebsockets-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:31,583 - aqt.helper - INFO - helper 8386437312 Redirected: mirrors.20i.com
+2025-08-13 12:04:31,590 - aqt.helper - DEBUG - helper 8386437312 Asked to redirect(302) to: https://mirrors.20i.com/pub/qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.addons.qthttpserver.clang_64/6.8.0-0-202410030748qthttpserver-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:31,590 - aqt.helper - INFO - helper 8386437312 Redirected: mirrors.20i.com
+2025-08-13 12:04:31,598 - aqt.helper - DEBUG - helper 8386437312 Asked to redirect(302) to: https://mirrors.20i.com/pub/qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qtbase-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:31,599 - aqt.helper - INFO - helper 8386437312 Redirected: mirrors.20i.com
+2025-08-13 12:04:32,638 - aqt.installer - INFO - installer 8386437312 Finished installation of qthttpserver-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z in 1.60486004
+2025-08-13 12:04:32,643 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qtsvg-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z.sha256
+2025-08-13 12:04:32,668 - aqt.installer - INFO - installer 8386437312 Finished installation of qtwebsockets-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z in 1.63160933
+2025-08-13 12:04:32,673 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qttools-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z.sha256
+2025-08-13 12:04:32,927 - aqt.helper - INFO - helper 8386437312 Downloading qttools...
+2025-08-13 12:04:32,927 - aqt.installer - DEBUG - installer 8386437312 Download URL: https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qttools-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:32,934 - aqt.helper - INFO - helper 8386437312 Downloading qtsvg...
+2025-08-13 12:04:32,934 - aqt.installer - DEBUG - installer 8386437312 Download URL: https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qtsvg-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:33,217 - aqt.helper - DEBUG - helper 8386437312 Asked to redirect(302) to: https://mirrors.20i.com/pub/qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qtsvg-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:33,217 - aqt.helper - INFO - helper 8386437312 Redirected: mirrors.20i.com
+2025-08-13 12:04:33,224 - aqt.helper - DEBUG - helper 8386437312 Asked to redirect(302) to: https://mirrors.20i.com/pub/qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qttools-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:33,224 - aqt.helper - INFO - helper 8386437312 Redirected: mirrors.20i.com
+2025-08-13 12:04:34,145 - aqt.installer - INFO - installer 8386437312 Finished installation of qtsvg-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z in 1.50303092
+2025-08-13 12:04:34,151 - aqt.helper - DEBUG - helper 8386437312 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qttranslations-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z.sha256
+2025-08-13 12:04:34,435 - aqt.helper - INFO - helper 8386437312 Downloading qttranslations...
+2025-08-13 12:04:34,436 - aqt.installer - DEBUG - installer 8386437312 Download URL: https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qttranslations-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:34,718 - aqt.helper - DEBUG - helper 8386437312 Asked to redirect(302) to: https://mirrors.20i.com/pub/qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_680/qt6_680/qt.qt6.680.clang_64/6.8.0-0-202410030748qttranslations-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z
+2025-08-13 12:04:34,718 - aqt.helper - INFO - helper 8386437312 Redirected: mirrors.20i.com
+2025-08-13 12:04:35,319 - aqt.installer - INFO - installer 8386437312 Finished installation of qttranslations-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z in 1.16940329
+2025-08-13 12:04:50,250 - aqt.installer - INFO - installer 8386437312 Finished installation of qttools-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z in 17.57803867
+2025-08-13 12:05:00,282 - aqt.installer - INFO - installer 8386437312 Finished installation of qtbase-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z in 29.23542475
+2025-08-13 12:05:28,106 - aqt.installer - INFO - installer 8386437312 Finished installation of qtdeclarative-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z in 57.05772933
+2025-08-13 12:05:28,989 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/bin/qmake
+2025-08-13 12:05:28,994 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6QmlLS.prl
+2025-08-13 12:05:28,994 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6FbSupport.prl
+2025-08-13 12:05:28,994 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6QmlDebug.prl
+2025-08-13 12:05:28,994 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6QmlTypeRegistrar.prl
+2025-08-13 12:05:28,995 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6QuickTestUtils.prl
+2025-08-13 12:05:28,995 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6ExampleIcons.prl
+2025-08-13 12:05:28,995 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6QuickControlsTestUtils.prl
+2025-08-13 12:05:28,995 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6DeviceDiscoverySupport.prl
+2025-08-13 12:05:28,995 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6QmlDom.prl
+2025-08-13 12:05:28,996 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6ExamplesAssetDownloader.prl
+2025-08-13 12:05:28,996 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6QmlAssetDownloader.prl
+2025-08-13 12:05:28,996 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6PacketProtocol.prl
+2025-08-13 12:05:28,996 - aqt.updater - INFO - updater 8386437312 Patching /Users/mathieu/Qt/6.8.0/macos/lib/libQt6QmlToolingSettings.prl
+2025-08-13 12:05:28,996 - aqt.main - INFO - installer 8386437312 Finished installation
+2025-08-13 12:05:28,996 - aqt.main - INFO - installer 8386437312 Time elapsed: 60.02226950 second

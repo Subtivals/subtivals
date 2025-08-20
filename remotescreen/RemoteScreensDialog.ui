@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RemoteScreensDialog</class>
+ <widget class="QDialog" name="RemoteScreensDialog">
+  <property name="windowTitle">
+   <string>Remote Screens</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayoutRoot">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutTopRow">
+     <item>
+      <widget class="QCheckBox" name="checkBoxRemoteScreensEnabled">
+       <property name="text">
+        <string>remote screens enabled</string>
+       </property>
+       <property name="toolTip">
+        <string>Turn on to start the local HTTP and WebSocket servers and generate shareable URLs.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacerTop">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelHttpPort">
+       <property name="text">
+        <string>HTTP Port:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBoxHttpPort">
+       <property name="minimum">
+        <number>1024</number>
+       </property>
+       <property name="maximum">
+        <number>65535</number>
+       </property>
+       <property name="value">
+        <number>8080</number>
+       </property>
+       <property name="toolTip">
+        <string>Port used to serve your HTML and assets.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelWebSocketPort">
+       <property name="text">
+        <string>WebSocket Port:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBoxWebSocketPort">
+       <property name="minimum">
+        <number>1024</number>
+       </property>
+       <property name="maximum">
+        <number>65535</number>
+       </property>
+       <property name="value">
+        <number>8765</number>
+       </property>
+       <property name="toolTip">
+        <string>Port used for real-time messages to remote screens.</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+   <!-- Tabs for Viewer vs Remote Control -->
+   <item>
+    <widget class="QTabWidget" name="tabWidgetMain">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+
+     <!-- Viewers tab -->
+     <widget class="QWidget" name="tabViewers">
+      <attribute name="title">
+       <string>Remote viewers</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayoutViewers">
+       <item>
+        <widget class="QLabel" name="labelUrlViewers">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByMouse</set>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+         <property name="toolTip">
+          <string>Share this link with people who should view the screen. Use the QR code for mobile devices.</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayoutViewersButtonsRow">
+         <item>
+          <widget class="QPushButton" name="pushButtonCopyUrlViewers">
+           <property name="text">
+            <string>Copy URL</string>
+           </property>
+           <property name="toolTip">
+            <string>Copy the viewers link to your clipboard.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacerViewersButtons">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelConnectedCountViewers">
+           <property name="text">
+            <string>Connected: 0</string>
+           </property>
+           <property name="toolTip">
+            <string>Number of currently connected viewer clients.</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+
+       <item>
+        <widget class="QLabel" name="labelQrCodeViewers">
+         <property name="minimumSize">
+          <size>
+           <width>220</width>
+           <height>220</height>
+          </size>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+
+     <!-- Remote Control tab
+     <widget class="QWidget" name="tabRemoteControl">
+      <attribute name="title">
+       <string>Remote control</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayoutControl">
+       <item>
+        <layout class="QFormLayout" name="formLayoutPassphrase">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelPassphrase">
+           <property name="text">
+            <string>Passphrase</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayoutPassphraseRow">
+           <item>
+            <widget class="QLineEdit" name="lineEditPassphrase">
+             <property name="placeholderText">
+              <string>Enter passphrase (required for remote control)</string>
+             </property>
+             <property name="echoMode">
+              <enum>QLineEdit::Password</enum>
+             </property>
+             <property name="clearButtonEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="toolTip">
+              <string>Only users who know this passphrase can control remotely.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonRevealPassphrase">
+             <property name="text">
+              <string>Show</string>
+             </property>
+             <property name="toolTip">
+              <string>Temporarily reveal the passphrase.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="labelPassphraseHelper">
+           <property name="text">
+            <string notr="true">Choose a memorable phrase. Avoid common words; mix words and numbers, e.g., &quot;violet-bicycle-92&quot;.</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: #666;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+
+       <item>
+        <widget class="QLabel" name="labelUrlControl">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByMouse</set>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+         <property name="toolTip">
+          <string>Share this link only with trusted users who should have remote control.</string>
+         </property>
+        </widget>
+       </item>
+
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayoutControlButtonsRow">
+         <item>
+          <widget class="QPushButton" name="pushButtonCopyUrlControl">
+           <property name="text">
+            <string>Copy URL</string>
+           </property>
+           <property name="toolTip">
+            <string>Copy the remote control link to your clipboard.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacerControlButtons">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelConnectedCountControl">
+           <property name="text">
+            <string>Connected: 0</string>
+           </property>
+           <property name="toolTip">
+            <string>Number of currently connected control clients.</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+
+       <item>
+        <widget class="QLabel" name="labelQrCodeControl">
+         <property name="minimumSize">
+          <size>
+           <width>220</width>
+           <height>220</height>
+          </size>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget> -->
+
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
