@@ -74,7 +74,7 @@ void RemoteService::loadSettingsAndMaybeStart() {
   s.endGroup();
 
   // Let the UI reflect what we loaded, and auto-start if requested
-  emit settingsLoaded(m_config.enabled, m_config.uuid, m_config.httpPort,
+  emit settingsLoaded(m_config.enabled, m_config.httpPort,
                       m_config.webSocketPort);
 
   qDebug() << "RemoteService loaded settings:" << m_config.enabled
@@ -95,7 +95,7 @@ void RemoteService::saveSettings() const {
            << m_config.httpPort << m_config.webSocketPort << m_config.uuid;
 }
 
-void RemoteService::start(int httpPort, int webSocketPort) {
+void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
   if (m_isRunning)
     stop();
 
@@ -167,7 +167,7 @@ void RemoteService::start(int httpPort, int webSocketPort) {
 
                     auto sendErrorAndClose = [socket](const QString &reason) {
                       const QJsonObject err{{"event-type", "error"},
-                                            {"data", reason}};
+                                            {"content", reason}};
                       socket->sendTextMessage(QString::fromUtf8(
                           QJsonDocument(err).toJson(QJsonDocument::Compact)));
                       socket->close();
@@ -194,10 +194,8 @@ void RemoteService::start(int httpPort, int webSocketPort) {
 
                     // Authorized 🎉
                     socket->setProperty("authorized", true);
-                    // (Optional) send an OK event; comment out if you prefer
-                    // silence
                     const QJsonObject ok{{"event-type", "ok"},
-                                         {"data", "connected"}};
+                                         {"content", "connected"}};
                     socket->sendTextMessage(QString::fromUtf8(
                         QJsonDocument(ok).toJson(QJsonDocument::Compact)));
                     return;
@@ -222,7 +220,7 @@ void RemoteService::start(int httpPort, int webSocketPort) {
   m_isRunning = true;
   m_config.enabled = true;
   saveSettings();
-  emit started(url, m_httpPortInUse, m_webSocketPortInUse);
+  emit started(url);
   qDebug() << "Started" << url << m_httpPortInUse << m_webSocketPortInUse;
 }
 
@@ -305,11 +303,12 @@ void RemoteService::sendMessage(const QJsonObject &p_json) {
 
     socket->sendTextMessage(encoded);
   }
+  qDebug() << "Sent" << encoded;
 }
 
 void RemoteService::addSubtitle(Subtitle *p_subtitle) {
   QJsonObject json;
-  json["type"] = "add-subtitle";
+  json["event-type"] = "add-subtitle";
   json["id"] = p_subtitle->index();
   json["content"] = p_subtitle->text();
   json["comments"] = p_subtitle->comments();
@@ -363,14 +362,14 @@ void RemoteService::addSubtitle(Subtitle *p_subtitle) {
 
 void RemoteService::remSubtitle(Subtitle *p_subtitle) {
   QJsonObject json;
-  json["type"] = "rem-subtitle";
+  json["event-type"] = "rem-subtitle";
   json["id"] = p_subtitle->index();
   sendMessage(json);
 }
 
 void RemoteService::clearSubtitles() {
   QJsonObject json;
-  json["type"] = "clear";
+  json["event-type"] = "clear";
   sendMessage(json);
 }
 

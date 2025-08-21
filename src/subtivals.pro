@@ -31,8 +31,9 @@ SOURCES += main.cpp\
     styleadvanced.cpp \
     shortcuteditor.cpp \
     wizard.cpp \
-    weblive.cpp \
-    remoteservice.cpp
+    remoteservice.cpp \
+    remoteoptionsdialog.cpp \
+    qrcodegen.cpp
 
 HEADERS += mainwindow.h \
     script.h \
@@ -46,9 +47,10 @@ HEADERS += mainwindow.h \
     styleadvanced.h \
     shortcuteditor.h \
     wizard.h \
-    weblive.h \
     remoteservice.h \
-    macwindowhelper.h
+    macwindowhelper.h \
+    remoteoptionsdialog.h \
+    qrcodegen.hpp
 
 OBJECTIVE_SOURCES += macwindowhelper.mm
 
@@ -62,7 +64,8 @@ FORMS += mainwindow.ui \
     configeditor.ui \
     styleadvanced.ui \
     shortcuteditor.ui \
-    wizard.ui
+    wizard.ui \
+    remoteoptionsdialog.ui
 
 RESOURCES += \
     ../resources/icons.qrc \

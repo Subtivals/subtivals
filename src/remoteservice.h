@@ -28,7 +28,7 @@ public slots:
   void loadSettingsAndMaybeStart();
 
   // Control
-  void start(int httpPort, int webSocketPort);
+  void start(quint16 httpPort, quint16 webSocketPort);
   void stop();
   void disable();
 
@@ -38,11 +38,11 @@ public slots:
   void clearSubtitles();
 
 signals:
-  void started(const QString &url, quint16 httpPort, quint16 webSocketPort);
+  void started(const QString &url);
   void stopped();
-  void clientsConnected(int count);
+  void clientsConnected(quint16 count);
   void errorOccurred(const QString &message);
-  void settingsLoaded(const bool enabled, const QString &uuid, quint16 httpPort,
+  void settingsLoaded(const bool enabled, quint16 httpPort,
                       quint16 webSocketPort);
 
 private:

@@ -127,14 +127,14 @@ function connect() {
     }
 
     const type = payload["event-type"];
-    const data = payload.data;
+    const content = payload.content;
 
     if (type === "error") {
-      showError(String(data ?? "Unknown error"));
+      showError(String(content ?? "Unknown error"));
     } else if (type === "ok") {
-      show(data ?? "");
+      show("✅ Connected");
     } else if (type === "add-subtitle") {
-      show(data ?? "");
+      show(content ?? "");
     } else {
       show("");
     }

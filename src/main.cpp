@@ -31,6 +31,7 @@
 #include "player.h"
 #include "projectionwindow.h"
 #include "remoteservice.h"
+#include "remoteoptionsdialog.h"
 
 #ifdef Q_OS_MACOS
 #include <IOKit/pwr_mgt/IOPMLib.h>
@@ -106,19 +107,31 @@ int main(int argc, char *argv[]) {
   MainWindow w;
   RemoteService service;
 
-  // Remote
+  // Player -> Remote service
   QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &service,
                    SLOT(addSubtitle(Subtitle *)));
   QObject::connect(w.player(), SIGNAL(off(Subtitle *)), &service,
                    SLOT(remSubtitle(Subtitle *)));
   QObject::connect(w.player(), SIGNAL(clear()), &service,
                    SLOT(clearSubtitles()));
-
-  // QObject::connect(w.configEditor(), SIGNAL(webliveEnabled(bool)), &live,
-  //                  SLOT(enable(bool)));
-  // QObject::connect(&live, SIGNAL(connected(bool, QString)), w.configEditor(),
-  //                  SLOT(webliveConnected(bool, QString)));
-  // w.configEditor()->enableWeblive(live.configured());
+  // Remote service -> Remote options dialog
+  QObject::connect(&service, SIGNAL(settingsLoaded(bool, quint16, quint16)),
+                   w.remoteOptionsDialog(),
+                   SLOT(onSettingsLoaded(bool, quint16, quint16)));
+  QObject::connect(&service, SIGNAL(started(QString)), w.remoteOptionsDialog(),
+                   SLOT(onServiceStarted(QString)));
+  QObject::connect(&service, SIGNAL(stopped()), w.remoteOptionsDialog(),
+                   SLOT(onServiceStopped()));
+  QObject::connect(&service, SIGNAL(errorOccurred(QString)),
+                   w.remoteOptionsDialog(), SLOT(onServiceError(QString)));
+  QObject::connect(&service, SIGNAL(clientsConnected(quint16)),
+                   w.remoteOptionsDialog(), SLOT(onClientsConnected(quint16)));
+  // Remote options dialog -> Remote Service
+  QObject::connect(w.remoteOptionsDialog(),
+                   SIGNAL(startRequested(quint16, quint16)), &service,
+                   SLOT(start(quint16, quint16)));
+  QObject::connect(w.remoteOptionsDialog(), SIGNAL(disableRequested()),
+                   &service, SLOT(disable()));
 
   // Showing subtitles
   w.connectProjectionEvents(&f);

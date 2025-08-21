@@ -42,6 +42,7 @@
 #include "mainwindow.h"
 #include "player.h"
 #include "shortcuteditor.h"
+#include "remoteoptionsdialog.h"
 #include "ui_mainwindow.h"
 #include "wizard.h"
 
@@ -171,8 +172,9 @@ MainWindow::MainWindow(QWidget *parent)
       m_player(new Player()), m_playerThread(new QThread()),
       m_preferences(new ConfigEditor(this)),
       m_previewpanel(new SubtitlesForm(this)),
-      m_shortcutEditor(new ShortcutEditor(this)), m_selectSubtitle(true),
-      m_rowChanged(false), m_reloadEnabled(false),
+      m_shortcutEditor(new ShortcutEditor(this)),
+      m_remoteOptionsDialog(new RemoteOptionsDialog(this)),
+      m_selectSubtitle(true), m_rowChanged(false), m_reloadEnabled(false),
       m_filewatcher(new QFileSystemWatcher),
       m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)),
       m_windowShown(false) {
@@ -501,6 +503,10 @@ void MainWindow::showEvent(QShowEvent *) {
 ConfigEditor *MainWindow::configEditor() { return m_preferences; }
 
 const Player *MainWindow::player() { return m_player; }
+
+const RemoteOptionsDialog *MainWindow::remoteOptionsDialog() {
+  return m_remoteOptionsDialog;
+}
 
 void MainWindow::openRecentFile() {
   QAction *action = qobject_cast<QAction *>(sender());
@@ -1343,6 +1349,8 @@ void MainWindow::actionJumpLongest() {
 }
 
 void MainWindow::actionEditShortcuts() { m_shortcutEditor->exec(); }
+
+void MainWindow::actionShowRemoteOptions() { m_remoteOptionsDialog->show(); }
 
 void MainWindow::actionShowMilliseconds(bool) { refreshDurations(); }
 

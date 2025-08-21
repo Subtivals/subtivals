@@ -66,9 +66,6 @@ public slots:
   void onClicked(QAbstractButton *);
   void chooseColor();
   void presetRenamed(QString);
-
-  void enableWeblive(bool);
-  void webliveConnected(bool p_state, QString p_url);
   void enableTabScreen(bool);
 protected slots:
   void enableButtonBox(bool restore = true, bool cancel = true,

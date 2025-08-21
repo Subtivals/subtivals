@@ -48,6 +48,7 @@ static QList<Factor> FACTORS_VALUES = {
 class ConfigEditor;
 class ShortcutEditor;
 class Player;
+class RemoteOptionsDialog;
 
 namespace Ui {
   class MainWindow;
@@ -64,6 +65,7 @@ public:
   void closeFile();
   ConfigEditor *configEditor();
   const Player *player();
+  const RemoteOptionsDialog *remoteOptionsDialog();
   void connectProjectionEvents(SubtitlesForm *f);
 signals:
   void hideDesktop(bool state);
@@ -112,6 +114,7 @@ public slots:
   void enableKnownFactors(bool);
   void actionToggleLargeText(bool);
   void actionToggleLockScreenOnPlay(bool);
+  void actionShowRemoteOptions();
 
 protected:
   bool canNext();
@@ -146,6 +149,7 @@ private:
   ConfigEditor *m_preferences;
   SubtitlesForm *m_previewpanel;
   ShortcutEditor *m_shortcutEditor;
+  RemoteOptionsDialog *m_remoteOptionsDialog;
   QMap<Subtitle *, int> m_tableMapping;
   bool m_selectSubtitle;
   QTimer m_timerSelection;
