@@ -147,9 +147,6 @@ void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
   connect(m_webSocketServer.get(), &QWebSocketServer::newConnection, this,
           [this]() {
             QWebSocket *socket = m_webSocketServer->nextPendingConnection();
-            m_clients.insert(socket);
-            emit clientsConnected(m_clients.size());
-
             // Not authorized until first valid uuid arrives
             socket->setProperty("authorized", false);
 
@@ -202,6 +199,8 @@ void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
                     }
 
                     // Authorized 🎉
+                    m_clients.insert(socket);
+                    emit clientsConnected(m_clients.size());
                     socket->setProperty("authorized", true);
                     const QJsonObject ok{{"event-type", "ok"},
                                          {"content", "connected"}};
@@ -229,8 +228,6 @@ void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
             });
           });
 
-  publishMdns();
-
   const QString host = effectiveHost();
   const QString url = buildViewerUrl(host);
   m_isRunning = true;
@@ -242,7 +239,6 @@ void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
 
 void RemoteService::stop() {
   qDebug() << "Stopping RemoteService";
-  unpublishMdns();
 
   if (m_webSocketServer) {
     m_webSocketServer->close();
@@ -269,7 +265,6 @@ void RemoteService::disable() {
 }
 
 QString RemoteService::effectiveHost() const {
-
   // Pick the first non-loopback IPv4 on an active interface
   for (const QNetworkInterface &iface : QNetworkInterface::allInterfaces()) {
     const auto flags = iface.flags();
@@ -387,28 +382,4 @@ void RemoteService::clearSubtitles() {
   QJsonObject json;
   json["event-type"] = "clear";
   sendMessage(json);
-}
-
-void RemoteService::publishMdns() {
-#ifdef Q_OS_MAC
-  unpublishMdns();
-  qDebug() << "Publishing mDNS service";
-  m_dnsSdProcess = new QProcess(this);
-  const QString name =
-      QStringLiteral("RemoteScreens-%1").arg(m_config.uuid.left(8));
-  m_dnsSdProcess->start("dns-sd", {"-R", name, "_http._tcp", ".",
-                                   QString::number(m_httpPortInUse)});
-#endif
-}
-
-void RemoteService::unpublishMdns() {
-#ifdef Q_OS_MAC
-  qDebug() << "Unpublishing mDNS service";
-  if (m_dnsSdProcess) {
-    m_dnsSdProcess->kill();
-    m_dnsSdProcess->waitForFinished(1000);
-    m_dnsSdProcess->deleteLater();
-    m_dnsSdProcess = nullptr;
-  }
-#endif
 }

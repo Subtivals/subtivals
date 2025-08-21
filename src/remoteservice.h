@@ -50,8 +50,6 @@ private:
   void saveSettings() const;
   QString effectiveHost() const; // Prefer .local on macOS, else first IPv4
   QString buildViewerUrl(const QString &host) const; // http://host:port/
-  void publishMdns();
-  void unpublishMdns();
 
 private:
   RemoteScreensConfig m_config;
