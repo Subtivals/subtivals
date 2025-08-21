@@ -1,8 +1,0 @@
-<RCC>
-  <qresource>
-    <file>www/viewer.html</file>
-    <file>www/viewer.js</file>
-    <file>www/viewer.css</file>
-    <file>www/favicon.ico</file>
-  </qresource>
-</RCC>
