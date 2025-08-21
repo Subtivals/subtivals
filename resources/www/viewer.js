@@ -1,6 +1,7 @@
 const MIN_DELAY_MS = 500; // ms
 const MAX_DELAY_MS = 10000; // ms
 const JITTER = 0.25; // 25% jitter
+const PING_INTERVAL_MS = 5000;
 
 let ws = null;
 
@@ -8,6 +9,9 @@ let ws = null;
 let reconnectAttempts = 0;
 let reconnectTimer = null;
 let intentionalClose = false;
+
+let pingInterval = null;
+let waitingForPong = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Kick it off
@@ -55,6 +59,16 @@ function scheduleReconnect(reason) {
   reconnectTimer = setTimeout(connect, delay);
 }
 
+function sendPing() {
+  if (!ws || ws.readyState !== WebSocket.OPEN || waitingForPong) return;
+
+  waitingForPong = true;
+  ws.send(JSON.stringify({
+    action: "ping",
+    content: Date.now(),
+  }));
+}
+
 // Auto-reconnect when the network comes back
 window.addEventListener("online", () => {
   if (!intentionalClose && (!ws || ws.readyState === WebSocket.CLOSED)) {
@@ -93,9 +107,15 @@ function connect() {
     // Reset backoff
     reconnectAttempts = 0;
     // Send handshake
-    ws.send(JSON.stringify({ uuid }));
+    ws.send(JSON.stringify({
+      action: "auth",
+      content: uuid,
+    }));
     // Clear status
     show("");
+    // Start pinging every X seconds
+    clearInterval(pingInterval);
+    pingInterval = setInterval(sendPing, PING_INTERVAL_MS);
   };
 
   ws.onerror = () => {
@@ -104,6 +124,7 @@ function connect() {
   };
 
   ws.onclose = () => {
+    clearInterval(pingInterval);
     if (!intentionalClose) scheduleReconnect("Disconnected");
   };
 
@@ -129,7 +150,11 @@ function connect() {
     const type = payload["event-type"];
     const content = payload.content;
 
-    if (type === "error") {
+    if (type === "pong" && content) {
+      const rtt = Date.now() - content;
+      console.log(`Ping RTT: ${rtt} ms`);
+      waitingForPong = false;
+    } else if (type === "error") {
       showError(String(content ?? "Unknown error"));
     } else if (type === "ok") {
       show("✅ Connected");

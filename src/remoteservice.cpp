@@ -156,32 +156,41 @@ void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
             connect(
                 socket, &QWebSocket::textMessageReceived, this,
                 [this, socket](const QString &msg) {
+                  QJsonParseError parseErr{};
+                  const QJsonDocument doc =
+                      QJsonDocument::fromJson(msg.toUtf8(), &parseErr);
+
+                  auto sendErrorAndClose = [socket](const QString &reason) {
+                    const QJsonObject err{{"event-type", "error"},
+                                          {"content", reason}};
+                    socket->sendTextMessage(QString::fromUtf8(
+                        QJsonDocument(err).toJson(QJsonDocument::Compact)));
+                    socket->close();
+                  };
+
+                  if (parseErr.error != QJsonParseError::NoError ||
+                      !doc.isObject()) {
+                    sendErrorAndClose(QStringLiteral("Invalid JSON"));
+                    return;
+                  }
+
+                  const QJsonObject obj = doc.object();
+
+                  const QString action =
+                      obj.value(QStringLiteral("action")).toString();
+
+                  if (action.isEmpty()) {
+                    sendErrorAndClose(QStringLiteral("Missing action"));
+                    return;
+                  }
+
                   const bool authorized =
                       socket->property("authorized").toBool();
 
-                  if (!authorized) {
+                  if (action == "auth") {
                     // Handshake phase: expect {"uuid": "..."}
-                    QJsonParseError parseErr{};
-                    const QJsonDocument doc =
-                        QJsonDocument::fromJson(msg.toUtf8(), &parseErr);
-
-                    auto sendErrorAndClose = [socket](const QString &reason) {
-                      const QJsonObject err{{"event-type", "error"},
-                                            {"content", reason}};
-                      socket->sendTextMessage(QString::fromUtf8(
-                          QJsonDocument(err).toJson(QJsonDocument::Compact)));
-                      socket->close();
-                    };
-
-                    if (parseErr.error != QJsonParseError::NoError ||
-                        !doc.isObject()) {
-                      sendErrorAndClose(QStringLiteral("Invalid JSON"));
-                      return;
-                    }
-
-                    const QJsonObject obj = doc.object();
                     const QString uuid =
-                        obj.value(QStringLiteral("uuid")).toString();
+                        obj.value(QStringLiteral("content")).toString();
 
                     if (uuid.isEmpty()) {
                       sendErrorAndClose(QStringLiteral("Missing uuid"));
@@ -198,12 +207,19 @@ void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
                                          {"content", "connected"}};
                     socket->sendTextMessage(QString::fromUtf8(
                         QJsonDocument(ok).toJson(QJsonDocument::Compact)));
-                    return;
+                  } else if (action == "ping") {
+                    if (!authorized) {
+                      sendErrorAndClose(QStringLiteral("Not authorized"));
+                      return;
+                    }
+                    const QJsonObject ping{
+                        {"event-type", "pong"},
+                        {"content", obj.value(QStringLiteral("content"))}};
+                    socket->sendTextMessage(QString::fromUtf8(
+                        QJsonDocument(ping).toJson(QJsonDocument::Compact)));
+                  } else {
+                    sendErrorAndClose(QStringLiteral("Unknown action"));
                   }
-
-                  // --- Post-auth messages (your app protocol goes here) ---
-                  // Keep echo for now:
-                  socket->sendTextMessage(QStringLiteral("echo: ") + msg);
                 });
 
             connect(socket, &QWebSocket::disconnected, this, [this, socket] {
