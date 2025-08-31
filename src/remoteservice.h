@@ -33,6 +33,7 @@ public slots:
   void disable();
 
   // Messages
+  void movieStarted(const QString &title);
   void addSubtitle(Subtitle *);
   void remSubtitle(Subtitle *);
   void clearSubtitles();

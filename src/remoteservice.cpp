@@ -317,6 +317,13 @@ void RemoteService::sendMessage(const QJsonObject &p_json) {
   qDebug() << "Sent" << encoded;
 }
 
+void RemoteService::movieStarted(const QString &title) {
+  QJsonObject json;
+  json["event-type"] = "movie-started";
+  json["title"] = title;
+  sendMessage(json);
+}
+
 void RemoteService::addSubtitle(Subtitle *p_subtitle) {
   QJsonObject json;
   json["event-type"] = "add-subtitle";

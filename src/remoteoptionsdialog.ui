@@ -3,7 +3,7 @@
  <class>RemoteOptionsDialog</class>
  <widget class="QDialog" name="RemoteOptionsDialog">
   <property name="windowTitle">
-   <string>Remote Screens</string>
+   <string>Remote Options</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayoutRoot">
    <item>
@@ -11,10 +11,10 @@
      <item>
       <widget class="QCheckBox" name="checkBoxRemoteScreensEnabled">
        <property name="text">
-        <string>remote screens enabled</string>
+        <string>Enable remote features</string>
        </property>
        <property name="toolTip">
-        <string>Turn on to start the local HTTP and WebSocket servers and generate shareable URLs.</string>
+        <string>Turn on to enable remote connections.</string>
        </property>
       </widget>
      </item>
@@ -166,8 +166,6 @@
        </item>
       </layout>
      </widget>
-
-     <!-- Remote Control tab
      <widget class="QWidget" name="tabRemoteControl">
       <attribute name="title">
        <string>Remote control</string>
@@ -297,8 +295,7 @@
         </widget>
        </item>
       </layout>
-     </widget> -->
-
+     </widget>
     </widget>
    </item>
   </layout>

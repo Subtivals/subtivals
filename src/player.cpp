@@ -34,6 +34,7 @@ void Player::play() {
   }
   m_timerAutoHide.stop();
   m_timer.start();
+  emit started(m_script->title());
 }
 
 void Player::pause() {
@@ -42,7 +43,7 @@ void Player::pause() {
 }
 
 void Player::stop() {
-  emit clear();
+  emit stopped();
   m_timer.stop();
   m_timerAutoHide.stop();
   m_msseStartTime = 0;

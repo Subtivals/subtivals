@@ -46,7 +46,7 @@ public:
   /*
    * Returns the script title.
    */
-  const QString &title() const;
+  const QString title() const;
   /*
    * Returns a style from its name.
    */

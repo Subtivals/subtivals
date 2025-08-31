@@ -19,8 +19,9 @@ public:
   qlonglong elapsedTime();
   int delay();
 signals:
+  void started(const QString &);
   void pulse(int);
-  void clear();
+  void stopped();
   void on(Subtitle *);
   void off(Subtitle *);
   void changed(QList<Subtitle *>);

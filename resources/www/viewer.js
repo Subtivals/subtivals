@@ -158,10 +158,17 @@ function connect() {
       showError(String(content ?? "Unknown error"));
     } else if (type === "ok") {
       show("✅ Connected");
+    } else if (type === "movie-started") {
+      document.title = payload.title;
+    } else if (type === "clear") {
+      document.title = "Remote Subtivals";
+      show("");
     } else if (type === "add-subtitle") {
       show(content ?? "");
-    } else {
+    } else if (type === "rem-subtitle") {
       show("");
+    } else {
+      console.error("Unknown event type", type, content);
     }
   };
 }

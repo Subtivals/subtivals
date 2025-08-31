@@ -611,7 +611,7 @@ void MainWindow::openFile(const QString &p_fileName) {
   m_player->setScript(m_script);
   m_preferences->setScript(m_script); // will reset()
   // Set the window title from the file name, without extention
-  setWindowTitle(QFileInfo(p_fileName).baseName());
+  setWindowTitle(m_script->title());
 
   // Show script properties
   int count = m_script->subtitlesCount();
@@ -963,7 +963,7 @@ void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
                    SLOT(addSubtitle(Subtitle *)));
   QObject::connect(m_player, SIGNAL(off(Subtitle *)), f,
                    SLOT(remSubtitle(Subtitle *)));
-  QObject::connect(m_player, SIGNAL(clear()), f, SLOT(clearSubtitles()),
+  QObject::connect(m_player, SIGNAL(stopped()), f, SLOT(clearSubtitles()),
                    Qt::DirectConnection);
   QObject::connect(this, SIGNAL(toggleHide(bool)), f, SLOT(toggleHide(bool)));
 

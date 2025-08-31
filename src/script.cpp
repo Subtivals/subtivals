@@ -99,7 +99,12 @@ int Script::totalDuration() const { return m_subtitles.last()->msseEnd(); }
 
 const QString &Script::fileName() const { return m_fileName; }
 
-const QString &Script::title() const { return m_title; }
+const QString Script::title() const {
+  if (!m_title.isEmpty()) {
+    return m_title;
+  }
+  return QFileInfo(m_fileName).baseName();
+}
 
 int Script::charsRate() const { return m_charsRate; };
 int Script::subtitleInterval() const { return m_subtitleInterval; };
