@@ -86,7 +86,7 @@ public slots:
   void actionToggleHide(bool state = true);
   void actionAbout();
   void actionShowHelp();
-  void playPulse(int msecsElapsed);
+  void playPulse(quint64 msecsElapsed);
   void subtitleChanged(QList<Subtitle *>);
   void actionEnableReload(bool);
   void fileChanged(QString path);

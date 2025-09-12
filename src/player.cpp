@@ -34,7 +34,7 @@ void Player::play() {
   }
   m_timerAutoHide.stop();
   m_timer.start();
-  emit started(m_script->title());
+  emit started(m_script->title(), m_script->totalDuration());
 }
 
 void Player::pause() {
@@ -151,7 +151,7 @@ void Player::setElapsedTime(qint64 p_elapsed) {
   m_msseStartTime = tick() - p_elapsed / factor + m_userDelay - m_pauseTotal;
 }
 
-qint64 Player::elapsedTime() {
+quint64 Player::elapsedTime() {
   if (!m_timer.isActive() && m_lastSubtitles.count() > 0) {
     return m_lastSubtitles.last()->msseStart() + 1;
   }
@@ -161,7 +161,7 @@ qint64 Player::elapsedTime() {
 }
 
 void Player::setSpeedFactor(double p_factor) {
-  qint64 elapsed = elapsedTime();
+  quint64 elapsed = elapsedTime();
   m_speedFactor = p_factor / 100.0;
   setElapsedTime(elapsed);
 }
@@ -174,7 +174,7 @@ void Player::enableAutoHide(bool p_state) {
 bool Player::isAutoHideEnabled() { return m_autoHideEnabled; }
 
 void Player::enableSpeedFactor(bool p_state) {
-  qint64 elapsed = elapsedTime();
+  quint64 elapsed = elapsedTime();
   m_speedFactorEnabled = p_state;
   setElapsedTime(elapsed);
 }

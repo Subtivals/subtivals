@@ -13,6 +13,8 @@ let intentionalClose = false;
 let pingInterval = null;
 let waitingForPong = false;
 
+let totalDuration = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   // Kick it off
   connect();
@@ -24,6 +26,27 @@ function show(msg) {
 
 function showError(msg) {
   show(`❌ ${msg}`);
+}
+
+function ts2tc(p_ts) {
+    const sign = p_ts >= 0 ? "+" : "-";
+    const ms = Math.abs(p_ts);
+
+    const hours = Math.floor(ms / 3600000);
+    const minutes = Math.floor((ms % 3600000) / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+
+    // Pad with zeros if needed
+    const hh = String(hours).padStart(2, '0');
+    const mm = String(minutes).padStart(2, '0');
+    const ss = String(seconds).padStart(2, '0');
+
+    return sign + `${hh}:${mm}:${ss}`;
+}
+
+function showProgress(elapsed, total) {
+  const output = ts2tc(elapsed) + "/" + ts2tc(total);
+  document.querySelector("#progress").innerHTML = output;
 }
 
 function parseHash(hash) {
@@ -161,6 +184,9 @@ function connect() {
       show("✅ Connected");
     } else if (type === "movie-started") {
       document.title = payload.title;
+      totalDuration = payload.totalDuration;
+    } else if (type === "play-pulse") {
+      showProgress(payload.elapsed, totalDuration);
     } else if (type === "clear") {
       document.title = "Remote Subtivals";
       show("");

@@ -14,8 +14,11 @@
 #include <QJsonObject>
 #include <QSet>
 #include <QHttpHeaders>
+#include <QTimer>
 
 #include "subtitlestyle.h"
+
+#define PLAY_PULSE_INTERVAL_MILLISECONDS 500
 
 RemoteService::RemoteService(QObject *parent) : QObject(parent) {
   // "/" -> redirect.
@@ -339,11 +342,26 @@ void RemoteService::sendMessage(const QJsonObject &p_json) {
   qDebug() << "Sent" << encoded;
 }
 
-void RemoteService::movieStarted(const QString &title) {
+void RemoteService::movieStarted(const QString &title, quint64 totalDuration) {
   QJsonObject json;
   json["event-type"] = "movie-started";
   json["title"] = title;
+  json["totalDuration"] = static_cast<qint64>(totalDuration);
   sendMessage(json);
+}
+
+void RemoteService::playPulse(quint64 elapsed) {
+  if (m_playPulseDebounce) {
+    return;
+  }
+  m_playPulseDebounce = true;
+  QTimer::singleShot(PLAY_PULSE_INTERVAL_MILLISECONDS, this, [=]() mutable {
+    QJsonObject json;
+    json["event-type"] = "play-pulse";
+    json["elapsed"] = static_cast<qint64>(elapsed);
+    sendMessage(json);
+    m_playPulseDebounce = false;
+  });
 }
 
 void RemoteService::addSubtitle(Subtitle *p_subtitle) {

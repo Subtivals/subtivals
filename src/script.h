@@ -78,7 +78,7 @@ public:
   const QList<Subtitle *> previousSubtitles(qlonglong elapsed) const;
   const QString exportList(ScriptFormat) const;
   ScriptFormat format() const;
-  int totalDuration() const;
+  quint64 totalDuration() const;
   QSize resolution() const;
   bool hasComments() const;
   int charsRate() const;

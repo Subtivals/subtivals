@@ -95,7 +95,9 @@ Script::Script(const QString &p_fileName, int p_charsRate,
 
 Script::ScriptFormat Script::format() const { return m_format; }
 
-int Script::totalDuration() const { return m_subtitles.last()->msseEnd(); }
+quint64 Script::totalDuration() const {
+  return m_subtitles.last()->msseEnd();
+}
 
 const QString &Script::fileName() const { return m_fileName; }
 

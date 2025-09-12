@@ -16,11 +16,11 @@ class Player : public QObject {
 public:
   explicit Player(QObject *parent = nullptr);
   void setScript(Script *);
-  qlonglong elapsedTime();
+  quint64 elapsedTime();
   int delay();
 signals:
-  void started(const QString &);
-  void pulse(int);
+  void started(const QString &title, quint64 totalDuration);
+  void pulse(quint64);
   void stopped();
   void on(Subtitle *);
   void off(Subtitle *);

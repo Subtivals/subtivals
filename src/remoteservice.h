@@ -35,7 +35,8 @@ public slots:
   void setPassphrase(const QString &);
 
   // Messages
-  void movieStarted(const QString &title);
+  void movieStarted(const QString &title, quint64 totalDuration);
+  void playPulse(quint64 elapsed);
   void addSubtitle(Subtitle *);
   void remSubtitle(Subtitle *);
   void clearSubtitles();
@@ -68,6 +69,8 @@ private:
   bool m_isRunning = false;
   quint16 m_httpPortInUse = 0;
   quint16 m_webSocketPortInUse = 0;
+
+  bool m_playPulseDebounce = false;
 
 #ifdef Q_OS_MAC
   class QProcess *m_dnsSdProcess = nullptr;

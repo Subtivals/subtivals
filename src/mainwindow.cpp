@@ -211,7 +211,7 @@ MainWindow::MainWindow(QWidget *parent)
   m_player->moveToThread(m_playerThread);
   m_playerThread->start();
   qRegisterMetaType<QList<Subtitle *>>("QList<Subtitle*>");
-  connect(m_player, SIGNAL(pulse(int)), this, SLOT(playPulse(int)));
+  connect(m_player, SIGNAL(pulse(quint64)), this, SLOT(playPulse(quint64)));
   connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
           SLOT(subtitleChanged(QList<Subtitle *>)));
   connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
@@ -1116,7 +1116,7 @@ void MainWindow::actionSubtitleSelected(QModelIndex index) {
   ui->actionNext->setEnabled(canNext());
 }
 
-void MainWindow::playPulse(int msecsElapsed) {
+void MainWindow::playPulse(quint64 msecsElapsed) {
   if (m_state == PLAYING) {
     ui->timer->setText(ts2tc(msecsElapsed));
     ui->userDelay->setText(ts2tc(m_player->delay()));
