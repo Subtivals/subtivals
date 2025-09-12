@@ -12,6 +12,7 @@ struct RemoteScreensConfig {
   QString uuid;
   quint16 httpPort = 8080;
   quint16 webSocketPort = 8765;
+  QString passphrase;
 };
 
 class RemoteService : public QObject {
@@ -31,6 +32,7 @@ public slots:
   void start(quint16 httpPort, quint16 webSocketPort);
   void stop();
   void disable();
+  void setPassphrase(const QString &);
 
   // Messages
   void movieStarted(const QString &title);
@@ -39,18 +41,19 @@ public slots:
   void clearSubtitles();
 
 signals:
-  void started(const QString &url);
+  void started(const QString &viewersUrl, const QString &controlUrl);
   void stopped();
-  void clientsConnected(quint16 count);
+  void clientsConnected(quint16 viewersCount, quint16 controlCount);
   void errorOccurred(const QString &message);
   void settingsLoaded(const bool enabled, quint16 httpPort,
-                      quint16 webSocketPort);
+                      quint16 webSocketPort, QString passphrase);
 
 private:
   void sendMessage(const QJsonObject &);
   void saveSettings() const;
   QString effectiveHost() const; // Prefer .local on macOS, else first IPv4
-  QString buildViewerUrl(const QString &host) const; // http://host:port/
+  QString buildViewersUrl(const QString &host) const;
+  QString buildControlUrl(const QString &host) const;
 
 private:
   RemoteScreensConfig m_config;
@@ -59,8 +62,8 @@ private:
   QHttpServer m_httpServer;
   std::unique_ptr<QWebSocketServer> m_webSocketServer;
   std::unique_ptr<QTcpServer> m_tcpServer;
-  QSet<QWebSocket *> m_clients; // tracked websocket clients (some may be
-                                // unauthorized until handshake)
+  QSet<QWebSocket *> m_remoteViewers;  // tracked websocket clients (some may be
+  QSet<QWebSocket *> m_remoteControls; // unauthorized until handshake)
 
   bool m_isRunning = false;
   quint16 m_httpPortInUse = 0;

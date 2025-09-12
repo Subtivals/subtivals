@@ -3,6 +3,9 @@
     <file>www/viewer.html</file>
     <file>www/viewer.js</file>
     <file>www/viewer.css</file>
+    <file>www/control.html</file>
+    <file>www/control.js</file>
+    <file>www/control.css</file>
     <file>www/favicon.ico</file>
   </qresource>
 </RCC>

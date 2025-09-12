@@ -16,7 +16,11 @@ RemoteOptionsDialog::RemoteOptionsDialog(QWidget *parent) : QDialog(parent) {
   connect(m_ui->checkBoxRemoteScreensEnabled, &QCheckBox::toggled, this,
           &RemoteOptionsDialog::onRemoteScreensToggled);
   connect(m_ui->pushButtonCopyUrlViewers, &QPushButton::clicked, this,
-          &RemoteOptionsDialog::onCopyUrl);
+          &RemoteOptionsDialog::onCopyViewersUrl);
+  connect(m_ui->pushButtonCopyUrlControl, &QPushButton::clicked, this,
+          &RemoteOptionsDialog::onCopyControlUrl);
+  connect(m_ui->lineEditPassphrase, &QLineEdit::textEdited, this,
+          &RemoteOptionsDialog::setPassphrase);
 
   refreshLabelsAndQr(); // will be empty until service emits signals
 }
@@ -24,7 +28,8 @@ RemoteOptionsDialog::RemoteOptionsDialog(QWidget *parent) : QDialog(parent) {
 RemoteOptionsDialog::~RemoteOptionsDialog() { delete m_ui; }
 
 void RemoteOptionsDialog::onSettingsLoaded(const bool enabled, quint16 httpPort,
-                                           quint16 webSocketPort) {
+                                           quint16 webSocketPort,
+                                           const QString &passphrase) {
   m_ui->spinBoxHttpPort->blockSignals(true);
   m_ui->spinBoxHttpPort->setValue(httpPort);
   m_ui->spinBoxHttpPort->blockSignals(false);
@@ -37,12 +42,18 @@ void RemoteOptionsDialog::onSettingsLoaded(const bool enabled, quint16 httpPort,
   m_ui->checkBoxRemoteScreensEnabled->setChecked(enabled);
   m_ui->checkBoxRemoteScreensEnabled->blockSignals(false);
 
+  m_ui->lineEditPassphrase->blockSignals(true);
+  m_ui->lineEditPassphrase->setText(passphrase);
+  m_ui->lineEditPassphrase->blockSignals(false);
+
   setControlsEnabled(enabled);
   refreshLabelsAndQr();
 }
 
-void RemoteOptionsDialog::onServiceStarted(const QString &url) {
-  m_currentUrl = url;
+void RemoteOptionsDialog::onServiceStarted(const QString &urlViewers,
+                                           const QString &urlControl) {
+  m_urlViewers = urlViewers;
+  m_urlControl = urlControl;
   m_ui->checkBoxRemoteScreensEnabled->blockSignals(true);
   m_ui->checkBoxRemoteScreensEnabled->setEnabled(true);
   m_ui->checkBoxRemoteScreensEnabled->blockSignals(false);
@@ -55,8 +66,10 @@ void RemoteOptionsDialog::onServiceStopped() {
   refreshLabelsAndQr();
 }
 
-void RemoteOptionsDialog::onClientsConnected(quint16 count) {
-  m_clientsConnected = count;
+void RemoteOptionsDialog::onClientsConnected(quint16 countViewers,
+                                             quint16 countControl) {
+  m_viewersConnected = countViewers;
+  m_controlConnected = countControl;
   refreshLabelsAndQr();
 }
 
@@ -72,7 +85,7 @@ void RemoteOptionsDialog::onServiceError(const QString &message) {
 
 void RemoteOptionsDialog::onRemoteScreensToggled(bool enabled) {
   if (!enabled) {
-    if (m_clientsConnected > 0) {
+    if (m_viewersConnected > 0 || m_controlConnected > 0) {
       const auto ret = QMessageBox::warning(
           this, tr("Disable remote screens"),
           tr("This will close all remote screens and stop the "
@@ -86,10 +99,10 @@ void RemoteOptionsDialog::onRemoteScreensToggled(bool enabled) {
         return;
       }
     }
-    m_currentUrl.clear();
+    m_urlViewers.clear();
+    m_urlControl.clear();
     emit disableRequested();
   } else {
-
     emit startRequested(m_ui->spinBoxHttpPort->value(),
                         m_ui->spinBoxWebSocketPort->value());
   }
@@ -97,38 +110,55 @@ void RemoteOptionsDialog::onRemoteScreensToggled(bool enabled) {
   refreshLabelsAndQr();
 }
 
-void RemoteOptionsDialog::onCopyUrl() {
-  if (!m_currentUrl.isEmpty())
-    QGuiApplication::clipboard()->setText(m_currentUrl);
+void RemoteOptionsDialog::onCopyViewersUrl() {
+  if (!m_urlViewers.isEmpty())
+    QGuiApplication::clipboard()->setText(m_urlViewers);
+}
+
+void RemoteOptionsDialog::onCopyControlUrl() {
+  if (!m_urlControl.isEmpty())
+    QGuiApplication::clipboard()->setText(m_urlControl);
 }
 
 void RemoteOptionsDialog::setControlsEnabled(bool running) {
   m_ui->spinBoxHttpPort->setEnabled(!running);
   m_ui->spinBoxWebSocketPort->setEnabled(!running);
   m_ui->pushButtonCopyUrlViewers->setEnabled(running);
+  m_ui->pushButtonCopyUrlControl->setEnabled(running);
 }
 
 void RemoteOptionsDialog::refreshLabelsAndQr() {
-  if (m_currentUrl.isEmpty()) {
+  if (m_urlViewers.isEmpty() || m_urlControl.isEmpty()) {
     m_ui->labelUrlViewers->clear();
     m_ui->labelQrCodeViewers->clear();
     m_ui->labelConnectedCountViewers->clear();
+
+    m_ui->labelUrlControl->clear();
+    m_ui->labelQrCodeControl->clear();
+    m_ui->labelConnectedCountControl->clear();
     return;
   }
   m_ui->labelUrlViewers->setText(
-      QString("URL: <a href=\"%1\">%1</a>").arg(m_currentUrl));
-
+      QString("URL: <a href=\"%1\">%1</a>").arg(m_urlViewers));
   m_ui->labelConnectedCountViewers->setText(
-      QString("Clients connected: %1").arg(m_clientsConnected));
+      QString("Clients connected: %1").arg(m_viewersConnected));
+
+  m_ui->labelUrlControl->setText(
+      QString("URL: <a href=\"%1\">%1</a>").arg(m_urlControl));
+  m_ui->labelConnectedCountControl->setText(
+      QString("Clients connected: %1").arg(m_controlConnected));
 
   // Generate at the exact display size
-  m_ui->labelQrCodeViewers->setScaledContents(false);
-
   // Figure out target points size (account for Retina DPR)
-  const QRect r = m_ui->labelQrCodeViewers->contentsRect();
+  m_ui->labelQrCodeViewers->setScaledContents(false);
+  const QRect rV = m_ui->labelQrCodeViewers->contentsRect();
+  QImage imgV = makeQrImage(m_urlViewers, rV);
+  m_ui->labelQrCodeViewers->setPixmap(QPixmap::fromImage(imgV));
 
-  QImage img = makeQrImage(m_currentUrl, r);
-  m_ui->labelQrCodeViewers->setPixmap(QPixmap::fromImage(img));
+  m_ui->labelQrCodeControl->setScaledContents(false);
+  const QRect rC = m_ui->labelQrCodeControl->contentsRect();
+  QImage imgC = makeQrImage(m_urlControl, rC);
+  m_ui->labelQrCodeControl->setPixmap(QPixmap::fromImage(imgC));
 }
 
 QImage RemoteOptionsDialog::makeQrImage(const QString &text, const QRect &rect,

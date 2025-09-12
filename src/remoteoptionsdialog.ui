@@ -11,7 +11,7 @@
      <item>
       <widget class="QCheckBox" name="checkBoxRemoteScreensEnabled">
        <property name="text">
-        <string>Enable remote features</string>
+        <string>Enable remote features (experimental)</string>
        </property>
        <property name="toolTip">
         <string>Turn on to enable remote connections.</string>
@@ -101,6 +101,9 @@
          <property name="textInteractionFlags">
           <set>Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByMouse</set>
          </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred"/>
+         </property>
          <property name="openExternalLinks">
           <bool>true</bool>
          </property>
@@ -188,23 +191,10 @@
               <string>Enter passphrase (required for remote control)</string>
              </property>
              <property name="echoMode">
-              <enum>QLineEdit::Password</enum>
-             </property>
-             <property name="clearButtonEnabled">
-              <bool>true</bool>
+              <enum>QLineEdit::PasswordEchoOnEdit</enum>
              </property>
              <property name="toolTip">
               <string>Only users who know this passphrase can control remotely.</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="toolButtonRevealPassphrase">
-             <property name="text">
-              <string>Show</string>
-             </property>
-             <property name="toolTip">
-              <string>Temporarily reveal the passphrase.</string>
              </property>
             </widget>
            </item>
@@ -214,9 +204,6 @@
           <widget class="QLabel" name="labelPassphraseHelper">
            <property name="text">
             <string notr="true">Choose a memorable phrase. Avoid common words; mix words and numbers, e.g., &quot;violet-bicycle-92&quot;.</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: #666;</string>
            </property>
           </widget>
          </item>
@@ -233,6 +220,9 @@
          </property>
          <property name="openExternalLinks">
           <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred"/>
          </property>
          <property name="toolTip">
           <string>Share this link only with trusted users who should have remote control.</string>

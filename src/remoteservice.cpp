@@ -54,14 +54,13 @@ RemoteService::RemoteService(QObject *parent) : QObject(parent) {
 RemoteService::~RemoteService() { stop(); }
 
 void RemoteService::loadSettingsAndMaybeStart() {
-  // Keep your explicit org/app for consistency with existing data
-  QSettings s("Remote", "RemoteApp");
-
+  QSettings s;
   s.beginGroup("RemoteScreens");
   m_config.enabled = s.value("enabled", false).toBool();
   m_config.httpPort = static_cast<quint16>(s.value("httpPort", 8080).toInt());
   m_config.webSocketPort =
       static_cast<quint16>(s.value("webSocketPort", 8765).toInt());
+  m_config.passphrase = s.value("passphrase").toString();
 
   // Persist UUID immediately if missing/empty so it survives even when not
   // enabled
@@ -75,24 +74,27 @@ void RemoteService::loadSettingsAndMaybeStart() {
 
   // Let the UI reflect what we loaded, and auto-start if requested
   emit settingsLoaded(m_config.enabled, m_config.httpPort,
-                      m_config.webSocketPort);
+                      m_config.webSocketPort, m_config.passphrase);
 
   qDebug() << "RemoteService loaded settings:" << m_config.enabled
-           << m_config.httpPort << m_config.webSocketPort << m_config.uuid;
+           << m_config.httpPort << m_config.webSocketPort << m_config.uuid
+           << QString(m_config.passphrase.length(), '*');
   if (m_config.enabled)
     start(m_config.httpPort, m_config.webSocketPort);
 }
 
 void RemoteService::saveSettings() const {
-  QSettings s("Remote", "RemoteApp");
+  QSettings s;
   s.beginGroup("RemoteScreens");
   s.setValue("enabled", m_config.enabled);
   s.setValue("httpPort", static_cast<int>(m_config.httpPort));
   s.setValue("webSocketPort", static_cast<int>(m_config.webSocketPort));
   s.setValue("uuid", m_config.uuid);
+  s.setValue("passphrase", m_config.passphrase);
   s.endGroup();
   qDebug() << "RemoteService saved settings:" << m_config.enabled
-           << m_config.httpPort << m_config.webSocketPort << m_config.uuid;
+           << m_config.httpPort << m_config.webSocketPort << m_config.uuid
+           << QString(m_config.passphrase.length(), '*');
 }
 
 void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
@@ -144,97 +146,105 @@ void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
   }
   m_webSocketPortInUse = m_webSocketServer->serverPort();
 
-  connect(m_webSocketServer.get(), &QWebSocketServer::newConnection, this,
-          [this]() {
-            QWebSocket *socket = m_webSocketServer->nextPendingConnection();
-            // Not authorized until first valid uuid arrives
-            socket->setProperty("authorized", false);
+  connect(
+      m_webSocketServer.get(), &QWebSocketServer::newConnection, this,
+      [this]() {
+        QWebSocket *socket = m_webSocketServer->nextPendingConnection();
+        // Not authorized until first valid uuid arrives
+        socket->setProperty("authorized", false);
 
-            connect(
-                socket, &QWebSocket::textMessageReceived, this,
-                [this, socket](const QString &msg) {
-                  QJsonParseError parseErr{};
-                  const QJsonDocument doc =
-                      QJsonDocument::fromJson(msg.toUtf8(), &parseErr);
+        connect(
+            socket, &QWebSocket::textMessageReceived, this,
+            [this, socket](const QString &msg) {
+              QJsonParseError parseErr{};
+              const QJsonDocument doc =
+                  QJsonDocument::fromJson(msg.toUtf8(), &parseErr);
 
-                  auto sendErrorAndClose = [socket](const QString &reason) {
-                    const QJsonObject err{{"event-type", "error"},
-                                          {"content", reason}};
-                    socket->sendTextMessage(QString::fromUtf8(
-                        QJsonDocument(err).toJson(QJsonDocument::Compact)));
-                    socket->close();
-                  };
+              auto sendErrorAndClose = [socket](const QString &reason) {
+                const QJsonObject err{{"event-type", "error"},
+                                      {"content", reason}};
+                socket->sendTextMessage(QString::fromUtf8(
+                    QJsonDocument(err).toJson(QJsonDocument::Compact)));
+                socket->close();
+              };
 
-                  if (parseErr.error != QJsonParseError::NoError ||
-                      !doc.isObject()) {
-                    sendErrorAndClose(QStringLiteral("Invalid JSON"));
-                    return;
-                  }
+              if (parseErr.error != QJsonParseError::NoError ||
+                  !doc.isObject()) {
+                sendErrorAndClose(QStringLiteral("Invalid JSON"));
+                return;
+              }
 
-                  const QJsonObject obj = doc.object();
+              const QJsonObject obj = doc.object();
 
-                  const QString action =
-                      obj.value(QStringLiteral("action")).toString();
+              const QString action =
+                  obj.value(QStringLiteral("action")).toString();
 
-                  if (action.isEmpty()) {
-                    sendErrorAndClose(QStringLiteral("Missing action"));
-                    return;
-                  }
+              if (action.isEmpty()) {
+                sendErrorAndClose(QStringLiteral("Missing action"));
+                return;
+              }
 
-                  const bool authorized =
-                      socket->property("authorized").toBool();
+              const bool authorized = socket->property("authorized").toBool();
 
-                  if (action == "auth") {
-                    // Handshake phase: expect {"uuid": "..."}
-                    const QString uuid =
-                        obj.value(QStringLiteral("content")).toString();
+              if (action == "auth") {
+                // Handshake phase: expect {"content": "(uuid or passphrase)"}
+                const QString uuidOrPassphrase =
+                    obj.value(QStringLiteral("content")).toString();
 
-                    if (uuid.isEmpty()) {
-                      sendErrorAndClose(QStringLiteral("Missing uuid"));
-                      return;
-                    }
-                    if (uuid != m_config.uuid) {
-                      sendErrorAndClose(QStringLiteral("UUID mismatch"));
-                      return;
-                    }
+                if (uuidOrPassphrase.isEmpty()) {
+                  sendErrorAndClose(QStringLiteral("Missing authorization"));
+                  return;
+                }
+                if (uuidOrPassphrase == m_config.uuid) {
+                  // Authorized viewer 🎉
+                  m_remoteViewers.insert(socket);
+                } else if (uuidOrPassphrase == m_config.passphrase) {
+                  // Authorized remote control 🎉
+                  m_remoteControls.insert(socket);
+                } else {
+                  sendErrorAndClose(QStringLiteral("UUID mismatch"));
+                  return;
+                }
 
-                    // Authorized 🎉
-                    m_clients.insert(socket);
-                    emit clientsConnected(m_clients.size());
-                    socket->setProperty("authorized", true);
-                    const QJsonObject ok{{"event-type", "ok"},
-                                         {"content", "connected"}};
-                    socket->sendTextMessage(QString::fromUtf8(
-                        QJsonDocument(ok).toJson(QJsonDocument::Compact)));
-                  } else if (action == "ping") {
-                    if (!authorized) {
-                      sendErrorAndClose(QStringLiteral("Not authorized"));
-                      return;
-                    }
-                    const QJsonObject ping{
-                        {"event-type", "pong"},
-                        {"content", obj.value(QStringLiteral("content"))}};
-                    socket->sendTextMessage(QString::fromUtf8(
-                        QJsonDocument(ping).toJson(QJsonDocument::Compact)));
-                  } else {
-                    sendErrorAndClose(QStringLiteral("Unknown action"));
-                  }
-                });
-
-            connect(socket, &QWebSocket::disconnected, this, [this, socket] {
-              m_clients.remove(socket);
-              emit clientsConnected(m_clients.size());
-              socket->deleteLater();
+                emit clientsConnected(m_remoteViewers.size(),
+                                      m_remoteControls.size());
+                socket->setProperty("authorized", true);
+                const QJsonObject ok{{"event-type", "ok"},
+                                     {"content", "connected"}};
+                socket->sendTextMessage(QString::fromUtf8(
+                    QJsonDocument(ok).toJson(QJsonDocument::Compact)));
+              } else if (action == "ping") {
+                if (!authorized) {
+                  sendErrorAndClose(QStringLiteral("Not authorized"));
+                  return;
+                }
+                const QJsonObject ping{
+                    {"event-type", "pong"},
+                    {"content", obj.value(QStringLiteral("content"))}};
+                socket->sendTextMessage(QString::fromUtf8(
+                    QJsonDocument(ping).toJson(QJsonDocument::Compact)));
+              } else {
+                sendErrorAndClose(QStringLiteral("Unknown action"));
+              }
             });
-          });
+
+        connect(socket, &QWebSocket::disconnected, this, [this, socket] {
+          m_remoteViewers.remove(socket);
+          m_remoteControls.remove(socket);
+          emit clientsConnected(m_remoteViewers.size(),
+                                m_remoteControls.size());
+          socket->deleteLater();
+        });
+      });
 
   const QString host = effectiveHost();
-  const QString url = buildViewerUrl(host);
+  const QString viewerUrl = buildViewersUrl(host);
+  const QString controlUrl = buildControlUrl(host);
   m_isRunning = true;
   m_config.enabled = true;
   saveSettings();
-  emit started(url);
-  qDebug() << "Started" << url << m_httpPortInUse << m_webSocketPortInUse;
+  emit started(viewerUrl, controlUrl);
+  qDebug() << "Started" << viewerUrl << controlUrl;
 }
 
 void RemoteService::stop() {
@@ -264,6 +274,11 @@ void RemoteService::disable() {
   stop();
 }
 
+void RemoteService::setPassphrase(const QString &passphrase) {
+  m_config.passphrase = passphrase;
+  saveSettings();
+}
+
 QString RemoteService::effectiveHost() const {
   // Pick the first non-loopback IPv4 on an active interface
   for (const QNetworkInterface &iface : QNetworkInterface::allInterfaces()) {
@@ -291,7 +306,7 @@ QString RemoteService::effectiveHost() const {
 #endif
 }
 
-QString RemoteService::buildViewerUrl(const QString &host) const {
+QString RemoteService::buildViewersUrl(const QString &host) const {
   return QStringLiteral("http://%1:%2/viewer.html#wsPort=%3&uuid=%4")
       .arg(host)
       .arg(m_httpPortInUse)
@@ -299,11 +314,18 @@ QString RemoteService::buildViewerUrl(const QString &host) const {
       .arg(m_config.uuid);
 }
 
+QString RemoteService::buildControlUrl(const QString &host) const {
+  return QStringLiteral("http://%1:%2/control.html#wsPort=%3")
+      .arg(host)
+      .arg(m_httpPortInUse)
+      .arg(m_webSocketPortInUse);
+}
+
 void RemoteService::sendMessage(const QJsonObject &p_json) {
   const QString encoded =
       QString::fromUtf8(QJsonDocument(p_json).toJson(QJsonDocument::Compact));
 
-  const auto clients = m_clients;
+  const auto clients = m_remoteViewers.unite(m_remoteControls);
   for (QWebSocket *socket : clients) {
     if (!socket)
       continue;
