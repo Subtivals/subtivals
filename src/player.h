@@ -32,7 +32,7 @@ public slots:
   void stop();
   void jumpTo(int);
   void enableSpeedFactor(bool p_state);
-  void setElapsedTime(qint64);
+  void setElapsedTime(quint64);
   void addDelay(int d = DELAY_OFFSET);
   void subDelay(int d = DELAY_OFFSET);
   void setSpeedFactor(double);
@@ -41,11 +41,11 @@ public slots:
 public:
   void enableAutoHide(bool p_state);
   bool isAutoHideEnabled();
-  qint64 duration(const Subtitle *p_subtitle) const;
+  quint64 duration(const Subtitle *p_subtitle) const;
 
 protected:
-  void updateCurrent(qint64);
-  qint64 tick();
+  void updateCurrent(quint64);
+  quint64 tick();
   const QList<Subtitle *> current() const;
 protected slots:
   void timeout();
@@ -55,11 +55,11 @@ private:
   QTimer m_timer;
   double m_speedFactor;
   bool m_speedFactorEnabled;
-  qint64 m_msseStartTime;
-  qint64 m_pauseStart;
-  qint64 m_pauseTotal;
+  quint64 m_msseStartTime;
+  quint64 m_pauseStart;
+  quint64 m_pauseTotal;
   int m_userDelay;
-  qint64 m_autoHideDuration;
+  quint64 m_autoHideDuration;
   QList<Subtitle *> m_lastSubtitles;
   QTimer m_timerAutoHide;
   bool m_autoHideEnabled;
