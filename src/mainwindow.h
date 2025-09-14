@@ -163,7 +163,6 @@ private:
   int m_charsRate;
   int m_subtitleInterval;
   int m_subtitleMinDuration;
-  int m_delayMilliseconds;
   int m_largeTextPercent;
   bool m_windowShown;
 };
