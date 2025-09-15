@@ -48,6 +48,11 @@ signals:
   void errorOccurred(const QString &message);
   void settingsLoaded(const bool enabled, quint16 httpPort,
                       quint16 webSocketPort, QString passphrase);
+  // Remote control
+  void play();
+  void pause();
+  void addDelay();
+  void subDelay();
 
 private:
   void sendMessage(const QJsonObject &);

@@ -18,6 +18,17 @@ let totalDuration = null;
 document.addEventListener("DOMContentLoaded", () => {
   // Kick it off
   connect();
+
+  // Bind buttons to WS actions
+  for (const action of ["play", "pause", "subDelay", "addDelay"]) {
+    document.getElementById(`btn-${action}`).addEventListener("click", () => {
+      if (!ws || ws.readyState !== WebSocket.OPEN) {
+        return;
+      }
+      console.log(`Sending ${action}`)
+      ws.send(JSON.stringify({action}));
+    });
+  }
 });
 
 function show(msg) {
@@ -178,6 +189,7 @@ function connect() {
       const rtt = Date.now() - content;
       console.log(`Ping RTT: ${rtt} ms`);
       waitingForPong = false;
+      document.getElementById("ping").innerHTML = `Ping: ${rtt} msec`;
     } else if (type === "error") {
       showError(String(content ?? "Unknown error"));
     } else if (type === "ok") {

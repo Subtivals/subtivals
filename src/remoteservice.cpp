@@ -226,6 +226,14 @@ void RemoteService::start(quint16 httpPort, quint16 webSocketPort) {
                     {"content", obj.value(QStringLiteral("content"))}};
                 socket->sendTextMessage(QString::fromUtf8(
                     QJsonDocument(ping).toJson(QJsonDocument::Compact)));
+              } else if (action == "play") {
+                emit play();
+              } else if (action == "pause") {
+                emit pause();
+              } else if (action == "addDelay") {
+                emit addDelay();
+              } else if (action == "subDelay") {
+                emit subDelay();
               } else {
                 sendErrorAndClose(QStringLiteral("Unknown action"));
               }

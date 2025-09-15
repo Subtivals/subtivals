@@ -23,6 +23,6 @@ html, body {
   font-size: 3rem;
 }
 
-#progress {
+#progress, #ping {
   color: gray;
 }

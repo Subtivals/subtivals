@@ -119,6 +119,11 @@ int main(int argc, char *argv[]) {
                    SLOT(remSubtitle(Subtitle *)));
   QObject::connect(w.player(), SIGNAL(stopped()), &service,
                    SLOT(clearSubtitles()));
+  // Remote service -> Play
+  QObject::connect(&service, SIGNAL(play()), &w, SLOT(actionPlay()));
+  QObject::connect(&service, SIGNAL(pause()), &w, SLOT(actionPause()));
+  QObject::connect(&service, SIGNAL(subDelay()), w.player(), SLOT(subDelay()));
+  QObject::connect(&service, SIGNAL(addDelay()), w.player(), SLOT(addDelay()));
   // Remote service -> Remote options dialog
   QObject::connect(&service,
                    SIGNAL(settingsLoaded(bool, quint16, quint16, QString)),
