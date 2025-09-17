@@ -1,11 +1,681 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Subtivals Remote Control</title>
-    <link rel="stylesheet" href="control.css" />
-    <script src="control.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Remote</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --bg-elev: rgba(255,255,255,0.04);
+      --fg: #e6e8ea;
+      --muted: #98a2b3;
+      --accent: #7c5cff;
+      --accent-2: #00d4ff;
+      --ring: rgba(124,92,255,.55);
+      --success: #22c55e;
+      --warn: #fbbf24;
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    html, body { height: 100%; }
+    * { box-sizing: border-box; }
+    body{
+      margin: 0;
+      color: var(--fg);
+      background: radial-gradient(1200px 800px at 20% -10%, #111827 0%, transparent 60%),
+                  radial-gradient(1200px 800px at 120% 110%, #0e1016 0%, transparent 60%),
+                  var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app{
+      min-height: 100dvh; /* full screen on mobile including dynamic bars */
+      padding: max(2.4vh, 16px) max(2.4vw, 16px);
+      display: grid;
+      place-items: center;
+    }
+
+    .remote{
+      width: min(860px, 100%);
+      border-radius: calc(var(--radius) + 6px);
+      padding: clamp(16px, 3.6vh, 40px);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      backdrop-filter: blur(14px) saturate(120%);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.08);
+      display: grid;
+      gap: clamp(14px, 2.6vh, 28px);
+    }
+
+    .title{
+      font-size: clamp(18px, 2.6vh + 1vw, 32px);
+      font-weight: 700;
+      letter-spacing: .2px;
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title .pill{
+      font-size: .72em;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(124,92,255,.22), rgba(0,212,255,.18));
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .status{ font-size: .9rem; color: var(--muted); min-height: 1.2em; }
+
+    .time{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-feature-settings: "tnum" 1, "ss01" 1;
+    }
+
+    .elapsed{
+      font-size: clamp(28px, 3vh + 1vw, 40px);
+      font-weight: 800;
+    }
+
+    .progress{
+      position: relative;
+      flex: 1 1 auto;
+      height: 10px;
+      background: rgba(255,255,255,.08);
+      border-radius: 999px;
+      overflow: hidden;
+      outline: 1px solid rgba(255,255,255,.06);
+    }
+
+    .bar{
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 20px rgba(124,92,255,.35);
+    }
+
+    .controls{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(12px, 2.4vh, 20px);
+    }
+
+    .btn{
+      --scale: 1;
+      appearance: none;
+      border: 0;
+      border-radius: var(--radius);
+      padding: clamp(14px, 2.6vh, 18px);
+      font: inherit;
+      color: var(--fg);
+      background: var(--bg-elev);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.08);
+      cursor: pointer;
+      transform: translateZ(0) scale(var(--scale));
+      transition: transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .btn:disabled{ opacity:.6; cursor: not-allowed; }
+
+    .btn .label{
+      display: grid;
+      place-items: center;
+      gap: 6px;
+      font-weight: 700;
+      letter-spacing:.3px;
+    }
+
+    .btn .hint{ font-size: .82rem; color: var(--muted); font-weight: 600; }
+
+    .btn.primary{ background: linear-gradient(180deg, rgba(124,92,255,.22), rgba(124,92,255,.12)); border-color: rgba(124,92,255,.35); }
+
+    .btn:focus-visible{ outline: none; box-shadow: 0 0 0 3px var(--ring); }
+
+    .btn:hover{ --scale: 1.02; }
+    .btn:active{ --scale: .98; }
+
+    /* Ripple */
+    .btn::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(120px 120px at var(--x,50%) var(--y,50%), rgba(255,255,255,.25), transparent 60%);
+      opacity: 0;
+      transition: opacity .35s ease;
+      pointer-events: none;
+    }
+    .btn:active::after{ opacity: 1; transition: none; }
+
+    /* Icons */
+    .icon{ font-size: clamp(22px, 3.5vh, 30px); line-height: 1; }
+
+    .panel{
+      display: grid;
+      gap: 8px;
+      padding: clamp(14px, 2.6vh, 20px);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .panel p{ margin: 0; }
+    .panel .line1{ color: var(--muted); font-weight: 600; letter-spacing:.2px; }
+    .panel .line2{ font-weight: 700; }
+
+    .screen{background:#000;border-radius:calc(var(--radius) + 4px);border:1px solid rgba(255,255,255,.08);min-height:clamp(140px,28vh,420px);aspect-ratio:21/9;position:relative;overflow:hidden;box-shadow:inset 0 0 0 2px rgba(255,255,255,.03),0 10px 30px rgba(0,0,0,.45);} .screen::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 100% at 50% 120%, rgba(255,255,255,.08), transparent 60%);opacity:.15;pointer-events:none;} .subtitle{position:absolute;left:50%;transform:translateX(-50%);bottom:5%;padding:.35em .7em;background:rgba(0,0,0,.55);border-radius:10px;font-weight:700;font-size:clamp(16px,2.4vh + .6vw,28px);line-height:1.35;text-align:center;text-shadow:0 3px 10px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.9);letter-spacing:.2px;-webkit-text-stroke:.6px rgba(0,0,0,.5);color:#fff;max-width:90%;user-select:none;transition:opacity .25s ease, transform .25s ease;} .subtitle.hide{opacity:0;transform:translateX(-50%) translateY(8px);} .subtitle:empty{display:none;}
+
+    /* Loading overlay */
+    .loading{
+      position: fixed; inset: 0; display: grid; place-items: center;
+      background: radial-gradient(600px 400px at 50% -20%, rgba(124,92,255,.15), transparent 60%), var(--bg);
+      z-index: 10; transition: opacity .4s ease, visibility .4s ease; visibility: visible; opacity: 1;
+    }
+    .loading.hidden{ opacity: 0; visibility: hidden; }
+    .spinner{ width: 64px; height: 64px; border-radius: 50%; border: 6px solid rgba(255,255,255,.12); border-top-color: var(--accent); animation: spin 1s linear infinite; }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+
+    /* Responsiveness */
+    @media (max-width: 520px){
+      .controls{ grid-template-columns: 1fr; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .btn, .loading{ transition: none; }
+      .spinner{ animation: none; }
+    }
+  </style>
 </head>
 <body>
-    <div id="main"></div>
+  <div class="app">
+    <div class="remote" role="region" aria-label="Remote control">
+      <div class="title" aria-live="polite">
+        <span id="movieTitle">The Grand Adventure</span>
+        <span class="pill">4K HDR</span>
+      </div>
+      <div id="main" class="status" aria-live="polite"></div>
+
+      <div class="time">
+        <div class="elapsed" id="elapsed">00:00</div>
+        <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="back" aria-label="Back 10 seconds">
+          <div class="label"><span class="icon">⟲</span><span class="hint">-10s</span></div>
+        </button>
+        <button class="btn primary" id="play" aria-pressed="false" aria-label="Play">
+          <div class="label"><span class="icon" id="playIcon">▶</span><span class="hint" id="playHint">Play</span></div>
+        </button>
+        <button class="btn" id="forward" aria-label="Forward 10 seconds">
+          <div class="label"><span class="icon">⟳</span><span class="hint">+10s</span></div>
+        </button>
+      </div>
+      <div class="panel">
+        <p class="line1" id="line1">Now playing</p>
+        <p class="line2" id="line2">Dolby Atmos • English (CC)</p>
+      </div>
+
+      <div class="screen" id="screen" role="img" aria-label="Cinema screen">
+        <div class="subtitle" id="subtitle"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div class="loading" id="loading" aria-live="assertive" aria-busy="true">
+    <div class="spinner" role="status" aria-label="Loading"></div>
+  </div>
+
+  <script>
+    // --- DOM refs ---
+    const playBtn = document.getElementById('play');
+    const playIcon = document.getElementById('playIcon');
+    const playHint = document.getElementById('playHint');
+    const backBtn = document.getElementById('back');
+    const fwdBtn = document.getElementById('forward');
+    const elapsedEl = document.getElementById('elapsed');
+    const barEl = document.getElementById('bar');
+    const subtitleEl = document.getElementById('subtitle');
+    const line1El = document.getElementById('line1');
+    const line2El = document.getElementById('line2');
+    const statusEl = document.getElementById('main');
+    const titleEl = document.getElementById('movieTitle');
+
+    // --- Core playback variables (declare BEFORE use anywhere) ---
+    let playing = false;
+    let elapsed = 0; // seconds
+    let duration = 5400; // 90 min default for the progress bar; adjust as you like
+    let raf;
+
+    // --- Helpers used by multiple parts ---
+    function fmt(s){
+      const m = Math.floor(s/60).toString().padStart(2,'0');
+      const sec = Math.floor(s%60).toString().padStart(2,'0');
+      return `${m}:${sec}`;
+    }
+
+    function draw(){
+      elapsedEl.textContent = fmt(elapsed);
+      const pct = Math.min(100, (elapsed / duration) * 100);
+      barEl.style.width = pct + '%';
+    }
+
+    function setSubtitle(text, opts = {}){
+      const { transient = false, ms = 2000 } = opts;
+      if (!subtitleEl) return;
+      subtitleEl.classList.remove('hide');
+      subtitleEl.textContent = text || '';
+      if (transient && text){
+        setTimeout(() => subtitleEl.classList.add('hide'), ms);
+        setTimeout(() => { subtitleEl.textContent = ''; subtitleEl.classList.remove('hide'); }, ms + 250);
+      }
+    }
+
+    function tick(){
+      const step = () => {
+        if (playing){
+          elapsed += 0.05; // ~50ms per frame approximation
+          draw();
+          raf = requestAnimationFrame(step);
+        }
+      };
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(step);
+    }
+
+    // --- Loading overlay helpers ---
+    const loading = document.getElementById('loading');
+    const setLoading = (on) => {
+      if (on) {
+        loading.classList.remove('hidden');
+        [playBtn, backBtn, fwdBtn].forEach(b => b.disabled = true);
+      } else {
+        loading.classList.add('hidden');
+        // Re-apply current state so back/forward remain disabled until playing
+        if (window.machine) applyState(machine.getState());
+        playBtn?.focus({preventScroll:true});
+      }
+    };
+    // Simulate initial loading once; WebSocket will drive future states
+    setLoading(true);
+    setTimeout(() => setLoading(false), 900);
+
+    // --- Minimalist state machine ---
+    const machine = (() => {
+      const transitions = {
+        unauthenticated: { SHOW_PASSWORD: 'password_prompt', CONNECTION_LOST: 'connection_error' },
+        password_prompt: { SUBMIT_OK: 'authenticated', SUBMIT_FAIL: 'bad_creds', CANCEL: 'unauthenticated', CONNECTION_LOST: 'connection_error' },
+        bad_creds:       { RETRY: 'password_prompt', CANCEL: 'unauthenticated' },
+        authenticated:   { LOAD_MOVIE: 'with_movie_loaded', UNLOAD: 'no_movie_loaded', LOGOUT: 'unauthenticated', CONNECTION_LOST: 'connection_error' },
+        no_movie_loaded: { LOAD_MOVIE: 'with_movie_loaded', LOGOUT: 'unauthenticated', CONNECTION_LOST: 'connection_error' },
+        with_movie_loaded:{ PLAY: 'playing', STOP: 'stopped', UNLOAD: 'no_movie_loaded', LOGOUT: 'unauthenticated', CONNECTION_LOST: 'connection_error' },
+        stopped:         { PLAY: 'playing', UNLOAD: 'no_movie_loaded', LOGOUT: 'unauthenticated', CONNECTION_LOST: 'connection_error' },
+        playing:         { PAUSE: 'stopped', STOP: 'stopped', UNLOAD: 'no_movie_loaded', LOGOUT: 'unauthenticated', CONNECTION_LOST: 'connection_error' },
+        connection_error:{ RETRY: 'authenticated', DISCONNECT: 'unauthenticated' }
+      };
+
+      let state = 'with_movie_loaded'; // default so the demo remote is usable
+      const listeners = new Set();
+      const notify = (evt) => listeners.forEach(fn => fn(state, evt));
+
+      return {
+        send(event){
+          const type = typeof event === 'string' ? event : event?.type;
+          const next = transitions[state]?.[type];
+          if (next) { state = next; notify(type); }
+          else { notify(type || 'UNKNOWN'); }
+          return state;
+        },
+        getState(){ return state; },
+        onChange(fn){ listeners.add(fn); return () => listeners.delete(fn); },
+        set(s){ state = s; notify('SET'); }
+      };
+    })();
+
+    function applyState(state){
+      const disable = (...els) => els.forEach(el => el && (el.disabled = true));
+      const enable  = (...els) => els.forEach(el => el && (el.disabled = false));
+
+      const labels = {
+        unauthenticated: 'Sign in required',
+        password_prompt: 'Enter password',
+        bad_creds: 'Bad credentials',
+        authenticated: 'Authenticated',
+        no_movie_loaded: 'No movie loaded',
+        with_movie_loaded: 'Ready',
+        stopped: 'Paused',
+        playing: 'Now playing',
+        connection_error: 'Connection error'
+      };
+      if (line1El) line1El.textContent = labels[state] || state;
+
+      switch(state){
+        case 'playing':
+          playing = true; tick();
+          playBtn.setAttribute('aria-pressed','true');
+          playIcon.textContent = '❚❚';
+          playHint.textContent = 'Pause';
+          enable(playBtn, backBtn, fwdBtn);
+          break;
+        case 'stopped':
+        case 'with_movie_loaded':
+          playing = false; cancelAnimationFrame(raf); draw();
+          playBtn.setAttribute('aria-pressed','false');
+          playIcon.textContent = '▶';
+          playHint.textContent = 'Play';
+          enable(playBtn);
+          disable(backBtn, fwdBtn);
+          break;
+        case 'no_movie_loaded':
+          playing = false; cancelAnimationFrame(raf); elapsed = 0; draw();
+          disable(playBtn, backBtn, fwdBtn);
+          break;
+        default: // auth & error states
+          playing = false; cancelAnimationFrame(raf); draw();
+          disable(playBtn, backBtn, fwdBtn);
+      }
+    }
+
+    machine.onChange((state) => applyState(state));
+    // expose for integration/testing
+    window.machine = machine;
+    applyState(machine.getState());
+
+    // --- UI events ---
+    function togglePlay(){
+      const s = machine.getState();
+      if (s === 'playing') machine.send('PAUSE');
+      else machine.send('PLAY');
+    }
+
+    playBtn.addEventListener('click', togglePlay);
+
+    backBtn.addEventListener('click', () => { elapsed = Math.max(0, elapsed - 10); draw(); });
+    fwdBtn.addEventListener('click', () => { elapsed = Math.min(duration, elapsed + 10); draw(); });
+
+    // Keyboard shortcuts: Space to play/pause, Left/Right for -/+10s
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space'){ e.preventDefault(); if (!playBtn.disabled) togglePlay(); }
+      if (e.code === 'ArrowLeft'){ e.preventDefault(); if (!backBtn.disabled) backBtn.click(); }
+      if (e.code === 'ArrowRight'){ e.preventDefault(); if (!fwdBtn.disabled) fwdBtn.click(); }
+    });
+
+    // Demo: press 'S' to show a sample subtitle
+    window.addEventListener('keydown', (e) => {
+      if (e.key && e.key.toLowerCase() === 's'){
+        setSubtitle('This is a sample subtitle.', { transient: true, ms: 2500 });
+      }
+    });
+
+    // Button ripple follows pointer
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('pointerdown', (e) => {
+        const rect = btn.getBoundingClientRect();
+        btn.style.setProperty('--x', (e.clientX - rect.left) + 'px');
+        btn.style.setProperty('--y', (e.clientY - rect.top) + 'px');
+      });
+    });
+
+    // Initial paint
+    draw();
+
+    // --- Test cases (run manually: window.runDemoTests()) ---
+    function runDemoTests(){
+      const results = [];
+      const assert = (cond, msg) => results.push({ ok: !!cond, msg });
+      const initial = machine.getState();
+
+      try {
+        // Test 1: initial state is with_movie_loaded
+        assert(initial === 'with_movie_loaded', `Initial state should be with_movie_loaded, got ${initial}`);
+
+        // Back/Forward disabled until playing
+        assert(backBtn.disabled && fwdBtn.disabled, 'Back/Forward should start disabled until playing');
+
+        // Test 2: PLAY transitions to playing and sets flag
+        machine.send('PLAY');
+        assert(machine.getState() === 'playing', 'PLAY should go to playing');
+        assert(playing === true, 'playing flag should be true after PLAY');
+        assert(!backBtn.disabled && !fwdBtn.disabled, 'Back/Forward should be enabled while playing');
+
+        // Test 3: PAUSE returns to stopped and clears flag
+        machine.send('PAUSE');
+        assert(machine.getState() === 'stopped', 'PAUSE should go to stopped');
+        assert(playing === false, 'playing flag should be false after PAUSE');
+        assert(backBtn.disabled && fwdBtn.disabled, 'Back/Forward should be disabled when not playing');
+        machine.send('PAUSE');
+        assert(machine.getState() === 'stopped', 'PAUSE should go to stopped');
+        assert(playing === false, 'playing flag should be false after PAUSE');
+
+        // Test 4: UNLOAD disables controls
+        machine.send('UNLOAD');
+        assert(machine.getState() === 'no_movie_loaded', 'UNLOAD should go to no_movie_loaded');
+        assert(playBtn.disabled && backBtn.disabled && fwdBtn.disabled, 'Controls should be disabled when no movie loaded');
+
+        // Test 5: Auth flow -> unauthenticated -> SHOW_PASSWORD -> SUBMIT_OK -> authenticated
+        machine.set('unauthenticated');
+        machine.send('SHOW_PASSWORD');
+        assert(machine.getState() === 'password_prompt', 'SHOW_PASSWORD should go to password_prompt');
+        machine.send('SUBMIT_OK');
+        assert(machine.getState() === 'authenticated', 'SUBMIT_OK should go to authenticated');
+
+      } finally {
+        // Restore to a usable demo state
+        machine.set('with_movie_loaded');
+        results.forEach((r, i) => console[(r.ok ? 'log' : 'error')](`Test ${i+1}: ${r.ok ? 'PASS' : 'FAIL'} — ${r.msg}`));
+        return results;
+      }
+    }
+    // Expose tests for manual execution
+    window.runDemoTests = runDemoTests;
+
+    // =====================
+    // WebSocket Integration
+    // =====================
+    const MIN_DELAY_MS = 500; // ms
+    const MAX_DELAY_MS = 10000; // ms
+    const JITTER = 0.25; // 25% jitter
+
+    let ws = null;
+    let reconnectAttempts = 0;
+    let reconnectTimer = null;
+    let intentionalClose = false;
+
+    function show(msg){ if (statusEl) statusEl.textContent = String(msg || ''); }
+    function showError(msg){ show(`❌ ${msg}`); }
+
+    function parseHash(hash){
+      const raw = (hash || '').replace(/^#/, '').trim();
+      if (!raw) return {};
+      const asParams = new URLSearchParams(raw);
+      const wsPortStr = asParams.get('wsPort');
+      const uuid = asParams.get('uuid') || undefined;
+      const wsPort = /^\d+$/.test(wsPortStr || '') ? Number(wsPortStr) : undefined;
+      return { wsPort, uuid };
+    }
+
+    function nextDelay(){
+      const base = Math.min(MAX_DELAY_MS, MIN_DELAY_MS * Math.pow(2, reconnectAttempts));
+      const rand = base * JITTER * (Math.random() * 2 - 1); // +/- jitter
+      return Math.max(250, Math.round(base + rand));
+    }
+
+    function setConnectionError(reason){
+      machine.set('connection_error');
+      setLoading(false);
+      showError(reason);
+    }
+
+    function scheduleReconnect(reason){
+      if (intentionalClose) return;
+      if (!navigator.onLine){
+        setConnectionError('Offline');
+        return; // wait for 'online' event
+      }
+      const delay = nextDelay();
+      reconnectAttempts++;
+      setConnectionError(`${reason}. Reconnecting in ${Math.round(delay/1000)}s…`);
+      clearTimeout(reconnectTimer);
+      reconnectTimer = setTimeout(connect, delay);
+    }
+
+    window.addEventListener('online', () => {
+      if (!intentionalClose && (!ws || ws.readyState === WebSocket.CLOSED)){
+        connect();
+      }
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && !intentionalClose && (!ws || ws.readyState === WebSocket.CLOSED)){
+        connect();
+      }
+    });
+
+    function handleWSMessage(payload){
+      if (!payload || typeof payload !== 'object' || typeof payload['event-type'] !== 'string'){
+        showError('Invalid data');
+        return false;
+      }
+      const type = payload['event-type'];
+      const data = payload.data;
+
+      const map = {
+        // UI/status
+        ok: (d) => show(d ?? ''),
+        error: (d) => setConnectionError(String(d ?? 'Unknown error')),
+        status: (d) => show(String(d ?? '')),
+        'add-subtitle': (d) => {
+          if (typeof d === 'string') setSubtitle(d, { transient: true, ms: 2500 });
+          else if (d && typeof d === 'object') setSubtitle(String(d.text || ''), { transient: d.transient ?? true, ms: typeof d.ms === 'number' ? d.ms : 2500 });
+        },
+
+        // Auth
+        'login-required': () => machine.set('unauthenticated'),
+        'password-prompt': () => machine.send('SHOW_PASSWORD'),
+        'password-ok': () => machine.send('SUBMIT_OK'),
+        'password-fail': () => machine.send('SUBMIT_FAIL'),
+        logout: () => machine.send('LOGOUT'),
+
+        // Playback / media
+        'load-movie': (d) => {
+          if (d && typeof d === 'object'){
+            if (d.title) titleEl.textContent = String(d.title);
+            if (typeof d.duration === 'number') duration = d.duration;
+          }
+          elapsed = 0; draw();
+          machine.send('LOAD_MOVIE');
+        },
+        'unload-movie': () => machine.send('UNLOAD'),
+        play: () => machine.send('PLAY'),
+        pause: () => machine.send('PAUSE'),
+        stop: () => machine.send('STOP'),
+        seek: (d) => { if (d && typeof d.seconds === 'number'){ elapsed = Math.max(0, Math.min(duration, d.seconds)); draw(); } },
+        'set-duration': (d) => { if (d && typeof d.seconds === 'number'){ duration = Math.max(1, d.seconds); draw(); } }
+      };
+
+      const handler = map[type];
+      if (handler) { handler(data); return true; }
+      // Unknown type — clear status but keep UI
+      show('');
+      return false;
+    }
+
+    function connect(){
+      const { wsPort, uuid } = parseHash(location.hash);
+      const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
+      const port = wsPort ?? 8765;
+      const wsUrl = `${scheme}://${location.hostname}:${port}/`;
+
+      clearTimeout(reconnectTimer);
+      show('Connecting…');
+      setLoading(true);
+
+      try { ws = new WebSocket(wsUrl); }
+      catch (e) { scheduleReconnect('Connection error'); return; }
+
+      ws.onopen = () => {
+        reconnectAttempts = 0;
+        try { ws.send(JSON.stringify({ uuid })); } catch {}
+        show('');
+        setLoading(false);
+        if (machine.getState() === 'connection_error') machine.send('RETRY');
+      };
+
+      ws.onerror = () => {
+        setConnectionError('Connection error');
+        // onclose will schedule reconnect
+      };
+
+      ws.onclose = () => {
+        if (!intentionalClose) scheduleReconnect('Disconnected');
+      };
+
+      ws.onmessage = (ev) => {
+        console.debug('Received message:', ev.data);
+        let payload;
+        try { payload = JSON.parse(ev.data); }
+        catch { showError('Invalid data'); return; }
+        handleWSMessage(payload);
+      };
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { connect(); });
+
+    // --- WS Mapping Tests (manual): window.runWSMappingTests() ---
+    function runWSMappingTests(){
+      const out = [];
+      const assert = (cond, msg) => out.push({ ok: !!cond, msg });
+
+      // Helpers to simulate
+      const sim = (type, data) => handleWSMessage({ 'event-type': type, data });
+
+      // Begin in a known state
+      machine.set('with_movie_loaded');
+      elapsed = 0; duration = 100; draw();
+
+      // 1) play / pause
+      sim('play');
+      assert(machine.getState() === 'playing', 'WS play -> playing');
+      sim('pause');
+      assert(machine.getState() === 'stopped', 'WS pause -> stopped');
+
+      // 2) load/unload movie + metadata
+      sim('load-movie', { title: 'Demo', duration: 200 });
+      assert(machine.getState() === 'with_movie_loaded', 'WS load-movie -> with_movie_loaded');
+      assert(titleEl.textContent === 'Demo', 'Title updated from WS');
+
+      sim('seek', { seconds: 50 });
+      assert(elapsed === 50, 'Seek sets elapsed');
+
+      // 3) subtitle events
+      sim('add-subtitle', 'Hello there');
+      assert(subtitleEl.textContent === 'Hello there', 'Subtitle text set');
+
+      // 4) errors
+      sim('error', 'nope');
+      assert(machine.getState() === 'connection_error', 'Error -> connection_error');
+
+      // 5) recover
+      if (machine.getState() === 'connection_error') machine.send('RETRY');
+      assert(machine.getState() === 'authenticated', 'RETRY -> authenticated');
+
+      out.forEach((r,i) => console[(r.ok?'log':'error')](`WS Test ${i+1}: ${r.ok?'PASS':'FAIL'} — ${r.msg}`));
+      return out;
+    }
+    window.runWSMappingTests = runWSMappingTests;
+  </script>
 </body>
 </html>
