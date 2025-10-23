@@ -290,13 +290,17 @@ jobs:
           iwr -useb get.scoop.sh | iex
 
           # ensure buckets and update
-          scoop bucket add extras 2>$null || Write-Host "extras already present"
+          if (-not (scoop bucket list | Select-String -Quiet '^extras$')) {
+            scoop bucket add extras
+          } else {
+            Write-Host "extras already present"
+          }
           scoop update
 
           # install packages
           scoop install nsis 7zip
 
-          # ensure scoop shims are on PATH for subsequent steps in the same job
+          # ensure scoop shims are on PATH for subsequent steps
           $scoopShims = Join-Path $env:USERPROFILE 'scoop\shims'
           if (Test-Path $scoopShims) {
             $env:PATH = "$scoopShims;$env:PATH"
