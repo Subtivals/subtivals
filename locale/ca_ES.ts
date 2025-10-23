@@ -149,7 +149,7 @@ p, li { white-space: pre-wrap; }
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="14"/>
-        <location filename="../src/mainwindow.cpp" line="662"/>
+        <location filename="../src/mainwindow.cpp" line="703"/>
         <source>Subtivals</source>
         <translation>Subtivals</translation>
     </message>
@@ -599,127 +599,132 @@ p, li { white-space: pre-wrap; }
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="441"/>
+        <location filename="../src/mainwindow.cpp" line="479"/>
+        <source>1/24 sec</source>
+        <translation>1/24 sec</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="482"/>
         <source>1/10 sec</source>
         <translation>1/10 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="444"/>
+        <location filename="../src/mainwindow.cpp" line="485"/>
         <source>1/4 sec</source>
         <translation>1/4 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="447"/>
+        <location filename="../src/mainwindow.cpp" line="488"/>
         <source>1/2 sec</source>
         <translation>1/2 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="450"/>
+        <location filename="../src/mainwindow.cpp" line="491"/>
         <source>1 sec</source>
         <translation>1 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="453"/>
+        <location filename="../src/mainwindow.cpp" line="494"/>
         <source> msec</source>
         <translation> mseg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="482"/>
+        <location filename="../src/mainwindow.cpp" line="523"/>
         <source>Save list as spreadsheet</source>
         <translation>Desar la llista com a full de càlcul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="483"/>
+        <location filename="../src/mainwindow.cpp" line="524"/>
         <source>spreadsheet</source>
         <translation>full de càlcul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="484"/>
+        <location filename="../src/mainwindow.cpp" line="525"/>
         <source>Comma-separated files (*.csv)</source>
         <translation>Fitxers separats per comes (*.csv)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="494"/>
+        <location filename="../src/mainwindow.cpp" line="535"/>
         <source>Unable to write file</source>
         <translation>No es pot escriure el fitxer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="503"/>
+        <location filename="../src/mainwindow.cpp" line="544"/>
         <source>Saved successfully</source>
         <translation>S&apos;ha salvat amb èxit</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="504"/>
+        <location filename="../src/mainwindow.cpp" line="545"/>
         <source>Subtitles exported to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Subtítols exportats a &lt;a href = &quot;%1&quot;&gt;%2 &lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="542"/>
+        <location filename="../src/mainwindow.cpp" line="583"/>
         <source>Encoding error</source>
         <translation>Error de codificació</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="543"/>
+        <location filename="../src/mainwindow.cpp" line="584"/>
         <source>Looks like the subtitles were not saved in a valid UTF-8 file.</source>
         <translation>Sembla que els subtítols no es van desar en un fitxer UTF-8 vàlid.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="547"/>
+        <location filename="../src/mainwindow.cpp" line="588"/>
         <source>Error with subtitles</source>
         <translation>Error amb subtítols</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="548"/>
+        <location filename="../src/mainwindow.cpp" line="589"/>
         <source>Could not read the file specified.</source>
         <translation>No s&apos;ha pogut llegir el fitxer especificat.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="582"/>
+        <location filename="../src/mainwindow.cpp" line="623"/>
         <source>%1 subtitles, %2 - %3</source>
         <translation>%1 subtitols, %2 - %3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="605"/>
+        <location filename="../src/mainwindow.cpp" line="646"/>
         <source>%1 chars/sec</source>
         <translation>%1 cars/seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="610"/>
+        <location filename="../src/mainwindow.cpp" line="651"/>
         <source>Fast (%1 chars/sec)</source>
         <translation>Rapid (%1 cars/seg)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="614"/>
+        <location filename="../src/mainwindow.cpp" line="655"/>
         <source>Unreadable (%1 chars/sec)</source>
         <translation>Il·legible (%1 cars/seg) </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="674"/>
+        <location filename="../src/mainwindow.cpp" line="715"/>
         <source>&amp;%1 %2</source>
         <translation>&amp;%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="739"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>Some styles are currently overriden in preferences.</source>
         <translation>Actualment, alguns estils estan sobredimitats en les preferències.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="763"/>
+        <location filename="../src/mainwindow.cpp" line="805"/>
         <source>Subtitle file reloaded.</source>
         <translation>Fitxer de subtítols recarregat.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="776"/>
+        <location filename="../src/mainwindow.cpp" line="826"/>
         <source>Open subtitles</source>
         <translation>Obrir subtítols</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="777"/>
+        <location filename="../src/mainwindow.cpp" line="827"/>
         <source>Subtitle Files (*.ass *.srt *.txt *.xml)</source>
         <translation>Fitxers de subtítols ( *.ass *.srt *.txt *.xml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1297"/>
+        <location filename="../src/mainwindow.cpp" line="1353"/>
         <source>&lt;h1&gt;Subtivals %1&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %2&lt;/h2&gt;</source>
         <translation>&lt;h1&gt; Subtivals %1 &lt;/h1&gt; &lt;p&gt; Subtivals, un programa per projectar subtítols. &lt;/p&gt; &lt;h2&gt; Autors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %2&lt;/h2&gt;</translation>
     </message>
@@ -728,7 +733,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Arxius de subtítols (*.ass *.srt)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1064"/>
+        <location filename="../src/mainwindow.cpp" line="1120"/>
         <source>Remaining: %1</source>
         <translation>Restant: %1</translation>
     </message>
@@ -741,7 +746,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Arxius de subtítols (*.ass)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1296"/>
+        <location filename="../src/mainwindow.cpp" line="1352"/>
         <source>About Subtivals</source>
         <translation>Sobre Subtivals</translation>
     </message>
@@ -967,95 +972,95 @@ p, li { white-space: pre-wrap; }
         <translation>Gràcies per triar Subtivals!</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="47"/>
+        <location filename="../src/wizard.ui" line="42"/>
         <source>Let&apos;s go through a few hightlights to get started quickly!</source>
         <translation>Passem per uns quants aspectes destacats per començar ràpidament!</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="60"/>
+        <location filename="../src/wizard.ui" line="55"/>
         <source>Preferences</source>
         <translation>Preferències</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="63"/>
+        <location filename="../src/wizard.ui" line="58"/>
         <source>Projection screen options</source>
         <translation>Opcions de pantalla de projecció</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="71"/>
+        <location filename="../src/wizard.ui" line="66"/>
         <source>You can move the projection screen with the mouse.</source>
         <translation>Podeu moure la pantalla de projecció amb el ratolí.</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="96"/>
+        <location filename="../src/wizard.ui" line="86"/>
         <source>Special characters</source>
         <translation>Personatges especials</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="99"/>
+        <location filename="../src/wizard.ui" line="89"/>
         <source>Universal and international characters</source>
         <translation>Personatges universals i internacionals</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="119"/>
+        <location filename="../src/wizard.ui" line="104"/>
         <source>&lt;p&gt;Subtivals supports &lt;b&gt;every&lt;/b&gt; international character.&lt;/p&gt;
 &lt;p&gt;Make sure your files are saved with &lt;b&gt;UTF-8&lt;/b&gt; encoding.&lt;/p&gt;</source>
         <translation>&lt;p&gt; Subtivals suporta &lt;b&gt; tots els caràcters internacionals. &lt;/p&gt;
 &lt;p&gt; Assegureu-vos que els vostres fitxers es desen amb &lt;b&gt; utf-8 &lt;/b&gt; codificació. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="133"/>
+        <location filename="../src/wizard.ui" line="118"/>
         <source>Keyboard shortcuts</source>
         <translation>Dreceres del teclat</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="136"/>
+        <location filename="../src/wizard.ui" line="121"/>
         <source>Become a power user!</source>
         <translation>Converteix -te en usuari de potència!</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="156"/>
+        <location filename="../src/wizard.ui" line="136"/>
         <source>&lt;p&gt;Every action can be performed with the keyboard . Change the shortcurts in the &lt;b&gt;Edit&lt;/b&gt; menu.&lt;/p&gt;</source>
         <translation>&lt;p&gt; Totes les accions es poden realitzar amb el teclat. Canvieu les dreceres al menú &lt;b&gt; edit &lt;/b&gt;. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="169"/>
+        <location filename="../src/wizard.ui" line="149"/>
         <source>Simple text files</source>
         <translation>Fitxers de text senzills</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="172"/>
+        <location filename="../src/wizard.ui" line="152"/>
         <source>Basic subtitles easily! </source>
         <translation>Subtítols bàsics fàcilment!</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="192"/>
+        <location filename="../src/wizard.ui" line="167"/>
         <source>Subtivals can read plain .txt files, where subtitles are just texts separated by a blank line.</source>
         <translation>Subtivals poden llegir fitxers .txt simples, on els subtítols són només textos separats per una línia en blanc.</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="205"/>
+        <location filename="../src/wizard.ui" line="180"/>
         <source>Timeout mode</source>
         <translation>Mode de temps d&apos;espera</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="208"/>
+        <location filename="../src/wizard.ui" line="183"/>
         <source>Semi-automatic projection</source>
         <translation>Projecció semiautomàtica</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="228"/>
+        <location filename="../src/wizard.ui" line="198"/>
         <source>&lt;p&gt;Subtitles appear with space bar, and disappear automatically according to their length.&lt;/p&gt;
 </source>
         <translation>&lt;p&gt; Els subtítols apareixen amb barra d&apos;espai i desapareixen automàticament segons la seva longitud. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="242"/>
+        <location filename="../src/wizard.ui" line="212"/>
         <source>Enjoy!</source>
         <translation>Gaudeix!</translation>
     </message>
     <message>
-        <location filename="../src/wizard.ui" line="253"/>
+        <location filename="../src/wizard.ui" line="223"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Join the user community!&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ask questions&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Discuss new features&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tips and tricks&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Share your experience&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;a href=&quot;https://community.subtivals.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#094fd1;&quot;&gt;https://community.subtivals.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;p&gt; Uniu -vos a la comunitat d&apos;usuaris! &lt;/p&gt;
 &lt;ul&gt;

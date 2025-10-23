@@ -7,8 +7,6 @@
 
 #include "subtitle.h"
 
-#define DELAY_OFFSET 250
-
 class Script;
 
 class Player : public QObject {
@@ -32,8 +30,9 @@ public slots:
   void jumpTo(int);
   void enableSpeedFactor(bool p_state);
   void setElapsedTime(qint64);
-  void addDelay(int d = DELAY_OFFSET);
-  void subDelay(int d = DELAY_OFFSET);
+  void setDelayStep(int);
+  void addDelay(int step = 0);
+  void subDelay();
   void setSpeedFactor(double);
   void autoHideTimeout();
 
@@ -58,6 +57,7 @@ private:
   qint64 m_pauseStart;
   qint64 m_pauseTotal;
   int m_userDelay;
+  int m_delayStep;
   qint64 m_autoHideDuration;
   QList<Subtitle *> m_lastSubtitles;
   QTimer m_timerAutoHide;
