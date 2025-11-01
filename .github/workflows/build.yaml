@@ -314,6 +314,10 @@ jobs:
           Get-Command scoop -ErrorAction Stop | Format-List Name,Path,Version
           Get-Command makensis -ErrorAction Stop | Format-List Name,Path,Version
 
+      - name: Add Scoop to PATH
+        run: |
+          echo "$env:USERPROFILE\scoop\shims" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
       - name: Print NSIS version (cmd)
         shell: cmd
         run: |
