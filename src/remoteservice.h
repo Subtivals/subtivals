@@ -35,7 +35,9 @@ public slots:
   void setPassphrase(const QString &);
 
   // Messages
-  void movieStarted(const QString &title, quint64 totalDuration);
+  void stateInfo(const QString state, const QString &title,
+                 quint64 totalDuration, quint64 delay,
+                 const QString presetName);
   void playPulse(quint64 elapsed);
   void addSubtitle(Subtitle *);
   void remSubtitle(Subtitle *);

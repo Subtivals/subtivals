@@ -350,11 +350,16 @@ void RemoteService::sendMessage(const QJsonObject &p_json) {
   qDebug() << "Sent" << encoded;
 }
 
-void RemoteService::movieStarted(const QString &title, quint64 totalDuration) {
+void RemoteService::stateInfo(const QString state, const QString &title,
+                              quint64 totalDuration, quint64 delay,
+                              const QString presetName) {
   QJsonObject json;
-  json["event-type"] = "movie-started";
+  json["event-type"] = "state-info";
+  json["state"] = state;
   json["title"] = title;
   json["totalDuration"] = static_cast<qint64>(totalDuration);
+  json["delayMsec"] = static_cast<qint64>(delay);
+  json["presetName"] = presetName;
   sendMessage(json);
 }
 

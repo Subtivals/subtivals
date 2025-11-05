@@ -313,6 +313,12 @@ MainWindow::MainWindow(QWidget *parent)
   m_shortcutEditor->registerAction(ui->actionShowHelp);
   m_shortcutEditor->registerAction(ui->actionDarkMode);
   m_shortcutEditor->registerAction(ui->actionExit);
+
+  // Emit state info 3 times per second
+  QTimer *stateInfoTimer = new QTimer(this);
+  stateInfoTimer->setInterval(333);
+  connect(stateInfoTimer, &QTimer::timeout, this, &MainWindow::emitStateInfo);
+  stateInfoTimer->start();
 }
 
 MainWindow::~MainWindow() {
@@ -1416,4 +1422,26 @@ void MainWindow::actionToggleDarkMode(bool p_enabled) {
     // System default.
     qApp->styleHints()->setColorScheme(Qt::ColorScheme::Unknown);
   }
+}
+
+void MainWindow::emitStateInfo() {
+  QString state;
+  switch (m_state) {
+  case NODATA:
+    state = "NODATA";
+    break;
+  case STOPPED:
+    state = "STOPPED";
+    break;
+  case PLAYING:
+    state = "PLAYING";
+    break;
+  case PAUSED:
+    state = "PAUSED";
+    break;
+  }
+  QString title = m_script ? m_script->title() : "";
+  quint64 totalDuration = m_script ? m_script->totalDuration() : 0;
+  emit stateInfo(state, title, totalDuration, m_delayMilliseconds,
+                 m_preferences->presetName());
 }

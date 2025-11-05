@@ -34,7 +34,6 @@ void Player::play() {
   }
   m_timerAutoHide.stop();
   m_timer.start();
-  emit started(m_script->title(), m_script->totalDuration());
 }
 
 void Player::pause() {

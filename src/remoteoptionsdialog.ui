@@ -50,7 +50,7 @@
         <number>8080</number>
        </property>
        <property name="toolTip">
-        <string>Port used to serve your HTML and assets.</string>
+        <string>Port used to serve the HTML and assets.</string>
        </property>
       </widget>
      </item>

@@ -44,6 +44,7 @@ public:
 
   void mouseReleaseEvent(QMouseEvent *event);
   bool eventFilter(QObject *object, QEvent *event);
+  const QString presetName() const;
 signals:
   // Live options
   void webliveEnabled(bool);

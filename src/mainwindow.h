@@ -71,6 +71,10 @@ signals:
   void hideDesktop(bool state);
   void toggleHide(bool state);
   void screenResizable(bool state);
+  // For remote control
+  void stateInfo(const QString state, const QString &title,
+                 quint64 totalDuration, quint64 delayStep, QString presetName);
+
 public slots:
   void refreshDurations();
   void actionDurationCorrection(bool);
@@ -130,6 +134,7 @@ protected:
   QString ts2tc(int p_timestamp, QString format = "hh:mm:ss.zzz");
   void setState(State p_state);
   void updateRecentFileActions();
+  void emitStateInfo();
 
 private:
   State m_state;

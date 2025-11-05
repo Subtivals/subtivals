@@ -316,3 +316,7 @@ void ConfigEditor::enableButtonBox(bool restore, bool cancel, bool save) {
 void ConfigEditor::enableTabScreen(bool p_state) {
   ui->tabScreen->setEnabled(p_state);
 }
+
+const QString ConfigEditor::presetName() const {
+  return ui->presets->currentText().replace("*", "");
+}

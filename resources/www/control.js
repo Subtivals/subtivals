@@ -14,19 +14,21 @@ let pingInterval = null;
 let waitingForPong = false;
 
 let totalDuration = null;
+let state = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Kick it off
   connect();
 
   // Bind buttons to WS actions
-  for (const action of ["play", "pause", "subDelay", "addDelay"]) {
+  for (const action of ["play", "subDelay", "addDelay"]) {
     document.getElementById(`btn-${action}`).addEventListener("click", () => {
       if (!ws || ws.readyState !== WebSocket.OPEN) {
         return;
       }
-      console.log(`Sending ${action}`)
-      ws.send(JSON.stringify({action}));
+      const sendAction = (action === "play" && state == "PLAYING") ? "pause" : action;
+      console.log(`Sending ${sendAction}`)
+      ws.send(JSON.stringify({action: sendAction}));
     });
   }
 });
@@ -56,8 +58,10 @@ function ts2tc(p_ts) {
 }
 
 function showProgress(elapsed, total) {
-  const output = ts2tc(elapsed) + "/" + ts2tc(total);
-  document.querySelector("#progress").innerHTML = output;
+  const elapsedHuman = ts2tc(elapsed);
+  const percent = totalDuration ? (elapsed / totalDuration * 100) : 0;
+  document.getElementById("bar").style.width = `${percent}%`;
+  document.getElementById("elapsed").innerHTML = elapsedHuman;
 }
 
 function parseHash(hash) {
@@ -194,18 +198,42 @@ function connect() {
       showError(String(content ?? "Unknown error"));
     } else if (type === "ok") {
       show("✅ Connected");
-    } else if (type === "movie-started") {
+    } else if (type === "state-info") {
       document.title = payload.title;
       totalDuration = payload.totalDuration;
+
+      state = payload.state;
+
+      const humanDelay = {
+        100: "1/10 sec",
+        250: "1/4 sec",
+        500: "1/2 sec",
+        1000: "1 sec",
+      }[payload.delayMsec] || `${payload.delayMsec / 1000} sec`;
+      document.getElementById("subDelay").innerHTML = `-${humanDelay}`;
+      document.getElementById("addDelay").innerHTML = `+${humanDelay}`;
+
+      if (state === "PLAYING") {
+        document.getElementById("btn-play").setAttribute('aria-pressed','true');
+        document.getElementById("playIcon").innerHTML = "❙❙";
+        document.getElementById("playHint").innerHTML = "Pause";
+      } else {
+        document.getElementById("btn-play").setAttribute('aria-pressed','false');
+        document.getElementById("playIcon").innerHTML = "▶";
+        document.getElementById("playHint").innerHTML = "Play";
+      }
+
+      document.getElementById("movieTitle").innerHTML = payload.title || "No movie loaded";
+      document.getElementById("presetName").innerHTML = `${payload.presetName}`;
+
     } else if (type === "play-pulse") {
       showProgress(payload.elapsed, totalDuration);
     } else if (type === "clear") {
-      document.title = "Remote Subtivals";
-      show("");
+      document.getElementById("subtitle").innerHTML = "";
     } else if (type === "add-subtitle") {
-      show(content ?? "");
+      document.getElementById("subtitle").innerHTML = content;
     } else if (type === "rem-subtitle") {
-      show("");
+      document.getElementById("subtitle").innerHTML = "";
     } else {
       console.error("Unknown event type", type, content);
     }

@@ -108,8 +108,9 @@ int main(int argc, char *argv[]) {
   RemoteService service;
 
   // Player -> Remote service
-  QObject::connect(w.player(), SIGNAL(started(QString, quint64)), &service,
-                   SLOT(movieStarted(QString, quint64)));
+  QObject::connect(
+      &w, SIGNAL(stateInfo(QString, QString, quint64, quint64, QString)),
+      &service, SLOT(stateInfo(QString, QString, quint64, quint64, QString)));
   // TODO: info from movieStarted() lost if user refreshes the page
   QObject::connect(w.player(), SIGNAL(pulse(quint64)), &service,
                    SLOT(playPulse(quint64)));

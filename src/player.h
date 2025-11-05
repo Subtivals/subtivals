@@ -19,8 +19,7 @@ public:
   quint64 elapsedTime();
   int delay();
 signals:
-  void started(const QString &title, quint64 totalDuration);
-  void pulse(quint64);
+  void pulse(quint64 elapsed);
   void stopped();
   void on(Subtitle *);
   void off(Subtitle *);

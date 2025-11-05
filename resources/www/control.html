@@ -7,13 +7,40 @@
     <link rel="stylesheet" href="control.css" />
 </head>
 <body>
-    <div id="main"></div>
-    <div id="progress"></div>
-    <div id="ping"></div>
-    <button id="btn-play">play</button>
-    <button id="btn-pause">pause</button>
-    <button id="btn-subDelay">sub delay</button>
-    <button id="btn-addDelay">add delay</button>
-    <script src="control.js"></script>
+  <div class="app">
+    <div class="remote" role="region" aria-label="Remote control">
+      <div class="title" aria-live="polite">
+        <span id="movieTitle"></span>
+        <span id="presetName" class="pill"></span>
+      </div>
+      <div id="main" class="status" aria-live="polite"></div>
+
+      <div class="time">
+        <div class="elapsed" id="elapsed">00:00</div>
+        <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="btn-subDelay">
+          <div class="label"><span class="icon">⟲</span><span id="subDelay" class="hint">-1/4s</span></div>
+        </button>
+        <button class="btn primary" id="btn-play" aria-pressed="false">
+          <div class="label">
+            <span class="icon" id="playIcon">▶</span>
+            <span class="hint" id="playHint">Play</span>
+          </div>
+        </button>
+        <button class="btn" id="btn-addDelay">
+          <div class="label"><span class="icon">⟳</span><span id="addDelay" class="hint">+1/4s</span></div>
+        </button>
+      </div>
+
+      <div class="screen" id="screen" role="img" aria-label="Cinema screen">
+        <div class="subtitle" id="subtitle"></div>
+      </div>
+      <div id="ping" aria-live="polite"></div>
+    </div>
+  </div>
+  <script src="control.js"></script>
 </body>
 </html>
