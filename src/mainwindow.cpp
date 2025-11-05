@@ -283,6 +283,12 @@ MainWindow::MainWindow(QWidget *parent)
   m_timerFileChange.setSingleShot(true);
   connect(&m_timerFileChange, SIGNAL(timeout()), this, SLOT(reloadScript()));
 
+  // Emit state info 3 times per second
+  QTimer *stateInfoTimer = new QTimer(this);
+  stateInfoTimer->setInterval(333);
+  connect(stateInfoTimer, &QTimer::timeout, this, &MainWindow::emitStateInfo);
+  stateInfoTimer->start();
+
   // Initialize recent files actions.
   for (int i = 0; i < MAX_RECENT_FILES; ++i) {
     QAction *action = new QAction(this);
@@ -313,12 +319,6 @@ MainWindow::MainWindow(QWidget *parent)
   m_shortcutEditor->registerAction(ui->actionShowHelp);
   m_shortcutEditor->registerAction(ui->actionDarkMode);
   m_shortcutEditor->registerAction(ui->actionExit);
-
-  // Emit state info 3 times per second
-  QTimer *stateInfoTimer = new QTimer(this);
-  stateInfoTimer->setInterval(333);
-  connect(stateInfoTimer, &QTimer::timeout, this, &MainWindow::emitStateInfo);
-  stateInfoTimer->start();
 }
 
 MainWindow::~MainWindow() {
