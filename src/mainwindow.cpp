@@ -396,7 +396,6 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("charsRate", m_charsRate);
   settings.setValue("subtitleInterval", m_subtitleInterval);
   settings.setValue("subtitleMinDuration", m_subtitleMinDuration);
-  settings.setValue("delayMilliseconds", m_delayMilliseconds);
   settings.endGroup();
 
   settings.beginGroup("PreviewPanel");
@@ -468,7 +467,7 @@ void MainWindow::showEvent(QShowEvent *) {
   m_charsRate = settings.value("charsRate", 12).toInt();
   m_subtitleInterval = settings.value("subtitleInterval", 1000).toInt();
   m_subtitleMinDuration = settings.value("subtitleMinDuration", 1000).toInt();
-  m_delayMilliseconds = settings.value("delayMilliseconds", 250).toInt();
+  int delayStepMilliseconds = settings.value("delayMilliseconds", 250).toInt();
   settings.endGroup();
 
   settings.beginGroup("PreviewPanel");
@@ -483,7 +482,10 @@ void MainWindow::showEvent(QShowEvent *) {
 
   // Reflect the configured add/sub delay on the action text.
   QString text;
-  switch (m_delayMilliseconds) {
+  switch (delayStepMilliseconds) {
+  case 42:
+    text = tr("1/24 sec");
+    break;
   case 100:
     text = tr("1/10 sec");
     break;
@@ -497,7 +499,7 @@ void MainWindow::showEvent(QShowEvent *) {
     text = tr("1 sec");
     break;
   default:
-    text = QString::number(m_delayMilliseconds) + tr(" msec");
+    text = QString::number(delayStepMilliseconds) + tr(" msec");
     break;
   }
   ui->actionAddDelay->setText("+" + text);

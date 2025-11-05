@@ -189,7 +189,7 @@ p, li { white-space: pre-wrap; }
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="14"/>
-        <location filename="../src/mainwindow.cpp" line="707"/>
+        <location filename="../src/mainwindow.cpp" line="703"/>
         <source>Subtivals</source>
         <translation>Subtivals</translation>
     </message>
@@ -661,6 +661,11 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">%1 sous-titres, %2 - %3</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="479"/>
+        <source>1/24 sec</source>
+        <translation>1/24 sec</translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.cpp" line="482"/>
         <source>1/10 sec</source>
         <translation>1/10 sec</translation>
@@ -686,102 +691,102 @@ p, li { white-space: pre-wrap; }
         <translation> msec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="527"/>
+        <location filename="../src/mainwindow.cpp" line="523"/>
         <source>Save list as spreadsheet</source>
         <translation>Enregistrer la liste dans un fichier tableur</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="528"/>
+        <location filename="../src/mainwindow.cpp" line="524"/>
         <source>spreadsheet</source>
         <translation>feuille</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="529"/>
+        <location filename="../src/mainwindow.cpp" line="525"/>
         <source>Comma-separated files (*.csv)</source>
         <translation>Fichiers valeurs séparées par des virgules (*.csv)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="539"/>
+        <location filename="../src/mainwindow.cpp" line="535"/>
         <source>Unable to write file</source>
         <translation>Impossible d&apos;enregistrer le fichier</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="548"/>
+        <location filename="../src/mainwindow.cpp" line="544"/>
         <source>Saved successfully</source>
         <translation>Enregistré avec succès</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="549"/>
+        <location filename="../src/mainwindow.cpp" line="545"/>
         <source>Subtitles exported to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Sous-titres enregistré dans &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="587"/>
+        <location filename="../src/mainwindow.cpp" line="583"/>
         <source>Encoding error</source>
         <translation>Erreur d&apos;encodage</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="588"/>
+        <location filename="../src/mainwindow.cpp" line="584"/>
         <source>Looks like the subtitles were not saved in a valid UTF-8 file.</source>
         <translation>Apparemment, le fichier de sous-titre n&apos;a pas enregistré avec l&apos;encodage UTF-8.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="592"/>
+        <location filename="../src/mainwindow.cpp" line="588"/>
         <source>Error with subtitles</source>
         <translation>Erreur avec les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="593"/>
+        <location filename="../src/mainwindow.cpp" line="589"/>
         <source>Could not read the file specified.</source>
         <translation>Le fichier spécifié n&apos;a pas pu être lu.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="627"/>
+        <location filename="../src/mainwindow.cpp" line="623"/>
         <source>%1 subtitles, %2 - %3</source>
         <translation>%1 sous-titres, %2 - %3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="650"/>
+        <location filename="../src/mainwindow.cpp" line="646"/>
         <source>%1 chars/sec</source>
         <translation>%1 car/sec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="655"/>
+        <location filename="../src/mainwindow.cpp" line="651"/>
         <source>Fast (%1 chars/sec)</source>
         <translation>Rapide (%1 caract./sec)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="659"/>
+        <location filename="../src/mainwindow.cpp" line="655"/>
         <source>Unreadable (%1 chars/sec)</source>
         <translation>Illisible (%1 caract./sec)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/mainwindow.cpp" line="715"/>
         <source>&amp;%1 %2</source>
         <translation>&amp;%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="784"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>Some styles are currently overriden in preferences.</source>
         <translation>Certains styles ont été forcés dans les préférences.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="809"/>
+        <location filename="../src/mainwindow.cpp" line="805"/>
         <source>Subtitle file reloaded.</source>
         <translation>Fichier de sous-titres rechargé.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="830"/>
+        <location filename="../src/mainwindow.cpp" line="826"/>
         <source>Open subtitles</source>
         <translation>Ouvrir fichier de sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="831"/>
+        <location filename="../src/mainwindow.cpp" line="827"/>
         <source>Subtitle Files (*.ass *.srt *.txt *.xml)</source>
         <translation>Fichiers de sous-titres (*.ass *.srt *.txt *.xml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1359"/>
+        <location filename="../src/mainwindow.cpp" line="1353"/>
         <source>&lt;h1&gt;Subtivals %1&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %2&lt;/h2&gt;</source>
         <translation>&lt;h1&gt;Subtivals %1&lt;/h1&gt;&lt;p&gt;Subtivals, un logiciel pour projetter des sous-titres.&lt;/p&gt;&lt;h2&gt;Auteurs&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %2&lt;/h2&gt;</translation>
     </message>
@@ -794,7 +799,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Fichiers de sous-titres (*.ass *.srt)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1124"/>
+        <location filename="../src/mainwindow.cpp" line="1120"/>
         <source>Remaining: %1</source>
         <translation>Restant: %1</translation>
     </message>
@@ -811,7 +816,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Fichier de sous-titres (*.ass)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1358"/>
+        <location filename="../src/mainwindow.cpp" line="1352"/>
         <source>About Subtivals</source>
         <translation>À propos de Subtivals</translation>
     </message>

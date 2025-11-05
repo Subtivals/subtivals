@@ -141,7 +141,7 @@ p, li { white-space: pre-wrap; }
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="14"/>
-        <location filename="../src/mainwindow.cpp" line="707"/>
+        <location filename="../src/mainwindow.cpp" line="703"/>
         <source>Subtivals</source>
         <translation>Subtivals</translation>
     </message>
@@ -593,6 +593,11 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="479"/>
+        <source>1/24 sec</source>
+        <translation>1/24 seg</translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.cpp" line="482"/>
         <source>1/10 sec</source>
         <translation>1/10 seg</translation>
@@ -618,102 +623,102 @@ p, li { white-space: pre-wrap; }
         <translation> mseg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="527"/>
+        <location filename="../src/mainwindow.cpp" line="523"/>
         <source>Save list as spreadsheet</source>
         <translation>Guardar la lista como hoja de cálculo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="528"/>
+        <location filename="../src/mainwindow.cpp" line="524"/>
         <source>spreadsheet</source>
         <translation>hoja de cálculo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="529"/>
+        <location filename="../src/mainwindow.cpp" line="525"/>
         <source>Comma-separated files (*.csv)</source>
         <translation>Archivos separados por comas (*.csv)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="539"/>
+        <location filename="../src/mainwindow.cpp" line="535"/>
         <source>Unable to write file</source>
         <translation>No se puede escribir el archivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="548"/>
+        <location filename="../src/mainwindow.cpp" line="544"/>
         <source>Saved successfully</source>
         <translation>Guardado con éxito</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="549"/>
+        <location filename="../src/mainwindow.cpp" line="545"/>
         <source>Subtitles exported to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Subtítulos exportados a &lt;a href = &quot;%1&quot;&gt;%2 &lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="587"/>
+        <location filename="../src/mainwindow.cpp" line="583"/>
         <source>Encoding error</source>
         <translation>Error de codificación</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="588"/>
+        <location filename="../src/mainwindow.cpp" line="584"/>
         <source>Looks like the subtitles were not saved in a valid UTF-8 file.</source>
         <translation>Parece que los subtítulos no se guardaron en un archivo UTF-8 válido.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="592"/>
+        <location filename="../src/mainwindow.cpp" line="588"/>
         <source>Error with subtitles</source>
         <translation>Error con los subtítulos</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="593"/>
+        <location filename="../src/mainwindow.cpp" line="589"/>
         <source>Could not read the file specified.</source>
         <translation>No se pudo leer el archivo especificado.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="627"/>
+        <location filename="../src/mainwindow.cpp" line="623"/>
         <source>%1 subtitles, %2 - %3</source>
         <translation>%1 subtitulos, %2 - %3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="650"/>
+        <location filename="../src/mainwindow.cpp" line="646"/>
         <source>%1 chars/sec</source>
         <translation>%1 cars/sec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="655"/>
+        <location filename="../src/mainwindow.cpp" line="651"/>
         <source>Fast (%1 chars/sec)</source>
         <translation>Rapido (%1 cars/sec)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="659"/>
+        <location filename="../src/mainwindow.cpp" line="655"/>
         <source>Unreadable (%1 chars/sec)</source>
         <translation>Ilegible (%1 cars/sec)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/mainwindow.cpp" line="715"/>
         <source>&amp;%1 %2</source>
         <translation>&amp; %1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="784"/>
+        <location filename="../src/mainwindow.cpp" line="780"/>
         <source>Some styles are currently overriden in preferences.</source>
         <translation>Algunos estilos están actualmente anulados en preferencias.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="809"/>
+        <location filename="../src/mainwindow.cpp" line="805"/>
         <source>Subtitle file reloaded.</source>
         <translation>Archivo de subtitulos recargado.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="830"/>
+        <location filename="../src/mainwindow.cpp" line="826"/>
         <source>Open subtitles</source>
         <translation>Abrir subtitulos</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="831"/>
+        <location filename="../src/mainwindow.cpp" line="827"/>
         <source>Subtitle Files (*.ass *.srt *.txt *.xml)</source>
         <translation>Archivos subtitle ( *.ass *.srt *.txt *.xml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1359"/>
+        <location filename="../src/mainwindow.cpp" line="1353"/>
         <source>&lt;h1&gt;Subtivals %1&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %2&lt;/h2&gt;</source>
         <translation>&lt;h1&gt; Subtivals %1 &lt;/h1&gt; &lt;p&gt; Subtivals, un programa para proyectar subtítulos. &lt;/p&gt; &lt;h2&gt; autores &lt;/h2&gt; &lt;li&gt; lilian lefranc &lt;/li&gt; &lt;li&gt; arnaud rollly &lt;/li&gt; &lt;li&gt; mathieu leplatre &lt;/li&gt; &lt;li&gt; Emmanuel Digiaro &lt;/li&gt; &lt;h2&gt; © 2011 —Mathieu Leplatre &lt;/li&gt; &lt;li&gt; Emmanuel Digiaro &lt;/li&gt; &lt;h2&gt;</translation>
     </message>
@@ -726,7 +731,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Archivos de subtitulos (*.ass *.srt)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1124"/>
+        <location filename="../src/mainwindow.cpp" line="1120"/>
         <source>Remaining: %1</source>
         <translation>Restante: %1</translation>
     </message>
@@ -735,7 +740,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">&lt;h1&gt;Subtivals %1&lt;/h1&gt;&lt;p&gt;Subtivals, un programa para proyectar subtitulos&lt;/p&gt;&lt;h2&gt;Autores&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1358"/>
+        <location filename="../src/mainwindow.cpp" line="1352"/>
         <source>About Subtivals</source>
         <translation>Acerca de Subtivals</translation>
     </message>

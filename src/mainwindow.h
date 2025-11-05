@@ -42,7 +42,7 @@
 
 typedef QPair<double, double> Factor;
 static QList<Factor> FACTORS_VALUES = {
-    {23.976, 24}, {23.976, 25}, {24, 23.976}, {24, 25}, {25, 23.976}, {25, 24},
+    {24, 23.976}, {25, 23.976}, {23.976, 24}, {25, 24}, {23.976, 25}, {24, 25},
 };
 
 class ConfigEditor;
@@ -172,7 +172,6 @@ private:
   int m_charsRate;
   int m_subtitleInterval;
   int m_subtitleMinDuration;
-  int m_delayMilliseconds;
   int m_largeTextPercent;
   bool m_windowShown;
 };

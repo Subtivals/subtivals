@@ -7,7 +7,8 @@
 Player::Player(QObject *parent)
     : QObject(parent), m_script(nullptr), m_speedFactor(1.0),
       m_speedFactorEnabled(false), m_msseStartTime(0), m_pauseStart(0),
-      m_pauseTotal(0), m_userDelay(0), m_autoHideEnabled(false) {
+      m_pauseTotal(0), m_userDelay(0), m_delayStep(0),
+      m_autoHideEnabled(false) {
   m_timer.setInterval(100);
   connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
   // Timer for auto-hiding ended subtitles
@@ -53,9 +54,13 @@ void Player::stop() {
 
 int Player::delay() { return m_userDelay; }
 
-void Player::addDelay(int d) { m_userDelay += d; }
+void Player::setDelayStep(int d) { m_delayStep = d; }
 
-void Player::subDelay(int d) { m_userDelay -= d; }
+void Player::addDelay(int step) {
+  m_userDelay += step == 0 ? m_delayStep : step;
+}
+
+void Player::subDelay() { m_userDelay -= m_delayStep; }
 
 void Player::timeout() {
   quint64 d = elapsedTime();

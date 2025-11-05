@@ -282,19 +282,56 @@ jobs:
           CD deploy
           windeployqt.exe --verbose 1 "${{ env.APP_NAME }}.exe"
 
-      - name: Install NSIS via Scoop
+      - name: Install Scoop and NSIS (makensis)
+        shell: powershell
         run: |
-          iwr -useb get.scoop.sh -outfile 'install.ps1'
-          .\install.ps1 -RunAsAdmin
+          # install scoop as current user (no RunAsAdmin)
+          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+          iwr -useb get.scoop.sh | iex
+
+          # ensure buckets and update
+          if (-not (scoop bucket list | Select-String -Quiet '^extras$')) {
+            scoop bucket add extras
+          } else {
+            Write-Host "extras already present"
+          }
           scoop update
-          scoop bucket add extras
+
+          # install packages
           scoop install nsis 7zip
 
-      - name: Print NSIS version
-        run: makensis -VERSION
+          # ensure scoop shims are on PATH for subsequent steps
+          $scoopShims = Join-Path $env:USERPROFILE 'scoop\shims'
+          if (Test-Path $scoopShims) {
+            $env:PATH = "$scoopShims;$env:PATH"
+            Write-Host "Added scoop shims to PATH: $scoopShims"
+          } else {
+            Write-Error "scoop shims not found at $scoopShims"
+            exit 1
+          }
+
+          # verify
+          Get-Command scoop -ErrorAction Stop | Format-List Name,Path,Version
+          Get-Command makensis -ErrorAction Stop | Format-List Name,Path,Version
+
+      - name: Add Scoop to PATH
+        run: |
+          echo "$env:USERPROFILE\scoop\shims" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Print NSIS version (cmd)
+        shell: cmd
+        run: |
+          where makensis
+          makensis -VERSION
 
       - name: Create NSIS installer
+        shell: powershell
         run: |
+          # fail early if makensis is missing
+          if (-not (Get-Command makensis -ErrorAction SilentlyContinue)) {
+            Write-Error "makensis not found in PATH"
+            exit 1
+          }
           makensis /DAPP_NAME="${{ env.APP_NAME }}" /DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}" win-installer.nsi
 
       - name: Rename installer
