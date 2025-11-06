@@ -31,6 +31,7 @@ public slots:
   void enableSpeedFactor(bool p_state);
   void setElapsedTime(quint64);
   void setDelayStep(int);
+  int delayStep() const { return m_delayStep; }
   void addDelay(int step = 0);
   void subDelay();
   void setSpeedFactor(double);

@@ -481,6 +481,7 @@ void MainWindow::showEvent(QShowEvent *) {
   settings.endGroup();
 
   // Reflect the configured add/sub delay on the action text.
+  m_player->setDelayStep(delayStepMilliseconds);
   QString text;
   switch (delayStepMilliseconds) {
   case 42:
@@ -1444,6 +1445,6 @@ void MainWindow::emitStateInfo() {
   }
   QString title = m_script ? m_script->title() : "";
   quint64 totalDuration = m_script ? m_script->totalDuration() : 0;
-  emit stateInfo(state, title, totalDuration, m_delayMilliseconds,
+  emit stateInfo(state, title, totalDuration, m_player->delayStep(),
                  m_preferences->presetName());
 }
