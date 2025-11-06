@@ -38,8 +38,6 @@ ConfigEditor::ConfigEditor(QWidget *parent)
   connect(m_styleEditor, SIGNAL(styleOverriden(bool)), this,
           SIGNAL(styleOverriden(bool)));
   connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
-  connect(ui->enableWeblive, SIGNAL(toggled(bool)), this,
-          SIGNAL(webliveEnabled(bool)));
 
   adjustSize();
   setMaximumSize(size());
@@ -194,23 +192,6 @@ void ConfigEditor::setColor(QPushButton *button, const QColor &c) {
   button->setIcon(pm);
 }
 
-void ConfigEditor::enableWeblive(bool p_state) {
-  ui->groupWebLive->setVisible(p_state);
-  ui->iconWeblive->setVisible(p_state);
-  ui->urlWeblive->setVisible(p_state);
-  ui->enableWeblive->setEnabled(p_state);
-}
-
-void ConfigEditor::webliveConnected(bool p_state, QString p_url) {
-  QString message = QString("<a href=\"%1\">%1</a>");
-  if (!p_state) {
-    message = QString("<span style=\"color: red\">%1</span>");
-  }
-  ui->urlWeblive->setText(message.arg(p_url));
-  ui->iconWeblive->setPixmap(
-      QPixmap(p_state ? ":/icons/on.svg" : ":/icons/off.svg"));
-}
-
 void ConfigEditor::restore() {
   // Apply default screen size
   if (ui->tabs->currentWidget() == ui->tabScreen) {
@@ -334,4 +315,8 @@ void ConfigEditor::enableButtonBox(bool restore, bool cancel, bool save) {
 
 void ConfigEditor::enableTabScreen(bool p_state) {
   ui->tabScreen->setEnabled(p_state);
+}
+
+const QString ConfigEditor::presetName() const {
+  return ui->presets->currentText().replace("*", "");
 }

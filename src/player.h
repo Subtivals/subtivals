@@ -14,11 +14,11 @@ class Player : public QObject {
 public:
   explicit Player(QObject *parent = nullptr);
   void setScript(Script *);
-  qlonglong elapsedTime();
+  quint64 elapsedTime();
   int delay();
 signals:
-  void pulse(int);
-  void clear();
+  void pulse(quint64 elapsed);
+  void stopped();
   void on(Subtitle *);
   void off(Subtitle *);
   void changed(QList<Subtitle *>);
@@ -29,8 +29,9 @@ public slots:
   void stop();
   void jumpTo(int);
   void enableSpeedFactor(bool p_state);
-  void setElapsedTime(qint64);
+  void setElapsedTime(quint64);
   void setDelayStep(int);
+  int delayStep() const { return m_delayStep; }
   void addDelay(int step = 0);
   void subDelay();
   void setSpeedFactor(double);
@@ -39,11 +40,11 @@ public slots:
 public:
   void enableAutoHide(bool p_state);
   bool isAutoHideEnabled();
-  qint64 duration(const Subtitle *p_subtitle) const;
+  quint64 duration(const Subtitle *p_subtitle) const;
 
 protected:
-  void updateCurrent(qint64);
-  qint64 tick();
+  void updateCurrent(quint64);
+  quint64 tick();
   const QList<Subtitle *> current() const;
 protected slots:
   void timeout();
@@ -53,12 +54,12 @@ private:
   QTimer m_timer;
   double m_speedFactor;
   bool m_speedFactorEnabled;
-  qint64 m_msseStartTime;
-  qint64 m_pauseStart;
-  qint64 m_pauseTotal;
+  quint64 m_msseStartTime;
+  quint64 m_pauseStart;
+  quint64 m_pauseTotal;
   int m_userDelay;
   int m_delayStep;
-  qint64 m_autoHideDuration;
+  quint64 m_autoHideDuration;
   QList<Subtitle *> m_lastSubtitles;
   QTimer m_timerAutoHide;
   bool m_autoHideEnabled;

@@ -274,6 +274,7 @@
     <addaction name="actionLockScreenOnPlay"/>
     <addaction name="actionHideDesktop"/>
     <addaction name="actionEditShortcuts"/>
+    <addaction name="actionShowRemoteOptions"/>
     <addaction name="actionAdvancedSettings"/>
    </widget>
    <widget class="QMenu" name="menuAide">
@@ -619,6 +620,14 @@
    </property>
    <property name="shortcut">
     <string>Left</string>
+   </property>
+  </action>
+  <action name="actionShowRemoteOptions">
+   <property name="text">
+    <string>Remote options...</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit remote options</string>
    </property>
   </action>
   <action name="actionEditShortcuts">
@@ -1080,6 +1089,22 @@
    </hints>
   </connection>
   <connection>
+   <sender>actionShowRemoteOptions</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>actionShowRemoteOptions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>actionShowMilliseconds</sender>
    <signal>toggled(bool)</signal>
    <receiver>MainWindow</receiver>
@@ -1306,5 +1331,6 @@
   <slot>actionToggleLockScreenOnPlay(bool)</slot>
   <slot>enableKnownFactors(bool)</slot>
   <slot>actionShowPreview(bool)</slot>
+  <slot>actionShowRemoteOptions()</slot>
  </slots>
 </ui>

@@ -76,7 +76,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install "aqtinstall<4"
           python3 -m aqt list-qt linux desktop --modules "${QT_VERSION}" linux_gcc_64
-          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets
+          python3 -m aqt install-qt --outputdir "$HOME/Qt" linux desktop "${QT_VERSION}" linux_gcc_64 -m qtwebsockets qthttpserver
           echo "$HOME/Qt/${QT_VERSION}/gcc_64/bin" >> "$GITHUB_PATH"
 
       - name: Download linuxdeployqt
@@ -185,7 +185,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: ${{ env.QT_VERSION }}
-          modules: 'qtwebsockets'
+          modules: 'qtwebsockets qthttpserver'
 
       - name: Compile
         run: |
@@ -260,7 +260,7 @@ jobs:
           target: 'desktop'
           arch: 'win64_mingw'
           dir: ${{ env.QT_DIR }}
-          modules: 'qtwebsockets'
+          modules: 'qtwebsockets qthttpserver'
           tools: 'tools_mingw1310'
 
       - name: Add Qt-bundled MinGW to PATH

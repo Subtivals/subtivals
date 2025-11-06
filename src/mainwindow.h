@@ -48,6 +48,7 @@ static QList<Factor> FACTORS_VALUES = {
 class ConfigEditor;
 class ShortcutEditor;
 class Player;
+class RemoteOptionsDialog;
 
 namespace Ui {
   class MainWindow;
@@ -64,11 +65,16 @@ public:
   void closeFile();
   ConfigEditor *configEditor();
   const Player *player();
+  const RemoteOptionsDialog *remoteOptionsDialog();
   void connectProjectionEvents(SubtitlesForm *f);
 signals:
   void hideDesktop(bool state);
   void toggleHide(bool state);
   void screenResizable(bool state);
+  // For remote control
+  void stateInfo(const QString state, const QString &title,
+                 quint64 totalDuration, quint64 delayStep, QString presetName);
+
 public slots:
   void refreshDurations();
   void actionDurationCorrection(bool);
@@ -84,7 +90,7 @@ public slots:
   void actionToggleHide(bool state = true);
   void actionAbout();
   void actionShowHelp();
-  void playPulse(int msecsElapsed);
+  void playPulse(quint64 msecsElapsed);
   void subtitleChanged(QList<Subtitle *>);
   void actionEnableReload(bool);
   void fileChanged(QString path);
@@ -112,6 +118,7 @@ public slots:
   void enableKnownFactors(bool);
   void actionToggleLargeText(bool);
   void actionToggleLockScreenOnPlay(bool);
+  void actionShowRemoteOptions();
 
 protected:
   bool canNext();
@@ -127,6 +134,7 @@ protected:
   QString ts2tc(int p_timestamp, QString format = "hh:mm:ss.zzz");
   void setState(State p_state);
   void updateRecentFileActions();
+  void emitStateInfo();
 
 private:
   State m_state;
@@ -146,6 +154,7 @@ private:
   ConfigEditor *m_preferences;
   SubtitlesForm *m_previewpanel;
   ShortcutEditor *m_shortcutEditor;
+  RemoteOptionsDialog *m_remoteOptionsDialog;
   QMap<Subtitle *, int> m_tableMapping;
   bool m_selectSubtitle;
   QTimer m_timerSelection;

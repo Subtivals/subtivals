@@ -12,7 +12,7 @@ DEFINES += VERSION=\\\"$$PACKAGE_VERSION\\\" \
  NB_PRESETS=6 \
  DEFAULT_PROJECTION_WINDOW_HEIGHT=200
 
-QT += core gui widgets websockets xml svg
+QT += core gui widgets websockets xml svg httpserver
 
 TARGET = subtivals
 TEMPLATE = app
@@ -31,7 +31,9 @@ SOURCES += main.cpp\
     styleadvanced.cpp \
     shortcuteditor.cpp \
     wizard.cpp \
-    weblive.cpp
+    remoteservice.cpp \
+    remoteoptionsdialog.cpp \
+    qrcodegen.cpp
 
 HEADERS += mainwindow.h \
     script.h \
@@ -45,8 +47,10 @@ HEADERS += mainwindow.h \
     styleadvanced.h \
     shortcuteditor.h \
     wizard.h \
-    weblive.h \
-    macwindowhelper.h
+    remoteservice.h \
+    macwindowhelper.h \
+    remoteoptionsdialog.h \
+    qrcodegen.hpp
 
 OBJECTIVE_SOURCES += macwindowhelper.mm
 
@@ -60,13 +64,14 @@ FORMS += mainwindow.ui \
     configeditor.ui \
     styleadvanced.ui \
     shortcuteditor.ui \
-    wizard.ui
+    wizard.ui \
+    remoteoptionsdialog.ui
 
 RESOURCES += \
     ../resources/icons.qrc \
     ../resources/samples.qrc \
-    ../resources/ssl.qrc \
-    ../resources/fonts.qrc
+    ../resources/fonts.qrc \
+    ../resources/www.qrc
 
 # Linux librairies to disable screensaver
 unix:!macx {

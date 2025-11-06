@@ -43,7 +43,7 @@ void Player::pause() {
 }
 
 void Player::stop() {
-  emit clear();
+  emit stopped();
   m_timer.stop();
   m_timerAutoHide.stop();
   m_msseStartTime = 0;
@@ -63,7 +63,7 @@ void Player::addDelay(int step) {
 void Player::subDelay() { m_userDelay -= m_delayStep; }
 
 void Player::timeout() {
-  qint64 d = elapsedTime();
+  quint64 d = elapsedTime();
   updateCurrent(d);
   emit pulse(d);
 }
@@ -78,7 +78,7 @@ void Player::autoHideTimeout() {
   }
 }
 
-qint64 Player::duration(const Subtitle *p_subtitle) const {
+quint64 Player::duration(const Subtitle *p_subtitle) const {
   if (m_timer.isActive())
     return p_subtitle->duration();
   return qMax(p_subtitle->duration(), p_subtitle->autoDuration());
@@ -91,7 +91,7 @@ void Player::jumpTo(int i) {
   m_timer.stop();
   // Get subtitle in script
   const Subtitle *subtitle = m_script->subtitleAt(i);
-  qint64 start_mss = subtitle->msseStart();
+  quint64 start_mss = subtitle->msseStart();
   setElapsedTime(start_mss);
   // Show it !
   updateCurrent(start_mss + 1);
@@ -113,7 +113,7 @@ void Player::jumpTo(int i) {
 
 const QList<Subtitle *> Player::current() const { return m_lastSubtitles; }
 
-void Player::updateCurrent(qint64 msecsElapsed) {
+void Player::updateCurrent(quint64 msecsElapsed) {
   // Sanity check
   if (m_script == 0)
     return;
@@ -142,20 +142,20 @@ void Player::updateCurrent(qint64 msecsElapsed) {
     emit changed(m_lastSubtitles);
 }
 
-qint64 Player::tick() {
+quint64 Player::tick() {
   QDateTime dateTime = QDateTime::currentDateTime();
-  qint64 dt = QDate(1982, 5, 8).daysTo(dateTime.date());
+  quint64 dt = QDate(1982, 5, 8).daysTo(dateTime.date());
   QTime tt = dateTime.time();
   return 86400000 * dt + 3600000 * tt.hour() + 60000 * tt.minute() +
          1000 * tt.second() + tt.msec();
 }
 
-void Player::setElapsedTime(qint64 p_elapsed) {
+void Player::setElapsedTime(quint64 p_elapsed) {
   double factor = m_speedFactorEnabled ? m_speedFactor : 1.0;
   m_msseStartTime = tick() - p_elapsed / factor + m_userDelay - m_pauseTotal;
 }
 
-qint64 Player::elapsedTime() {
+quint64 Player::elapsedTime() {
   if (!m_timer.isActive() && m_lastSubtitles.count() > 0) {
     return m_lastSubtitles.last()->msseStart() + 1;
   }
@@ -165,7 +165,7 @@ qint64 Player::elapsedTime() {
 }
 
 void Player::setSpeedFactor(double p_factor) {
-  qint64 elapsed = elapsedTime();
+  quint64 elapsed = elapsedTime();
   m_speedFactor = p_factor / 100.0;
   setElapsedTime(elapsed);
 }
@@ -178,7 +178,7 @@ void Player::enableAutoHide(bool p_state) {
 bool Player::isAutoHideEnabled() { return m_autoHideEnabled; }
 
 void Player::enableSpeedFactor(bool p_state) {
-  qint64 elapsed = elapsedTime();
+  quint64 elapsed = elapsedTime();
   m_speedFactorEnabled = p_state;
   setElapsedTime(elapsed);
 }

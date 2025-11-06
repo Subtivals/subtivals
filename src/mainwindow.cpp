@@ -42,6 +42,7 @@
 #include "mainwindow.h"
 #include "player.h"
 #include "shortcuteditor.h"
+#include "remoteoptionsdialog.h"
 #include "ui_mainwindow.h"
 #include "wizard.h"
 
@@ -171,8 +172,9 @@ MainWindow::MainWindow(QWidget *parent)
       m_player(new Player()), m_playerThread(new QThread()),
       m_preferences(new ConfigEditor(this)),
       m_previewpanel(new SubtitlesForm(this)),
-      m_shortcutEditor(new ShortcutEditor(this)), m_selectSubtitle(true),
-      m_rowChanged(false), m_reloadEnabled(false),
+      m_shortcutEditor(new ShortcutEditor(this)),
+      m_remoteOptionsDialog(new RemoteOptionsDialog(this)),
+      m_selectSubtitle(true), m_rowChanged(false), m_reloadEnabled(false),
       m_filewatcher(new QFileSystemWatcher),
       m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)),
       m_windowShown(false) {
@@ -209,7 +211,7 @@ MainWindow::MainWindow(QWidget *parent)
   m_player->moveToThread(m_playerThread);
   m_playerThread->start();
   qRegisterMetaType<QList<Subtitle *>>("QList<Subtitle*>");
-  connect(m_player, SIGNAL(pulse(int)), this, SLOT(playPulse(int)));
+  connect(m_player, SIGNAL(pulse(quint64)), this, SLOT(playPulse(quint64)));
   connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
           SLOT(subtitleChanged(QList<Subtitle *>)));
   connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
@@ -280,6 +282,12 @@ MainWindow::MainWindow(QWidget *parent)
           SLOT(fileChanged(QString)));
   m_timerFileChange.setSingleShot(true);
   connect(&m_timerFileChange, SIGNAL(timeout()), this, SLOT(reloadScript()));
+
+  // Emit state info 3 times per second
+  QTimer *stateInfoTimer = new QTimer(this);
+  stateInfoTimer->setInterval(333);
+  connect(stateInfoTimer, &QTimer::timeout, this, &MainWindow::emitStateInfo);
+  stateInfoTimer->start();
 
   // Initialize recent files actions.
   for (int i = 0; i < MAX_RECENT_FILES; ++i) {
@@ -473,6 +481,7 @@ void MainWindow::showEvent(QShowEvent *) {
   settings.endGroup();
 
   // Reflect the configured add/sub delay on the action text.
+  m_player->setDelayStep(delayStepMilliseconds);
   QString text;
   switch (delayStepMilliseconds) {
   case 42:
@@ -503,6 +512,10 @@ void MainWindow::showEvent(QShowEvent *) {
 ConfigEditor *MainWindow::configEditor() { return m_preferences; }
 
 const Player *MainWindow::player() { return m_player; }
+
+const RemoteOptionsDialog *MainWindow::remoteOptionsDialog() {
+  return m_remoteOptionsDialog;
+}
 
 void MainWindow::openRecentFile() {
   QAction *action = qobject_cast<QAction *>(sender());
@@ -607,7 +620,7 @@ void MainWindow::openFile(const QString &p_fileName) {
   m_player->setScript(m_script);
   m_preferences->setScript(m_script); // will reset()
   // Set the window title from the file name, without extention
-  setWindowTitle(QFileInfo(p_fileName).baseName());
+  setWindowTitle(m_script->title());
 
   // Show script properties
   int count = m_script->subtitlesCount();
@@ -959,7 +972,7 @@ void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
                    SLOT(addSubtitle(Subtitle *)));
   QObject::connect(m_player, SIGNAL(off(Subtitle *)), f,
                    SLOT(remSubtitle(Subtitle *)));
-  QObject::connect(m_player, SIGNAL(clear()), f, SLOT(clearSubtitles()),
+  QObject::connect(m_player, SIGNAL(stopped()), f, SLOT(clearSubtitles()),
                    Qt::DirectConnection);
   QObject::connect(this, SIGNAL(toggleHide(bool)), f, SLOT(toggleHide(bool)));
 
@@ -1112,7 +1125,7 @@ void MainWindow::actionSubtitleSelected(QModelIndex index) {
   ui->actionNext->setEnabled(canNext());
 }
 
-void MainWindow::playPulse(int msecsElapsed) {
+void MainWindow::playPulse(quint64 msecsElapsed) {
   if (m_state == PLAYING) {
     ui->timer->setText(ts2tc(msecsElapsed));
     ui->userDelay->setText(ts2tc(m_player->delay()));
@@ -1346,6 +1359,8 @@ void MainWindow::actionJumpLongest() {
 
 void MainWindow::actionEditShortcuts() { m_shortcutEditor->exec(); }
 
+void MainWindow::actionShowRemoteOptions() { m_remoteOptionsDialog->show(); }
+
 void MainWindow::actionShowMilliseconds(bool) { refreshDurations(); }
 
 void MainWindow::actionAbout() {
@@ -1410,4 +1425,26 @@ void MainWindow::actionToggleDarkMode(bool p_enabled) {
     // System default.
     qApp->styleHints()->setColorScheme(Qt::ColorScheme::Unknown);
   }
+}
+
+void MainWindow::emitStateInfo() {
+  QString state;
+  switch (m_state) {
+  case NODATA:
+    state = "NODATA";
+    break;
+  case STOPPED:
+    state = "STOPPED";
+    break;
+  case PLAYING:
+    state = "PLAYING";
+    break;
+  case PAUSED:
+    state = "PAUSED";
+    break;
+  }
+  QString title = m_script ? m_script->title() : "";
+  quint64 totalDuration = m_script ? m_script->totalDuration() : 0;
+  emit stateInfo(state, title, totalDuration, m_player->delayStep(),
+                 m_preferences->presetName());
 }

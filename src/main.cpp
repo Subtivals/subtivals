@@ -30,7 +30,8 @@
 #include "mainwindow.h"
 #include "player.h"
 #include "projectionwindow.h"
-#include "weblive.h"
+#include "remoteservice.h"
+#include "remoteoptionsdialog.h"
 
 #ifdef Q_OS_MACOS
 #include <IOKit/pwr_mgt/IOPMLib.h>
@@ -104,20 +105,49 @@ int main(int argc, char *argv[]) {
 
   ProjectionWindow f;
   MainWindow w;
-  WebLive live;
+  RemoteService service;
 
-  // Live
-  QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &live,
+  // Player -> Remote service
+  QObject::connect(
+      &w, SIGNAL(stateInfo(QString, QString, quint64, quint64, QString)),
+      &service, SLOT(stateInfo(QString, QString, quint64, quint64, QString)));
+  // TODO: info from movieStarted() lost if user refreshes the page
+  QObject::connect(w.player(), SIGNAL(pulse(quint64)), &service,
+                   SLOT(playPulse(quint64)));
+  QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &service,
                    SLOT(addSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(off(Subtitle *)), &live,
+  QObject::connect(w.player(), SIGNAL(off(Subtitle *)), &service,
                    SLOT(remSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(clear()), &live, SLOT(clearSubtitles()),
-                   Qt::DirectConnection);
-  QObject::connect(w.configEditor(), SIGNAL(webliveEnabled(bool)), &live,
-                   SLOT(enable(bool)));
-  QObject::connect(&live, SIGNAL(connected(bool, QString)), w.configEditor(),
-                   SLOT(webliveConnected(bool, QString)));
-  w.configEditor()->enableWeblive(live.configured());
+  QObject::connect(w.player(), SIGNAL(stopped()), &service,
+                   SLOT(clearSubtitles()));
+  // Remote service -> Play
+  QObject::connect(&service, SIGNAL(play()), &w, SLOT(actionPlay()));
+  QObject::connect(&service, SIGNAL(pause()), &w, SLOT(actionPause()));
+  QObject::connect(&service, SIGNAL(subDelay()), w.player(), SLOT(subDelay()));
+  QObject::connect(&service, SIGNAL(addDelay()), w.player(), SLOT(addDelay()));
+  // Remote service -> Remote options dialog
+  QObject::connect(&service,
+                   SIGNAL(settingsLoaded(bool, quint16, quint16, QString)),
+                   w.remoteOptionsDialog(),
+                   SLOT(onSettingsLoaded(bool, quint16, quint16, QString)));
+  QObject::connect(&service, SIGNAL(started(QString, QString)),
+                   w.remoteOptionsDialog(),
+                   SLOT(onServiceStarted(QString, QString)));
+  QObject::connect(&service, SIGNAL(stopped()), w.remoteOptionsDialog(),
+                   SLOT(onServiceStopped()));
+  QObject::connect(&service, SIGNAL(errorOccurred(QString)),
+                   w.remoteOptionsDialog(), SLOT(onServiceError(QString)));
+  QObject::connect(&service, SIGNAL(clientsConnected(quint16, quint16)),
+                   w.remoteOptionsDialog(),
+                   SLOT(onClientsConnected(quint16, quint16)));
+  // Remote options dialog -> Remote Service
+  QObject::connect(w.remoteOptionsDialog(),
+                   SIGNAL(startRequested(quint16, quint16)), &service,
+                   SLOT(start(quint16, quint16)));
+  QObject::connect(w.remoteOptionsDialog(), SIGNAL(disableRequested()),
+                   &service, SLOT(disable()));
+  QObject::connect(w.remoteOptionsDialog(), SIGNAL(setPassphrase(QString)),
+                   &service, SLOT(setPassphrase(QString)));
 
   // Showing subtitles
   w.connectProjectionEvents(&f);
@@ -130,6 +160,9 @@ int main(int argc, char *argv[]) {
 
   f.show();
   w.show();
+
+  // Service now owns persistence & autostart:
+  service.loadSettingsAndMaybeStart();
 
   // If more than one arg and last arg is a file, open it
   if (argc > 1) {
