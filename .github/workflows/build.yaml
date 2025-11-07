@@ -91,7 +91,7 @@ jobs:
           qmake6 --version
           qmake6 -query QT_INSTALL_LIBS
           mkdir -p build && cd build
-          qmake6 "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE" CONFIG+=static
+          qmake6 "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE" CONFIG+=static PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
           make "-j$(nproc)"
 
       - name: Prepare AppDir for AppImage
@@ -190,7 +190,7 @@ jobs:
       - name: Compile
         run: |
           mkdir -p build && cd build/
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
+          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
           make "-j$(sysctl -n hw.ncpu)"
 
       - name: Deploy
@@ -272,7 +272,7 @@ jobs:
         run: |
           MKDIR build
           CD build
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}"
+          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
           mingw32-make -j4
 
       - name: Deploy with windeployqt
