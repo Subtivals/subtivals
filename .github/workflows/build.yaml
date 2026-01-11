@@ -220,6 +220,68 @@ jobs:
           path: "*.zip"
           if-no-files-found: error
 
+  build-mac-intel:
+    runs-on: macos-13
+    environment: build
+    strategy:
+      matrix:
+        demo: [false, true]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag version
+        run: echo "PACKAGE_VERSION=$(git describe --tags --abbrev=0 || echo 0.0.0)" >> "$GITHUB_ENV"
+
+      - name: Apply patch
+        if: matrix.demo == true
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git diff --binary origin/main...origin/demo > demo.patch
+          git apply demo.patch
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          modules: 'qtwebsockets qthttpserver'
+
+      - name: Compile
+        run: |
+          mkdir -p build && cd build/
+          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
+          make "-j$(sysctl -n hw.ncpu)"
+
+      - name: Deploy
+        run: |
+          mv "build/${{ env.APP_NAME }}.app" "build/${{ env.APP_LABEL }}.app"
+          macdeployqt "build/${{ env.APP_LABEL }}.app" -dmg -verbose=2
+
+      - run: mv "build/${{ env.APP_LABEL }}.dmg" "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo-macos' || '' }}-intel.dmg"
+
+      - name: Zip builds
+        if: matrix.demo == false
+        run: zip -r -P "${{ secrets.ZIP_PASSWORD }}" "${{ env.APP_NAME }}-${{ env.PACKAGE_VERSION }}.zip" "${{ env.APP_LABEL }}-${{ env.PACKAGE_VERSION }}${{ matrix.demo && '-demo-macos' || '' }}-intel.dmg"
+
+      - name: Upload artifacts (demo)
+        if: matrix.demo == true
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-artifacts-mac-intel-demo
+          path: "*.dmg"
+          if-no-files-found: error
+
+      - name: Upload artifacts
+        if: matrix.demo == false
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-artifacts-mac-intel
+          path: "*.zip"
+          if-no-files-found: error
+
   build-windows:
     runs-on: windows-latest
     environment: build
