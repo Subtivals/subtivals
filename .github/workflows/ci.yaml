@@ -24,8 +24,8 @@ jobs:
           tar xzf actionlint.tar.gz actionlint
           ./actionlint -color
         env:
-          ACTIONLINT_VERSION: 1.7.7
-          ACTIONLINT_SHA256: 023070a287cd8cccd71515fedc843f1985bf96c436b7effaecce67290e7e0757  # pragma: allowlist secret
+          ACTIONLINT_VERSION: 1.7.10
+          ACTIONLINT_SHA256: f4c76b71db5755a713e6055cbb0857ed07e103e028bda117817660ebadb4386f  # pragma: allowlist secret
 
   clang-format-lint:
     runs-on: ubuntu-latest
