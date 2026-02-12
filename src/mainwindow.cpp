@@ -713,7 +713,7 @@ void MainWindow::closeFile() {
   ui->actionOperatorPrintout->setEnabled(false);
   ui->actionJumpLongest->setEnabled(false);
 
-  setWindowTitle(tr("Subtivals"));
+  setWindowTitle(APP_NAME);
   m_scriptProperties->setText("");
   ui->tableWidget->setRowCount(0);
 }
@@ -1364,15 +1364,16 @@ void MainWindow::actionShowRemoteOptions() { m_remoteOptionsDialog->show(); }
 void MainWindow::actionShowMilliseconds(bool) { refreshDurations(); }
 
 void MainWindow::actionAbout() {
-  QMessageBox::about(this, tr("About Subtivals"),
-                     tr("<h1>Subtivals %1</h1>"
-                        "<p>Subtivals, a program to project subtitles.</p>"
+  QMessageBox::about(this, tr("About %1").arg(APP_NAME),
+                     tr("<h1>%1 %2</h1>"
+                        "<p>%1, a program to project subtitles.</p>"
                         "<h2>Authors</h2>"
                         "<li>Lilian Lefranc</li>"
                         "<li>Arnaud Rolly</li>"
                         "<li>Mathieu Leplatre</li>"
                         "<li>Emmanuel Digiaro</li>"
                         "<h2>© 2011 - %2</h2>")
+                         .arg(APP_NAME)
                          .arg(VERSION)
                          .arg(QDate::currentDate().year()));
 }

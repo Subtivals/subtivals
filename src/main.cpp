@@ -40,7 +40,7 @@ static IOPMAssertionID assertionID;
 void disableScreensaver() {
   IOPMAssertionCreateWithName(
       kIOPMAssertionTypeNoDisplaySleep, kIOPMAssertionLevelOn,
-      CFSTR("Prevent display sleep for Subtivals"), &assertionID);
+      CFSTR("Prevent display sleep for " APP_NAME), &assertionID);
 }
 #endif
 #ifdef Q_OS_WIN
@@ -70,9 +70,9 @@ void disableScreensaver() {
 int main(int argc, char *argv[]) {
   // Load settings from profile.
   QSettings::setDefaultFormat(QSettings::IniFormat);
-  QCoreApplication::setOrganizationName("Subtivals");
+  QCoreApplication::setOrganizationName(ORG_NAME);
   QCoreApplication::setOrganizationDomain(MAIN_WEBSITE);
-  QCoreApplication::setApplicationName("Subtivals");
+  QCoreApplication::setApplicationName(APP_NAME);
 
   QSettings settings;
   qInfo() << "Configuration location:" << settings.fileName();
