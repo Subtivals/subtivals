@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
   // Load settings from profile.
   QSettings::setDefaultFormat(QSettings::IniFormat);
   QCoreApplication::setOrganizationName("Subtivals");
-  QCoreApplication::setOrganizationDomain("http://subtivals.org");
+  QCoreApplication::setOrganizationDomain(MAIN_WEBSITE);
   QCoreApplication::setApplicationName("Subtivals");
 
   QSettings settings;

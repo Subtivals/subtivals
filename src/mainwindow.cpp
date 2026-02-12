@@ -455,7 +455,7 @@ void MainWindow::showEvent(QShowEvent *) {
   ui->actionLockScreenOnPlay->setChecked(
       settings.value("lockScreenOnPlay", false).toBool());
 
-  if (settings.value("wizard", true).toBool()) {
+  if (settings.value("wizard", WIZARD_ENABLED).toBool()) {
     ui->actionShowWizard->trigger();
     settings.setValue("wizard", false);
   }
@@ -1378,7 +1378,7 @@ void MainWindow::actionAbout() {
 }
 
 void MainWindow::actionShowHelp() {
-  QDesktopServices::openUrl(QUrl("http://help.subtivals.org"));
+  QDesktopServices::openUrl(QUrl(HELP_WEBSITE));
 }
 
 void MainWindow::speedFactorChanged(double p_factor) {

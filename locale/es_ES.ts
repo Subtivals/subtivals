@@ -1173,7 +1173,7 @@ Continue?</source>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="223"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Join the user community!&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ask questions&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Discuss new features&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tips and tricks&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Share your experience&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;a href=&quot;https://community.subtivals.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#094fd1;&quot;&gt;https://community.subtivals.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Join the user community!&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ask questions&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Discuss new features&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tips and tricks&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Share your experience&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;a href=&quot;COMMUNITY_WEBSITE&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#094fd1;&quot;&gt;COMMUNITY_WEBSITE&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;p&gt; ¡Únete a la comunidad de usuarios! &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt; Haga preguntas &lt;/li&gt;
@@ -1182,7 +1182,7 @@ Continue?</source>
 &lt;li&gt; Comparte tu experiencia &lt;/li&gt;
 &lt;li&gt; &lt;/li&gt;
 &lt;/ul&gt;
-&lt;P&gt; &lt;a href = &quot;https://community.subtivals.org&quot;&gt; https://community.subtivals.org &lt;/a&gt; &lt;/p&gt;</translation>
+&lt;P&gt; &lt;a href = &quot;COMMUNITY_WEBSITE&quot;&gt; COMMUNITY_WEBSITE &lt;/a&gt; &lt;/p&gt;</translation>
     </message>
 </context>
 </TS>
