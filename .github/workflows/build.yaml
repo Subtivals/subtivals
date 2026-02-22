@@ -11,8 +11,8 @@ on:
 
 env:
   QT_VERSION: "6.8.3"
-  APP_NAME: subtivals
-  APP_LABEL: Subtivals
+  APP_NAME: ractisubs
+  APP_LABEL: Racti Subs
   BUILD_TYPE: release
 
 jobs:
