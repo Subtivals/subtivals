@@ -12,13 +12,13 @@ RequestExecutionLevel admin
 !ifndef PACKAGE_VERSION
   !define PACKAGE_VERSION "dev"
 !endif
-!echo "Building Subtivals version ${PACKAGE_VERSION}"
+!echo "Building RactiSubs version ${PACKAGE_VERSION}"
 
-!define setup "subtivals-${PACKAGE_VERSION}.exe"
+!define setup "ractisubs-${PACKAGE_VERSION}.exe"
 !define srcdir "deploy"
-!define prodname "Subtivals"
-!define website "https://subtivals.org"
-!define exec "subtivals.exe"
+!define prodname "Racti Subs"
+!define website "https://racti.com"
+!define exec "ractisubs.exe"
 !define licensefile "..\LICENSE"
 !define regkey "Software\${prodname}"
 !define uninstkey "Software\Microsoft\Windows\CurrentVersion\Uninstall\${prodname}"
