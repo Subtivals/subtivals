@@ -312,7 +312,7 @@ jobs:
           git apply demo.patch
 
       - name: Get installer source
-        run: git checkout origin/win-installer -- ./win-installer.nsi
+        run: git checkout origin/win-installer-racti -- ./win-installer.nsi
 
       - name: Install Qt (MinGW)
         uses: jurplel/install-qt-action@v4
