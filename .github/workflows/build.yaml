@@ -11,8 +11,8 @@ on:
 
 env:
   QT_VERSION: "6.8.3"
-  APP_NAME: subtivals
-  APP_LABEL: Subtivals
+  APP_NAME: ractisubs
+  APP_LABEL: Racti Subs
   BUILD_TYPE: release
 
 jobs:
@@ -91,7 +91,7 @@ jobs:
           qmake6 --version
           qmake6 -query QT_INSTALL_LIBS
           mkdir -p build && cd build
-          qmake6 "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE" CONFIG+=static PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
+          qmake6 "../src/subtivals.pro" CONFIG+="$BUILD_TYPE" CONFIG+=static PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
           make "-j$(nproc)"
 
       - name: Prepare AppDir for AppImage
@@ -178,7 +178,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
+          git diff --binary origin/racti-subs-2...origin/racti-demo > demo.patch
           git apply demo.patch
 
       - name: Install Qt
@@ -190,7 +190,7 @@ jobs:
       - name: Compile
         run: |
           mkdir -p build && cd build/
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
+          qmake "../src/subtivals.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
           make "-j$(sysctl -n hw.ncpu)"
 
       - name: Deploy
@@ -240,7 +240,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
+          git diff --binary origin/racti-subs-2...origin/racti-demo > demo.patch
           git apply demo.patch
 
       - name: Install Qt
@@ -252,7 +252,7 @@ jobs:
       - name: Compile
         run: |
           mkdir -p build && cd build/
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
+          qmake "../src/subtivals.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
           make "-j$(sysctl -n hw.ncpu)"
 
       - name: Deploy
@@ -308,11 +308,11 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
+          git diff --binary origin/racti-subs-2...origin/racti-demo > demo.patch
           git apply demo.patch
 
       - name: Get installer source
-        run: git checkout origin/win-installer -- ./win-installer.nsi
+        run: git checkout origin/win-installer-racti -- ./win-installer.nsi
 
       - name: Install Qt (MinGW)
         uses: jurplel/install-qt-action@v4
@@ -334,7 +334,7 @@ jobs:
         run: |
           MKDIR build
           CD build
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
+          qmake "../src/subtivals.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
           mingw32-make -j4
 
       - name: Deploy with windeployqt

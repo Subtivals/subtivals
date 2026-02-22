@@ -11,16 +11,16 @@ DEFINES += VERSION=\\\"$$PACKAGE_VERSION\\\" \
  DEFAULT_LINESPACING=0.3 \
  NB_PRESETS=6 \
  DEFAULT_PROJECTION_WINDOW_HEIGHT=200 \
- ORG_NAME=\\\"Subtivals\\\" \
- APP_NAME=\\\"Subtivals\\\" \
- MAIN_WEBSITE=\\\"https://subtivals.org\\\" \
- HELP_WEBSITE=\\\"https://help.subtivals.org\\\" \
- COMMUNITY_WEBSITE=\\\"https://community.subtivals.org\\\" \
+ ORG_NAME=\\\"RactiSubs\\\" \
+ APP_NAME=\\\"RactiSubs\\\" \
+ MAIN_WEBSITE=\\\"https://www.racti.com\\\" \
+ HELP_WEBSITE=\\\"https://www.racti.com\\\" \
+ COMMUNITY_WEBSITE=\\\"https://www.racti.com\\\" \
  WIZARD_ENABLED=true
 
 QT += core gui widgets websockets xml svg httpserver
 
-TARGET = subtivals
+TARGET = ractisubs
 TEMPLATE = app
 CONFIG += qt
 
