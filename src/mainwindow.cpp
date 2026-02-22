@@ -459,10 +459,15 @@ void MainWindow::showEvent(QShowEvent *) {
   ui->actionLockScreenOnPlay->setChecked(
       settings.value("lockScreenOnPlay", false).toBool());
 
-  if (settings.value("wizard", WIZARD_ENABLED).toBool()) {
-    ui->actionShowWizard->trigger();
-    settings.setValue("wizard", false);
+  if (WIZARD_ENABLED) {
+    if (settings.value("wizard", true).toBool()) {
+      ui->actionShowWizard->trigger();
+      settings.setValue("wizard", false);
+    }
+  } else {
+    ui->actionShowWizard->setVisible(false);
   }
+
   settings.endGroup();
 
   settings.beginGroup("AdvancedOptions");
