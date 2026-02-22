@@ -33,6 +33,9 @@ Wizard::Wizard(QWidget *parent) : QWizard(parent), ui(new Ui::Wizard) {
   ui->labelTextIcon->setPixmap(svgToPixmap(":/icons/text-icon.svg", size));
   ui->labelAutohide->setPixmap(svgToPixmap(":/icons/auto-hide.svg", size));
 
+  ui->communityLabel->setText(ui->communityLabel->text().replace(
+      "COMMUNITY_WEBSITE", QString(COMMUNITY_WEBSITE)));
+
   adjustSize();
 }
 
