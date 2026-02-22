@@ -249,6 +249,10 @@ MainWindow::MainWindow(QWidget *parent)
         conv.first * 100.0 / conv.second);
   }
 
+  // Avoid hardcoded strings in .ui
+  ui->actionAbout->setText(
+      tr("About %1...").arg(QApplication::applicationName()));
+
   // Disable print out by default.
   ui->actionOperatorPrintout->setEnabled(false);
 
