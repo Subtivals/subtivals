@@ -249,6 +249,10 @@ MainWindow::MainWindow(QWidget *parent)
         conv.first * 100.0 / conv.second);
   }
 
+  // Avoid hardcoded strings in .ui
+  ui->actionAbout->setText(
+      tr("About %1...").arg(QApplication::applicationName()));
+
   // Disable print out by default.
   ui->actionOperatorPrintout->setEnabled(false);
 
@@ -455,10 +459,15 @@ void MainWindow::showEvent(QShowEvent *) {
   ui->actionLockScreenOnPlay->setChecked(
       settings.value("lockScreenOnPlay", false).toBool());
 
-  if (settings.value("wizard", true).toBool()) {
-    ui->actionShowWizard->trigger();
-    settings.setValue("wizard", false);
+  if (WIZARD_ENABLED) {
+    if (settings.value("wizard", true).toBool()) {
+      ui->actionShowWizard->trigger();
+      settings.setValue("wizard", false);
+    }
+  } else {
+    ui->actionShowWizard->setVisible(false);
   }
+
   settings.endGroup();
 
   settings.beginGroup("AdvancedOptions");
@@ -713,7 +722,7 @@ void MainWindow::closeFile() {
   ui->actionOperatorPrintout->setEnabled(false);
   ui->actionJumpLongest->setEnabled(false);
 
-  setWindowTitle(tr("Subtivals"));
+  setWindowTitle(APP_NAME);
   m_scriptProperties->setText("");
   ui->tableWidget->setRowCount(0);
 }
@@ -1364,21 +1373,22 @@ void MainWindow::actionShowRemoteOptions() { m_remoteOptionsDialog->show(); }
 void MainWindow::actionShowMilliseconds(bool) { refreshDurations(); }
 
 void MainWindow::actionAbout() {
-  QMessageBox::about(this, tr("About Subtivals"),
-                     tr("<h1>Subtivals %1</h1>"
-                        "<p>Subtivals, a program to project subtitles.</p>"
+  QMessageBox::about(this, tr("About %1").arg(APP_NAME),
+                     tr("<h1>%1 %2</h1>"
+                        "<p>%1, a program to project subtitles.</p>"
                         "<h2>Authors</h2>"
                         "<li>Lilian Lefranc</li>"
                         "<li>Arnaud Rolly</li>"
                         "<li>Mathieu Leplatre</li>"
                         "<li>Emmanuel Digiaro</li>"
                         "<h2>© 2011 - %2</h2>")
+                         .arg(APP_NAME)
                          .arg(VERSION)
                          .arg(QDate::currentDate().year()));
 }
 
 void MainWindow::actionShowHelp() {
-  QDesktopServices::openUrl(QUrl("http://help.subtivals.org"));
+  QDesktopServices::openUrl(QUrl(HELP_WEBSITE));
 }
 
 void MainWindow::speedFactorChanged(double p_factor) {

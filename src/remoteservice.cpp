@@ -25,8 +25,7 @@ RemoteService::RemoteService(QObject *parent) : QObject(parent) {
   m_httpServer.route("/", [](const QHttpServerRequest &) {
     QHttpServerResponse response(QHttpServerResponder::StatusCode::Found);
     QHttpHeaders h;
-    h.replaceOrAppend(QHttpHeaders::WellKnownHeader::Location,
-                      "https://subtivals.org");
+    h.replaceOrAppend(QHttpHeaders::WellKnownHeader::Location, MAIN_WEBSITE);
     response.setHeaders(std::move(h));
     return response;
   });
