@@ -333,11 +333,7 @@ MainWindow::~MainWindow() {
     delete m_script;
   delete m_player;
   delete m_playerThread;
-  delete m_preferences;
-  delete m_previewpanel;
   delete m_filewatcher;
-  delete m_scriptProperties;
-  delete m_countDown;
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event) {
