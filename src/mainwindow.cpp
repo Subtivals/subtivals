@@ -1136,6 +1136,9 @@ void MainWindow::actionSubtitleSelected(QModelIndex index) {
 }
 
 void MainWindow::playPulse(quint64 msecsElapsed) {
+  if (!m_script)
+    return;
+
   if (m_state == PLAYING) {
     ui->timer->setText(ts2tc(msecsElapsed));
     ui->userDelay->setText(ts2tc(m_player->delay()));
@@ -1143,9 +1146,6 @@ void MainWindow::playPulse(quint64 msecsElapsed) {
         tr("Remaining: %1")
             .arg(ts2tc(msecsElapsed - m_script->totalDuration(), "hh:mm:ss")));
   }
-
-  if (!m_script)
-    return;
 
   // Update progression of subtitles
   QList<Subtitle *> previousSubtitles =
