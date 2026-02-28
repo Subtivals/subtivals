@@ -121,14 +121,14 @@ void Player::updateCurrent(quint64 msecsElapsed) {
   // Compare subtitles that match elapsed time with subtitles that matched
   // elapsed time last time the timer was fired to find the differences
   bool change = false;
-  foreach (Subtitle *e, m_lastSubtitles) {
+  for (Subtitle *e : std::as_const(m_lastSubtitles)) {
     // Subtitles that where presents and that are no more presents : suppress
     if (!currentSubtitles.contains(e)) {
       emit off(e);
       change = true;
     }
   }
-  foreach (Subtitle *e, currentSubtitles) {
+  for (Subtitle *e : std::as_const(currentSubtitles)) {
     // Subtitles that are presents and that were not presents : add
     if (!m_lastSubtitles.contains(e)) {
       emit on(e);

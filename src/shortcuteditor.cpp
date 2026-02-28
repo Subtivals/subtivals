@@ -44,7 +44,7 @@ void ShortcutEditor::reset() {
 
   QSettings settings;
   settings.beginGroup(QString("Shortcuts"));
-  foreach (QAction *action, m_actions) {
+  for (QAction *action : std::as_const(m_actions)) {
     // Description column
     item = new QTableWidgetItem(action->text());
     item->setIcon(action->icon());
@@ -68,7 +68,7 @@ void ShortcutEditor::reset() {
 void ShortcutEditor::restore() {
   QSettings settings;
   settings.beginGroup(QString("Shortcuts"));
-  foreach (QString key, settings.allKeys()) {
+  for (const QString &key : settings.allKeys()) {
     settings.remove(key);
   }
   settings.endGroup();

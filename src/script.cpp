@@ -124,7 +124,7 @@ int Script::subtitlesCount() const { return m_subtitles.size(); }
 QSize Script::resolution() const { return m_resolution; }
 
 bool Script::hasComments() const {
-  foreach (Subtitle *subtitle, m_subtitles) {
+  for (const Subtitle *subtitle : m_subtitles) {
     if (!subtitle->comments().isEmpty())
       return true;
   }
@@ -142,7 +142,7 @@ const Subtitle *Script::subtitleAt(int i) const {
 
 const QList<Subtitle *> Script::currentSubtitles(qlonglong elapsed) const {
   QList<Subtitle *> l;
-  foreach (Subtitle *e, m_subtitles) {
+  for (Subtitle *e : m_subtitles) {
     if (e->match(elapsed)) {
       l.append(e);
     }
@@ -189,7 +189,7 @@ const QList<Subtitle *> Script::previousSubtitles(qlonglong elapsed) const {
 }
 
 void Script::correctSubtitlesDuration(bool p_state) {
-  foreach (Subtitle *e, m_subtitles) {
+  for (Subtitle *e : m_subtitles) {
     e->correct(p_state);
   }
 }
@@ -198,7 +198,7 @@ void Script::loadFromAss(QStringList content) {
   SectionType section = SECTION_NONE;
   QList<Subtitle *> comments;
 
-  foreach (QString line, content) {
+  for (const QString &line : std::as_const(content)) {
     if (line.isEmpty())
       continue;
     if (line.contains("[Script Info]")) {
@@ -304,7 +304,7 @@ void Script::loadFromAss(QStringList content) {
         text = sp2nbsp(text);
 
         QList<SubtitleLine> lines;
-        foreach (QString line, text.split(QRegularExpression("\\\\[nN]"))) {
+        for (QString line : text.split(QRegularExpression("\\\\[nN]"))) {
           // Absolute positioning
           int x = -1;
           int y = -1;
@@ -375,8 +375,8 @@ void Script::loadFromAss(QStringList content) {
   }
 
   // Merge comments into subtitles
-  foreach (Subtitle *comment, comments) {
-    foreach (Subtitle *subtitle, m_subtitles) {
+  for (const Subtitle *comment : std::as_const(comments)) {
+    for (Subtitle *subtitle : m_subtitles) {
       if (comment->msseStart() == subtitle->msseStart() &&
           comment->msseEnd() == subtitle->msseEnd()) {
         subtitle->setComments(comment->comments());
@@ -403,7 +403,7 @@ void Script::loadFromSrt(QStringList content) {
   int start = 0;
   int end = 0;
   SectionType section = SECTION_NONE;
-  foreach (QString line, content) {
+  for (QString line : std::as_const(content)) {
     if (section == SECTION_NONE &&
         QRegularExpression("^[0-9]+$").match(line).hasMatch()) {
       section = SECTION_INFOS;
@@ -452,7 +452,7 @@ void Script::loadFromTxt(QStringList content) {
   int start = 0;
   int end = 0;
   SectionType section = SECTION_NONE;
-  foreach (QString line, content) {
+  for (QString line : std::as_const(content)) {
     if (section == SECTION_NONE) {
       section = SECTION_EVENTS;
 
@@ -674,7 +674,7 @@ const QString Script::exportList(Script::ScriptFormat p_format) const {
       QStringList styles;
       QStringList texts;
       QStringList comments;
-      foreach (Subtitle *subtitle, next) {
+      for (const Subtitle *subtitle : std::as_const(next)) {
         styles << subtitle->style()->name();
         texts << QString(subtitle->prettyText()).replace("\"", "");
         if (!subtitle->comments().isEmpty())

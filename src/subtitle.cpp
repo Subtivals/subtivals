@@ -92,7 +92,7 @@ const Script *Subtitle::script() const { return m_script; }
 void Subtitle::setText(const QStringList &p_text) {
   // Negative position are ignored
   QList<SubtitleLine> lines;
-  foreach (QString strline, p_text) {
+  for (const QString &strline : p_text) {
     SubtitleLine line = SubtitleLine(strline, QPoint(-1, -1));
     lines.append(line);
   }
@@ -107,7 +107,7 @@ void Subtitle::setText(const QList<SubtitleLine> p_lines) {
   For example, <i>line1\Nline2</i> will
   become <i>line1\N<i>line2</i>.
   */
-  foreach (SubtitleLine line, p_lines) {
+  for (const SubtitleLine &line : p_lines) {
     // Remove paired tags
     QString unpaired = line.text();
     unpaired = unpaired.replace(QRegularExpression("<b>[^<]+($|</b>)"), "");
@@ -132,7 +132,7 @@ void Subtitle::setText(const QList<SubtitleLine> p_lines) {
 
   // Build flat strings from list
   QStringList lines;
-  foreach (SubtitleLine line, m_lines) {
+  for (const SubtitleLine &line : std::as_const(m_lines)) {
     lines.append(line.text());
   }
 

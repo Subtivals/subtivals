@@ -243,7 +243,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   // Build the list of known factors.
   ui->knownFactors->addItem("", 100.0);
-  foreach (Factor conv, FACTORS_VALUES) {
+  for (const Factor &conv : FACTORS_VALUES) {
     ui->knownFactors->addItem(
         QString("%1 fps → %2 fps").arg(conv.first).arg(conv.second),
         conv.first * 100.0 / conv.second);
@@ -750,7 +750,7 @@ void MainWindow::refreshDurations() {
     format.append(".zzz");
   }
   int row = 0;
-  foreach (Subtitle *subtitle, m_script->subtitles()) {
+  for (Subtitle *subtitle : m_script->subtitles()) {
     QTableWidgetItem *startItem = ui->tableWidget->item(row, COLUMN_START);
     QTableWidgetItem *endItem = ui->tableWidget->item(row, COLUMN_END);
     QTime start = QTime(0, 0, 0).addMSecs(int(subtitle->msseStart()));
@@ -904,7 +904,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
       allActions.removeAll(ui->actionNext);
       allActions.removeAll(ui->actionSpeedUp);
       allActions.removeAll(ui->actionSlowDown);
-      foreach (QAction *action, allActions) {
+      for (QAction *action : std::as_const(allActions)) {
         if (!action->shortcut().isEmpty() &&
             action->shortcut().matches(keySequence) && action->isEnabled()) {
           // Trigger action manually
@@ -1027,7 +1027,7 @@ void MainWindow::actionNext() {
               : 0;
   }
   bool isRowDisplayed = false;
-  foreach (Subtitle *e, m_currentSubtitles)
+  for (Subtitle *e : std::as_const(m_currentSubtitles))
     if (m_tableMapping[e] == row)
       isRowDisplayed = true;
 
@@ -1104,7 +1104,7 @@ void MainWindow::actionSubtitleClic(QModelIndex index) {
   disableSubtitleSelection();
   // Keep track of row selection change
   QList<int> currentRows;
-  foreach (Subtitle *e, m_currentSubtitles) {
+  for (Subtitle *e : std::as_const(m_currentSubtitles)) {
     currentRows.append(m_tableMapping[e]);
   }
   if (!currentRows.contains(index.row())) {
@@ -1146,7 +1146,7 @@ void MainWindow::playPulse(quint64 msecsElapsed) {
   QList<Subtitle *> previousSubtitles =
       m_script->previousSubtitles(msecsElapsed);
   QList<Subtitle *> nextSubtitles = m_script->nextSubtitles(msecsElapsed);
-  foreach (Subtitle *subtitle, m_script->subtitles()) {
+  for (Subtitle *subtitle : m_script->subtitles()) {
     qreal progressionCurrent = 0.0;
     qreal progressionNext = 0.0;
     if (m_currentSubtitles.contains(subtitle)) {
@@ -1216,7 +1216,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
 
   if (m_script) {
     // Highlight next subtitles
-    foreach (Subtitle *e, m_script->nextSubtitles(elapsed)) {
+    for (Subtitle *e : m_script->nextSubtitles(elapsed)) {
       int row = m_tableMapping[e];
       for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
         QTableWidgetItem *item = ui->tableWidget->item(row, col);
@@ -1226,7 +1226,7 @@ void MainWindow::highlightSubtitles(qlonglong elapsed) {
     }
 
     // Highlight current subtitles
-    foreach (Subtitle *e, m_currentSubtitles) {
+    for (Subtitle *e : std::as_const(m_currentSubtitles)) {
       int row = m_tableMapping[e];
       for (int col = 0; col < ui->tableWidget->columnCount(); col++) {
         QTableWidgetItem *item = ui->tableWidget->item(row, col);
