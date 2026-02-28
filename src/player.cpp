@@ -1,5 +1,3 @@
-#include <QtCore/QTime>
-
 #include "player.h"
 
 #include "script.h"
@@ -143,11 +141,7 @@ void Player::updateCurrent(quint64 msecsElapsed) {
 }
 
 quint64 Player::tick() {
-  QDateTime dateTime = QDateTime::currentDateTime();
-  quint64 dt = QDate(1982, 5, 8).daysTo(dateTime.date());
-  QTime tt = dateTime.time();
-  return 86400000 * dt + 3600000 * tt.hour() + 60000 * tt.minute() +
-         1000 * tt.second() + tt.msec();
+  return static_cast<quint64>(QDateTime::currentMSecsSinceEpoch());
 }
 
 void Player::setElapsedTime(quint64 p_elapsed) {
