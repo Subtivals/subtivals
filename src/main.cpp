@@ -22,7 +22,6 @@
 #include <QTranslator>
 #include <QtCore/QFileInfo>
 #include <QByteArray>
-#include <QIODevice>
 #include <QLocale>
 #include <QFontDatabase>
 

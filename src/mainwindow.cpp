@@ -32,7 +32,6 @@
 #include <QStyle>
 #include <QStyledItemDelegate>
 #include <QStringDecoder>
-#include <QThread>
 #include <QWidget>
 #include <QStyleHints>
 #include <QStyleFactory>
