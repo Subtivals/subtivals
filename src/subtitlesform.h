@@ -27,7 +27,7 @@
 
 #include "subtitle.h"
 
-#define PANEL_MARGINS_PIXELS 5
+constexpr int PANEL_MARGINS_PIXELS = 5;
 
 namespace Ui {
   class SubtitlesForm;

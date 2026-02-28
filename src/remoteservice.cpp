@@ -18,7 +18,7 @@
 
 #include "subtitlestyle.h"
 
-#define PLAY_PULSE_INTERVAL_MILLISECONDS 500
+constexpr int PLAY_PULSE_INTERVAL_MILLISECONDS = 500;
 
 RemoteService::RemoteService(QObject *parent) : QObject(parent) {
   // "/" -> redirect.

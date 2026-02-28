@@ -26,8 +26,8 @@
 
 #include "script.h"
 
-#define DEFAULT_FONT_SIZE 27
-#define DEFAULT_FONT_NAME "Tiresias Signfont"
+static constexpr int DEFAULT_FONT_SIZE = 27;
+static constexpr const char *DEFAULT_FONT_NAME = "Tiresias Signfont";
 
 enum SectionType {
   SECTION_NONE,

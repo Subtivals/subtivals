@@ -32,13 +32,13 @@
 #include "script.h"
 #include "subtitlesform.h"
 
-#define COLUMN_START 0
-#define COLUMN_END 1
-#define COLUMN_STYLE 2
-#define COLUMN_TEXT 3
-#define COLUMN_COMMENTS 4
+static constexpr int COLUMN_START = 0;
+static constexpr int COLUMN_END = 1;
+static constexpr int COLUMN_STYLE = 2;
+static constexpr int COLUMN_TEXT = 3;
+static constexpr int COLUMN_COMMENTS = 4;
 
-#define MAX_RECENT_FILES 7
+static constexpr int MAX_RECENT_FILES = 7;
 
 typedef QPair<double, double> Factor;
 static QList<Factor> FACTORS_VALUES = {
