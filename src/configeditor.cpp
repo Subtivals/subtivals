@@ -205,6 +205,8 @@ void ConfigEditor::restore() {
 void ConfigEditor::reset() {
   QList<QScreen *> screens = QGuiApplication::screens();
   int nbScreens = screens.size();
+  if (nbScreens == 0)
+    return;
   int defaultScreen = nbScreens > 1 ? 1 : 0;
   // Reload from settings
   QSettings settings;
