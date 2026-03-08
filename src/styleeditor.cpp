@@ -39,7 +39,7 @@ void StyleEditor::advancedConfig() {
   QString styleName = ui->stylesNames->selectedItems().first()->text();
   SubtitleStyle *style = m_script->style(styleName);
   StyleAdvanced config(style, this);
-  connect(&config, SIGNAL(styleChanged()), SLOT(apply()));
+  connect(&config, &StyleAdvanced::styleChanged, this, &StyleEditor::apply);
   config.move(this->parentWidget()->geometry().center());
   config.exec();
 }

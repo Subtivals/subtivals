@@ -1,7 +1,9 @@
 #include "shortcuteditor.h"
 #include "ui_shortcuteditor.h"
 
+#include <QDialogButtonBox>
 #include <QSettings>
+#include <QTableWidget>
 
 ShortcutEditor::ShortcutEditor(QWidget *parent)
     : QDialog(parent), ui(new Ui::ShortcutEditor) {
@@ -14,12 +16,9 @@ ShortcutEditor::ShortcutEditor(QWidget *parent)
   ui->tableActions->horizontalHeader()->setResizeMode(COLUMN_DESCRIPTION,
                                                       QHeaderView::Stretch);
 #endif
-  connect(ui->tableActions, SIGNAL(itemPressed(QTableWidgetItem *)), this,
-          SLOT(recordAction(QTableWidgetItem *)));
-  connect(ui->tableActions, SIGNAL(itemChanged(QTableWidgetItem *)), this,
-          SLOT(validateAction(QTableWidgetItem *)));
-  connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton *)), this,
-          SLOT(onClicked(QAbstractButton *)));
+  connect(ui->tableActions, &QTableWidget::itemPressed, this, &ShortcutEditor::recordAction);
+  connect(ui->tableActions, &QTableWidget::itemChanged, this, &ShortcutEditor::validateAction);
+  connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &ShortcutEditor::onClicked);
 }
 
 ShortcutEditor::~ShortcutEditor() { delete ui; }

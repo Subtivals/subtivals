@@ -64,8 +64,8 @@ public:
   void openFile(const QString &p_fileName);
   void closeFile();
   ConfigEditor *configEditor();
-  const Player *player();
-  const RemoteOptionsDialog *remoteOptionsDialog();
+  Player *player();
+  RemoteOptionsDialog *remoteOptionsDialog();
   void connectProjectionEvents(SubtitlesForm *f);
 signals:
   void hideDesktop(bool state);

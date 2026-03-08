@@ -8,10 +8,10 @@ Player::Player(QObject *parent)
       m_pauseTotal(0), m_userDelay(0), m_delayStep(0),
       m_autoHideEnabled(false) {
   m_timer.setInterval(100);
-  connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
+  connect(&m_timer, &QTimer::timeout, this, &Player::timeout);
   // Timer for auto-hiding ended subtitles
   m_timerAutoHide.setInterval(100);
-  connect(&m_timerAutoHide, SIGNAL(timeout()), this, SLOT(autoHideTimeout()));
+  connect(&m_timerAutoHide, &QTimer::timeout, this, &Player::autoHideTimeout);
 }
 
 void Player::setScript(Script *p_script) {

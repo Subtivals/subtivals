@@ -19,7 +19,10 @@
 #include <QtCore/QUrl>
 #include <QtCore/QtGlobal>
 
+#include <QAbstractSlider>
+#include <QCheckBox>
 #include <QDesktopServices>
+#include <QDoubleSpinBox>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileSystemWatcher>
@@ -40,6 +43,7 @@
 #include "configeditor.h"
 #include "mainwindow.h"
 #include "player.h"
+#include "projectionwindow.h"
 #include "shortcuteditor.h"
 #include "remoteoptionsdialog.h"
 #include "ui_mainwindow.h"
@@ -205,27 +209,25 @@ MainWindow::MainWindow(QWidget *parent)
   ui->speedFactor->installEventFilter(this);
   m_previewpanel->installEventFilter(this);
   m_preferences->installEventFilter(this);
-  connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)), this,
-          SLOT(disableSubtitleSelection()));
+  connect(ui->tableWidget->verticalScrollBar(), &QAbstractSlider::valueChanged,
+          this, [this](int) { disableSubtitleSelection(); });
 
   m_player->moveToThread(m_playerThread);
   m_playerThread->start();
   qRegisterMetaType<QList<Subtitle *>>("QList<Subtitle*>");
-  connect(m_player, SIGNAL(pulse(quint64)), this, SLOT(playPulse(quint64)));
-  connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
-          SLOT(subtitleChanged(QList<Subtitle *>)));
-  connect(m_player, SIGNAL(changed(QList<Subtitle *>)), this,
-          SLOT(disableActionNext()));
-  connect(m_player, SIGNAL(autoHide()), this, SLOT(actionToggleHide()));
+  connect(m_player, &Player::pulse, this, &MainWindow::playPulse);
+  connect(m_player, &Player::changed, this, &MainWindow::subtitleChanged);
+  connect(m_player, &Player::changed, this, &MainWindow::disableActionNext);
+  connect(m_player, &Player::autoHide, this, &MainWindow::actionToggleHide);
 
-  connect(ui->actionHideDesktop, SIGNAL(toggled(bool)), this,
-          SIGNAL(hideDesktop(bool)));
-  connect(ui->actionAddDelay, SIGNAL(triggered()), m_player, SLOT(addDelay()));
-  connect(ui->actionSubDelay, SIGNAL(triggered()), m_player, SLOT(subDelay()));
-  connect(ui->enableSpeedFactor, SIGNAL(toggled(bool)), m_player,
-          SLOT(enableSpeedFactor(bool)));
-  connect(ui->speedFactor, SIGNAL(valueChanged(double)), m_player,
-          SLOT(setSpeedFactor(double)));
+  connect(ui->actionHideDesktop, &QAction::toggled, this, &MainWindow::hideDesktop);
+  connect(ui->actionAddDelay, &QAction::triggered, m_player,
+          [player = m_player](bool) { player->addDelay(); });
+  connect(ui->actionSubDelay, &QAction::triggered, m_player, &Player::subDelay);
+  connect(ui->enableSpeedFactor, &QCheckBox::toggled, m_player,
+          &Player::enableSpeedFactor);
+  connect(ui->speedFactor, &QDoubleSpinBox::valueChanged, m_player,
+          &Player::setSpeedFactor);
 
   // Prevent hiding desktop if only one screen!
   ui->actionHideDesktop->setEnabled(QGuiApplication::screens().size() > 1);
@@ -267,25 +269,25 @@ MainWindow::MainWindow(QWidget *parent)
   ui->mainLayout->addWidget(m_preferences);
   ui->statusBar->addPermanentWidget(m_countDown);
   ui->statusBar->addPermanentWidget(m_scriptProperties);
-  connect(m_preferences, SIGNAL(styleOverriden(bool)), this,
-          SLOT(showStyleOverriden(bool)));
+  connect(m_preferences, &ConfigEditor::styleOverriden, this,
+          &MainWindow::showStyleOverriden);
 
   // Selection timer (disables subtitle highlighting for a while)
   m_timerSelection.setSingleShot(true);
   m_timerSelection.setInterval(1000);
-  connect(&m_timerSelection, SIGNAL(timeout()), this,
-          SLOT(enableSubtitleSelection()));
+  connect(&m_timerSelection, &QTimer::timeout, this,
+          &MainWindow::enableSubtitleSelection);
 
   // Action Next timer (disables next action for a while)
   m_timerNext.setSingleShot(true);
   m_timerNext.setInterval(300);
-  connect(&m_timerNext, SIGNAL(timeout()), this, SLOT(enableActionNext()));
+  connect(&m_timerNext, &QTimer::timeout, this, &MainWindow::enableActionNext);
 
   // Script file watching :
-  connect(m_filewatcher, SIGNAL(fileChanged(QString)), this,
-          SLOT(fileChanged(QString)));
+  connect(m_filewatcher, &QFileSystemWatcher::fileChanged, this,
+          &MainWindow::fileChanged);
   m_timerFileChange.setSingleShot(true);
-  connect(&m_timerFileChange, SIGNAL(timeout()), this, SLOT(reloadScript()));
+  connect(&m_timerFileChange, &QTimer::timeout, this, &MainWindow::reloadScript);
 
   // Emit state info 3 times per second
   QTimer *stateInfoTimer = new QTimer(this);
@@ -297,7 +299,7 @@ MainWindow::MainWindow(QWidget *parent)
   for (int i = 0; i < MAX_RECENT_FILES; ++i) {
     QAction *action = new QAction(this);
     action->setVisible(false);
-    connect(action, SIGNAL(triggered()), this, SLOT(openRecentFile()));
+    connect(action, &QAction::triggered, this, &MainWindow::openRecentFile);
     m_recentFileActions.insert(i, action);
     ui->menuFile->insertAction(ui->actionExit, action);
   }
@@ -516,9 +518,9 @@ void MainWindow::showEvent(QShowEvent *) {
 
 ConfigEditor *MainWindow::configEditor() { return m_preferences; }
 
-const Player *MainWindow::player() { return m_player; }
+Player *MainWindow::player() { return m_player; }
 
-const RemoteOptionsDialog *MainWindow::remoteOptionsDialog() {
+RemoteOptionsDialog *MainWindow::remoteOptionsDialog() {
   return m_remoteOptionsDialog;
 }
 
@@ -967,29 +969,24 @@ void MainWindow::actionConfig(bool state) {
 }
 
 void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
-  if (f != m_previewpanel) {
-    QObject::connect(f, SIGNAL(geometryChanged(int, QRect)), m_preferences,
-                     SLOT(projectionWindowChanged(int, QRect)));
-    QObject::connect(f, SIGNAL(geometryChanged(int, QRect)), m_previewpanel,
-                     SLOT(changeGeometry(int, QRect)));
+  if (ProjectionWindow *pw = dynamic_cast<ProjectionWindow *>(f)) {
+    connect(pw, &ProjectionWindow::geometryChanged, m_preferences,
+            &ConfigEditor::projectionWindowChanged);
+    connect(pw, &ProjectionWindow::geometryChanged, m_previewpanel,
+            &SubtitlesForm::changeGeometry);
   }
-  QObject::connect(m_player, SIGNAL(on(Subtitle *)), f,
-                   SLOT(addSubtitle(Subtitle *)));
-  QObject::connect(m_player, SIGNAL(off(Subtitle *)), f,
-                   SLOT(remSubtitle(Subtitle *)));
-  QObject::connect(m_player, SIGNAL(stopped()), f, SLOT(clearSubtitles()),
-                   Qt::DirectConnection);
-  QObject::connect(this, SIGNAL(toggleHide(bool)), f, SLOT(toggleHide(bool)));
+  connect(m_player, &Player::on, f, &SubtitlesForm::addSubtitle);
+  connect(m_player, &Player::off, f, &SubtitlesForm::remSubtitle);
+  connect(m_player, &Player::stopped, f, &SubtitlesForm::clearSubtitles,
+          Qt::DirectConnection);
+  connect(this, &MainWindow::toggleHide, f, &SubtitlesForm::toggleHide);
 
-  QObject::connect(m_preferences, SIGNAL(changeScreen(int, QRect)), f,
-                   SLOT(changeGeometry(int, QRect)));
-  QObject::connect(m_preferences, SIGNAL(color(QColor)), f,
-                   SLOT(color(QColor)));
-  QObject::connect(m_preferences, SIGNAL(outline(QColor, int)), f,
-                   SLOT(outline(QColor, int)));
-  QObject::connect(m_preferences, SIGNAL(styleChanged()), f, SLOT(repaint()));
-  QObject::connect(m_preferences, SIGNAL(rotate(double)), f,
-                   SLOT(rotate(double)));
+  connect(m_preferences, &ConfigEditor::changeScreen, f,
+          &SubtitlesForm::changeGeometry);
+  connect(m_preferences, &ConfigEditor::color, f, &SubtitlesForm::color);
+  connect(m_preferences, &ConfigEditor::outline, f, &SubtitlesForm::outline);
+  connect(m_preferences, &ConfigEditor::styleChanged, f, [f]() { f->repaint(); });
+  connect(m_preferences, &ConfigEditor::rotate, f, &SubtitlesForm::rotate);
 }
 
 void MainWindow::actionShowPreview(bool state) {

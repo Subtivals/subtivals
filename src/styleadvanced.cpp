@@ -1,6 +1,10 @@
 #include "styleadvanced.h"
 #include "ui_styleadvanced.h"
 
+#include <QComboBox>
+#include <QDoubleSpinBox>
+#include <QSpinBox>
+
 #include "script.h"
 #include "subtitlestyle.h"
 
@@ -29,12 +33,12 @@ StyleAdvanced::StyleAdvanced(SubtitleStyle *p_style, QWidget *parent)
   ui->marginR->setValue(m_style->marginR());
   ui->marginV->setValue(m_style->marginV());
 
-  connect(ui->lineSpacing, SIGNAL(valueChanged(double)), SLOT(apply()));
-  connect(ui->verticalAlign, SIGNAL(currentIndexChanged(int)), SLOT(apply()));
-  connect(ui->horizontalAlign, SIGNAL(currentIndexChanged(int)), SLOT(apply()));
-  connect(ui->marginL, SIGNAL(valueChanged(int)), SLOT(apply()));
-  connect(ui->marginR, SIGNAL(valueChanged(int)), SLOT(apply()));
-  connect(ui->marginV, SIGNAL(valueChanged(int)), SLOT(apply()));
+  connect(ui->lineSpacing, &QDoubleSpinBox::valueChanged, this, &StyleAdvanced::apply);
+  connect(ui->verticalAlign, &QComboBox::currentIndexChanged, this, &StyleAdvanced::apply);
+  connect(ui->horizontalAlign, &QComboBox::currentIndexChanged, this, &StyleAdvanced::apply);
+  connect(ui->marginL, &QSpinBox::valueChanged, this, &StyleAdvanced::apply);
+  connect(ui->marginR, &QSpinBox::valueChanged, this, &StyleAdvanced::apply);
+  connect(ui->marginV, &QSpinBox::valueChanged, this, &StyleAdvanced::apply);
 }
 
 StyleAdvanced::~StyleAdvanced() { delete ui; }
