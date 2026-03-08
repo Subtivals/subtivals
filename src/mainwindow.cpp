@@ -473,7 +473,7 @@ void MainWindow::showEvent(QShowEvent *) {
 
   settings.beginGroup("AdvancedOptions");
   m_warnCharsRate = settings.value("warnCharsRate", 14).toInt();
-  m_errorCharsRate = settings.value("warnCharsRate", 18).toInt();
+  m_errorCharsRate = settings.value("errorCharsRate", 18).toInt();
   m_charsRate = settings.value("charsRate", 12).toInt();
   m_subtitleInterval = settings.value("subtitleInterval", 1000).toInt();
   m_subtitleMinDuration = settings.value("subtitleMinDuration", 1000).toInt();
