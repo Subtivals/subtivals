@@ -71,7 +71,8 @@ void Player::timeout() {
 void Player::autoHideTimeout() {
   if (m_autoHideDuration > 0) {
     m_autoHideDuration -= m_timerAutoHide.interval();
-    emit pulse(tick() - m_pauseStart + m_lastSubtitles.at(0)->msseStart());
+    if (!m_lastSubtitles.isEmpty())
+      emit pulse(tick() - m_pauseStart + m_lastSubtitles.at(0)->msseStart());
   } else {
     emit autoHide();
     m_timerAutoHide.stop();
@@ -115,7 +116,7 @@ const QList<Subtitle *> Player::current() const { return m_lastSubtitles; }
 
 void Player::updateCurrent(quint64 msecsElapsed) {
   // Sanity check
-  if (m_script == 0)
+  if (m_script == nullptr)
     return;
   // Find subtitles that match elapsed time
   QList<Subtitle *> currentSubtitles = m_script->currentSubtitles(msecsElapsed);

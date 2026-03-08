@@ -95,7 +95,11 @@ Script::Script(const QString &p_fileName, int p_charsRate,
 
 Script::ScriptFormat Script::format() const { return m_format; }
 
-quint64 Script::totalDuration() const { return m_subtitles.last()->msseEnd(); }
+quint64 Script::totalDuration() const {
+  if (m_subtitles.isEmpty())
+    return 0;
+  return m_subtitles.last()->msseEnd();
+}
 
 const QString &Script::fileName() const { return m_fileName; }
 
@@ -112,8 +116,11 @@ int Script::subtitleMinDuration() const { return m_subtitleMinDuration; };
 
 SubtitleStyle *Script::style(const QString &p_name) const {
   // If style is unknown, return first one.
-  if (!m_styles.contains(p_name))
+  if (!m_styles.contains(p_name)) {
+    if (m_styles.isEmpty())
+      return nullptr;
     return m_styles[m_styles.keys().at(0)];
+  }
   return m_styles[p_name];
 }
 
@@ -394,6 +401,8 @@ void Script::loadFromSrt(QStringList content) {
       new SubtitleStyle(tr("Default"), font, Qt::white, this);
   m_styles[style->name()] = style;
 
+  if (content.isEmpty())
+    return;
   // Make sure its ends with empty line
   if (!content.last().isEmpty())
     content.append(QString());
@@ -443,6 +452,8 @@ void Script::loadFromTxt(QStringList content) {
       new SubtitleStyle(tr("Default"), font, Qt::white, this);
   m_styles[style->name()] = style;
 
+  if (content.isEmpty())
+    return;
   // Make sure its ends with empty line
   if (!content.last().isEmpty())
     content.append(QString());
