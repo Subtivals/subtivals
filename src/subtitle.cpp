@@ -71,7 +71,7 @@ int Subtitle::charsRate() const {
 int Subtitle::charsWidth() const {
   int max_width = -1;
   for (int i = 0; i < this->lines().size(); i++) {
-    int w = this->lines().at(0).text().length();
+    int w = this->lines().at(i).text().length();
     max_width = w > max_width ? w : max_width;
   }
   return max_width;
