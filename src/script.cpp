@@ -209,10 +209,10 @@ void Script::loadFromAss(QStringList content) {
       section = SECTION_EVENTS;
     } else {
       if (section == SECTION_INFOS) {
-        QList<QString> parts = line.split(':');
-        if (parts.size() == 2) {
-          QString key = parts[0].trimmed().toLower();
-          QString value = parts[1].trimmed();
+        int colonPos = line.indexOf(':');
+        if (colonPos > 0) {
+          QString key = line.left(colonPos).trimmed().toLower();
+          QString value = line.mid(colonPos + 1).trimmed();
           if (key == "title") {
             m_title = value;
           }
@@ -224,10 +224,10 @@ void Script::loadFromAss(QStringList content) {
           }
         }
       } else if (section == SECTION_STYLES) {
-        QList<QString> parts = line.split(':');
-        if (parts.size() == 2) {
-          QString key = parts[0].trimmed().toLower();
-          QString value = parts[1].trimmed();
+        int colonPos = line.indexOf(':');
+        if (colonPos > 0) {
+          QString key = line.left(colonPos).trimmed().toLower();
+          QString value = line.mid(colonPos + 1).trimmed();
           if (key == "style") {
 
             QList<QString> subparts = value.split(',');
