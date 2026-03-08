@@ -52,7 +52,7 @@ public:
   void setText(const QStringList &p_text);
   void setText(const QList<SubtitleLine> p_lines);
   void setComments(const QString &p_comments);
-  const int &index() const;
+  int index() const;
   const QString &text() const;
   const QString &prettyText() const;
   const QString &comments() const;

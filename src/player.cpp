@@ -1,5 +1,3 @@
-#include <QtCore/QTime>
-
 #include "player.h"
 
 #include "script.h"
@@ -10,10 +8,10 @@ Player::Player(QObject *parent)
       m_pauseTotal(0), m_userDelay(0), m_delayStep(0),
       m_autoHideEnabled(false) {
   m_timer.setInterval(100);
-  connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
+  connect(&m_timer, &QTimer::timeout, this, &Player::timeout);
   // Timer for auto-hiding ended subtitles
   m_timerAutoHide.setInterval(100);
-  connect(&m_timerAutoHide, SIGNAL(timeout()), this, SLOT(autoHideTimeout()));
+  connect(&m_timerAutoHide, &QTimer::timeout, this, &Player::autoHideTimeout);
 }
 
 void Player::setScript(Script *p_script) {
@@ -123,14 +121,14 @@ void Player::updateCurrent(quint64 msecsElapsed) {
   // Compare subtitles that match elapsed time with subtitles that matched
   // elapsed time last time the timer was fired to find the differences
   bool change = false;
-  foreach (Subtitle *e, m_lastSubtitles) {
+  for (Subtitle *e : std::as_const(m_lastSubtitles)) {
     // Subtitles that where presents and that are no more presents : suppress
     if (!currentSubtitles.contains(e)) {
       emit off(e);
       change = true;
     }
   }
-  foreach (Subtitle *e, currentSubtitles) {
+  for (Subtitle *e : std::as_const(currentSubtitles)) {
     // Subtitles that are presents and that were not presents : add
     if (!m_lastSubtitles.contains(e)) {
       emit on(e);
@@ -143,11 +141,7 @@ void Player::updateCurrent(quint64 msecsElapsed) {
 }
 
 quint64 Player::tick() {
-  QDateTime dateTime = QDateTime::currentDateTime();
-  quint64 dt = QDate(1982, 5, 8).daysTo(dateTime.date());
-  QTime tt = dateTime.time();
-  return 86400000 * dt + 3600000 * tt.hour() + 60000 * tt.minute() +
-         1000 * tt.second() + tt.msec();
+  return static_cast<quint64>(QDateTime::currentMSecsSinceEpoch());
 }
 
 void Player::setElapsedTime(quint64 p_elapsed) {

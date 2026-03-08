@@ -15,6 +15,7 @@
  *  along with Subtivals.  If not, see <http://www.gnu.org/licenses/>
  **/
 #include <QColorDialog>
+#include <QGuiApplication>
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QPainter>
@@ -34,18 +35,15 @@ ConfigEditor::ConfigEditor(QWidget *parent)
       m_parentWidget(parent) {
   ui->setupUi(this);
   ui->tabStyles->setLayout(m_styleEditor->layout());
-  connect(m_styleEditor, SIGNAL(styleChanged()), this, SIGNAL(styleChanged()));
-  connect(m_styleEditor, SIGNAL(styleOverriden(bool)), this,
-          SIGNAL(styleOverriden(bool)));
-  connect(m_styleEditor, SIGNAL(styleChanged()), this, SLOT(enableButtonBox()));
+  connect(m_styleEditor, &StyleEditor::styleChanged, this, &ConfigEditor::styleChanged);
+  connect(m_styleEditor, &StyleEditor::styleOverriden, this, &ConfigEditor::styleOverriden);
+  connect(m_styleEditor, &StyleEditor::styleChanged, this, [this]() { enableButtonBox(); });
 
   adjustSize();
   setMaximumSize(size());
 
-  connect(qApp, SIGNAL(screenAdded(QScreen *)), this,
-          SLOT(refreshScreensList()));
-  connect(qApp, SIGNAL(screenRemoved(QScreen *)), this,
-          SLOT(refreshScreensList()));
+  connect(qApp, &QGuiApplication::screenAdded, this, [this](QScreen *) { refreshScreensList(); });
+  connect(qApp, &QGuiApplication::screenRemoved, this, [this](QScreen *) { refreshScreensList(); });
   refreshScreensList();
 
   // Load known presets.
@@ -207,6 +205,8 @@ void ConfigEditor::restore() {
 void ConfigEditor::reset() {
   QList<QScreen *> screens = QGuiApplication::screens();
   int nbScreens = screens.size();
+  if (nbScreens == 0)
+    return;
   int defaultScreen = nbScreens > 1 ? 1 : 0;
   // Reload from settings
   QSettings settings;

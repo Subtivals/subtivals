@@ -39,18 +39,18 @@ void StyleEditor::advancedConfig() {
   QString styleName = ui->stylesNames->selectedItems().first()->text();
   SubtitleStyle *style = m_script->style(styleName);
   StyleAdvanced config(style, this);
-  connect(&config, SIGNAL(styleChanged()), SLOT(apply()));
+  connect(&config, &StyleAdvanced::styleChanged, this, &StyleEditor::apply);
   config.move(this->parentWidget()->geometry().center());
   config.exec();
 }
 
 void StyleEditor::setScript(Script *script) {
   m_script = script;
-  foreach (SubtitleStyle *style, m_backup)
+  for (SubtitleStyle *style : std::as_const(m_backup))
     delete style;
   m_backup.clear();
   if (m_script) {
-    foreach (SubtitleStyle *style, m_script->styles()) {
+    for (SubtitleStyle *style : m_script->styles()) {
       m_backup.append(new SubtitleStyle(*style, style->font()));
     }
   }
@@ -82,7 +82,7 @@ void StyleEditor::styleSelected() {
   ui->btnBold->setChecked(font.bold());
   ui->btnItalic->setChecked(font.italic());
 
-  foreach (QListWidgetItem *item, selected) {
+  for (QListWidgetItem *item : std::as_const(selected)) {
     // If any style differs from first, clear fields
     SubtitleStyle *style = m_script->style(item->text());
     if (style->font().family() != first->font().family())
@@ -103,7 +103,7 @@ void StyleEditor::save() {
   settings.beginGroup(QString("Styles-%1").arg(m_preset));
   // Save overidden styles into settings
   QString line;
-  foreach (SubtitleStyle *style, m_overidden) {
+  for (const SubtitleStyle *style : std::as_const(m_overidden)) {
     line = QString("%1/%2/%3/%4/%5/%7/%8/%9/%10/%11")
                .arg(style->font().family())
                .arg(style->font().pixelSize())
@@ -177,7 +177,7 @@ void StyleEditor::apply() {
   if (nbselected == 0)
     return;
 
-  foreach (QListWidgetItem *item, selected) {
+  for (QListWidgetItem *item : std::as_const(selected)) {
     SubtitleStyle *style = m_script->style(item->text());
 
     int fontSize = style->font().pixelSize();
@@ -212,7 +212,7 @@ void StyleEditor::restore() {
   // Remove all styles from settings
   QSettings settings;
   settings.beginGroup(QString("Styles-%1").arg(m_preset));
-  foreach (QString key, settings.allKeys()) {
+  for (const QString &key : settings.allKeys()) {
     settings.remove(key);
   }
   settings.endGroup();
@@ -269,7 +269,7 @@ void StyleEditor::initComponents() {
     return;
 
   ui->stylesNames->clear();
-  foreach (SubtitleStyle *style, m_script->styles()) {
+  for (SubtitleStyle *style : m_script->styles()) {
     // Add to the list
     QListWidgetItem *item = new QListWidgetItem(style->name());
     ui->stylesNames->addItem(item);

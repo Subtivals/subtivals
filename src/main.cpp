@@ -22,7 +22,6 @@
 #include <QTranslator>
 #include <QtCore/QFileInfo>
 #include <QByteArray>
-#include <QIODevice>
 #include <QLocale>
 #include <QFontDatabase>
 
@@ -108,55 +107,57 @@ int main(int argc, char *argv[]) {
   RemoteService service;
 
   // Player -> Remote service
-  QObject::connect(
-      &w, SIGNAL(stateInfo(QString, QString, quint64, quint64, QString)),
-      &service, SLOT(stateInfo(QString, QString, quint64, quint64, QString)));
+  QObject::connect(&w, &MainWindow::stateInfo, &service,
+                   &RemoteService::stateInfo);
   // TODO: info from movieStarted() lost if user refreshes the page
-  QObject::connect(w.player(), SIGNAL(pulse(quint64)), &service,
-                   SLOT(playPulse(quint64)));
-  QObject::connect(w.player(), SIGNAL(on(Subtitle *)), &service,
-                   SLOT(addSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(off(Subtitle *)), &service,
-                   SLOT(remSubtitle(Subtitle *)));
-  QObject::connect(w.player(), SIGNAL(stopped()), &service,
-                   SLOT(clearSubtitles()));
+  QObject::connect(w.player(), &Player::pulse, &service,
+                   &RemoteService::playPulse);
+  QObject::connect(w.player(), &Player::on, &service,
+                   &RemoteService::addSubtitle);
+  QObject::connect(w.player(), &Player::off, &service,
+                   &RemoteService::remSubtitle);
+  QObject::connect(w.player(), &Player::stopped, &service,
+                   &RemoteService::clearSubtitles);
   // Remote service -> Play
-  QObject::connect(&service, SIGNAL(play()), &w, SLOT(actionPlay()));
-  QObject::connect(&service, SIGNAL(pause()), &w, SLOT(actionPause()));
-  QObject::connect(&service, SIGNAL(subDelay()), w.player(), SLOT(subDelay()));
-  QObject::connect(&service, SIGNAL(addDelay()), w.player(), SLOT(addDelay()));
+  QObject::connect(&service, &RemoteService::play, &w, &MainWindow::actionPlay);
+  QObject::connect(&service, &RemoteService::pause, &w,
+                   &MainWindow::actionPause);
+  QObject::connect(&service, &RemoteService::subDelay, w.player(),
+                   &Player::subDelay);
+  QObject::connect(&service, &RemoteService::addDelay, w.player(),
+                   [player = w.player()]() { player->addDelay(); });
   // Remote service -> Remote options dialog
-  QObject::connect(&service,
-                   SIGNAL(settingsLoaded(bool, quint16, quint16, QString)),
+  QObject::connect(&service, &RemoteService::settingsLoaded,
                    w.remoteOptionsDialog(),
-                   SLOT(onSettingsLoaded(bool, quint16, quint16, QString)));
-  QObject::connect(&service, SIGNAL(started(QString, QString)),
+                   &RemoteOptionsDialog::onSettingsLoaded);
+  QObject::connect(&service, &RemoteService::started, w.remoteOptionsDialog(),
+                   &RemoteOptionsDialog::onServiceStarted);
+  QObject::connect(&service, &RemoteService::stopped, w.remoteOptionsDialog(),
+                   &RemoteOptionsDialog::onServiceStopped);
+  QObject::connect(&service, &RemoteService::errorOccurred,
+                   w.remoteOptionsDialog(), &RemoteOptionsDialog::onServiceError);
+  QObject::connect(&service, &RemoteService::clientsConnected,
                    w.remoteOptionsDialog(),
-                   SLOT(onServiceStarted(QString, QString)));
-  QObject::connect(&service, SIGNAL(stopped()), w.remoteOptionsDialog(),
-                   SLOT(onServiceStopped()));
-  QObject::connect(&service, SIGNAL(errorOccurred(QString)),
-                   w.remoteOptionsDialog(), SLOT(onServiceError(QString)));
-  QObject::connect(&service, SIGNAL(clientsConnected(quint16, quint16)),
-                   w.remoteOptionsDialog(),
-                   SLOT(onClientsConnected(quint16, quint16)));
+                   &RemoteOptionsDialog::onClientsConnected);
   // Remote options dialog -> Remote Service
   QObject::connect(w.remoteOptionsDialog(),
-                   SIGNAL(startRequested(quint16, quint16)), &service,
-                   SLOT(start(quint16, quint16)));
-  QObject::connect(w.remoteOptionsDialog(), SIGNAL(disableRequested()),
-                   &service, SLOT(disable()));
-  QObject::connect(w.remoteOptionsDialog(), SIGNAL(setPassphrase(QString)),
-                   &service, SLOT(setPassphrase(QString)));
+                   &RemoteOptionsDialog::startRequested, &service,
+                   &RemoteService::start);
+  QObject::connect(w.remoteOptionsDialog(),
+                   &RemoteOptionsDialog::disableRequested, &service,
+                   &RemoteService::disable);
+  QObject::connect(w.remoteOptionsDialog(),
+                   &RemoteOptionsDialog::setPassphrase, &service,
+                   &RemoteService::setPassphrase);
 
   // Showing subtitles
   w.connectProjectionEvents(&f);
 
   // Projection Window
-  QObject::connect(&w, SIGNAL(screenResizable(bool)), &f,
-                   SLOT(screenResizable(bool)));
-  QObject::connect(&w, SIGNAL(hideDesktop(bool)), &f,
-                   SLOT(toggleHideDesktop(bool)));
+  QObject::connect(&w, &MainWindow::screenResizable, &f,
+                   &ProjectionWindow::screenResizable);
+  QObject::connect(&w, &MainWindow::hideDesktop, &f,
+                   &ProjectionWindow::toggleHideDesktop);
 
   f.show();
   w.show();
