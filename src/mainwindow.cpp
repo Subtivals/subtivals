@@ -103,7 +103,7 @@ class SubtitleTextDelegate : public QStyledItemDelegate {
       QString html = value.toString();
       // Show current subtitle with bold font.
       if (index.data(Qt::UserRole).toBool()) {
-        html = QString("<b>%2</b>").arg(html);
+        html = QString("<b>%1</b>").arg(html);
       }
       document.setHtml(QString("<span style='color:%1;'>%2</span>")
                            .arg(textColor.name(), html));
