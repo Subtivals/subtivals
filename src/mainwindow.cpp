@@ -645,10 +645,8 @@ void MainWindow::openFile(const QString &p_fileName) {
 
   // Update the table
   ui->tableWidget->setRowCount(count);
-  QListIterator<Subtitle *> i = m_script->subtitles();
   int row = 0;
-  while (i.hasNext()) {
-    Subtitle *subtitle = i.next();
+  for (Subtitle *subtitle : m_script->subtitles()) {
     m_tableMapping[subtitle] = row;
     QTableWidgetItem *startItem = new QTableWidgetItem("");
     ui->tableWidget->setItem(row, COLUMN_START, startItem);
