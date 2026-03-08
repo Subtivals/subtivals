@@ -331,8 +331,7 @@ MainWindow::~MainWindow() {
   m_playerThread->quit();
   m_playerThread->wait();
   delete ui;
-  if (m_script)
-    delete m_script;
+  delete m_script;
   delete m_player;
   delete m_playerThread;
   delete m_filewatcher;
