@@ -536,7 +536,7 @@ void MainWindow::openRecentFile() {
 
 void MainWindow::actionShowWizard() {
   Wizard wizard;
-  wizard.setPixmap(Wizard::LogoPixmap, QPixmap(":/icons/subtivals.svg"));
+  wizard.setPixmap(Wizard::LogoPixmap, QPixmap(":/icons/mainwindow.svg"));
   wizard.setWizardStyle(QWizard::ClassicStyle);
   wizard.exec();
 }
