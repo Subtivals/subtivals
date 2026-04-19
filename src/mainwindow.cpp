@@ -494,6 +494,9 @@ void MainWindow::showEvent(QShowEvent *) {
   m_player->setDelayStep(delayStepMilliseconds);
   QString text;
   switch (delayStepMilliseconds) {
+  case 40:
+    text = tr("1/25 sec");
+    break;
   case 42:
     text = tr("1/24 sec");
     break;
