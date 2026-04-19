@@ -664,142 +664,147 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">%1 sous-titres, %2 - %3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="253"/>
+        <location filename="../src/mainwindow.cpp" line="255"/>
         <source>About %1...</source>
         <translation>À propos de %1...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="491"/>
+        <location filename="../src/mainwindow.cpp" line="498"/>
+        <source>1/25 sec</source>
+        <translation>1/25 sec</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="501"/>
         <source>1/24 sec</source>
         <translation>1/24 sec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="494"/>
+        <location filename="../src/mainwindow.cpp" line="504"/>
         <source>1/10 sec</source>
         <translation>1/10 sec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="497"/>
+        <location filename="../src/mainwindow.cpp" line="507"/>
         <source>1/4 sec</source>
         <translation>1/4 sec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="500"/>
+        <location filename="../src/mainwindow.cpp" line="510"/>
         <source>1/2 sec</source>
         <translation>1/2 sec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="503"/>
+        <location filename="../src/mainwindow.cpp" line="513"/>
         <source>1 sec</source>
         <translation>1 sec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="506"/>
+        <location filename="../src/mainwindow.cpp" line="516"/>
         <source> msec</source>
         <translation> msec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="539"/>
+        <location filename="../src/mainwindow.cpp" line="549"/>
         <source>Save list as spreadsheet</source>
         <translation>Enregistrer la liste dans un fichier tableur</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="540"/>
+        <location filename="../src/mainwindow.cpp" line="550"/>
         <source>spreadsheet</source>
         <translation>feuille</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="541"/>
+        <location filename="../src/mainwindow.cpp" line="551"/>
         <source>Comma-separated files (*.csv)</source>
         <translation>Fichiers valeurs séparées par des virgules (*.csv)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="551"/>
+        <location filename="../src/mainwindow.cpp" line="561"/>
         <source>Unable to write file</source>
         <translation>Impossible d&apos;enregistrer le fichier</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="560"/>
+        <location filename="../src/mainwindow.cpp" line="570"/>
         <source>Saved successfully</source>
         <translation>Enregistré avec succès</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="561"/>
+        <location filename="../src/mainwindow.cpp" line="571"/>
         <source>Subtitles exported to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Sous-titres enregistré dans &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="599"/>
+        <location filename="../src/mainwindow.cpp" line="609"/>
         <source>Encoding error</source>
         <translation>Erreur d&apos;encodage</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="600"/>
+        <location filename="../src/mainwindow.cpp" line="610"/>
         <source>Looks like the subtitles were not saved in a valid UTF-8 file.</source>
         <translation>Apparemment, le fichier de sous-titre n&apos;a pas enregistré avec l&apos;encodage UTF-8.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="604"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
         <source>Error with subtitles</source>
         <translation>Erreur avec les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="605"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
         <source>Could not read the file specified.</source>
         <translation>Le fichier spécifié n&apos;a pas pu être lu.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="639"/>
+        <location filename="../src/mainwindow.cpp" line="649"/>
         <source>%1 subtitles, %2 - %3</source>
         <translation>%1 sous-titres, %2 - %3</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="662"/>
+        <location filename="../src/mainwindow.cpp" line="672"/>
         <source>%1 chars/sec</source>
         <translation>%1 car/sec</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="667"/>
+        <location filename="../src/mainwindow.cpp" line="677"/>
         <source>Fast (%1 chars/sec)</source>
         <translation>Rapide (%1 caract./sec)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="671"/>
+        <location filename="../src/mainwindow.cpp" line="681"/>
         <source>Unreadable (%1 chars/sec)</source>
         <translation>Illisible (%1 caract./sec)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="731"/>
+        <location filename="../src/mainwindow.cpp" line="741"/>
         <source>&amp;%1 %2</source>
         <translation>&amp;%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="796"/>
+        <location filename="../src/mainwindow.cpp" line="806"/>
         <source>Some styles are currently overriden in preferences.</source>
         <translation>Certains styles ont été forcés dans les préférences.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="821"/>
+        <location filename="../src/mainwindow.cpp" line="831"/>
         <source>Subtitle file reloaded.</source>
         <translation>Fichier de sous-titres rechargé.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="842"/>
+        <location filename="../src/mainwindow.cpp" line="852"/>
         <source>Open subtitles</source>
         <translation>Ouvrir fichier de sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="843"/>
+        <location filename="../src/mainwindow.cpp" line="853"/>
         <source>Subtitle Files (*.ass *.srt *.txt *.xml)</source>
         <translation>Fichiers de sous-titres (*.ass *.srt *.txt *.xml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1370"/>
+        <location filename="../src/mainwindow.cpp" line="1380"/>
         <source>About %1</source>
         <translation>À propos de %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1378"/>
+        <location filename="../src/mainwindow.cpp" line="1381"/>
         <source>&lt;h1&gt;%1 %2&lt;/h1&gt;&lt;p&gt;%1, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %3&lt;/h2&gt;</source>
         <translation>&lt;h1&gt;%1 %2&lt;/h1&gt;&lt;p&gt;%1, un programme pour projeter des sous-titres.&lt;/p&gt;&lt;h2&gt;Auteurs&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %3&lt;/h2&gt;</translation>
     </message>
@@ -812,7 +817,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Fichiers de sous-titres (*.ass *.srt)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1136"/>
+        <location filename="../src/mainwindow.cpp" line="1146"/>
         <source>Remaining: %1</source>
         <translation>Restant: %1</translation>
     </message>
@@ -958,40 +963,40 @@ Continuer ?</translation>
 <context>
     <name>Script</name>
     <message>
-        <location filename="../src/script.cpp" line="394"/>
-        <location filename="../src/script.cpp" line="443"/>
-        <location filename="../src/script.cpp" line="513"/>
-        <location filename="../src/script.cpp" line="520"/>
+        <location filename="../src/script.cpp" line="401"/>
+        <location filename="../src/script.cpp" line="452"/>
+        <location filename="../src/script.cpp" line="524"/>
+        <location filename="../src/script.cpp" line="531"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="657"/>
+        <location filename="../src/script.cpp" line="668"/>
         <source>Row</source>
         <translation>Ligne</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="657"/>
+        <location filename="../src/script.cpp" line="668"/>
         <source>Start</source>
         <translation>Début</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="657"/>
+        <location filename="../src/script.cpp" line="668"/>
         <source>End</source>
         <translation>Fin</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="657"/>
+        <location filename="../src/script.cpp" line="668"/>
         <source>Style</source>
         <translation>Style</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="658"/>
+        <location filename="../src/script.cpp" line="669"/>
         <source>Text</source>
         <translation>Texte</translation>
     </message>
     <message>
-        <location filename="../src/script.cpp" line="658"/>
+        <location filename="../src/script.cpp" line="669"/>
         <source>Comments</source>
         <translation>Commentaires</translation>
     </message>
