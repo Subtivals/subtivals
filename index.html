@@ -1,835 +1,629 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Subtivals is a live surtitling software for film festivals, theaters, and operas. Display professional multilingual subtitles in real time.">
-    <meta name="author" content="Mathieu Leplatre">
-    <link rel="shortcut icon" href="ico/favicon.png">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Subtivals is a live surtitling software for film festivals, theaters, and operas. Display professional multilingual subtitles in real time.">
+  <meta name="author" content="Mathieu Leplatre">
+  <link rel="shortcut icon" href="ico/favicon.png">
+  <title>Subtivals | Home</title>
 
-    <title>Subtivals | Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;800&family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="css/font-awesome.min.css" rel="stylesheet">
+  <link href="css/site.css" rel="stylesheet">
+</head>
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/theme.css" rel="stylesheet">
-    <link href="css/custom.css" rel="stylesheet">
+<body>
 
-    <!-- Custom styles for this template -->
-    <link href="css/magnific-popup.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-
-    <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
-  </head>
-
-  <body>
-
-    <div class="preloader">
-       <div class="spinner">
-          <div class="bounce1"></div>
-          <div class="bounce2"></div>
-          <div class="bounce3"></div>
-        </div>
+  <!-- Preloader -->
+  <div class="preloader" aria-hidden="true">
+    <div class="spinner">
+      <span></span><span></span><span></span>
     </div>
+  </div>
 
-    <!-- NAVBAR
-    ================================================== -->
-    <div class="navbar-wrapper cbp-af-header">
-      <div class="container">
+  <!-- Navigation -->
+  <header class="site-nav" role="banner">
+    <div class="nav-inner">
+      <a class="nav-brand" href="#hero">
+        <img src="img/subtivals-logo.png" alt="Subtivals logo" width="120" height="40">
+        Subtivals
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#about">About</a>
+        <a href="#featured1">Features</a>
+        <a href="#testimonials" class="nav-ref">References</a>
+        <a href="#download">Download</a>
+      </nav>
+    </div>
+  </header>
 
-        <!-- Fixed navbar -->
-        <div class="navbar cbp-af-inner" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <h1><a class="navbar-brand scroll" href="#intro">
-                <img alt="subtivals logo" src="img/subtivals-logo.png"/> Subtivals
-              </a></h1>
-            </div>
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav pull-right">
-                <li><a href="#about">About</a></li>
-                <li><a href="#featured1">Features</a></li>
-                <li class="hidden-sm"><a href="#testimonials">References</a></li>
-                <li><a href="#pricing">Download</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
+  <main>
 
+    <!-- Hero -->
+    <section id="hero" aria-label="Hero">
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content">
+        <h2>Say goodbye to manual captioning.</h2>
+        <h1>Live subtitling made easy.</h1>
+        <p>Subtivals is the perfect tool to add subtitles for live performances.
+           It projects captions automatically with full control.</p>
+        <a href="#about" class="btn-scroll" aria-label="Scroll to About">
+          <i class="fa fa-angle-double-down"></i>
+        </a>
       </div>
-    </div>
+    </section>
 
-
-    <!-- Hero Banner
-    ================================================== -->
-    <div id="intro">
-        <div class="item background-cover" style="background: url('img/bg-featuredapp1.jpg')">
-          <div class="container">
-            <div class="row">
-              <div class="carousel-caption-center colour-white">
-                <h2>Say goodbye to manual captioning.</h2>
-                <h1>Live subtitling made easy.</h1>
-                <p>Subtivals is the perfect tool to add subtitles for live performances.
-                  It projects captions automatically with full control.
-                </p>
-                <div class="page-scroll nav">
-                    <a href="#about" class="btn btn-default">
-                        <i class="fa fa-angle-double-down icon-large"></i>
-                    </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="overlay-bg"></div>
-        </div>
-    </div>
-
-
-
-    <!-- About Section
-    ================================================== -->
-    <section id="about" class="content text-center light">
-
+    <!-- About -->
+    <section id="about" class="light">
       <div class="container">
-        <!-- Three columns of text below the carousel -->
-        <div class="row">
-          <div class="col-lg-12 overlay-text">
-            <h2>Designed by cinema professionals</h2>
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-
-        <div class="row">
-          <div class="col-sm-4 text-center overlay-text icons">
-            <div class="icon-wrapper">
-              <i class="fa fa-rocket icon-large"></i>
-            </div>
+        <div class="section-header reveal">
+          <span class="eyebrow">Why Subtivals</span>
+          <h2>Designed by cinema professionals</h2>
+        </div>
+        <div class="about-grid">
+          <div class="about-card reveal">
+            <div class="icon-wrap"><i class="fa fa-rocket"></i></div>
             <h3>Intuitive Interactions</h3>
-            <p>No user manual required to get started ! Install, play and
+            <p>No user manual required to get started! Install, play and
                <strong>go live in one moment</strong>! Keyboard shortcuts
-               can be customized too!
-            </p>
+               can be customized too!</p>
           </div>
-          <div class="col-sm-4 text-center overlay-text icons">
-            <div class="icon-wrapper">
-              <i class="fa fa-tachometer icon-large"></i>
-            </div>
+          <div class="about-card reveal">
+            <div class="icon-wrap"><i class="fa fa-tachometer"></i></div>
             <h3>Multiple Formats</h3>
             <p>Support of Advanced SubStation Alpha (SSA, ASS, <strong>.ass</strong>),
                Subrip (<strong>.srt</strong>),
                DCP (<strong>.xml</strong>),
-               and simple text (<strong>*.txt</strong>) subtitles.
-             </p>
+               and simple text (<strong>*.txt</strong>) subtitles.</p>
           </div>
-          <div class="col-sm-4 text-center overlay-text icons">
-            <div class="icon-wrapper">
-              <i class="fa fa-trophy icon-large"></i>
-            </div>
+          <div class="about-card reveal">
+            <div class="icon-wrap"><i class="fa fa-trophy"></i></div>
             <h3>Crash proof</h3>
-            <p>Its robustness has been successful on many cinema
-               festivals and operas since 2011 : subtitling should <strong>never fail in live</strong>! </p>
-          </div>
-        </div><!-- /.row -->
-      </div>
-
-      <div class="overlay-bg light"></div>
-
-    </section>
-
-
-    <!-- Featured Sections
-    ================================================== -->
-    <section id="featured1" class="dark with-bg">
-
-      <div class="container">
-        <div class="row">
-          <div class="col-md-offset-7 col-sm-5 overlay-text">
-            <div class="vertical-align">
-              <h2>Automatic &amp; Manual</h2>
-              <p>Its particular strength lies in the control of the projection, with a very good cooperation between <strong>automatic and manual modes</strong>.
-              </p>
-              <p>Its semi-automatic mode <strong>without timecodes</strong> also allows to project supertitles at
-                 <strong>theaters</strong> (or <strong>opera</strong>, ballets, concerts, speeches, museums, guide tours,
-                 and any other live events...).
-              </p>
-            </div>
+            <p>Its robustness has been proven at hundreds of cinema
+               festivals and operas since 2011 — subtitling should <strong>never fail in live</strong>!</p>
           </div>
         </div>
       </div>
-
-      <div class="overlay-bg black"></div>
-
     </section>
 
-
-    <section id="featured2" class="featured">
-
+    <!-- Featured 1 — Automatic & Manual (full-bleed bg) -->
+    <section id="featured1" class="with-bg">
       <div class="container">
-        <div class="row">
-          <div class="col-sm-5 text-center">
-            <img class="margin-top img-responsive" src="img/text-preview.png" alt="multilingual text preview" data-scrollreveal="move 100px and enter from the left after 0.55s" width="429">
-
-            <p><a href="https://github.com/Subtivals/subtivals/wiki" target="_blank">See the complete list of features</a></p>
-
-          </div>
-          <div class="col-sm-5 col-sm-offset-1">
-            <div class="vertical-align">
-              <h2>Slick apparence</h2>
-              <p>Colors, fonts, size, outline, styles and multiple lines support allow to provide
-                 the best experience and readability.
-              </p>
-              <p>It also supports advanced positioning, necessary to reproduce music, ambiance, dialogs and context for a <strong>multilingual, deaf or hearing impaired</strong> audience.</p>
-              <p>International characters sets are supported too (Arabic, Chinese, Cyrillic, Greek...)</p>
-            </div>
+        <div class="row-push">
+          <div class="featured1-content reveal">
+            <h2>Automatic &amp; Manual</h2>
+            <p>Its particular strength lies in the control of the projection, with a very good
+               cooperation between <strong>automatic and manual modes</strong>.</p>
+            <p>Its semi-automatic mode <strong>without timecodes</strong> also allows to project
+               supertitles at <strong>theaters</strong> (or opera, ballets, concerts, speeches,
+               museums, guide tours, and any other live events…).</p>
           </div>
         </div>
       </div>
-
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.52);z-index:0" aria-hidden="true"></div>
     </section>
 
+    <!-- Featured 2 — Slick appearance -->
+    <section id="featured2">
+      <div class="container">
+        <div class="featured2-grid">
+          <div class="featured2-img reveal">
+            <img src="img/text-preview.png" alt="Multilingual text preview" width="429" loading="lazy" decoding="async">
+            <p style="margin-top:0.8rem;font-size:0.9rem">
+              <a href="https://github.com/Subtivals/subtivals/wiki" target="_blank">See the complete list of features</a>
+            </p>
+          </div>
+          <div class="featured2-text reveal">
+            <h2>Slick appearance</h2>
+            <p>Colors, fonts, size, outline, styles and multiple lines support allow to provide
+               the best experience and readability.</p>
+            <p>It also supports advanced positioning, necessary to reproduce music, ambiance,
+               dialogs and context for a <strong>multilingual, deaf or hearing impaired</strong> audience.</p>
+            <p>International character sets are supported too (Arabic, Chinese, Cyrillic, Greek…)</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- Testimonials
-    ================================================== -->
+    <!-- Testimonials & References -->
     <section id="testimonials" class="dark">
-
-      <div class="page-header text-center">
-        <h3>References</h3>
-        <h2>Used worldwide</h2>
-      </div>
-
       <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">References</span>
+          <h2>Used worldwide</h2>
+        </div>
 
-        <div class='row'>
-          <div class='col-md-7'>
-            <div class="carousel slide" data-ride="carousel" id="quote-carousel">
-              <!-- Bottom Carousel Indicators -->
-              <ol class="carousel-indicators">
-                <li data-target="#quote-carousel" data-slide-to="0" class="active"></li>
-                <li data-target="#quote-carousel" data-slide-to="1"></li>
-                <li data-target="#quote-carousel" data-slide-to="2"></li>
-                <li data-target="#quote-carousel" data-slide-to="3"></li>
-              </ol>
+        <div class="testimonial-layout">
 
-              <!-- Carousel Slides / Quotes -->
-              <div class="carousel-inner">
-
-                <!-- Quote 1 -->
-                <div class="item active">
-                  <blockquote>
-                    <div class="row">
-                      <div class="col-sm-3 text-center">
-                        <img class="img-circle" src="img/user-avatar1.jpg" alt="user avatar">
-                      </div>
-                      <div class="col-sm-8">
-                        <p>"Our association is focused on events for
-                          hearing impaired: Subtivals is the best tool for accessibility !"</p>
-                        <small>Camille - <a href="http://www.sensdessusdessous.org" target="_blank">Sens Dessus Dessous</a> (France)</small>
-                      </div>
+          <!-- Left: quotes + logos -->
+          <div>
+            <div class="quote-carousel">
+              <!-- Quote 1 -->
+              <div class="quote-item active">
+                <blockquote>
+                  <div class="quote-body">
+                    <img src="img/user-avatar1.jpg" alt="Camille" loading="lazy" decoding="async">
+                    <div>
+                      <p>"Our association is focused on events for hearing impaired:
+                         Subtivals is the best tool for accessibility!"</p>
+                      <small>Camille —
+                        <a href="http://www.sensdessusdessous.org" target="_blank">Sens Dessus Dessous</a>
+                        (France)
+                      </small>
                     </div>
-                  </blockquote>
-                </div>
-                <!-- Quote 2 -->
-                <div class="item">
-                  <blockquote>
-                    <div class="row">
-                      <div class="col-sm-3 text-center">
-                        <img class="img-circle" src="img/user-avatar2.jpg" alt="user avatar">
-                      </div>
-                      <div class="col-sm-8">
-                        <p>«Using Subtivals feels like driving a convertible Mustang!»</p>
-                        <small>Francisco Baudet - <a href="http://virtuelcompagnie.eu" target="_blank">Professional subtitler</a> (France)</small>
-                      </div>
+                  </div>
+                </blockquote>
+              </div>
+              <!-- Quote 2 -->
+              <div class="quote-item">
+                <blockquote>
+                  <div class="quote-body">
+                    <img src="img/user-avatar2.jpg" alt="Francisco Baudet" loading="lazy" decoding="async">
+                    <div>
+                      <p>"Using Subtivals feels like driving a convertible Mustang!"</p>
+                      <small>Francisco Baudet —
+                        <a href="http://virtuelcompagnie.eu" target="_blank">Professional subtitler</a>
+                        (France)
+                      </small>
                     </div>
-                  </blockquote>
-                </div>
-                <!-- Quote 3 -->
-                <div class="item">
-                  <blockquote>
-                    <div class="row">
-                      <div class="col-sm-3 text-center">
-                        <img class="img-circle" src="img/user-avatar3.jpg" alt="user avatar">
-                      </div>
-                      <div class="col-sm-8">
-                        <p>«We are very happy to have found your software, last year we did everything manually... that was a nightmare!»</p>
-                        <small>Tom Lukaszewicz - <a href="http://www.blackbearfilmfest.com/" target="_blank">BLACK BEAR FILMFEST</a> (Poland)</small>
-                      </div>
+                  </div>
+                </blockquote>
+              </div>
+              <!-- Quote 3 -->
+              <div class="quote-item">
+                <blockquote>
+                  <div class="quote-body">
+                    <img src="img/user-avatar3.jpg" alt="Tom Lukaszewicz" loading="lazy" decoding="async">
+                    <div>
+                      <p>"We are very happy to have found your software, last year we did
+                         everything manually… that was a nightmare!"</p>
+                      <small>Tom Lukaszewicz —
+                        <a href="http://www.blackbearfilmfest.com/" target="_blank">BLACK BEAR FILMFEST</a>
+                        (Poland)
+                      </small>
                     </div>
-                  </blockquote>
-                </div>
-                <!-- Quote 4 -->
-                <div class="item">
-                  <blockquote>
-                    <div class="row">
-                      <div class="col-sm-3 text-center">
-                        <img class="img-circle" src="img/user-avatar4.jpg" alt="user avatar">
-                      </div>
-                      <div class="col-sm-8">
-                        <p>«We've found it so much practical than any other tool we had ever tried»</p>
-                        <small>Simona Marino - <a href="https://sudtitles.wordpress.com/" target="_blank">Sud.titles</a> (Italy)</small>
-                      </div>
+                  </div>
+                </blockquote>
+              </div>
+              <!-- Quote 4 -->
+              <div class="quote-item">
+                <blockquote>
+                  <div class="quote-body">
+                    <img src="img/user-avatar4.jpg" alt="Simona Marino" loading="lazy" decoding="async">
+                    <div>
+                      <p>"We've found it so much more practical than any other tool we had ever tried."</p>
+                      <small>Simona Marino —
+                        <a href="https://sudtitles.wordpress.com/" target="_blank">Sud.titles</a>
+                        (Italy)
+                      </small>
                     </div>
-                  </blockquote>
-                </div>
+                  </div>
+                </blockquote>
               </div>
 
-              <!-- Carousel Buttons Next/Prev -->
-              <a data-slide="prev" href="#quote-carousel" class="left carousel-control visible-md visible-lg"><i class="fa fa-chevron-left"></i></a>
-              <a data-slide="next" href="#quote-carousel" class="right carousel-control  visible-md visible-lg"><i class="fa fa-chevron-right"></i></a>
+              <div class="carousel-controls">
+                <div class="carousel-dots">
+                  <button class="active" aria-label="Quote 1"></button>
+                  <button aria-label="Quote 2"></button>
+                  <button aria-label="Quote 3"></button>
+                  <button aria-label="Quote 4"></button>
+                </div>
+                <button class="carousel-btn prev" aria-label="Previous"><i class="fa fa-chevron-left"></i></button>
+                <button class="carousel-btn next" aria-label="Next"><i class="fa fa-chevron-right"></i></button>
+              </div>
             </div>
 
+            <!-- Logos -->
             <div class="logos">
-                <a href="http://www.cinelatino.com.fr"><img alt="logo of com.fr" src="img/logos/logo_cinelatino.png"/></a>
-                <a href="http://www.lacinemathequedetoulouse.com/festival-zoom-arriere/"><img alt="logo of zoom-arriere" src="img/logos/logo_cinematheque_toulouse.png"/></a>
-                <a href="http://www.festivalcinesordo.com/"><img alt="logo of festivalcinesordo.com" src="img/logos/logo_cinesordo.png"/></a>
-                <a href="http://filmfestival.com.cy/"><img alt="logo of com.cy" src="img/logos/logo_lemesos.png"/></a>
-                <a href="http://festival-resistances.fr/"><img alt="logo of resistances.fr" src="img/logos/logo_resistances.png"/></a>
-                <a href="http://racti.com/"><img alt="logo of racti.com" src="img/logos/logo_racti.png"/></a>
-                <a href="http://gutekfilm.pl"><img alt="logo of gutekfilm.pl" src="img/logos/logo_gutek.png"/></a>
-                <a href="http://calf-studio.jp"><img alt="logo of studio.jp" src="img/logos/logo_calf_studio.png"/></a>
-                <a href="http://tedxtoulouse.com/"><img alt="logo of tedxtoulouse.com" src="img/logos/logo_tedxtoulouse.png"/></a>
-                <a href="http://lesvideophages.free.fr/"><img alt="logo of free.fr" src="img/logos/logo_videophages.png"/></a>
-                <a href="http://www.artech-dcinema.com"><img alt="logo of dcinema.com" src="img/logos/artech-cinema.png"/></a>
-                <a href="http://athensanimfest.eu"><img alt="logo of athensanimfest.eu" src="img/logos/athen-animfest.png"/></a>
-                <a href="http://blackbearfilmfest.com"><img alt="logo of blackbearfilmfest.com" src="img/logos/blackbear-filmfest.png"/></a>
-                <a href="http://cinematheque.qc.ca"><img alt="logo of qc.ca" src="img/logos/cinematheque-quebequoise.png"/></a>
-                <a href="http://www.lacinemathequedetoulouse.com"><img alt="logo of lacinemathequedetoulouse.com" src="img/logos/cinematheque-toulouse.png"/></a>
-                <a href="http://comedycluj.ro"><img alt="logo of comedycluj.ro" src="img/logos/comedycluj.png"/></a>
-                <a href="http://www.courtmetrange.eu"><img alt="logo of courtmetrange.eu" src="img/logos/court-metrange.png"/></a>
-                <a href="http://www.dokufest.com"><img alt="logo of dokufest.com" src="img/logos/dokufest.png"/></a>
-                <a href="http://fiaf.org"><img alt="logo of fiaf.org" src="img/logos/fiaf.png"/></a>
-                <a href="http://www.3continents.com"><img alt="logo of 3continents.com" src="img/logos/festival-3-continents.png"/></a>
-                <a href="http://www.beauvaisfilmfest.com"><img alt="logo of beauvaisfilmfest.com" src="img/logos/festival-beauvais.png"/></a>
-                <a href="http://www.janeladecinema.com.br"><img alt="logo of com.br" src="img/logos/festival-janela.png"/></a>
-                <a href="http://www.geneseo.edu/fingerlakesopera"><img alt="logo of edu/fingerlakesopera" src="img/logos/finger-lake-opera.png"/></a>
-                <a href="http://www.ifhanoi-lespace.com/lespace"><img alt="logo of com/lespace" src="img/logos/institut-francais-hanoi.png"/></a>
-                <a href="http://lab80.it"><img alt="logo of lab80.it" src="img/logos/lab80film.png"/></a>
-                <a href="http://www.lejolimai.org"><img alt="logo of lejolimai.org" src="img/logos/lejolimai.png"/></a>
-                <a href="http://www.liricaladob.com.ar"><img alt="logo of com.ar" src="img/logos/lirica-ladob.png"/></a>
-                <a href="http://multisignes.com"><img alt="logo of multisignes.com" src="img/logos/multisignes.png"/></a>
-                <a href="http://olhardecinema.com.br"><img alt="logo of com.br" src="img/logos/olhardecinema.png"/></a>
-                <a href="http://www.sp.k12.tr/"><img alt="logo of k12.tr" src="img/logos/sainte-pulcherie.png"/></a>
-                <a href="http://www.sferisterio.it"><img alt="logo of sferisterio.it" src="img/logos/sferisterio.png"/></a>
-                <a href="http://www.narodowy.pl"><img alt="logo of narodowy.pl" src="img/logos/teatr-narodowy.png"/></a>
-                <a href="http://univercine-nantes.org/"><img alt="logo of nantes.org" src="img/logos/univercine.png"/></a>
-                <a href="http://www.filmoteca.unam.mx"><img alt="logo of unam.mx" src="img/logos/universidad-mexico.png"/></a>
-                <a href="http://zanzan-films.com"><img alt="logo of films.com" src="img/logos/zanzan-films.png"/></a>
-                <a href="http://www.pafos2017.eu"><img alt="logo of pafos2017.eu" src="img/logos/pafos2017.png"/></a>
-                <a href="http://www.barzandhippo.com"><img alt="logo of barzandhippo.com" src="img/logos/barz.png"/></a>
-                <a href="http://www.bergamofilmmeeting.it"><img alt="logo of bergamofilmmeeting.it" src="img/logos/bfm.png"/></a>
-                <a href="http://www.carboniafilmfest.org"><img alt="logo of carboniafilmfest.org" src="img/logos/carbonia-film-festival.png"/></a>
-                <a href="http://www.charada.eu"><img alt="logo of charada.eu" src="img/logos/charada.png"/></a>
-                <a href="http://www.cineparaimaginar.mx"><img alt="logo of cineparaimaginar.mx" src="img/logos/cine-para-imaginar.png"/></a>
-                <a href="http://www.eugenetek.com"><img alt="logo of eugenetek.com" src="img/logos/eugenetek.png"/></a>
-                <a href="http://milanofilmnetwork.it"><img alt="logo of milanofilmnetwork.it" src="img/logos/milan-film-network.png"/></a>
-                <a href="https://www.rts.ch"><img alt="logo of rts.ch" src="img/logos/rts.png"/></a>
-                <a href="http://www.siciliaqueerfilmfest.it"><img alt="logo of siciliaqueerfilmfest.it" src="img/logos/sicilia-queer.png"/></a>
-                <a href="http://www.tokititles.it"><img alt="logo of tokititles.it" src="img/logos/tokititles.png"/></a>
-                <a href="http://www.uw.edu.pl"><img alt="logo of edu.pl" src="img/logos/university-warsaw.png"/></a>
-                <a href="http://www.videolab.es"><img alt="logo of videolab.es" src="img/logos/videolab.png"/></a>
-                <a href="http://http://vifff.ch"><img alt="logo of vifff.ch" src="img/logos/viff.png"/></a>
-                <a href="http://ymagis.com"><img alt="logo of ymagis.com" src="img/logos/ymagis.png"/></a>
-                <a href="http://www.luccafilmfestival.it"><img alt="logo of luccafilmfestival.it" src="img/logos/luccafilmfestival.png"/></a>
-                <a href="http://www.cinetecadibologna.it"><img alt="logo of cinetecadibologna.it" src="img/logos/cineteca-bologna.png"/></a>
-                <a href="http://www.unplush.ch"><img alt="logo of unplush.ch" src="img/logos/unplush.png"/></a>
-                <a href="https://csnmedia.tv"><img alt="logo of csnmedia.tv" src="img/logos/csn-media.png"/></a>
-                <a href="http://www.efectocine.com"><img alt="logo of efectocine.com" src="img/logos/efectocine.png"/></a>
-                <a href="https://www.theater-osnabrueck.de"><img alt="logo of osnabrueck.de" src="img/logos/onabrueck.png"/></a>
-                <a href="https://www.cinemas-du-grutli.ch"><img alt="logo of grutli.ch" src="img/logos/grutli.png"/></a>
-                <a href="https://favoriz.fr"><img alt="logo of favoriz.fr" class="black" src="img/logos/favoriz.png"/></a>
-                <a href="http://www.subhumans.org"><img alt="logo of subhumans.org" src="img/logos/subhumans.png"/></a>
-                <a href="https://ifv.vn"><img alt="logo of ifv.vn" class="black" src="img/logos/ifv.png"/></a>
-                <a href="https://kavi.fi"><img alt="logo of kavi.fi" class="black" src="img/logos/kavi.png"/></a>
-                <a href="http://www.artis-project.it"><img alt="logo of project.it" src="img/logos/artis-project.png"/></a>
-                <a href="http://www.fas.harvard.edu"><img alt="logo of harvard.edu" class="black" src="img/logos/harvard.png"/></a>
-                <a href="https://monstrafestival.com"><img alt="logo of monstrafestival.com" class="black" src="img/logos/monstra.png"/></a>
-                <a href="http://festival.curtas.pt"><img alt="logo of curtas.pt" class="black" src="img/logos/viladoconde.png"/></a>
-                <a href="https://dsh.waw.pl"><img alt="logo of waw.pl" class="black" src="img/logos/dom-spotkan.png"/></a>
-                <a href="https://www.fantbilbao.eus"><img alt="logo of fantbilbao.eus" class="black" src="img/logos/fant.png"/></a>
-                <a href="https://fundacjakatarynka.pl"><img alt="logo of fundacjakatarynka.pl" class="black" src="img/logos/fundacja-katarynka.png"/></a>
-                <a href="https://www.hein.pt"><img alt="logo of hein.pt" class="black" src="img/logos/hein.png"/></a>
-                <a href="https://www.hifidiprinzio.it"><img alt="logo of hifidiprinzio.it" class="black" src="img/logos/hifi-diprinzio.png"/></a>
-                <a href="https://iguale.com.br"><img alt="logo of com.br" class="black" src="img/logos/iguale.png"/></a>
-                <a href="https://www.manchester.edu/"><img alt="logo of manchester.edu"  class="black" src="img/logos/manchester-university.png"/></a>
-                <a href="https://sk-designs.dk"><img alt="logo of designs.dk" class="black" src="img/logos/sk-designs.png"/></a>
-                <a href="https://subbabel.com"><img alt="logo of subbabel.com" class="black" src="img/logos/subbabel.png"/></a>
-                <a href="https://teatrnorwida.pl"><img alt="logo of teatrnorwida.pl" class="black" src="img/logos/teatr-cypriana.png"/></a>
-                <a href="https://teatrslaski.art.pl"><img alt="logo of art.pl" class="black" src="img/logos/teatr-slaski.png"/></a>
-                <a href="https://www.vsmu.sk"><img alt="logo of vsmu.sk" class="black" src="img/logos/vsmu.png"/></a>
-                <a href="https://www.36caracteres.net/"><img alt="logo of 36caracteres.net"  class="black" src="img/logos/36caracteres.png"/></a>
-                <a href="https://www.metrograph.com/"><img alt="logo of metrograph.com" src="img/logos/metrograph.png"/></a>
+              <a href="http://www.cinelatino.com.fr"><img loading="lazy" decoding="async" alt="Cinélatino" src="img/logos/logo_cinelatino.png"/></a>
+              <a href="http://www.lacinemathequedetoulouse.com/festival-zoom-arriere/"><img loading="lazy" decoding="async" alt="Cinémathèque Toulouse" src="img/logos/logo_cinematheque_toulouse.png"/></a>
+              <a href="http://www.festivalcinesordo.com/"><img loading="lazy" decoding="async" alt="Festival Cine Sordo" src="img/logos/logo_cinesordo.png"/></a>
+              <a href="http://filmfestival.com.cy/"><img loading="lazy" decoding="async" alt="Lemesos Film Festival" src="img/logos/logo_lemesos.png"/></a>
+              <a href="http://festival-resistances.fr/"><img loading="lazy" decoding="async" alt="Résistances" src="img/logos/logo_resistances.png"/></a>
+              <a href="http://racti.com/"><img loading="lazy" decoding="async" alt="Racti" src="img/logos/logo_racti.png"/></a>
+              <a href="http://gutekfilm.pl"><img loading="lazy" decoding="async" alt="Gutek Film" src="img/logos/logo_gutek.png"/></a>
+              <a href="http://calf-studio.jp"><img loading="lazy" decoding="async" alt="CALF Studio" src="img/logos/logo_calf_studio.png"/></a>
+              <a href="http://tedxtoulouse.com/"><img loading="lazy" decoding="async" alt="TEDx Toulouse" src="img/logos/logo_tedxtoulouse.png"/></a>
+              <a href="http://lesvideophages.free.fr/"><img loading="lazy" decoding="async" alt="Les Vidéophages" src="img/logos/logo_videophages.png"/></a>
+              <a href="http://www.artech-dcinema.com"><img loading="lazy" decoding="async" alt="Artech dcinema" src="img/logos/artech-cinema.png"/></a>
+              <a href="http://athensanimfest.eu"><img loading="lazy" decoding="async" alt="Athens Animfest" src="img/logos/athen-animfest.png"/></a>
+              <a href="http://blackbearfilmfest.com"><img loading="lazy" decoding="async" alt="Black Bear Filmfest" src="img/logos/blackbear-filmfest.png"/></a>
+              <a href="http://cinematheque.qc.ca"><img loading="lazy" decoding="async" alt="Cinémathèque Québécoise" src="img/logos/cinematheque-quebequoise.png"/></a>
+              <a href="http://www.lacinemathequedetoulouse.com"><img loading="lazy" decoding="async" alt="Cinémathèque Toulouse" src="img/logos/cinematheque-toulouse.png"/></a>
+              <a href="http://comedycluj.ro"><img loading="lazy" decoding="async" alt="Comedy Cluj" src="img/logos/comedycluj.png"/></a>
+              <a href="http://www.courtmetrange.eu"><img loading="lazy" decoding="async" alt="Court-Métrange" src="img/logos/court-metrange.png"/></a>
+              <a href="http://www.dokufest.com"><img loading="lazy" decoding="async" alt="Dokufest" src="img/logos/dokufest.png"/></a>
+              <a href="http://fiaf.org"><img loading="lazy" decoding="async" alt="FIAF" src="img/logos/fiaf.png"/></a>
+              <a href="http://www.3continents.com"><img loading="lazy" decoding="async" alt="Festival 3 Continents" src="img/logos/festival-3-continents.png"/></a>
+              <a href="http://www.beauvaisfilmfest.com"><img loading="lazy" decoding="async" alt="Festival Beauvais" src="img/logos/festival-beauvais.png"/></a>
+              <a href="http://www.janeladecinema.com.br"><img loading="lazy" decoding="async" alt="Festival Janela" src="img/logos/festival-janela.png"/></a>
+              <a href="http://www.geneseo.edu/fingerlakesopera"><img loading="lazy" decoding="async" alt="Finger Lakes Opera" src="img/logos/finger-lake-opera.png"/></a>
+              <a href="http://www.ifhanoi-lespace.com/lespace"><img loading="lazy" decoding="async" alt="Institut Français Hanoi" src="img/logos/institut-francais-hanoi.png"/></a>
+              <a href="http://lab80.it"><img loading="lazy" decoding="async" alt="Lab 80" src="img/logos/lab80film.png"/></a>
+              <a href="http://www.lejolimai.org"><img loading="lazy" decoding="async" alt="Le Joli Mai" src="img/logos/lejolimai.png"/></a>
+              <a href="http://www.liricaladob.com.ar"><img loading="lazy" decoding="async" alt="Lírica Lado B" src="img/logos/lirica-ladob.png"/></a>
+              <a href="http://multisignes.com"><img loading="lazy" decoding="async" alt="MultiSignes" src="img/logos/multisignes.png"/></a>
+              <a href="http://olhardecinema.com.br"><img loading="lazy" decoding="async" alt="Olhar de Cinema" src="img/logos/olhardecinema.png"/></a>
+              <a href="http://www.sp.k12.tr/"><img loading="lazy" decoding="async" alt="Sainte Pulchérie" src="img/logos/sainte-pulcherie.png"/></a>
+              <a href="http://www.sferisterio.it"><img loading="lazy" decoding="async" alt="Sferisterio" src="img/logos/sferisterio.png"/></a>
+              <a href="http://www.narodowy.pl"><img loading="lazy" decoding="async" alt="Teatr Narodowy" src="img/logos/teatr-narodowy.png"/></a>
+              <a href="http://univercine-nantes.org/"><img loading="lazy" decoding="async" alt="Univerciné" src="img/logos/univercine.png"/></a>
+              <a href="http://www.filmoteca.unam.mx"><img loading="lazy" decoding="async" alt="Filmoteca UNAM" src="img/logos/universidad-mexico.png"/></a>
+              <a href="http://zanzan-films.com"><img loading="lazy" decoding="async" alt="Zanzan Films" src="img/logos/zanzan-films.png"/></a>
+              <a href="http://www.pafos2017.eu"><img loading="lazy" decoding="async" alt="Pafos 2017" src="img/logos/pafos2017.png"/></a>
+              <a href="http://www.barzandhippo.com"><img loading="lazy" decoding="async" alt="Barz and Hippo" src="img/logos/barz.png"/></a>
+              <a href="http://www.bergamofilmmeeting.it"><img loading="lazy" decoding="async" alt="Bergamo Film Meeting" src="img/logos/bfm.png"/></a>
+              <a href="http://www.carboniafilmfest.org"><img loading="lazy" decoding="async" alt="Carbonia Film Festival" src="img/logos/carbonia-film-festival.png"/></a>
+              <a href="http://www.charada.eu"><img loading="lazy" decoding="async" alt="Charada" src="img/logos/charada.png"/></a>
+              <a href="http://www.cineparaimaginar.mx"><img loading="lazy" decoding="async" alt="Cine para imaginar" src="img/logos/cine-para-imaginar.png"/></a>
+              <a href="http://www.eugenetek.com"><img loading="lazy" decoding="async" alt="Eugenetek" src="img/logos/eugenetek.png"/></a>
+              <a href="http://milanofilmnetwork.it"><img loading="lazy" decoding="async" alt="Milano Film Network" src="img/logos/milan-film-network.png"/></a>
+              <a href="https://www.rts.ch"><img loading="lazy" decoding="async" alt="RTS" src="img/logos/rts.png"/></a>
+              <a href="http://www.siciliaqueerfilmfest.it"><img loading="lazy" decoding="async" alt="Sicilia Queer" src="img/logos/sicilia-queer.png"/></a>
+              <a href="http://www.tokititles.it"><img loading="lazy" decoding="async" alt="Tokititles" src="img/logos/tokititles.png"/></a>
+              <a href="http://www.uw.edu.pl"><img loading="lazy" decoding="async" alt="University of Warsaw" src="img/logos/university-warsaw.png"/></a>
+              <a href="http://www.videolab.es"><img loading="lazy" decoding="async" alt="Videolab" src="img/logos/videolab.png"/></a>
+              <a href="http://vifff.ch"><img loading="lazy" decoding="async" alt="VIFFF" src="img/logos/viff.png"/></a>
+              <a href="http://ymagis.com"><img loading="lazy" decoding="async" alt="Ymagis" src="img/logos/ymagis.png"/></a>
+              <a href="http://www.luccafilmfestival.it"><img loading="lazy" decoding="async" alt="Lucca Film Festival" src="img/logos/luccafilmfestival.png"/></a>
+              <a href="http://www.cinetecadibologna.it"><img loading="lazy" decoding="async" alt="Cineteca Bologna" src="img/logos/cineteca-bologna.png"/></a>
+              <a href="http://www.unplush.ch"><img loading="lazy" decoding="async" alt="Unplush" src="img/logos/unplush.png"/></a>
+              <a href="https://csnmedia.tv"><img loading="lazy" decoding="async" alt="CSN Media" src="img/logos/csn-media.png"/></a>
+              <a href="http://www.efectocine.com"><img loading="lazy" decoding="async" alt="Efecto Cine" src="img/logos/efectocine.png"/></a>
+              <a href="https://www.theater-osnabrueck.de"><img loading="lazy" decoding="async" alt="Theater Osnabrück" src="img/logos/onabrueck.png"/></a>
+              <a href="https://www.cinemas-du-grutli.ch"><img loading="lazy" decoding="async" alt="Cinémas du Grütli" src="img/logos/grutli.png"/></a>
+              <a href="https://favoriz.fr"><img loading="lazy" decoding="async" alt="Favoriz" class="black-bg" src="img/logos/favoriz.png"/></a>
+              <a href="http://www.subhumans.org"><img loading="lazy" decoding="async" alt="SubHumans" src="img/logos/subhumans.png"/></a>
+              <a href="https://ifv.vn"><img loading="lazy" decoding="async" alt="Institut Français Vietnam" class="black-bg" src="img/logos/ifv.png"/></a>
+              <a href="https://kavi.fi"><img loading="lazy" decoding="async" alt="KAVI" class="black-bg" src="img/logos/kavi.png"/></a>
+              <a href="http://www.artis-project.it"><img loading="lazy" decoding="async" alt="ARTIS Project" src="img/logos/artis-project.png"/></a>
+              <a href="http://www.fas.harvard.edu"><img loading="lazy" decoding="async" alt="Harvard" class="black-bg" src="img/logos/harvard.png"/></a>
+              <a href="https://monstrafestival.com"><img loading="lazy" decoding="async" alt="Monstra Festival" class="black-bg" src="img/logos/monstra.png"/></a>
+              <a href="http://festival.curtas.pt"><img loading="lazy" decoding="async" alt="Curtas Vila do Conde" class="black-bg" src="img/logos/viladoconde.png"/></a>
+              <a href="https://dsh.waw.pl"><img loading="lazy" decoding="async" alt="Dom Spotkań" class="black-bg" src="img/logos/dom-spotkan.png"/></a>
+              <a href="https://www.fantbilbao.eus"><img loading="lazy" decoding="async" alt="Fant Bilbao" class="black-bg" src="img/logos/fant.png"/></a>
+              <a href="https://fundacjakatarynka.pl"><img loading="lazy" decoding="async" alt="Fundacja Katarynka" class="black-bg" src="img/logos/fundacja-katarynka.png"/></a>
+              <a href="https://www.hein.pt"><img loading="lazy" decoding="async" alt="Hein?!" class="black-bg" src="img/logos/hein.png"/></a>
+              <a href="https://www.hifidiprinzio.it"><img loading="lazy" decoding="async" alt="Hifi Di Prinzio" class="black-bg" src="img/logos/hifi-diprinzio.png"/></a>
+              <a href="https://iguale.com.br"><img loading="lazy" decoding="async" alt="Iguale" class="black-bg" src="img/logos/iguale.png"/></a>
+              <a href="https://www.manchester.edu/"><img loading="lazy" decoding="async" alt="Manchester University" class="black-bg" src="img/logos/manchester-university.png"/></a>
+              <a href="https://sk-designs.dk"><img loading="lazy" decoding="async" alt="SK Designs" class="black-bg" src="img/logos/sk-designs.png"/></a>
+              <a href="https://subbabel.com"><img loading="lazy" decoding="async" alt="Subbabel" class="black-bg" src="img/logos/subbabel.png"/></a>
+              <a href="https://teatrnorwida.pl"><img loading="lazy" decoding="async" alt="Teatr Norwida" class="black-bg" src="img/logos/teatr-cypriana.png"/></a>
+              <a href="https://teatrslaski.art.pl"><img loading="lazy" decoding="async" alt="Teatr Śląski" class="black-bg" src="img/logos/teatr-slaski.png"/></a>
+              <a href="https://www.vsmu.sk"><img loading="lazy" decoding="async" alt="VŠMU" class="black-bg" src="img/logos/vsmu.png"/></a>
+              <a href="https://www.36caracteres.net/"><img loading="lazy" decoding="async" alt="36caracteres" class="black-bg" src="img/logos/36caracteres.png"/></a>
+              <a href="https://www.metrograph.com/"><img loading="lazy" decoding="async" alt="Metrograph" src="img/logos/metrograph.png"/></a>
             </div>
           </div>
-          <div class='col-md-5'>
 
-            <h3>Operas, Theaters &amp; Events</h3>
-            <ul>
-              <li><a href="http://www.multisalaodeon.com">Cinema Multisala Odeon</a> ( <em>Pisa, Italy</em> )</li>
-              <li><a href="http://www.sferisterio.it">Macerata Opera Festival</a> ( <em>Italy</em> )</li>
-              <li><a href="http://tedxtoulouse.com/">TEDx Toulouse</a> ( <em>France</em> )</li>
-              <li><a href="http://www.geneseo.edu/fingerlakesopera">Finger Lakes Opera</a> ( <em>State University of New York, USA</em> )</li>
-              <li><a href="http://www.gessnerallee.ch/en/programm/search/?q=love#/2625">Love &amp; Happiness</a> ( <em>Zürich, Switzerland</em> )</li>
-              <li><a href="http://www.liricaladob.com.ar">Opera Curlew River</a> ( <em>Lírica Lado B, Argentina</em> )</li>
-              <li><a href="http://www.narodowy.pl">Teatr Narodowy</a> ( <em>Warszawa, Poland</em> )</li>
-              <li><a href="https://www.theater-osnabrueck.de">Theater Osnabrück</a> ( <em>Frankfurt, Germany</em> )</li>
-              <li><a href="https://www.cinemas-du-grutli.ch">Les Cinémas du Grütli</a> ( <em>Genève, Switzerland</em> )</li>
-              <li><a href="https://walnutstreettheatre.org">Walnut Street Theatre</a> ( <em>Philadelphia, USA</em> )</li>
-              <li><a href="https://filmforum.org">Film Forum</a> ( <em>New York, USA</em> )</li>
-              <li><a href="https://www.frascatitheater.nl">Frascati Theather</a> ( <em>Amsterdam, Netherlands</em> )</li>
-              <li><a href="https://teatrslaski.art.pl">Teatr Śląski</a> ( <em>Katowice, Poland</em> )</li>
-              <li><a href="https://teatrnorwida.pl">Teatr Norwida</a> ( <em>Jelenia Góra, Poland</em> )</li>
-              <li><a href="https://www.kinodvor.org">Kinodvor</a> ( <em>Ljubljana, Slovenia</em> )</li>
-              <li><a href="https://www.bam.org">Brooklyn Academy of Music</a> ( <em>New York City, USA</em> )</li>
-              <li><a href="https://www.linkedin.com/company/cinema-akil/">Cinema Akil</a> ( <em>Dubai</em> )</li>
-              <li><a href="https://www.grange-unil.ch">La Grange, Centre / Arts et Sciences / UNIL</a> ( <em>La Grange, Switzerland</em> )</li>
-            </ul>
-
-            <h3>Companies &amp; Organizations</h3>
-            <ul>
-              <li><a href="http://www.lejolimai.org">Le Joli Mai</a> ( <em>France</em> )</li>
-              <li><a href="http://fila13.org/">Fila13</a> ( <em>Barcelona, Spain</em> )</li>
-              <li><a href="http://www.sp.k12.tr/">Lycée Français Sainte Pulchérie</a> ( <em>Istanbul, Turkey</em> )</li>
-              <li><a href="http://racti.com/">Racti Production</a> ( <em>Lebanon</em> )</li>
-              <li><a href="http://www.filmoteca.unam.mx">Filmoteca UNAM</a> ( <em>Mexico</em> )</li>
-              <li><a href="http://gutekfilm.pl/">Gutek Film</a> ( <em>Poland</em> )</li>
-              <li><a href="http://virtuelcompagnie.eu/">Francisco Baudet</a> ( <em>France</em> )</li>
-              <li><a href="http://calf-studio.jp/">CALF Studio</a> ( <em>Japan</em> )</li>
-              <li><a href="http://www.sensdessusdessous.org/">Sens Dessus Dessous</a> ( <em>France</em> )</li>
-              <li><a href="http://photon-comm.com/">Photon Comm</a></li>
-              <li><a href="https://www.facebook.com/pages/Commercial-Films-Siam-Co-Ltd/159575107573129">Commercial Films Siam Co Ltd</a> ( <em>Thailand</em> )</li>
-              <li><a href="https://twitter.com/MitiaDAcol">Mitia Ganade D'Acol</a> ( <em>Brazil</em> )</li>
-              <li><a href="http://multisignes.com">MultiSignes</a> ( <em>Spain</em> )</li>
-              <li><a href="http://flimmern.ch">Filmmern</a> ( <em>Switzerland</em> )</li>
-              <li><a href="http://lab80.it">Lab 80</a> ( <em>Italy</em> )</li>
-              <li><a href="http://www.ifhanoi-lespace.com/lespace">Cultural Center of French Institute</a> ( <em>Vietnam</em> )</li>
-              <li><a href="">CSN Media</a> ( <em>Mexico</em> )</li>
-              <li><a href="http://cinematheque.qc.ca">Cinémathèque Québécoise</a> ( <em>Québec, Canada</em> )</li>
-              <li><a href="http://fiaf.org">French Institude Alliance Française</a> ( <em>New-York, United-States</em> )</li>
-              <li><a href="http://www.artech-dcinema.com">artech dcinema</a> ( <em>Italy</em> )</li>
-              <li><a href="https://sudtitles.com">SudTitles (limited company)</a> ( <em>Roma, Italy</em> )</li>
-              <li><a href="http://www.institutfrancais-vietnam.com/">French Institute of Vietnam</a> ( <em>Vietnam</em> )</li>
-              <li><a href="http://sfilm.ro">SFilm</a> ( <em>Romania</em> ) </li>
-              <li><a href="http://www.pafos2017.eu">European Capital of Culture - Pafos2017</a> ( <em>Pafos, Cyprus</em> )</li>
-              <li><a href="http://www.proz.com/translator/663374">Carlota Gurt</a> ( <em>Corça, Spain</em> )</li>
-              <li><a href="http://www.cinetoiles.net/">Cinetoiles</a> ( <em>France</em> )</li>
-              <li><a href="http://cinemabellevaux.ch/">Cinema Bellevaux</a> ( <em>Lausanne, Switzerland</em> )</li>
-              <li><a href="http://sarahjaneleigh.co.uk">Sarah Jane Leigh</a> ( <em>UK</em> )</li>
-              <li><a href="http://www.tokititles.it">Tokititles</a> ( <em>Italy</em> )</li>
-              <li><a href="http://www.videolab.es">Videolab</a> ( <em>Spain</em> )</li>
-              <li><a href="https://www.rts.ch">Radio Télévision Suisse</a> ( <em>Switzerland</em> )</li>
-              <li><a href="http://www.barzandhippo.com">Barz and Hippo</a> ( <em>Italy</em> )</li>
-              <li><a href="http://www.amdaprod.fr">AMDA Production</a> ( <em>France</em> )</li>
-              <li><a href="http://www.eugenetek.com">Eugenetek Corporation</a> ( <em>Malaysia</em> )</li>
-              <li><a href="http://www.uw.edu.pl">University of Warsaw</a> ( <em>Poland</em> )</li>
-              <li><a href="http://www.cineparaimaginar.mx">Cine para imaginar</a> ( <em>Mexico</em> )</li>
-              <li><a href="http://ymagis.com">Ymagis Group</a> ( <em>Spain</em> )</li>
-              <li><a href="http://www.charada.eu">Charada</a> ( <em>Spain</em> )</li>
-              <li><a href="http://www.unplush.ch">Unplush</a> ( <em>Switzerland</em> )</li>
-              <li><a href="https://csnmedia.tv">CSN Media</a> ( <em>Mexico</em> )</li>
-              <li><a href="https://favoriz.fr">Favoriz Productions</a> ( <em>France</em> )</li>
-              <li><a href="http://www.subhumans.org">SubHumans</a> ( <em>Italy</em> )</li>
-              <li><a href="https://ifv.vn/">Institut Français du Vietnam</a> ( <em>Vietnam</em> )</li>
-              <li><a href="http://www.lekebergsrevyn.se">Lekeberg Film Club</a> ( <em>Sweden</em> )</li>
-              <li><a href="https://kavi.fi">National Audiovisual Institute</a> ( <em>Finland</em> )</li>
-              <li><a href="http://www.artis-project.it">ARTIS Project</a> ( <em>Italy</em> )</li>
-              <li><a href="http://www.fas.harvard.edu">Harvard Faculty of Arts & Sciences</a> ( <em>USA</em> )</li>
-              <li><a href="https://archive.gov.ge">Georgian National Film Archive</a> ( <em>Georgia</em> )</li>
-              <li><a href="https://www.filmoteca.cat">Filmoteca de Catalunya</a> ( <em>Spain </em> )</li>
-              <li><a href="https://www.facebook.com/larnakacinema/">Larnaca Cinema Society team</a> ( <em>Cyprus </em> )</li>
-              <li><a href="http://newharlemproductions.com">New Harlem Productions</a> ( <em>Canada</em> )</li>
-              <li><a href="https://www.36caracteres.net/">36caracteres</a> ( <em>Spain</em> )</li>
-              <li><a href="https://www.anisebeid.com/">Anis Ebeid Films</a> ( <em>Cairo, Egypt</em> )</li>
-              <li><a href="https://www.manchester.edu/">Machester University</a> ( <em>Machester, United Kingdom</em> )</li>
-              <li><a href="https://fundacjakatarynka.pl">Fundacja Katarynka</a> ( <em>Wrocław, Poland</em> )</li>
-              <li><a href="https://www.vsmu.sk">Academy of Performing Arts in Bratislava</a> ( <em>Bratislava, Slovak Republic</em> )</li>
-              <li><a href="https://www.linkedin.com/in/bego-molina-pelaez/">Begoña Molina Peláez</a> ( <em>Valencia, Spain</em> )</li>
-              <li><a href="https://www.kinoprojektion.de">24Frame Kinoprojektion</a> ( <em>Hamburg, Germany</em> )</li>
-              <li><a href="https://sk-designs.dk">SK Designs</a> ( <em>Denmark</em> )</li>
-              <li><a href="https://iguale.com.br">Iguale Accessibility Communication</a> ( <em>São Paulo, Brazil</em> )</li>
-              <li><a href="https://subbabel.com/">Subbabel</a> ( <em>Las Palmas, Spain</em> )</li>
-              <li><a href="https://www.hein.pt">Hein?! Subtitles</a> ( <em>Porto, Portugal</em> )</li>
-              <li><a href="https://pcr.ie">Premier Captioning & Realtime</a> ( <em>Wicklow, Ireland</em> )</li>
-              <li><a href="https://www.linkedin.com/in/luisa-grandioso-ba9018232/">Luisa Grandioso</a> ( <em>Lecce, Italy</em> )</li>
-              <li><a href="https://dsh.waw.pl">The History Meeting House</a> ( <em>Warsaw, Poland</em> )</li>
-              <li><a href="https://www.hifidiprinzio.it">Hifi Di Prinzio</a> ( <em>Chieti Scalo, Italy</em> )</li>
-              <li><a href="https://metrograph.com">Metrograph</a> ( <em>New York, USA</em> )</li>
-            </ul>
-
-            <h3>Cinema Festivals</h3>
-            <ul>
-            <li><a href="https://www.laffportugal.com">Lisbon Arab Film Festival (LAFF)</a> ( <em>since 2024</em> )</li>
-            <li><a href="https://courtmetrange.eu">Festival Courtmétrange</a> ( <em>since 2024</em> )</li>
-            <li><a href="https://www.cinematik.sk">Cinematik Film Festival</a> ( <em>since 2023</em> )</li>
-            <li><a href="https://www.fantbilbao.eus">Festival de Cine Fantástico de Bilbao</a> ( <em>since 2023</em> )</li>
-            <li><a href="http://festival.curtas.pt">Curtas Vila do Conde International Film Festival</a> ( <em>since 2012</em> )</li>
-            <li><a href="https://monstrafestival.com">Monstra Festival</a>, Portugal ( <em>2020</em> )</li>
-            <li><a href="https://www.festivalcervantino.gob.mx">Festival Internacional Cervantino</a>, Mexico ( <em>2019</em> )</li>
-            <li><a href="http://www.elgounafilmfestival.com">El Gouna Film Festival</a>, Egypt ( <em>2019</em> )</li>
-            <li><a href="http://www.efectocine.com">Efecto Cine</a>, Uruguay ( <em>2019</em> )</li>
-            <li><a href="http://www.luccafilmfestival.it">Lucca Film Festival</a>, Italy ( <em>2019</em> )</li>
-            <li><a href="https://americanafilmfest.com">American Film Fest</a>, Spain ( <em>2019</em> )</li>
-            <li><a href="http://www.cinetecadibologna.it">Cineteca di Bologna</a>, Italy ( <em>2018</em> )</li>
-            <li><a href="https://www.doclisboa.org">Doclisboa</a>, Portugal ( <em>2018</em> )</li>
-            <li><a href="http://www.carboniafilmfest.org">Carbonia Film Festival</a>, Sardegna ( <em>2016</em> )</li>
-            <li><a href="http://www.sopotfilmfestival.pl">Sopot International Film Festival</a>, Poland ( <em>2016</em> )</li>
-            <li><a href="http://milanofilmnetwork.it">Milano Film Network</a>, Italy ( <em>2016</em> )</li>
-            <li><a href="http://vifff.ch">Vevey International Funny Festival</a>, Switzerland ( <em>2015</em> )</li>
-            <li><a href="http://poff.ee">Tallinn Black Nights Film Festival</a>, Estonia ( <em>2015</em> )</li>
-            <li><a href="http://www.peripherie.asso.fr">Rencontres Cinema Documentaire de Périphérie</a>, France ( <em>2013</em> )</li>
-            <li><a href="http://filmforumzadar.com">Avvantura Film Festival Zadar</a>, Croatia ( <em>2015</em> )</li>
-            <li><a href="http://www.siciliaqueerfilmfest.it">Sicilia Queer</a>, Italy ( <em>2015</em> )</li>
-            <li><a href="http://www.bergamofilmmeeting.it">Bergamo Film Meeting</a>, Italy ( <em>2015</em> )</li>
-            <li><a href="http://olhardecinema.com.br">Olhar de Cinema</a>, Brazil ( <em>2015</em> )</li>
-            <li><a href="http://www.beauvaisfilmfest.com">Festival du film de Beauvais</a> ( <em>2012, 2013, 2014, 2015</em> )</li>
-            <li><a href="http://univercine-nantes.org/">Univerciné</a>, France ( <em>2014</em> )</li>
-            <li><a href="http://blackbearfilmfest.com">Black Bear Filmfest</a>, Poland ( <em>2014</em> )</li>
-            <li><a href="https://www.tiff.ro">Transilvania International Film Festival</a>, Romania ( <em>2014</em> )</li>
-            <li><a href="http://www.courtmetrange.eu">Festival Court-Métrange</a>, France ( <em>2014</em> )</li>
-            <li><a href="http://www.3continents.com/fr/">Festival des 3 continents</a>, France ( <em>2014</em> )</li>
-            <li><a href="http://comedycluj.ro">Comedy Cluj International Film Festival</a>, Romania ( <em>2014</em> )</li>
-            <li><a href="http://www.janeladecinema.com.br/2014/">Janela Internacional de Cinema do Recife</a>, Brazil ( <em>2014</em> )</li>
-            <li><a href="http://www.dokufest.com">Dokufest in Prizren</a>, Kosovo ( <em>2014</em> )</li>
-            <li><a href="http://www.beauvaisfilmfest.com/">Festival du film de Beauvais</a>, France ( <em>2014</em> )</li>
-            <li><a href="http://zanzan-films.com/festival-zanzan-du-03-au-06-avril-2014/">Zanzan Films</a>, France ( <em>2014</em> )</li>
-            <li><a href="http://www.lacinemathequedetoulouse.com/festival-zoom-arriere/">Festival Zoom Arrière</a>, France ( <em>2014, 2012</em> )</li>
-            <li><a href="http://athensanimfest.eu">Athens ANIMFEST</a>, Greece ( <em>2014</em> )</li>
-            <li><a href="http://filmfestival.com.cy">Lemesos International Documentary Festival</a>, Cyprus ( <em>2013</em> )</li>
-            <li><a href="http://cyprusfilmdays.org">Cyprus Film Days</a>, Cyprus ( <em>2013</em> )</li>
-            <li><a href="http://www.cinelatino.com.fr">Cinélatino de Toulouse</a>, France ( <em>2013, 2012, 2011</em> )</li>
-            <li><a href="http://festival-resistances.fr">Résistances à Foix</a>, France ( <em>2013, 2012</em> )</li>
-            <li><a href="http://www.festivalcinesordo.com">Festival Cine sordo</a> in Quito, Ecuador ( <em>2012</em> )</li>
-            <li><a href="http://www.festival-douarnenez.com">Festival de cinéma de Douarnenez</a> ( <em>2012, 2011</em> )</li>
-            <li><a href="http://www.filmfestamiens.org">Festival International du film d'Amiens</a> ( <em>2012, 2011</em> )</li>
-            <li><a href="http://festival-galactique.infini.fr">Festival Intergalactique de Brest</a> ( <em>2012, 2011</em> )</li>
-            <li><a href="http://www.festivaldebiarritz.com">Festival de Cinéma d'Amérique Latine de Biarritz</a> ( <em>2011</em> )</li>
-            </ul>
-
+          <!-- Right: reference lists -->
+          <div class="ref-lists">
+            <div>
+              <h3>Operas, Theaters &amp; Events</h3>
+              <ul>
+                <li><a href="http://www.multisalaodeon.com">Cinema Multisala Odeon</a> <em>(Pisa, Italy)</em></li>
+                <li><a href="http://www.sferisterio.it">Macerata Opera Festival</a> <em>(Italy)</em></li>
+                <li><a href="http://tedxtoulouse.com/">TEDx Toulouse</a> <em>(France)</em></li>
+                <li><a href="http://www.geneseo.edu/fingerlakesopera">Finger Lakes Opera</a> <em>(State University of New York, USA)</em></li>
+                <li><a href="http://www.liricaladob.com.ar">Opera Curlew River</a> <em>(Lírica Lado B, Argentina)</em></li>
+                <li><a href="http://www.narodowy.pl">Teatr Narodowy</a> <em>(Warszawa, Poland)</em></li>
+                <li><a href="https://www.theater-osnabrueck.de">Theater Osnabrück</a> <em>(Frankfurt, Germany)</em></li>
+                <li><a href="https://www.cinemas-du-grutli.ch">Les Cinémas du Grütli</a> <em>(Genève, Switzerland)</em></li>
+                <li><a href="https://walnutstreettheatre.org">Walnut Street Theatre</a> <em>(Philadelphia, USA)</em></li>
+                <li><a href="https://filmforum.org">Film Forum</a> <em>(New York, USA)</em></li>
+                <li><a href="https://www.frascatitheater.nl">Frascati Theater</a> <em>(Amsterdam, Netherlands)</em></li>
+                <li><a href="https://teatrslaski.art.pl">Teatr Śląski</a> <em>(Katowice, Poland)</em></li>
+                <li><a href="https://teatrnorwida.pl">Teatr Norwida</a> <em>(Jelenia Góra, Poland)</em></li>
+                <li><a href="https://www.kinodvor.org">Kinodvor</a> <em>(Ljubljana, Slovenia)</em></li>
+                <li><a href="https://www.bam.org">Brooklyn Academy of Music</a> <em>(New York City, USA)</em></li>
+                <li><a href="https://www.linkedin.com/company/cinema-akil/">Cinema Akil</a> <em>(Dubai)</em></li>
+                <li><a href="https://www.grange-unil.ch">La Grange, Centre Arts et Sciences / UNIL</a> <em>(Switzerland)</em></li>
+              </ul>
+            </div>
+            <div>
+              <h3>Companies &amp; Organizations</h3>
+              <ul>
+                <li><a href="http://www.lejolimai.org">Le Joli Mai</a> <em>(France)</em></li>
+                <li><a href="http://fila13.org/">Fila13</a> <em>(Barcelona, Spain)</em></li>
+                <li><a href="http://www.sp.k12.tr/">Lycée Français Sainte Pulchérie</a> <em>(Istanbul, Turkey)</em></li>
+                <li><a href="http://racti.com/">Racti Production</a> <em>(Lebanon)</em></li>
+                <li><a href="http://www.filmoteca.unam.mx">Filmoteca UNAM</a> <em>(Mexico)</em></li>
+                <li><a href="http://gutekfilm.pl/">Gutek Film</a> <em>(Poland)</em></li>
+                <li><a href="http://calf-studio.jp/">CALF Studio</a> <em>(Japan)</em></li>
+                <li><a href="http://www.sensdessusdessous.org/">Sens Dessus Dessous</a> <em>(France)</em></li>
+                <li><a href="http://multisignes.com">MultiSignes</a> <em>(Spain)</em></li>
+                <li><a href="http://lab80.it">Lab 80</a> <em>(Italy)</em></li>
+                <li><a href="http://cinematheque.qc.ca">Cinémathèque Québécoise</a> <em>(Québec, Canada)</em></li>
+                <li><a href="http://fiaf.org">French Institute Alliance Française</a> <em>(New York, USA)</em></li>
+                <li><a href="https://sudtitles.com">SudTitles</a> <em>(Roma, Italy)</em></li>
+                <li><a href="https://favoriz.fr">Favoriz Productions</a> <em>(France)</em></li>
+                <li><a href="https://ifv.vn/">Institut Français du Vietnam</a></li>
+                <li><a href="https://kavi.fi">National Audiovisual Institute</a> <em>(Finland)</em></li>
+                <li><a href="http://www.fas.harvard.edu">Harvard Faculty of Arts &amp; Sciences</a> <em>(USA)</em></li>
+                <li><a href="https://fundacjakatarynka.pl">Fundacja Katarynka</a> <em>(Wrocław, Poland)</em></li>
+                <li><a href="https://www.vsmu.sk">Academy of Performing Arts in Bratislava</a></li>
+                <li><a href="https://www.kinoprojektion.de">24Frame Kinoprojektion</a> <em>(Hamburg, Germany)</em></li>
+                <li><a href="https://iguale.com.br">Iguale Accessibility Communication</a> <em>(São Paulo, Brazil)</em></li>
+                <li><a href="https://subbabel.com/">Subbabel</a> <em>(Las Palmas, Spain)</em></li>
+                <li><a href="https://www.hein.pt">Hein?! Subtitles</a> <em>(Porto, Portugal)</em></li>
+                <li><a href="https://metrograph.com">Metrograph</a> <em>(New York, USA)</em></li>
+              </ul>
+            </div>
+            <div>
+              <h3>Cinema Festivals</h3>
+              <ul>
+                <li><a href="https://www.laffportugal.com">Lisbon Arab Film Festival (LAFF)</a> <em>(since 2024)</em></li>
+                <li><a href="https://courtmetrange.eu">Festival Courtmétrange</a> <em>(since 2024)</em></li>
+                <li><a href="https://www.cinematik.sk">Cinematik Film Festival</a> <em>(since 2023)</em></li>
+                <li><a href="https://www.fantbilbao.eus">Festival de Cine Fantástico de Bilbao</a> <em>(since 2023)</em></li>
+                <li><a href="http://festival.curtas.pt">Curtas Vila do Conde</a> <em>(since 2012)</em></li>
+                <li><a href="https://monstrafestival.com">Monstra Festival</a>, Portugal <em>(2020)</em></li>
+                <li><a href="https://www.festivalcervantino.gob.mx">Festival Internacional Cervantino</a>, Mexico <em>(2019)</em></li>
+                <li><a href="http://www.elgounafilmfestival.com">El Gouna Film Festival</a>, Egypt <em>(2019)</em></li>
+                <li><a href="http://www.luccafilmfestival.it">Lucca Film Festival</a>, Italy <em>(2019)</em></li>
+                <li><a href="https://americanafilmfest.com">American Film Fest</a>, Spain <em>(2019)</em></li>
+                <li><a href="http://www.cinetecadibologna.it">Cineteca di Bologna</a>, Italy <em>(2018)</em></li>
+                <li><a href="https://www.doclisboa.org">Doclisboa</a>, Portugal <em>(2018)</em></li>
+                <li><a href="http://poff.ee">Tallinn Black Nights Film Festival</a>, Estonia <em>(2015)</em></li>
+                <li><a href="http://www.siciliaqueerfilmfest.it">Sicilia Queer</a>, Italy <em>(2015)</em></li>
+                <li><a href="http://www.bergamofilmmeeting.it">Bergamo Film Meeting</a>, Italy <em>(2015)</em></li>
+                <li><a href="http://olhardecinema.com.br">Olhar de Cinema</a>, Brazil <em>(2015)</em></li>
+                <li><a href="http://www.cinelatino.com.fr">Cinélatino de Toulouse</a>, France <em>(2013, 2012, 2011)</em></li>
+                <li><a href="http://festival-resistances.fr">Résistances à Foix</a>, France <em>(2013, 2012)</em></li>
+                <li><a href="https://www.tiff.ro">Transilvania International Film Festival</a>, Romania <em>(2014)</em></li>
+                <li><a href="http://www.festivalcinesordo.com">Festival Cine sordo</a>, Ecuador <em>(2012)</em></li>
+                <li><a href="http://www.filmfestamiens.org">Festival International du film d'Amiens</a> <em>(2012, 2011)</em></li>
+                <li><a href="http://www.festivaldebiarritz.com">Festival de Cinéma d'Amérique Latine de Biarritz</a> <em>(2011)</em></li>
+              </ul>
+            </div>
           </div>
-        </div>
-        </div>
-      </div>
 
+        </div><!-- .testimonial-layout -->
+      </div>
     </section>
 
-
-    <!-- Gallery
-    ================================================== -->
+    <!-- Gallery — Screenshots -->
     <section id="gallery">
-
-      <div class="page-header text-center">
-        <h3>Screenshots</h3>
-        <h2>Subtivals in action</h2>
-      </div>
-
       <div class="container">
-        <div class="row">
-          <div class="screencast col-md-offset-2 col-md-8" data-scrollreveal="move 1000px and enter from the left after 0.55s">
-            <video src="img/subtivals-2.0.0.webm" width="100%" preload="auto" autoplay="" loop="">
-            <p>Your browser does not support the video element </p>
+        <div class="section-header reveal">
+          <span class="eyebrow">Screenshots</span>
+          <h2>Subtivals in action</h2>
+        </div>
+
+        <div class="screencast reveal">
+          <video src="img/subtivals-2.0.0.webm" width="100%" preload="metadata" autoplay muted loop playsinline>
+            <p>Your browser does not support the video element.</p>
           </video>
-          </div>
         </div>
 
-
-        <div class="row">
-          <div class="col-md-12">
-            <div id="owl-screenshots" class="owl-carousel">
-              <div class="item">
-                <a href="img/screenshots/subtivals-2.0-ubuntu.png" class="popup-gallery">
-                  <img src="img/thumbs/subtivals-2.0-ubuntu.png" alt="Subtivals 2.0 - Ubuntu">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/subtivals-2.0-dark-macos.png" class="popup-gallery">
-                  <img src="img/thumbs/subtivals-2.0-dark-macos.png" alt="Subtivals 2.0 - Dark Mac OS X">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/subtivals-2.0-win10.png" class="popup-gallery">
-                  <img src="img/thumbs/subtivals-2.0-win10.png" alt="Subtivals 2.0 - Win 10">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/subtivals-2.0-ubuntu-dark.png" class="popup-gallery">
-                  <img src="img/thumbs/subtivals-2.0-ubuntu-dark.png" alt="Subtivals 2.0 - Dark Ubuntu">
-                </a>
-              </div>
+        <div class="snap-carousel" id="snap-screenshots" data-gallery="screenshots">
+          <div class="snap-track">
+            <div class="snap-item">
+              <a href="img/screenshots/subtivals-2.0-ubuntu.png" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/subtivals-2.0-ubuntu.png" alt="Subtivals 2.0 — Ubuntu">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/subtivals-2.0-dark-macos.png" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/subtivals-2.0-dark-macos.png" alt="Subtivals 2.0 — Dark macOS">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/subtivals-2.0-win10.png" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/subtivals-2.0-win10.png" alt="Subtivals 2.0 — Windows 10">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/subtivals-2.0-ubuntu-dark.png" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/subtivals-2.0-ubuntu-dark.png" alt="Subtivals 2.0 — Dark Ubuntu">
+              </a>
             </div>
           </div>
+          <button class="snap-nav snap-prev" aria-label="Previous">&#8249;</button>
+          <button class="snap-nav snap-next" aria-label="Next">&#8250;</button>
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- Pricing
-    ================================================== -->
-    <section id="pricing" class="dark">
-
-      <div class="page-header text-center">
-        <h3>Download</h3>
-        <h2>One-click installers</h2>
-      </div>
-
+    <!-- In-situ photos -->
+    <section id="insitu" class="light">
       <div class="container">
-        <div class="row">
-          <div class="plans">
-              <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="plan" data-scrollreveal="enter over 1s">
-                  <div class="plan-title">
-                    <h2>Ubuntu Linux</h2>
-                    <h3><sup>$</sup>0<sub>/ Free</sub></h3>
-                  </div>
-
-                  <ul class="plan-features">
-                    <li>Open Source</li>
-                    <li>Automatic updates</li>
-                  </ul>
-
-                  <div class="plan-cta">
-                    <p class="plan-buy">
-                      <a href="https://www.paypal.com/cgi-bin/webscr?hosted_button_id=825T3M8FU27N6&cmd=_s-xclick" class="btn btn-default">Donate</a>
-                    </p>
-                    <p class="plan-buy">
-                      <a onclick="gtag('event', 'linux_docs', { event_category: 'Linux', event_label: 'Linux see instructions' });"
-                         href="https://github.com/Subtivals/subtivals/wiki/Installation" class="btn">See instructions</a>
-                    </p>
-                 </div>
-                </div>
-              </div>
-
-              <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="plan featured" data-scrollreveal="enter over 1s">
-                  <div class="plan-title">
-                    <h2>Mac OS X</h2>
-                    <h3><sup>€</sup>150<sub>/ Lifetime</sub></h3>
-                  </div>
-
-                  <ul class="plan-features">
-                    <li><strong>Help and support</strong></li>
-                    <li>Unlimited computers</li>
-                    <li>Software updates</li>
-                  </ul>
-                  <div class="plan-cta">
-                    <p class="plan-buy">
-                      <a onclick="gtag('event', 'download_demo', { event_category: 'MacOS', event_label: 'MacOS Demo Download' });"
-                      href="https://github.com/Subtivals/subtivals/releases/download/2.0.0-pre8/Subtivals-2.0.0-pre8-demo-macos.dmg" class="btn btn-default">Try demo</a>
-                    </p>
-                    <p class="plan-buy">
-                      <a onclick="gtag('event', 'buy_click', { event_category: 'MacOS', event_label: 'MacOS Buy Installer' });"
-                      href="https://payhip.com/b/e1E7" class="btn">Buy installer</a>
-                    </p>
-                 </div>
-                </div>
-              </div>
-
-              <div class="col-xs-12 col-sm-6 col-md-4">
-                <div class="plan featured" data-scrollreveal="enter over 1s">
-                  <div class="plan-title">
-                    <h2>Windows 10/11/12</h2>
-                    <h3><sup>€</sup>150<sub>/ Lifetime</sub></h3>
-                  </div>
-
-                  <ul class="plan-features">
-                    <li><strong>Help and support</strong></li>
-                    <li>Unlimited computers</li>
-                    <li>Software updates</li>
-                  </ul>
-                  <div class="plan-cta">
-                    <p class="plan-buy">
-                      <a onclick="gtag('event', 'download_demo', { event_category: 'Windows', event_label: 'Windows Demo Download' });"
-                        href="https://github.com/Subtivals/subtivals/releases/download/2.0.0-pre8/subtivals-2.0.0-pre8-demo.exe" class="btn btn-default">Try demo</a>
-                      </p>
-                    <p class="plan-buy">
-                      <a onclick="gtag('event', 'buy_click', { event_category: 'Windows', event_label: 'Windows Buy Installer' });"
-                         href="https://payhip.com/b/e1E7" class="btn">Buy installer</a>
-                    </p>
-                 </div>
-                </div>
-              </div>
-            </div>
+        <div class="insitu-top reveal">
+          <div>
+            <h2>Subtitles for Film Festivals</h2>
+            <p>Subtivals became a very popular software at cinema festivals, not only for
+               international captioning but also for accessibility.</p>
+            <p>Projecting real-time electronic subtitles is also known as soft-titling,
+               surtitling, or supertitling. It consists in showing virtual subtitles above
+               the projected movie.</p>
+          </div>
+          <img src="img/screenshots/subtivals-insitu.jpg" alt="Classic setup at a cinema festival" loading="lazy" decoding="async">
         </div>
-        <div class="row">
-          <div class="col-md-offset-4 col-md-8">
-            <p class="plan-notes"><strong>Note:</strong> Subtivals remains a Free and Open Source Software, released under the GNU Public License.<br/>
-            We sell the one-click installers on proprietary operating systems, in order to finance the development and promote GNU/Linux !</p>
+
+        <div class="snap-carousel" id="snap-insitu" data-gallery="insitu">
+          <div class="snap-track">
+            <div class="snap-item">
+              <a href="img/screenshots/amphitheater.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/amphitheater.jpg" alt="Amphitheater">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/lejolimai-cinematheque2.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/lejolimai-cinematheque2.jpg" alt="Cinémathèque de Toulouse">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/susanne-3.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/susanne-3.jpg" alt="Love &amp; Happiness, Zurich">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/ioannis-3.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/ioannis-3.jpg" alt="Ioannis Soulos">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/susanne-1.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/susanne-1.jpg" alt="Love &amp; Happiness, Zurich">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/lejolimai-cinematheque.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/lejolimai-cinematheque.jpg" alt="Cinémathèque de Toulouse">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/susanne-2.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/susanne-2.jpg" alt="Love &amp; Happiness, Zurich">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/racti-dark-room.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/racti-dark-room.jpg" alt="Racti Production">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/ioannis-1.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/ioannis-1.jpg" alt="Ioannis Soulos">
+              </a>
+            </div>
+            <div class="snap-item">
+              <a href="img/screenshots/ioannis-2.jpg" class="gallery-link">
+                <img loading="lazy" decoding="async" src="img/thumbs/ioannis-2.jpg" alt="Ioannis Soulos">
+              </a>
+            </div>
+          </div>
+          <button class="snap-nav snap-prev" aria-label="Previous">&#8249;</button>
+          <button class="snap-nav snap-next" aria-label="Next">&#8250;</button>
         </div>
       </div>
-
-
     </section>
 
-
-    <!-- Explanation
-    ================================================== -->
-    <section class="cta">
+    <!-- Download -->
+    <section id="download" class="dark">
       <div class="container">
-        <div class="row">
-          <div class="col-sm-7">
-            <div class="vertical-align">
-              <h2>Subtitles for Film Festivals</h2>
-              <p>Subtivals became a very popular software at cinema festivals, not only for international captioning but also for accessibility.</p>
-              <p>Projecting real-time electronic subtitles is also known as soft-titling (soft-titles), surtitling (surtitles), supertitling (supertitles). It consists in showing the virtual subtitles above the projected movie.</p>
-            </div>
-          </div>
-          <div class="col-sm-5">
-            <img class="margin-top img-responsive" src="img/screenshots/subtivals-insitu.jpg" alt="Classic setup" id="subtivals-insitu">
-          </div>
+        <div class="section-header">
+          <span class="eyebrow">Download</span>
+          <h2>One-click installers</h2>
         </div>
 
-        <div class="row">
-          <div class="col-lg-12">
-            <div id="owl-in-situ" class="owl-carousel">
-              <div class="item">
-                <a href="img/screenshots/amphitheater.jpg" class="popup-gallery">
-                  <img src="img/thumbs/amphitheater.jpg" alt="Amphitheater">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/lejolimai-cinematheque2.jpg" class="popup-gallery">
-                  <img src="img/thumbs/lejolimai-cinematheque2.jpg" alt="Cinémathèque de Toulouse">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/susanne-3.jpg" class="popup-gallery">
-                  <img src="img/thumbs/susanne-3.jpg" alt="Love & Happiness, Zurich">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/ioannis-3.jpg" class="popup-gallery">
-                  <img src="img/thumbs/ioannis-3.jpg" alt="Ioannis Soulos">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/susanne-1.jpg" class="popup-gallery">
-                  <img src="img/thumbs/susanne-1.jpg" alt="Love & Happiness, Zurich">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/lejolimai-cinematheque.jpg" class="popup-gallery">
-                  <img src="img/thumbs/lejolimai-cinematheque.jpg" alt="Cinémathèque de Toulouse">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/susanne-2.jpg" class="popup-gallery">
-                  <img src="img/thumbs/susanne-2.jpg" alt="Love & Happiness, Zurich">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/racti-dark-room.jpg" class="popup-gallery">
-                  <img src="img/thumbs/racti-dark-room.jpg" alt="Racti Production">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/ioannis-1.jpg" class="popup-gallery">
-                  <img src="img/thumbs/ioannis-1.jpg" alt="Ioannis Soulos">
-                </a>
-              </div>
-              <div class="item">
-                <a href="img/screenshots/ioannis-2.jpg" class="popup-gallery">
-                  <img src="img/thumbs/ioannis-2.jpg" alt="Ioannis Soulos">
-                </a>
-              </div>
+        <div class="plans">
+
+          <div class="plan reveal">
+            <div class="plan-head">
+              <h2>Ubuntu Linux</h2>
+              <div class="plan-price"><sup>$</sup>0<sub>/ Free</sub></div>
+            </div>
+            <ul class="plan-features">
+              <li>Open Source</li>
+              <li>Automatic updates</li>
+            </ul>
+            <div class="plan-cta">
+              <a href="https://www.paypal.com/cgi-bin/webscr?hosted_button_id=825T3M8FU27N6&cmd=_s-xclick" class="btn btn-outline-light">Donate</a>
+              <a href="https://github.com/Subtivals/subtivals/wiki/Installation" class="btn btn-outline-light">See instructions</a>
             </div>
           </div>
+
+          <div class="plan featured reveal">
+            <div class="plan-head">
+              <h2>Mac OS X</h2>
+              <div class="plan-price"><sup>€</sup>150<sub>/ Lifetime</sub></div>
+            </div>
+            <ul class="plan-features">
+              <li><strong>Help and support</strong></li>
+              <li>Unlimited computers</li>
+              <li>Software updates</li>
+            </ul>
+            <div class="plan-cta">
+              <a href="https://github.com/Subtivals/subtivals/releases/download/2.0.0-pre8/Subtivals-2.0.0-pre8-demo-macos.dmg" class="btn btn-outline-light">Try demo</a>
+              <a href="https://payhip.com/b/e1E7" class="btn btn-primary">Buy installer</a>
+            </div>
+          </div>
+
+          <div class="plan featured reveal">
+            <div class="plan-head">
+              <h2>Windows 10/11/12</h2>
+              <div class="plan-price"><sup>€</sup>150<sub>/ Lifetime</sub></div>
+            </div>
+            <ul class="plan-features">
+              <li><strong>Help and support</strong></li>
+              <li>Unlimited computers</li>
+              <li>Software updates</li>
+            </ul>
+            <div class="plan-cta">
+              <a href="https://github.com/Subtivals/subtivals/releases/download/2.0.0-pre8/subtivals-2.0.0-pre8-demo.exe" class="btn btn-outline-light">Try demo</a>
+              <a href="https://payhip.com/b/e1E7" class="btn btn-primary">Buy installer</a>
+            </div>
+          </div>
+
         </div>
 
+        <p class="plan-notes">
+          <strong>Note:</strong> Subtivals remains a Free and Open Source Software, released under the GNU Public License.<br>
+          We sell the one-click installers on proprietary operating systems to finance development and promote GNU/Linux!
+        </p>
       </div>
-
     </section>
 
-
-    <!-- Call to Action
-    ================================================== -->
-    <section class="cta text-center">
-
+    <!-- Contact CTA -->
+    <section id="contact-cta">
       <div class="container">
-
-        <div class="row">
-          <div class="col-lg-12">
-            <h2>Have a question? <span class="highlight">Let us help!</span></h2>
-            <p><a href="#" class="btn signup" role="button">Contact us</a></p>
-            <p>Or send us an email contact@subtivals.org</p>
-          </div>
-        </div>
-
+        <h2>Have a question? <span class="highlight">Let us help!</span></h2>
+        <p><a href="mailto:contact@subtivals.org" class="btn btn-primary">Contact us</a></p>
+        <p>Or email us at <a href="mailto:contact@subtivals.org">contact@subtivals.org</a></p>
       </div>
-
     </section>
 
-    <!-- Footer
-    ================================================== -->
-    <footer id="contact" class="footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="col-sm-3 col-md-3">
-              <div class="footer-logo">
-                <h2>Subtivals</h2>
-                <p>An Open Source program to project subtitles</p>
-                <br>
-                <p class="muted">© 2011-2025 - Subtivals Contributors</p>
-                <p>Credits: Becky Lai CC-BY-SA-NC / m4tik CC-BY-SA-NC</p>
-              </div>
-            </div>
-            <div class="col-sm-3 col-md-3">
-              <h3>See Also</h3>
-              <ul class="list-unstyled">
-                <li><a href="https://blog.mathieu-leplatre.info/tag/subtivals.html">Blog articles about Subtivals</a></li>
-                <li><a href="https://www.aegisub.org">Aegisub, a powerful ASS subtitles editor</a></li>
-                <li><a href="https://otsaloma.io/gaupol/">Gaupol, an editor for text-based subtitle files</a></li>
-              </ul>
-            </div>
-            <div class="col-sm-3 col-md-3">
-              <h3>Authors</h3>
-              <ul class="list-unstyled">
-                <li><a href="https://blog.mathieu-leplatre.info">Mathieu Leplatre</a></li>
-                <li><a href="https://www.lejolimai.fr">Lilian Lefranc</a></li>
-                <li><a href="https://www.linkedin.com/in/arnaud-rolly-204083131/">Arnaud Rolly</a></li>
-                <li><a href="https://www.linkedin.com/in/emmanueldigiaro/">Emmanuel Digiaro</li>
-              </ul>
-            </div>
-            <div class="col-sm-3 col-md-3">
-              <h3>Documentation</h3>
-              <ul class="list-unstyled">
-                <li><a href="http://help.subtivals.org/"><i class="fa fa-file"></i> Frequently Asked Questions</a></li>
-                <li><a href="https://github.com/Subtivals/subtivals/"><i class="fa fa-github"></i> Source code</a></li>
-                <li><a href="https://github.com/Subtivals/subtivals/issues/new"><i class="fa fa-bug"></i> Found a bug ?</a></li>
-                <li><a href="http://help.subtivals.org"><i class="fa fa-book"></i> User manual</a></li>
-              </ul>
-            </div>
-          </div>
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-logo">
+          <h2>Subtivals</h2>
+          <p>An Open Source program to project subtitles</p>
+          <p style="margin-top:0.8rem;opacity:0.45;font-size:0.8rem">© 2011–2025 Subtivals Contributors<br>
+             Credits: Becky Lai CC-BY-SA-NC / m4tik CC-BY-SA-NC</p>
+        </div>
+        <div>
+          <h3>See Also</h3>
+          <ul>
+            <li><a href="https://blog.mathieu-leplatre.info/tag/subtivals.html">Blog articles about Subtivals</a></li>
+            <li><a href="https://www.aegisub.org">Aegisub — powerful ASS subtitle editor</a></li>
+            <li><a href="https://otsaloma.io/gaupol/">Gaupol — text-based subtitle editor</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Authors</h3>
+          <ul>
+            <li><a href="https://blog.mathieu-leplatre.info">Mathieu Leplatre</a></li>
+            <li><a href="https://www.lejolimai.fr">Lilian Lefranc</a></li>
+            <li><a href="https://www.linkedin.com/in/arnaud-rolly-204083131/">Arnaud Rolly</a></li>
+            <li><a href="https://www.linkedin.com/in/emmanueldigiaro/">Emmanuel Digiaro</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Documentation</h3>
+          <ul>
+            <li><a href="http://help.subtivals.org/"><i class="fa fa-file"></i> Frequently Asked Questions</a></li>
+            <li><a href="https://github.com/Subtivals/subtivals/"><i class="fa fa-github"></i> Source code</a></li>
+            <li><a href="https://github.com/Subtivals/subtivals/issues/new"><i class="fa fa-bug"></i> Found a bug?</a></li>
+            <li><a href="http://help.subtivals.org"><i class="fa fa-book"></i> User manual</a></li>
+          </ul>
         </div>
       </div>
-		</footer>
+    </div>
+  </footer>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js" defer="defer"></script>
-    <script src="js/custom.js"></script>
+  <script src="js/site.js" defer></script>
 
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-49847711-1', 'subtivals.org');
-      ga('send', 'pageview');
-
-    </script>
-
-  </body>
+</body>
 </html>
