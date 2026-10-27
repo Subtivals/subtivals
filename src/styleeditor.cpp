@@ -104,7 +104,7 @@ void StyleEditor::save() {
   // Save overidden styles into settings
   QString line;
   for (const SubtitleStyle *style : std::as_const(m_overidden)) {
-    line = QString("%1/%2/%3/%4/%5/%7/%8/%9/%10/%11")
+    line = QString("%1/%2/%3/%4/%5/%6/%7/%8/%9/%10")
                .arg(style->font().family())
                .arg(style->font().pixelSize())
                .arg(style->primaryColour().name())

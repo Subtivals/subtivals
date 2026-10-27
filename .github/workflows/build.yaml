@@ -102,8 +102,8 @@ jobs:
           mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
 
           cp "build/${APP_NAME}" "$APPDIR/usr/bin/"
-          cp "resources/${APP_NAME}.png" "$APPDIR/${APP_NAME}.png"
-          convert "resources/${APP_NAME}.ico" -resize 256x256 "$APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png"
+          cp "resources/mainwindow.png" "$APPDIR/${APP_NAME}.png"
+          convert "resources/mainwindow.ico" -resize 256x256 "$APPDIR/usr/share/icons/hicolor/256x256/apps/${APP_NAME}.png"
 
           cat <<EOF > "$APPDIR/usr/share/applications/${APP_NAME}.desktop"
           [Desktop Entry]

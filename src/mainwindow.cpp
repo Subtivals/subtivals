@@ -469,7 +469,7 @@ void MainWindow::showEvent(QShowEvent *) {
 
   settings.beginGroup("AdvancedOptions");
   m_warnCharsRate = settings.value("warnCharsRate", 14).toInt();
-  m_errorCharsRate = settings.value("warnCharsRate", 18).toInt();
+  m_errorCharsRate = settings.value("errorCharsRate", 18).toInt();
   m_charsRate = settings.value("charsRate", 12).toInt();
   m_subtitleInterval = settings.value("subtitleInterval", 1000).toInt();
   m_subtitleMinDuration = settings.value("subtitleMinDuration", 1000).toInt();
@@ -490,6 +490,9 @@ void MainWindow::showEvent(QShowEvent *) {
   m_player->setDelayStep(delayStepMilliseconds);
   QString text;
   switch (delayStepMilliseconds) {
+  case 40:
+    text = tr("1/25 sec");
+    break;
   case 42:
     text = tr("1/24 sec");
     break;
@@ -532,7 +535,7 @@ void MainWindow::openRecentFile() {
 
 void MainWindow::actionShowWizard() {
   Wizard wizard;
-  wizard.setPixmap(Wizard::LogoPixmap, QPixmap(":/icons/subtivals.svg"));
+  wizard.setPixmap(Wizard::LogoPixmap, QPixmap(":/icons/mainwindow.svg"));
   wizard.setWizardStyle(QWizard::ClassicStyle);
   wizard.exec();
 }
@@ -1371,7 +1374,7 @@ void MainWindow::actionAbout() {
                         "<li>Arnaud Rolly</li>"
                         "<li>Mathieu Leplatre</li>"
                         "<li>Emmanuel Digiaro</li>"
-                        "<h2>© 2011 - %2</h2>")
+                        "<h2>© 2011 - %3</h2>")
                          .arg(APP_NAME)
                          .arg(VERSION)
                          .arg(QDate::currentDate().year()));

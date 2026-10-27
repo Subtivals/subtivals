@@ -84,7 +84,7 @@ unix:!macx {
     LIBS += -lxcb -lxcb-screensaver -lxcb-dpms
 }
 
-RC_FILE = ../resources/subtivals.rc
+RC_FILE = ../resources/main.rc
 
 TRANSLATIONS = ../locale/fr_FR.ts \
     ../locale/es_ES.ts \
@@ -121,7 +121,7 @@ unix:!macx {
 }
 
 macx {
-    ICON = ../resources/subtivals.icns
+    ICON = ../resources/mainwindow.icns
     TRANSLATIONS_PATH = $$OUT_PWD/$${TARGET}.app/Contents/Resources/locale
     translations.files = ../locale/*.qm
     translations.path = $$TRANSLATIONS_PATH
