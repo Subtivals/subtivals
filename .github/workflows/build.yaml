@@ -159,7 +159,7 @@ jobs:
           if-no-files-found: error
 
   build-mac:
-    runs-on: macos-latest
+    runs-on: macos-15
     environment: build
     strategy:
       matrix:

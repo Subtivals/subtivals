@@ -29,7 +29,8 @@
 ProjectionWindow::ProjectionWindow(QWidget *parent)
     : SubtitlesForm(parent), m_hideDesktop(false), m_monitor(-1),
       m_resizable(true) {
-  Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint;
+  Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
+                          Qt::NoDropShadowWindowHint;
 #ifdef WIN32
   flags |= Qt::SubWindow;
 #endif
