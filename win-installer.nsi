@@ -24,6 +24,7 @@ RequestExecutionLevel admin
 !define uninstkey "Software\Microsoft\Windows\CurrentVersion\Uninstall\${prodname}"
 !define startmenu "$SMPROGRAMS\${prodname}"
 !define uninstaller "uninstall.exe"
+!define progid "Subtivals.Subtitles"
 
 XPStyle on
 ShowInstDetails hide
@@ -73,11 +74,21 @@ ShowInstDetails show
 
 ; Main install section
 Section
+  SetShellVarContext all
+
   WriteRegStr HKLM "${regkey}" "Install_Dir" "$INSTDIR"
   WriteRegStr HKLM "${uninstkey}" "DisplayName" "${prodname} (remove only)"
   WriteRegStr HKLM "${uninstkey}" "UninstallString" '"$INSTDIR\${uninstaller}"'
 
-  WriteRegStr HKCR "${prodname}\Shell\open\command\" "" '"$INSTDIR\${exec} "%1"'
+  ; File association: offer Subtivals in "Open with" for subtitle files,
+  ; without taking over the user's default application.
+  DeleteRegKey HKCR "${prodname}" ; Unused key written by previous versions
+  WriteRegStr HKLM "Software\Classes\${progid}" "" "Subtitles"
+  WriteRegStr HKLM "Software\Classes\${progid}\DefaultIcon" "" '"$INSTDIR\${exec}",0'
+  WriteRegStr HKLM "Software\Classes\${progid}\Shell\open\command" "" '"$INSTDIR\${exec}" "%1"'
+  WriteRegStr HKLM "Software\Classes\.ass\OpenWithProgids" "${progid}" ""
+  WriteRegStr HKLM "Software\Classes\.srt\OpenWithProgids" "${progid}" ""
+  System::Call 'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)'
 
   SetOutPath $INSTDIR
 
@@ -99,6 +110,11 @@ Section
   File /r "${srcdir}\*.*"
 
   WriteUninstaller "${uninstaller}"
+
+  ; Start menu shortcuts
+  CreateDirectory "${startmenu}"
+  CreateShortCut "${startmenu}\${prodname}.lnk" "$INSTDIR\${exec}"
+  CreateShortCut "${startmenu}\Uninstall ${prodname}.lnk" "$INSTDIR\${uninstaller}"
 SectionEnd
 
 ; Uninstaller section
@@ -106,6 +122,11 @@ Section "Uninstall"
   SetShellVarContext all
   DeleteRegKey HKLM "${uninstkey}"
   DeleteRegKey HKLM "${regkey}"
+
+  DeleteRegKey HKLM "Software\Classes\${progid}"
+  DeleteRegValue HKLM "Software\Classes\.ass\OpenWithProgids" "${progid}"
+  DeleteRegValue HKLM "Software\Classes\.srt\OpenWithProgids" "${progid}"
+  System::Call 'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)'
 
   Delete "${startmenu}\*.*"
   RMDir "${startmenu}"
