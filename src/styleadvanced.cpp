@@ -33,9 +33,12 @@ StyleAdvanced::StyleAdvanced(SubtitleStyle *p_style, QWidget *parent)
   ui->marginR->setValue(m_style->marginR());
   ui->marginV->setValue(m_style->marginV());
 
-  connect(ui->lineSpacing, &QDoubleSpinBox::valueChanged, this, &StyleAdvanced::apply);
-  connect(ui->verticalAlign, &QComboBox::currentIndexChanged, this, &StyleAdvanced::apply);
-  connect(ui->horizontalAlign, &QComboBox::currentIndexChanged, this, &StyleAdvanced::apply);
+  connect(ui->lineSpacing, &QDoubleSpinBox::valueChanged, this,
+          &StyleAdvanced::apply);
+  connect(ui->verticalAlign, &QComboBox::currentIndexChanged, this,
+          &StyleAdvanced::apply);
+  connect(ui->horizontalAlign, &QComboBox::currentIndexChanged, this,
+          &StyleAdvanced::apply);
   connect(ui->marginL, &QSpinBox::valueChanged, this, &StyleAdvanced::apply);
   connect(ui->marginR, &QSpinBox::valueChanged, this, &StyleAdvanced::apply);
   connect(ui->marginV, &QSpinBox::valueChanged, this, &StyleAdvanced::apply);

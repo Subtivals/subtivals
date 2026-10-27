@@ -135,7 +135,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(&service, &RemoteService::stopped, w.remoteOptionsDialog(),
                    &RemoteOptionsDialog::onServiceStopped);
   QObject::connect(&service, &RemoteService::errorOccurred,
-                   w.remoteOptionsDialog(), &RemoteOptionsDialog::onServiceError);
+                   w.remoteOptionsDialog(),
+                   &RemoteOptionsDialog::onServiceError);
   QObject::connect(&service, &RemoteService::clientsConnected,
                    w.remoteOptionsDialog(),
                    &RemoteOptionsDialog::onClientsConnected);
@@ -146,9 +147,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(w.remoteOptionsDialog(),
                    &RemoteOptionsDialog::disableRequested, &service,
                    &RemoteService::disable);
-  QObject::connect(w.remoteOptionsDialog(),
-                   &RemoteOptionsDialog::setPassphrase, &service,
-                   &RemoteService::setPassphrase);
+  QObject::connect(w.remoteOptionsDialog(), &RemoteOptionsDialog::setPassphrase,
+                   &service, &RemoteService::setPassphrase);
 
   // Showing subtitles
   w.connectProjectionEvents(&f);

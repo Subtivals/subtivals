@@ -21,9 +21,9 @@
 #include <QColor>
 #include <QDockWidget>
 
-constexpr const char* DEFAULT_COLOR = "#000000";
+constexpr const char *DEFAULT_COLOR = "#000000";
 
-constexpr const char* DEFAULT_OUTLINE_COLOR = "#000000";
+constexpr const char *DEFAULT_OUTLINE_COLOR = "#000000";
 constexpr int DEFAULT_OUTLINE_WIDTH = 0;
 
 namespace Ui {

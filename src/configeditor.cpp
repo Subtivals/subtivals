@@ -35,15 +35,20 @@ ConfigEditor::ConfigEditor(QWidget *parent)
       m_parentWidget(parent) {
   ui->setupUi(this);
   ui->tabStyles->setLayout(m_styleEditor->layout());
-  connect(m_styleEditor, &StyleEditor::styleChanged, this, &ConfigEditor::styleChanged);
-  connect(m_styleEditor, &StyleEditor::styleOverriden, this, &ConfigEditor::styleOverriden);
-  connect(m_styleEditor, &StyleEditor::styleChanged, this, [this]() { enableButtonBox(); });
+  connect(m_styleEditor, &StyleEditor::styleChanged, this,
+          &ConfigEditor::styleChanged);
+  connect(m_styleEditor, &StyleEditor::styleOverriden, this,
+          &ConfigEditor::styleOverriden);
+  connect(m_styleEditor, &StyleEditor::styleChanged, this,
+          [this]() { enableButtonBox(); });
 
   adjustSize();
   setMaximumSize(size());
 
-  connect(qApp, &QGuiApplication::screenAdded, this, [this](QScreen *) { refreshScreensList(); });
-  connect(qApp, &QGuiApplication::screenRemoved, this, [this](QScreen *) { refreshScreensList(); });
+  connect(qApp, &QGuiApplication::screenAdded, this,
+          [this](QScreen *) { refreshScreensList(); });
+  connect(qApp, &QGuiApplication::screenRemoved, this,
+          [this](QScreen *) { refreshScreensList(); });
   refreshScreensList();
 
   // Load known presets.

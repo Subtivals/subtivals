@@ -16,9 +16,12 @@ ShortcutEditor::ShortcutEditor(QWidget *parent)
   ui->tableActions->horizontalHeader()->setResizeMode(COLUMN_DESCRIPTION,
                                                       QHeaderView::Stretch);
 #endif
-  connect(ui->tableActions, &QTableWidget::itemPressed, this, &ShortcutEditor::recordAction);
-  connect(ui->tableActions, &QTableWidget::itemChanged, this, &ShortcutEditor::validateAction);
-  connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &ShortcutEditor::onClicked);
+  connect(ui->tableActions, &QTableWidget::itemPressed, this,
+          &ShortcutEditor::recordAction);
+  connect(ui->tableActions, &QTableWidget::itemChanged, this,
+          &ShortcutEditor::validateAction);
+  connect(ui->buttonBox, &QDialogButtonBox::clicked, this,
+          &ShortcutEditor::onClicked);
 }
 
 ShortcutEditor::~ShortcutEditor() { delete ui; }

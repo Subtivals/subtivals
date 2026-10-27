@@ -218,9 +218,10 @@ MainWindow::MainWindow(QWidget *parent)
   connect(m_player, &Player::pulse, this, &MainWindow::playPulse);
   connect(m_player, &Player::changed, this, &MainWindow::subtitleChanged);
   connect(m_player, &Player::changed, this, &MainWindow::disableActionNext);
-  connect(m_player, &Player::autoHide, this, &MainWindow::actionToggleHide);
+  connect(m_player, &Player::autoHide, this, [this]() { actionToggleHide(); });
 
-  connect(ui->actionHideDesktop, &QAction::toggled, this, &MainWindow::hideDesktop);
+  connect(ui->actionHideDesktop, &QAction::toggled, this,
+          &MainWindow::hideDesktop);
   connect(ui->actionAddDelay, &QAction::triggered, m_player,
           [player = m_player](bool) { player->addDelay(); });
   connect(ui->actionSubDelay, &QAction::triggered, m_player, &Player::subDelay);
@@ -287,7 +288,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(m_filewatcher, &QFileSystemWatcher::fileChanged, this,
           &MainWindow::fileChanged);
   m_timerFileChange.setSingleShot(true);
-  connect(&m_timerFileChange, &QTimer::timeout, this, &MainWindow::reloadScript);
+  connect(&m_timerFileChange, &QTimer::timeout, this,
+          &MainWindow::reloadScript);
 
   // Emit state info 3 times per second
   QTimer *stateInfoTimer = new QTimer(this);
@@ -969,7 +971,7 @@ void MainWindow::actionConfig(bool state) {
 }
 
 void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
-  if (ProjectionWindow *pw = dynamic_cast<ProjectionWindow *>(f)) {
+  if (ProjectionWindow *pw = qobject_cast<ProjectionWindow *>(f)) {
     connect(pw, &ProjectionWindow::geometryChanged, m_preferences,
             &ConfigEditor::projectionWindowChanged);
     connect(pw, &ProjectionWindow::geometryChanged, m_previewpanel,
@@ -985,7 +987,8 @@ void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
           &SubtitlesForm::changeGeometry);
   connect(m_preferences, &ConfigEditor::color, f, &SubtitlesForm::color);
   connect(m_preferences, &ConfigEditor::outline, f, &SubtitlesForm::outline);
-  connect(m_preferences, &ConfigEditor::styleChanged, f, [f]() { f->repaint(); });
+  connect(m_preferences, &ConfigEditor::styleChanged, f,
+          [f]() { f->repaint(); });
   connect(m_preferences, &ConfigEditor::rotate, f, &SubtitlesForm::rotate);
 }
 
