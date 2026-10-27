@@ -91,11 +91,10 @@ int main(int argc, char *argv[]) {
   settings.endGroup();
 
   QTranslator translator;
-  if (translator.load(locale, QString::fromUtf8(TRANSLATIONS_PATH))) {
+  if (translator.load(locale, ":/i18n")) {
     a.installTranslator(&translator);
   } else {
-    qWarning() << "No translations found for" << locale << "in"
-               << TRANSLATIONS_PATH;
+    qWarning() << "No translations found for" << locale;
   }
 
   // Load packages fonts.

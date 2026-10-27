@@ -13,7 +13,7 @@ env:
   QT_VERSION: "6.8.3"
   APP_NAME: subtivals
   APP_LABEL: Subtivals
-  BUILD_TYPE: release
+  BUILD_TYPE: Release
 
 jobs:
   build-linux:
@@ -87,12 +87,8 @@ jobs:
 
       - name: Configure and build
         run: |
-          which qmake6
-          qmake6 --version
-          qmake6 -query QT_INSTALL_LIBS
-          mkdir -p build && cd build
-          qmake6 "../src/${APP_NAME}.pro" CONFIG+="$BUILD_TYPE" CONFIG+=static PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
-          make "-j$(nproc)"
+          cmake -S . -B build -DCMAKE_PREFIX_PATH="$HOME/Qt/${QT_VERSION}/gcc_64" -DCMAKE_BUILD_TYPE="$BUILD_TYPE" -DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
+          cmake --build build --parallel
 
       - name: Prepare AppDir for AppImage
         run: |
@@ -189,9 +185,8 @@ jobs:
 
       - name: Compile
         run: |
-          mkdir -p build && cd build/
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
-          make "-j$(sysctl -n hw.ncpu)"
+          cmake -S . -B build -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" -DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
+          cmake --build build --parallel
 
       - name: Deploy
         run: |
@@ -251,9 +246,8 @@ jobs:
 
       - name: Compile
         run: |
-          mkdir -p build && cd build/
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
-          make "-j$(sysctl -n hw.ncpu)"
+          cmake -S . -B build -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" -DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
+          cmake --build build --parallel
 
       - name: Deploy
         run: |
@@ -332,15 +326,13 @@ jobs:
 
       - name: Compile with MinGW
         run: |
-          MKDIR build
-          CD build
-          qmake "../src/${{ env.APP_NAME }}.pro" CONFIG+="${{ env.BUILD_TYPE }}" PACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
-          mingw32-make -j4
+          cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" -DPACKAGE_VERSION="${{ env.PACKAGE_VERSION }}"
+          cmake --build build --parallel
 
       - name: Deploy with windeployqt
         run: |
           MKDIR deploy
-          MOVE "build\${{ env.BUILD_TYPE }}\${{ env.APP_NAME }}.exe" deploy
+          MOVE "build\${{ env.APP_NAME }}.exe" deploy
           CD deploy
           windeployqt.exe --verbose 1 "${{ env.APP_NAME }}.exe"
 

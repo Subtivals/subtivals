@@ -1,12 +1,5 @@
-moc_*
-qrc_*
-*.pro.user*
-*.o
+CMakeLists.txt.user
 *.qm
-ui_*.h
-Makefile
-subtivals
-.qmake.stash
 build*
 .DS_Store
 
