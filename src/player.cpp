@@ -1,3 +1,5 @@
+#include <QDateTime>
+
 #include "player.h"
 
 #include "script.h"
