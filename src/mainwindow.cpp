@@ -230,8 +230,11 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->speedFactor, &QDoubleSpinBox::valueChanged, m_player,
           &Player::setSpeedFactor);
 
-  // Prevent hiding desktop if only one screen!
-  ui->actionHideDesktop->setEnabled(QGuiApplication::screens().size() > 1);
+  connect(qApp, &QGuiApplication::screenAdded, this,
+          &MainWindow::refreshScreenActions);
+  connect(qApp, &QGuiApplication::screenRemoved, this,
+          &MainWindow::refreshScreenActions);
+  refreshScreenActions();
 
   setState(NODATA);
   ui->tableWidget->setFocus();
@@ -1081,6 +1084,13 @@ void MainWindow::actionToggleLockScreenOnPlay(bool state) {
     emit screenResizable(true);
     m_preferences->enableTabScreen(true);
   }
+}
+
+void MainWindow::refreshScreenActions() {
+  // Prevent hiding desktop if only one screen!
+  ui->actionHideDesktop->setEnabled(QGuiApplication::screens().size() > 1);
+  // Lock on play depends on the number of screens too.
+  actionToggleLockScreenOnPlay(ui->actionLockScreenOnPlay->isChecked());
 }
 
 void MainWindow::disableSubtitleSelection() {

@@ -27,7 +27,8 @@
 #include "macwindowhelper.h"
 
 ProjectionWindow::ProjectionWindow(QWidget *parent)
-    : SubtitlesForm(parent), m_hideDesktop(false), m_monitor(-1),
+    : SubtitlesForm(parent), m_hideDesktop(false),
+      m_hideDesktopRequested(false), m_monitor(-1),
       m_resizable(true) {
   Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
                           Qt::NoDropShadowWindowHint;
@@ -57,6 +58,8 @@ ProjectionWindow::~ProjectionWindow() {}
 void ProjectionWindow::screenResizable(bool state) { m_resizable = state; }
 
 void ProjectionWindow::toggleHideDesktop(bool state) {
+  // Remember what was asked, to restore it when a screen is plugged back.
+  m_hideDesktopRequested = state;
   // Do not hide desktop if projection window is on primary screen.
   int idxPrimary =
       QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
@@ -112,7 +115,7 @@ void ProjectionWindow::changeGeometry(int monitor, const QRect &r) {
   m_dpi = screens.at(monitor)->logicalDotsPerInchY();
   m_subtitlesGeomBottomScreenRelative = r;
   // Refresh widget (will call `setGeometry()`):
-  toggleHideDesktop(m_hideDesktop);
+  toggleHideDesktop(m_hideDesktopRequested);
 }
 
 void ProjectionWindow::mousePressEvent(QMouseEvent *e) {

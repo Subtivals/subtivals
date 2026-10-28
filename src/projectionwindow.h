@@ -54,6 +54,7 @@ private:
   QRect m_screenGeom;
   QRect m_subtitlesGeomBottomScreenRelative;
   bool m_hideDesktop;
+  bool m_hideDesktopRequested;
   int m_monitor;
   bool m_resizable;
 
