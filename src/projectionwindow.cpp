@@ -20,6 +20,7 @@
 #include <QtGui/QCursor>
 #include <QtGui/QPainter>
 #include <QGuiApplication>
+#include <QScreen>
 #include <QTimer>
 
 #include "subtitlestyle.h"
@@ -28,7 +29,11 @@
 
 ProjectionWindow::ProjectionWindow(QWidget *parent)
     : SubtitlesForm(parent), m_hideDesktop(false), m_monitor(-1),
-      m_resizable(true) {
+      m_resizable(true),
+      // Wayland does not let apps position their windows: cover the whole
+      // screen and draw the subtitles at their position within it.
+      m_alwaysFullScreen(
+          QGuiApplication::platformName().startsWith("wayland")) {
   Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
                           Qt::NoDropShadowWindowHint;
 #ifdef WIN32
@@ -63,7 +68,9 @@ void ProjectionWindow::toggleHideDesktop(bool state) {
   m_hideDesktop = (state && QGuiApplication::screens().length() > 1 &&
                    m_monitor != idxPrimary);
 
-  if (m_hideDesktop) {
+  if (m_alwaysFullScreen) {
+    applyFullScreen();
+  } else if (m_hideDesktop) {
     setGeometry(m_screenGeom);
   } else {
     QRect widgetGeom = QRect(m_subtitlesGeomBottomScreenRelative);
@@ -79,8 +86,51 @@ void ProjectionWindow::toggleHideDesktop(bool state) {
   repaint();
 }
 
+void ProjectionWindow::setVisible(bool visible) {
+  // A full screen window on the only screen would cover the main window.
+  if (visible && m_alwaysFullScreen && QGuiApplication::screens().size() < 2) {
+    static bool warned = false;
+    if (!warned)
+      qWarning() << "Projection window needs a second screen on Wayland";
+    warned = true;
+    visible = false;
+  }
+  SubtitlesForm::setVisible(visible);
+}
+
+void ProjectionWindow::applyFullScreen() {
+  const auto screens = QGuiApplication::screens();
+  if (m_monitor < 0 || m_monitor >= screens.size())
+    return;
+  QScreen *target = screens.at(m_monitor);
+  if (screen() != target) {
+    // The compositor picks the output when the window goes full screen.
+    hide();
+    setScreen(target);
+  }
+  setWindowState(Qt::WindowFullScreen);
+  show();
+  updateInputMask();
+}
+
+void ProjectionWindow::updateInputMask() {
+  if (!m_alwaysFullScreen)
+    return;
+  // Let clicks go through the transparent part of the screen.
+  if (m_hideDesktop)
+    clearMask();
+  else
+    setMask(subtitlesBounds());
+}
+
+QRect ProjectionWindow::backgroundRect() {
+  if (m_alwaysFullScreen && !m_hideDesktop)
+    return subtitlesBounds();
+  return SubtitlesForm::backgroundRect();
+}
+
 QRect ProjectionWindow::subtitlesBounds() {
-  if (!m_hideDesktop) {
+  if (!m_hideDesktop && !m_alwaysFullScreen) {
     // If we don't hide desktop, we just fill the window.
     return QRect(0, 0, width(), height());
   }
@@ -116,7 +166,10 @@ void ProjectionWindow::changeGeometry(int monitor, const QRect &r) {
 }
 
 void ProjectionWindow::mousePressEvent(QMouseEvent *e) {
-  m_mouseOffset = e->globalPosition() - geometry().topLeft();
+  if (m_alwaysFullScreen)
+    m_mouseOffset = e->position() - subtitlesBounds().topLeft();
+  else
+    m_mouseOffset = e->globalPosition() - geometry().topLeft();
 }
 
 void ProjectionWindow::mouseMoveEvent(QMouseEvent *e) {
@@ -125,6 +178,14 @@ void ProjectionWindow::mouseMoveEvent(QMouseEvent *e) {
 
   if (!m_resizable || m_hideDesktop)
     return;
+
+  if (m_alwaysFullScreen) {
+    // Move the subtitles within the full screen window.
+    QRect current = subtitlesBounds();
+    current.moveTopLeft((e->position() - m_mouseOffset).toPoint());
+    applyGeometry(current.translated(m_screenGeom.topLeft()));
+    return;
+  }
 
   // Simply move the window on mouse drag
   QRect current = geometry();
@@ -154,7 +215,9 @@ void ProjectionWindow::wheelEvent(QWheelEvent *event) {
   if (!m_resizable || m_hideDesktop)
     return;
 
-  QRect current = geometry();
+  QRect current = m_alwaysFullScreen
+                      ? subtitlesBounds().translated(m_screenGeom.topLeft())
+                      : geometry();
   int step = 24;
   if (event->modifiers().testFlag(Qt::ShiftModifier))
     step = 60;
@@ -169,14 +232,16 @@ void ProjectionWindow::wheelEvent(QWheelEvent *event) {
 }
 
 void ProjectionWindow::applyGeometry(const QRect &r) {
-  setGeometry(r);
+  if (!m_alwaysFullScreen) {
+    setGeometry(r);
 
-  // Hide menu bar if not single and main screen.
-  int idxPrimary =
-      QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
-  bool notMainScreen =
-      QGuiApplication::screens().length() > 1 && m_monitor != idxPrimary;
-  makeWindowCoverMenuBar(this, notMainScreen);
+    // Hide menu bar if not single and main screen.
+    int idxPrimary =
+        QGuiApplication::screens().indexOf(QGuiApplication::primaryScreen());
+    bool notMainScreen =
+        QGuiApplication::screens().length() > 1 && m_monitor != idxPrimary;
+    makeWindowCoverMenuBar(this, notMainScreen);
+  }
 
   // Convert back from absolute (top-aligned) to relative to screen
   // (bottom-aligned)
@@ -184,6 +249,11 @@ void ProjectionWindow::applyGeometry(const QRect &r) {
   m_subtitlesGeomBottomScreenRelative.moveTo(
       r.x() - m_screenGeom.x(),
       m_screenGeom.y() + m_screenGeom.height() - r.height() - r.y());
+
+  if (m_alwaysFullScreen) {
+    updateInputMask();
+    repaint();
+  }
 
   // Start/restart timer to emit geometryChanged later
   // Store params for debounce emit

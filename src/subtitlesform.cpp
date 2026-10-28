@@ -59,7 +59,7 @@ void SubtitlesForm::toggleHide(bool state) {
 void SubtitlesForm::paintEvent(QPaintEvent *) {
   QPainter p(this);
   // Black background
-  p.fillRect(QRect(0, 0, width(), height()), m_color);
+  p.fillRect(backgroundRect(), m_color);
   // Draw text only if visible
   if (!m_visible)
     return;
@@ -101,8 +101,7 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
   }
 
   if (m_opacity < 1.0) {
-    p.fillRect(QRect(0, 0, width(), height()),
-               QColor(0, 0, 0, 255 * (1.0 - m_opacity)));
+    p.fillRect(backgroundRect(), QColor(0, 0, 0, 255 * (1.0 - m_opacity)));
   }
 }
 
@@ -110,6 +109,8 @@ void SubtitlesForm::changeGeometry(int, const QRect &r) {
   m_subtitlesSize = QSize(r.width(), r.height());
   this->repaint();
 }
+
+QRect SubtitlesForm::backgroundRect() { return QRect(0, 0, width(), height()); }
 
 QRect SubtitlesForm::subtitlesBounds() {
   QSize widgetSize = this->size();
