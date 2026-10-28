@@ -5,8 +5,8 @@
 #include <QDialog>
 #include <QWidget>
 
-#define COLUMN_DESCRIPTION 0
-#define COLUMN_SHORTCUT 1
+static constexpr int COLUMN_DESCRIPTION = 0;
+static constexpr int COLUMN_SHORTCUT = 1;
 
 class QTableWidgetItem;
 class QAbstractButton;

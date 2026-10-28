@@ -94,7 +94,7 @@ void SubtitlesForm::paintEvent(QPaintEvent *) {
     }
   }
 
-  foreach (Subtitle *e, m_currentSubtitles) {
+  for (Subtitle *e : std::as_const(m_currentSubtitles)) {
     if (e && e->style()) {
       e->style()->drawSubtitle(&p, *e, bounds, m_outline, uniformScale, m_dpi);
     }

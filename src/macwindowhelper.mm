@@ -15,7 +15,7 @@ void makeWindowCoverMenuBar(QWidget *widget, bool state) {
 
     static NSMutableDictionary *originalMasks;
     if (!originalMasks)
-        originalMasks = [NSMutableDictionary dictionary];
+        originalMasks = [[NSMutableDictionary alloc] init];
 
     NSNumber *winKey = @((uintptr_t)nsWindow);
 
