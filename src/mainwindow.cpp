@@ -22,11 +22,13 @@
 #include <QAbstractSlider>
 #include <QCheckBox>
 #include <QDesktopServices>
+#include <QDir>
 #include <QDoubleSpinBox>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileSystemWatcher>
 #include <QKeyEvent>
+#include <QLocale>
 #include <QMenu>
 #include <QMessageBox>
 #include <QMimeData>
@@ -341,6 +343,38 @@ MainWindow::MainWindow(QWidget *parent)
   connect(m_delayStepGroup, &QActionGroup::triggered, this,
           [this](QAction *action) { setDelayStep(action->data().toInt()); });
   ui->menuEdit->insertMenu(ui->actionAdvancedSettings, delayStepMenu);
+
+  // Initialize language menu from embedded translations.
+  QSettings settings;
+  QString currentLocale = settings.value("Language/locale").toString();
+  QMenu *languageMenu = new QMenu(tr("Language"), this);
+  QActionGroup *languageGroup = new QActionGroup(languageMenu);
+  QStringList locales = {"en"};
+  for (const QString &file : QDir(":/i18n").entryList({"*.qm"})) {
+    locales.append(QFileInfo(file).completeBaseName());
+  }
+  for (const QString &locale : locales) {
+    QString name = QLocale(locale).nativeLanguageName();
+    name[0] = name[0].toUpper();
+    QAction *action = languageMenu->addAction(name);
+    action->setCheckable(true);
+    action->setData(locale);
+    action->setChecked(locale == currentLocale);
+    languageGroup->addAction(action);
+  }
+  // Locales without translation fallback to English.
+  if (!languageGroup->checkedAction()) {
+    languageGroup->actions().first()->setChecked(true);
+  }
+  connect(languageGroup, &QActionGroup::triggered, this,
+          [this](QAction *action) {
+            QSettings settings;
+            settings.setValue("Language/locale", action->data().toString());
+            QMessageBox::information(
+                this, tr("Language"),
+                tr("The language will change when Subtivals restarts."));
+          });
+  ui->menuEdit->insertMenu(ui->actionAdvancedSettings, languageMenu);
 
   // Initialize shortcuts
   m_shortcutEditor->registerAction(ui->actionPlay);
