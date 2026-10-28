@@ -70,6 +70,7 @@ public:
   void connectProjectionEvents(SubtitlesForm *f);
 signals:
   void hideDesktop(bool state);
+  void projectionVisible(bool state);
   void toggleHide(bool state);
   void screenResizable(bool state);
   // For remote control
@@ -120,6 +121,7 @@ public slots:
   void actionToggleLargeText(bool);
   void actionToggleLockScreenOnPlay(bool);
   void refreshScreenActions();
+  void actionToggleProjectionSingleScreen(bool);
   void actionShowRemoteOptions();
 
 protected:
@@ -156,6 +158,7 @@ private:
   QString m_lastFolder;
   ConfigEditor *m_preferences;
   SubtitlesForm *m_previewpanel;
+  QWidget *m_projection = nullptr;
   ShortcutEditor *m_shortcutEditor;
   RemoteOptionsDialog *m_remoteOptionsDialog;
   QMap<Subtitle *, int> m_tableMapping;
