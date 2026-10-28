@@ -287,9 +287,8 @@ p, li { white-space: pre-wrap; }
         <translation>Ouvrir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="350"/>
         <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <translation type="vanished">Ctrl+O</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="355"/>
@@ -302,9 +301,8 @@ p, li { white-space: pre-wrap; }
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="361"/>
         <source>Ctrl+Q</source>
-        <translation>Ctrl+Q</translation>
+        <translation type="vanished">Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="373"/>
@@ -313,9 +311,8 @@ p, li { white-space: pre-wrap; }
         <translation>Démarrer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="379"/>
         <source>L</source>
-        <translation>L</translation>
+        <translation type="vanished">L</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="391"/>
@@ -351,9 +348,8 @@ p, li { white-space: pre-wrap; }
         <translation>Barre d&apos;outils</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="394"/>
         <source>S</source>
-        <translation>S</translation>
+        <translation type="vanished">S</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="406"/>
@@ -366,9 +362,8 @@ p, li { white-space: pre-wrap; }
         <translation>Afficher les préférences</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="412"/>
         <source>Ctrl+P</source>
-        <translation>Ctrl+P</translation>
+        <translation type="vanished">Ctrl+P</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="424"/>
@@ -381,20 +376,14 @@ p, li { white-space: pre-wrap; }
         <translation>Afficher l&apos;aperçu pour l&apos;opérator</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="430"/>
         <source>v</source>
-        <translation>v</translation>
+        <translation type="vanished">v</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="442"/>
         <location filename="../src/mainwindow.ui" line="445"/>
         <source>+1/4 sec</source>
         <translation>+1/4 sec</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="448"/>
-        <source>+</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="460"/>
@@ -408,9 +397,8 @@ p, li { white-space: pre-wrap; }
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="481"/>
         <source>P</source>
-        <translation>P</translation>
+        <translation type="vanished">P</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="493"/>
@@ -423,9 +411,8 @@ p, li { white-space: pre-wrap; }
         <translation>Activer le sous-titre sélectionné ou avance au suivant</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="499"/>
         <source>Space</source>
-        <translation>Espace</translation>
+        <translation type="vanished">Espace</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="511"/>
@@ -433,9 +420,8 @@ p, li { white-space: pre-wrap; }
         <translation>Cacher</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="514"/>
         <source>H</source>
-        <translation>H</translation>
+        <translation type="vanished">H</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="526"/>
@@ -444,9 +430,8 @@ p, li { white-space: pre-wrap; }
         <translation>Précédent</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="532"/>
         <source>PgUp</source>
-        <translation>Page Sup</translation>
+        <translation type="vanished">Page Sup</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="540"/>
@@ -488,11 +473,6 @@ p, li { white-space: pre-wrap; }
         <translation>Cacher les sous-titres expirés (mode manuel)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="581"/>
-        <source>Ctrl+T</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.ui" line="605"/>
         <source>Speed up (+1%)</source>
         <translation>Accélerer (+1%)</translation>
@@ -503,9 +483,8 @@ p, li { white-space: pre-wrap; }
         <translation>Ajuster la vitesse en accélérant (+1%)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="611"/>
         <source>Right</source>
-        <translation>Droite</translation>
+        <translation type="vanished">Droite</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="616"/>
@@ -518,9 +497,8 @@ p, li { white-space: pre-wrap; }
         <translation>Ajuster la vitesse en ralentissant (+1%)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="622"/>
         <source>Left</source>
-        <translation>Gauche</translation>
+        <translation type="vanished">Gauche</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="627"/>
@@ -643,11 +621,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mainwindow.ui" line="586"/>
         <source>Online help...</source>
         <translation>Aide en ligne...</translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="589"/>
-        <source>F1</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="597"/>
