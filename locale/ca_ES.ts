@@ -247,9 +247,8 @@ p, li { white-space: pre-wrap; }
         <translation>Obrir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="350"/>
         <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <translation type="vanished">Ctrl+O</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="355"/>
@@ -262,9 +261,8 @@ p, li { white-space: pre-wrap; }
         <translation>Tancar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="361"/>
         <source>Ctrl+Q</source>
-        <translation>Ctrl+Q</translation>
+        <translation type="vanished">Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="373"/>
@@ -273,9 +271,8 @@ p, li { white-space: pre-wrap; }
         <translation>Lectura</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="379"/>
         <source>L</source>
-        <translation>L</translation>
+        <translation type="vanished">L</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="391"/>
@@ -307,9 +304,8 @@ p, li { white-space: pre-wrap; }
         <translation>barra d’eines</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="394"/>
         <source>S</source>
-        <translation>S</translation>
+        <translation type="vanished">S</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="406"/>
@@ -322,9 +318,8 @@ p, li { white-space: pre-wrap; }
         <translation>Mostra les preferències</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="412"/>
         <source>Ctrl+P</source>
-        <translation>Ctrl+P</translation>
+        <translation type="vanished">Ctrl+P</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="424"/>
@@ -337,9 +332,8 @@ p, li { white-space: pre-wrap; }
         <translation>Mostra el panell de vista prèvia de l&apos;operador</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="430"/>
         <source>v</source>
-        <translation>v</translation>
+        <translation type="vanished">v</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="442"/>
@@ -348,9 +342,8 @@ p, li { white-space: pre-wrap; }
         <translation>+1/4 seg</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="448"/>
         <source>+</source>
-        <translation>+</translation>
+        <translation type="vanished">+</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="460"/>
@@ -364,9 +357,8 @@ p, li { white-space: pre-wrap; }
         <translation>Pausa</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="481"/>
         <source>P</source>
-        <translation>P</translation>
+        <translation type="vanished">P</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="493"/>
@@ -379,9 +371,8 @@ p, li { white-space: pre-wrap; }
         <translation>Activeu el corrent o aneu al següent</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="499"/>
         <source>Space</source>
-        <translation>Espai</translation>
+        <translation type="vanished">Espai</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="511"/>
@@ -389,9 +380,8 @@ p, li { white-space: pre-wrap; }
         <translation>Ocultar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="514"/>
         <source>H</source>
-        <translation>H</translation>
+        <translation type="vanished">H</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="526"/>
@@ -400,9 +390,8 @@ p, li { white-space: pre-wrap; }
         <translation>Anterior</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="532"/>
         <source>PgUp</source>
-        <translation>PgUp</translation>
+        <translation type="vanished">PgUp</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="540"/>
@@ -440,9 +429,8 @@ p, li { white-space: pre-wrap; }
         <translation>Oculta els subtítols caducats (mode manual)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="581"/>
         <source>Ctrl+T</source>
-        <translation>Ctrl+T</translation>
+        <translation type="vanished">Ctrl+T</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="605"/>
@@ -455,9 +443,8 @@ p, li { white-space: pre-wrap; }
         <translation>Ajusteu la velocitat (+1%)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="611"/>
         <source>Right</source>
-        <translation>Dret</translation>
+        <translation type="vanished">Dret</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="616"/>
@@ -470,9 +457,8 @@ p, li { white-space: pre-wrap; }
         <translation>Ajusteu la desacceleració (-1%)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="622"/>
         <source>Left</source>
-        <translation>Esquerre</translation>
+        <translation type="vanished">Esquerre</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="627"/>
@@ -593,9 +579,8 @@ p, li { white-space: pre-wrap; }
         <translation>Ajuda en línia...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="589"/>
         <source>F1</source>
-        <translation>F1</translation>
+        <translation type="vanished">F1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="597"/>
@@ -605,7 +590,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="600"/>
         <source>Ctrl+D</source>
-        <translation>Ctrl+D</translation>
+        <translation type="vanished">Ctrl+D</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="255"/>

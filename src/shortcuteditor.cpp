@@ -16,6 +16,21 @@ ShortcutEditor::ShortcutEditor(QWidget *parent)
   ui->tableActions->horizontalHeader()->setResizeMode(COLUMN_DESCRIPTION,
                                                       QHeaderView::Stretch);
 #endif
+
+  // Default shortcuts used to be translated (eg. "Espace"), which are not
+  // valid key names: they were saved empty. Clear them once to restore
+  // defaults.
+  QSettings settings;
+  if (!settings.value("Migrations/untranslatedShortcuts", false).toBool()) {
+    settings.beginGroup("Shortcuts");
+    for (const QString &key : settings.allKeys()) {
+      if (settings.value(key).toString().isEmpty())
+        settings.remove(key);
+    }
+    settings.endGroup();
+    settings.setValue("Migrations/untranslatedShortcuts", true);
+  }
+
   connect(ui->tableActions, &QTableWidget::itemPressed, this,
           &ShortcutEditor::recordAction);
   connect(ui->tableActions, &QTableWidget::itemChanged, this,
