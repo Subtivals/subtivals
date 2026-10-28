@@ -57,6 +57,7 @@ public slots:
 protected:
   void paintEvent(QPaintEvent *p_event);
   virtual QRect subtitlesBounds();
+  virtual QRect backgroundRect();
   bool m_drawBounds;
   bool m_fixedScale;
   qreal m_dpi;

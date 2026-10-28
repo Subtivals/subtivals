@@ -76,6 +76,17 @@ int main(int argc, char *argv[]) {
   QSettings settings;
   qInfo() << "Configuration location:" << settings.fileName();
 
+#ifdef Q_OS_LINUX
+  // Wayland does not let apps position their windows. Run through XWayland
+  // when available, unless a platform was explicitly chosen
+  // (eg. QT_QPA_PLATFORM=wayland).
+  if (qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM") &&
+      !qEnvironmentVariableIsEmpty("WAYLAND_DISPLAY") &&
+      !qEnvironmentVariableIsEmpty("DISPLAY")) {
+    qputenv("QT_QPA_PLATFORM", "xcb");
+  }
+#endif
+
   QApplication a(argc, argv);
   a.setQuitOnLastWindowClosed(true);
   // Disable screensaver

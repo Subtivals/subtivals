@@ -38,16 +38,20 @@ public slots:
   void toggleHideDesktop(bool state);
   void screenResizable(bool state);
   void changeGeometry(int, const QRect &);
+  void setVisible(bool visible) override;
 
 protected:
-  void mouseMoveEvent(QMouseEvent *e);
-  void mousePressEvent(QMouseEvent *e);
-  void mouseReleaseEvent(QMouseEvent *e);
-  void wheelEvent(QWheelEvent *e);
-  QRect subtitlesBounds();
+  void mouseMoveEvent(QMouseEvent *e) override;
+  void mousePressEvent(QMouseEvent *e) override;
+  void mouseReleaseEvent(QMouseEvent *e) override;
+  void wheelEvent(QWheelEvent *e) override;
+  QRect subtitlesBounds() override;
+  QRect backgroundRect() override;
 
 private:
   void applyGeometry(const QRect &);
+  void applyFullScreen();
+  void updateInputMask();
 
   Ui::ProjectionWindow *ui;
   QPointF m_mouseOffset;
@@ -56,6 +60,7 @@ private:
   bool m_hideDesktop;
   int m_monitor;
   bool m_resizable;
+  bool m_alwaysFullScreen;
 
   QTimer *m_geometryChangedDebounceTimer;
 };
