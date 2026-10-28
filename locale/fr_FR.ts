@@ -699,6 +699,11 @@ p, li { white-space: pre-wrap; }
         <translation>1 sec</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="332"/>
+        <source>Delay step</source>
+        <translation>Incrément du décalage</translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.cpp" line="516"/>
         <source> msec</source>
         <translation> msec</translation>

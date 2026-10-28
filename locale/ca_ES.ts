@@ -643,6 +643,11 @@ p, li { white-space: pre-wrap; }
         <translation>1 seg</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="332"/>
+        <source>Delay step</source>
+        <translation>Increment del retard</translation>
+    </message>
+    <message>
         <location filename="../src/mainwindow.cpp" line="516"/>
         <source> msec</source>
         <translation> mseg</translation>
