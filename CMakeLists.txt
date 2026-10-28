@@ -66,7 +66,7 @@ target_link_libraries(subtivals PRIVATE
 
 # Translations are compiled and embedded as resources under :/i18n
 qt_add_translations(subtivals
-  TS_FILES locale/fr_FR.ts locale/es_ES.ts locale/ca_ES.ts
+  TS_FILES locale/fr_FR.ts locale/es_ES.ts locale/ca_ES.ts locale/it_IT.ts
   RESOURCE_PREFIX /i18n)
 
 if(APPLE)
