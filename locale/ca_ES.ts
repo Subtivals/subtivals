@@ -170,7 +170,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="215"/>
         <source>Text</source>
-        <translation>Texte</translation>
+        <translation>Text</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="57"/>
@@ -201,7 +201,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="120"/>
         <source>Common framerates conversions</source>
-        <translation>Les conversions de framerates comunes</translation>
+        <translation>Conversions habituals de freqüències d'imatge</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="136"/>
@@ -267,7 +267,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mainwindow.ui" line="374"/>
         <location filename="../src/mainwindow.ui" line="377"/>
         <source>Play</source>
-        <translation>Lectura</translation>
+        <translation>Reproducció</translation>
     </message>
     <message>
         <source>L</source>
@@ -276,7 +276,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="392"/>
         <source>Stop</source>
-        <translation>Parar</translation>
+        <translation>Atura</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -367,7 +367,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="497"/>
         <source>Activate current or go to next</source>
-        <translation>Activeu el corrent o aneu al següent</translation>
+        <translation>Activa el subtítol actual o passa al següent</translation>
     </message>
     <message>
         <source>Space</source>
@@ -400,7 +400,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="544"/>
         <source>Auto reload subtitle file on external change</source>
-        <translation>Fitxer de subtítols de recàrrega automàtica al canvi extern</translation>
+        <translation>Carrega automàticament el fitxer de subtítols quan canviï externament</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="556"/>
@@ -547,7 +547,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="717"/>
         <source>Lock screen on play</source>
-        <translation>Bloqueja la pantalla en reproducció</translation>
+        <translation>Bloqueja la pantalla durant la reproducció</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="720"/>
@@ -684,7 +684,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.cpp" line="642"/>
         <source>Subtitles exported to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
-        <translation>Subtítols exportats a &lt;a href = &quot;%1&quot;&gt;%2 &lt;/a&gt;</translation>
+        <translation>Subtítols exportats a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="680"/>
@@ -709,7 +709,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.cpp" line="720"/>
         <source>%1 subtitles, %2 - %3</source>
-        <translation>%1 subtitols, %2 - %3</translation>
+        <translation>%1 subtítols, %2 - %3</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="741"/>
@@ -734,7 +734,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.cpp" line="875"/>
         <source>Some styles are currently overriden in preferences.</source>
-        <translation>Actualment, alguns estils estan sobredimitats en les preferències.</translation>
+        <translation>Actualment, alguns estils estan redefinits a les preferències.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="900"/>
@@ -749,7 +749,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.cpp" line="922"/>
         <source>Subtitle Files (*.ass *.srt *.txt *.xml)</source>
-        <translation>Fitxers de subtítols ( *.ass *.srt *.txt *.xml)</translation>
+        <translation>Fitxers de subtítols (*.ass *.srt *.txt *.xml)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1477"/>
@@ -969,7 +969,7 @@ Continuar?</translation>
     <message>
         <location filename="../src/styleadvanced.ui" line="17"/>
         <source>Style configuration...</source>
-        <translation>Configuracio d&apos;estils...</translation>
+        <translation>Configuració de l&apos;estil...</translation>
     </message>
     <message>
         <location filename="../src/styleadvanced.ui" line="106"/>
@@ -1035,7 +1035,7 @@ Continuar?</translation>
     <message>
         <location filename="../src/styleadvanced.ui" line="162"/>
         <source>Line spacing:</source>
-        <translation>Espai entre la línia:</translation>
+        <translation>Interlineat:</translation>
     </message>
     <message>
         <location filename="../src/styleadvanced.ui" line="197"/>
@@ -1144,12 +1144,12 @@ Continuar?</translation>
     <message>
         <location filename="../src/wizard.ui" line="86"/>
         <source>Special characters</source>
-        <translation>Personatges especials</translation>
+        <translation>Caràcters especials</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="89"/>
         <source>Universal and international characters</source>
-        <translation>Personatges universals i internacionals</translation>
+        <translation>Caràcters universals i internacionals</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="104"/>

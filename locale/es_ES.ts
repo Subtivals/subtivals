@@ -178,7 +178,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="34"/>
         <source>User delay:</source>
-        <translation>Retrazo:</translation>
+        <translation>Desfase:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="44"/>
@@ -193,7 +193,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="120"/>
         <source>Common framerates conversions</source>
-        <translation>Conversiones de framerates común</translation>
+        <translation>Conversiones habituales de frecuencias de imagen</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="136"/>
@@ -203,12 +203,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="152"/>
         <source>keywords (or jump to :line)</source>
-        <translation>palabras (o salta a :liña)</translation>
+        <translation>palabras clave (o saltar a :línea)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="155"/>
         <source>Use prefix &quot;:&quot; and number to jump to line</source>
-        <translation>Use el prefijo &quot;:&quot; y el número para saltar a la liña</translation>
+        <translation>Use el prefijo &quot;:&quot; seguido de un número para saltar a esa línea</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="220"/>
@@ -279,7 +279,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mainwindow.ui" line="374"/>
         <location filename="../src/mainwindow.ui" line="377"/>
         <source>Play</source>
-        <translation>Lectura</translation>
+        <translation>Reproducir</translation>
     </message>
     <message>
         <source>L</source>
@@ -288,7 +288,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="392"/>
         <source>Stop</source>
-        <translation>Parar</translation>
+        <translation>Detener</translation>
     </message>
     <message>
         <source>S</source>
@@ -355,7 +355,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="497"/>
         <source>Activate current or go to next</source>
-        <translation>Activar el subtitulo selectionado o saltar al siguiente</translation>
+        <translation>Activar el subtítulo actual o pasar al siguiente</translation>
     </message>
     <message>
         <source>Space</source>
@@ -388,7 +388,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="544"/>
         <source>Auto reload subtitle file on external change</source>
-        <translation>Recargar automaticamente el archivo de subtitulos modificado</translation>
+        <translation>Recargar automáticamente el archivo de subtítulos cuando cambie externamente</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="556"/>
@@ -417,7 +417,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="579"/>
         <source>Hide timeout subtitles (manual mode)</source>
-        <translation>Ocultar subtitulos expirados (modo manual)</translation>
+        <translation>Ocultar los subtítulos cuyo tiempo haya expirado (modo manual)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="606"/>
@@ -535,12 +535,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="717"/>
         <source>Lock screen on play</source>
-        <translation>Pantalla de bloqueo a la lectura</translation>
+        <translation>Bloquear la pantalla durante la reproducción</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="720"/>
         <source>Screen cannot be moved during play</source>
-        <translation>La pantalla no se puede mover durante la lectura</translation>
+        <translation>La pantalla no se puede mover durante la reproducción</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="728"/>
@@ -550,7 +550,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.ui" line="731"/>
         <source>Fill screen with color</source>
-        <translation>Llena la pantalla con color</translation>
+        <translation>Rellenar la pantalla con un color</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="739"/>
@@ -660,7 +660,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.cpp" line="642"/>
         <source>Subtitles exported to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
-        <translation>Subtítulos exportados a &lt;a href = &quot;%1&quot;&gt;%2 &lt;/a&gt;</translation>
+        <translation>Subtítulos exportados a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="680"/>
@@ -685,7 +685,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.cpp" line="720"/>
         <source>%1 subtitles, %2 - %3</source>
-        <translation>%1 subtitulos, %2 - %3</translation>
+        <translation>%1 subtítulos, %2 - %3</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="741"/>
@@ -715,17 +715,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mainwindow.cpp" line="900"/>
         <source>Subtitle file reloaded.</source>
-        <translation>Archivo de subtitulos recargado.</translation>
+        <translation>Archivo de subtítulos recargado.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="921"/>
         <source>Open subtitles</source>
-        <translation>Abrir subtitulos</translation>
+        <translation>Abrir subtítulos</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="922"/>
         <source>Subtitle Files (*.ass *.srt *.txt *.xml)</source>
-        <translation>Archivos subtitle ( *.ass *.srt *.txt *.xml)</translation>
+        <translation>Archivos de subtítulos (*.ass *.srt *.txt *.xml)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1477"/>
@@ -937,7 +937,7 @@ Continue?</source>
     <message>
         <location filename="../src/styleadvanced.ui" line="17"/>
         <source>Style configuration...</source>
-        <translation>Configuracion de estilos...</translation>
+        <translation>Configuración del estilo...</translation>
     </message>
     <message>
         <location filename="../src/styleadvanced.ui" line="106"/>
@@ -1003,7 +1003,7 @@ Continue?</source>
     <message>
         <location filename="../src/styleadvanced.ui" line="162"/>
         <source>Line spacing:</source>
-        <translation>Espaciamiento:</translation>
+        <translation>Interlineado:</translation>
     </message>
     <message>
         <location filename="../src/styleadvanced.ui" line="197"/>
@@ -1112,19 +1112,19 @@ Continue?</source>
     <message>
         <location filename="../src/wizard.ui" line="86"/>
         <source>Special characters</source>
-        <translation>Carateres especiales</translation>
+        <translation>Caracteres especiales</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="89"/>
         <source>Universal and international characters</source>
-        <translation>Carateres universales e internacionales</translation>
+        <translation>Caracteres universales e internacionales</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="104"/>
         <source>&lt;p&gt;Subtivals supports &lt;b&gt;every&lt;/b&gt; international character.&lt;/p&gt;
 &lt;p&gt;Make sure your files are saved with &lt;b&gt;UTF-8&lt;/b&gt; encoding.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; Subtivals admite &lt;b&gt; todos &lt;/b&gt; carácter internacional. &lt;/p&gt;
-&lt;p&gt; Asegúrese de que sus archivos se guarden con &lt;b&gt; utf-8 &lt;/b&gt; codificación. &lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Subtivals admite todos los caracteres internacionales.&lt;/p&gt;
+&lt;p&gt;Asegúrese de guardar los archivos con codificación &lt;b&gt;UTF-8&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="118"/>
@@ -1139,7 +1139,7 @@ Continue?</source>
     <message>
         <location filename="../src/wizard.ui" line="136"/>
         <source>&lt;p&gt;Every action can be performed with the keyboard . Change the shortcurts in the &lt;b&gt;Edit&lt;/b&gt; menu.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; Cada acción se puede realizar con el teclado. Cambie los atajos en el menú de &lt;b&gt; editar &lt;/b&gt;. &lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Todas las acciones se pueden realizar con el teclado. Puede cambiar los atajos en el menú &lt;b&gt;Edición&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="149"/>
@@ -1154,7 +1154,7 @@ Continue?</source>
     <message>
         <location filename="../src/wizard.ui" line="167"/>
         <source>Subtivals can read plain .txt files, where subtitles are just texts separated by a blank line.</source>
-        <translation>Subtivals pueden leer archivos .txt simples, donde los subtítulos son solo textos separados por una línea en blanco.</translation>
+        <translation>Subtivals puede leer archivos .txt sin formato, en los que los subtítulos son textos separados por una línea en blanco.</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="180"/>
@@ -1170,7 +1170,7 @@ Continue?</source>
         <location filename="../src/wizard.ui" line="198"/>
         <source>&lt;p&gt;Subtitles appear with space bar, and disappear automatically according to their length.&lt;/p&gt;
 </source>
-        <translation>&lt;p&gt; Los subtítulos aparecen con la barra espacial y desaparecen automáticamente de acuerdo con su longitud. &lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Los subtítulos aparecen al pulsar la barra espaciadora y desaparecen automáticamente según su duración.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/wizard.ui" line="212"/>
