@@ -27,6 +27,7 @@
 #include <QFileDialog>
 #include <QFileSystemWatcher>
 #include <QKeyEvent>
+#include <QMenu>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPainter>
@@ -170,6 +171,25 @@ class SubtitleDurationDelegate : public QStyledItemDelegate {
   }
 };
 
+static QString delayStepLabel(int milliseconds) {
+  switch (milliseconds) {
+  case 40:
+    return MainWindow::tr("1/25 sec");
+  case 42:
+    return MainWindow::tr("1/24 sec");
+  case 100:
+    return MainWindow::tr("1/10 sec");
+  case 250:
+    return MainWindow::tr("1/4 sec");
+  case 500:
+    return MainWindow::tr("1/2 sec");
+  case 1000:
+    return MainWindow::tr("1 sec");
+  default:
+    return QString::number(milliseconds) + MainWindow::tr(" msec");
+  }
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), m_script(nullptr),
       m_player(new Player()), m_playerThread(new QThread()),
@@ -308,6 +328,20 @@ MainWindow::MainWindow(QWidget *parent)
   ui->menuFile->insertSeparator(ui->actionExit);
   updateRecentFileActions();
 
+  // Initialize delay step menu.
+  QMenu *delayStepMenu = new QMenu(tr("Delay step"), this);
+  m_delayStepGroup = new QActionGroup(delayStepMenu);
+  const QList<int> delaySteps = {40, 42, 100, 250, 500, 1000};
+  for (int step : delaySteps) {
+    QAction *action = delayStepMenu->addAction(delayStepLabel(step));
+    action->setCheckable(true);
+    action->setData(step);
+    m_delayStepGroup->addAction(action);
+  }
+  connect(m_delayStepGroup, &QActionGroup::triggered, this,
+          [this](QAction *action) { setDelayStep(action->data().toInt()); });
+  ui->menuEdit->insertMenu(ui->actionAdvancedSettings, delayStepMenu);
+
   // Initialize shortcuts
   m_shortcutEditor->registerAction(ui->actionPlay);
   m_shortcutEditor->registerAction(ui->actionPause);
@@ -399,6 +433,7 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("charsRate", m_charsRate);
   settings.setValue("subtitleInterval", m_subtitleInterval);
   settings.setValue("subtitleMinDuration", m_subtitleMinDuration);
+  settings.setValue("delayMilliseconds", m_player->delayStep());
   settings.endGroup();
 
   settings.beginGroup("PreviewPanel");
@@ -488,36 +523,24 @@ void MainWindow::showEvent(QShowEvent *) {
   m_previewpanel->opacity(settings.value("opacity", 0.7).toDouble());
   settings.endGroup();
 
-  // Reflect the configured add/sub delay on the action text.
-  m_player->setDelayStep(delayStepMilliseconds);
-  QString text;
-  switch (delayStepMilliseconds) {
-  case 40:
-    text = tr("1/25 sec");
-    break;
-  case 42:
-    text = tr("1/24 sec");
-    break;
-  case 100:
-    text = tr("1/10 sec");
-    break;
-  case 250:
-    text = tr("1/4 sec");
-    break;
-  case 500:
-    text = tr("1/2 sec");
-    break;
-  case 1000:
-    text = tr("1 sec");
-    break;
-  default:
-    text = QString::number(delayStepMilliseconds) + tr(" msec");
-    break;
-  }
-  ui->actionAddDelay->setText("+" + text);
-  ui->actionSubDelay->setText("-" + text);
+  setDelayStep(delayStepMilliseconds);
 
   m_windowShown = true;
+}
+
+void MainWindow::setDelayStep(int milliseconds) {
+  m_player->setDelayStep(milliseconds);
+  // Reflect the configured add/sub delay on the action text.
+  QString text = delayStepLabel(milliseconds);
+  ui->actionAddDelay->setText("+" + text);
+  ui->actionAddDelay->setToolTip("+" + text);
+  ui->actionSubDelay->setText("-" + text);
+  ui->actionSubDelay->setToolTip("-" + text);
+  // Values set manually in the settings file may not be among the choices.
+  for (QAction *action : m_delayStepGroup->actions()) {
+    action->setChecked(action->data().toInt() == milliseconds);
+  }
+  emitStateInfo();
 }
 
 ConfigEditor *MainWindow::configEditor() { return m_preferences; }

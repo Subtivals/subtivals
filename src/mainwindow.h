@@ -17,6 +17,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QActionGroup>
 #include <QFileSystemWatcher>
 #include <QLabel>
 #include <QList>
@@ -135,6 +136,7 @@ protected:
   void setState(State p_state);
   void updateRecentFileActions();
   void emitStateInfo();
+  void setDelayStep(int milliseconds);
 
 private:
   State m_state;
@@ -167,6 +169,7 @@ private:
   QLabel *m_countDown;
   QList<Subtitle *> m_currentSubtitles;
   QList<QAction *> m_recentFileActions;
+  QActionGroup *m_delayStepGroup;
   int m_warnCharsRate;
   int m_errorCharsRate;
   int m_charsRate;
