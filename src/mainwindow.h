@@ -119,6 +119,7 @@ public slots:
   void enableKnownFactors(bool);
   void actionToggleLargeText(bool);
   void actionToggleLockScreenOnPlay(bool);
+  void refreshScreenActions();
   void actionShowRemoteOptions();
 
 protected:
