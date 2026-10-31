@@ -244,6 +244,9 @@ MainWindow::MainWindow(QWidget *parent)
 
   connect(ui->actionHideDesktop, &QAction::toggled, this,
           &MainWindow::hideDesktop);
+  // Not `toggled`, to react only when the user changes it.
+  connect(ui->actionShowProjectionSingleScreen, &QAction::triggered, this,
+          &MainWindow::actionToggleProjectionSingleScreen);
   connect(ui->actionAddDelay, &QAction::triggered, m_player,
           [player = m_player](bool) { player->addDelay(); });
   connect(ui->actionSubDelay, &QAction::triggered, m_player, &Player::subDelay);
@@ -462,6 +465,8 @@ void MainWindow::closeEvent(QCloseEvent *) {
   settings.setValue("showLargeText", ui->actionLargeText->isChecked());
   settings.setValue("lockScreenOnPlay",
                     ui->actionLockScreenOnPlay->isChecked());
+  settings.setValue("showProjectionSingleScreen",
+                    ui->actionShowProjectionSingleScreen->isChecked());
   settings.endGroup();
 
   settings.beginGroup("AdvancedOptions");
@@ -516,7 +521,13 @@ void MainWindow::showEvent(QShowEvent *) {
   ui->actionAutoHideEnded->setChecked(autoHide);
   ui->actionPreferences->setChecked(
       settings.value("showPreferences", true).toBool());
-  bool showPreview = settings.value("showPreview", false).toBool();
+  // Default is set in main() for existing users (#392).
+  ui->actionShowProjectionSingleScreen->setChecked(
+      settings.value("showProjectionSingleScreen", false).toBool());
+  // Without projection window, show preview by default.
+  bool projectionHidden = QGuiApplication::screens().size() < 2 &&
+                          !ui->actionShowProjectionSingleScreen->isChecked();
+  bool showPreview = settings.value("showPreview", projectionHidden).toBool();
   ui->actionShowPreview->setChecked(showPreview);
   ui->actionDurationCorrection->setChecked(
       settings.value("durationCorrection", false).toBool());
@@ -529,6 +540,7 @@ void MainWindow::showEvent(QShowEvent *) {
       settings.value("showLargeText", false).toBool());
   ui->actionLockScreenOnPlay->setChecked(
       settings.value("lockScreenOnPlay", false).toBool());
+  refreshScreenActions();
 
   if (WIZARD_ENABLED) {
     if (settings.value("wizard", true).toBool()) {
@@ -1032,6 +1044,7 @@ void MainWindow::actionConfig(bool state) {
 
 void MainWindow::connectProjectionEvents(SubtitlesForm *f) {
   if (ProjectionWindow *pw = qobject_cast<ProjectionWindow *>(f)) {
+    m_projection = pw;
     connect(pw, &ProjectionWindow::geometryChanged, m_preferences,
             &ConfigEditor::projectionWindowChanged);
     connect(pw, &ProjectionWindow::geometryChanged, m_previewpanel,
@@ -1144,10 +1157,34 @@ void MainWindow::actionToggleLockScreenOnPlay(bool state) {
 }
 
 void MainWindow::refreshScreenActions() {
+  bool singleScreen = QGuiApplication::screens().size() < 2;
   // Prevent hiding desktop if only one screen!
-  ui->actionHideDesktop->setEnabled(QGuiApplication::screens().size() > 1);
+  ui->actionHideDesktop->setEnabled(!singleScreen);
+  // Projection window would cover the main window on single screen.
+  ui->actionShowProjectionSingleScreen->setEnabled(singleScreen);
+  emit projectionVisible(!singleScreen ||
+                         ui->actionShowProjectionSingleScreen->isChecked());
   // Lock on play depends on the number of screens too.
   actionToggleLockScreenOnPlay(ui->actionLockScreenOnPlay->isChecked());
+}
+
+void MainWindow::actionToggleProjectionSingleScreen(bool state) {
+  refreshScreenActions();
+  if (!state || !m_projection || !m_projection->isVisible())
+    return;
+  // Move (and shrink) the main window below or above the projection window,
+  // whichever has more room.
+  const QRect proj = m_projection->geometry();
+  const QRect frame = frameGeometry();
+  if (!frame.intersects(proj))
+    return;
+  const QRect avail = screen()->availableGeometry();
+  const int below = avail.bottom() - proj.bottom();
+  const int above = proj.top() - avail.top();
+  const int frameHeight = qMin(frame.height(), qMax(below, above));
+  resize(width(), frameHeight - (frame.height() - height()));
+  move(frame.x(),
+       below >= above ? proj.bottom() + 1 : proj.top() - frameHeight);
 }
 
 void MainWindow::disableSubtitleSelection() {

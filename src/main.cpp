@@ -75,6 +75,12 @@ int main(int argc, char *argv[]) {
 
   QSettings settings;
   qInfo() << "Configuration location:" << settings.fileName();
+  // Projection window is hidden on single screen for new users only, since
+  // it covers the main window (#392). Existing users keep it.
+  if (!settings.contains("MainWindow/showProjectionSingleScreen")) {
+    settings.setValue("MainWindow/showProjectionSingleScreen",
+                      !settings.allKeys().isEmpty());
+  }
 
   QApplication a(argc, argv);
   a.setQuitOnLastWindowClosed(true);
@@ -158,7 +164,9 @@ int main(int argc, char *argv[]) {
   QObject::connect(&w, &MainWindow::hideDesktop, &f,
                    &ProjectionWindow::toggleHideDesktop);
 
-  f.show();
+  // Projection window is shown by main window, depending on screens.
+  QObject::connect(&w, &MainWindow::projectionVisible, &f,
+                   &ProjectionWindow::setVisible);
   w.show();
 
   // Service now owns persistence & autostart:

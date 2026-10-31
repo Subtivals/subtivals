@@ -273,6 +273,7 @@
     <addaction name="actionLargeText"/>
     <addaction name="actionLockScreenOnPlay"/>
     <addaction name="actionHideDesktop"/>
+    <addaction name="actionShowProjectionSingleScreen"/>
     <addaction name="actionEditShortcuts"/>
     <addaction name="actionShowRemoteOptions"/>
     <addaction name="actionAdvancedSettings"/>
@@ -728,6 +729,17 @@
    </property>
    <property name="toolTip">
     <string>Fill screen with color</string>
+   </property>
+  </action>
+  <action name="actionShowProjectionSingleScreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show projection on single screen</string>
+   </property>
+   <property name="toolTip">
+    <string>Show the projection window even if there is only one screen</string>
    </property>
   </action>
  </widget>
