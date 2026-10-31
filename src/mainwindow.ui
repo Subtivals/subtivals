@@ -268,6 +268,7 @@
     </property>
     <addaction name="actionPreferences"/>
     <addaction name="actionShowMilliseconds"/>
+    <addaction name="menuDelayStep"/>
     <addaction name="actionPersistentHide"/>
     <addaction name="actionDarkMode"/>
     <addaction name="actionLargeText"/>
@@ -277,6 +278,17 @@
     <addaction name="actionEditShortcuts"/>
     <addaction name="actionShowRemoteOptions"/>
     <addaction name="actionAdvancedSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuDelayStep">
+    <property name="title">
+     <string>Delay step</string>
+    </property>
+    <addaction name="actionDelayStep40"/>
+    <addaction name="actionDelayStep42"/>
+    <addaction name="actionDelayStep100"/>
+    <addaction name="actionDelayStep250"/>
+    <addaction name="actionDelayStep500"/>
+    <addaction name="actionDelayStep1000"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -687,6 +699,36 @@
     <string>Advanced settings...</string>
    </property>
   </action>
+  <action name="actionDelayStep40">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>1/25 sec</string></property>
+   <property name="data"><number>40</number></property>
+  </action>
+  <action name="actionDelayStep42">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>1/24 sec</string></property>
+   <property name="data"><number>42</number></property>
+  </action>
+  <action name="actionDelayStep100">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>1/10 sec</string></property>
+   <property name="data"><number>100</number></property>
+  </action>
+  <action name="actionDelayStep250">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>1/4 sec</string></property>
+   <property name="data"><number>250</number></property>
+  </action>
+  <action name="actionDelayStep500">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>1/2 sec</string></property>
+   <property name="data"><number>500</number></property>
+  </action>
+  <action name="actionDelayStep1000">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>1 sec</string></property>
+   <property name="data"><number>1000</number></property>
+  </action>
   <action name="actionDarkMode">
    <property name="checkable">
     <bool>true</bool>
@@ -748,6 +790,42 @@
   <include location="../resources/icons.qrc"/>
  </resources>
  <connections>
+  <connection>
+   <sender>actionDelayStep40</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delayStepSelected()</slot>
+  </connection>
+  <connection>
+   <sender>actionDelayStep42</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delayStepSelected()</slot>
+  </connection>
+  <connection>
+   <sender>actionDelayStep100</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delayStepSelected()</slot>
+  </connection>
+  <connection>
+   <sender>actionDelayStep250</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delayStepSelected()</slot>
+  </connection>
+  <connection>
+   <sender>actionDelayStep500</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delayStepSelected()</slot>
+  </connection>
+  <connection>
+   <sender>actionDelayStep1000</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>delayStepSelected()</slot>
+  </connection>
   <connection>
    <sender>actionOpen</sender>
    <signal>triggered()</signal>
@@ -1310,6 +1388,7 @@
   </connection>
  </connections>
  <slots>
+  <slot>delayStepSelected()</slot>
   <signal>configChanged()</signal>
   <slot>actionOpen()</slot>
   <slot>actionPlay()</slot>

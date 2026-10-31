@@ -336,19 +336,10 @@ MainWindow::MainWindow(QWidget *parent)
   ui->menuFile->insertSeparator(ui->actionExit);
   updateRecentFileActions();
 
-  // Initialize delay step menu.
-  QMenu *delayStepMenu = new QMenu(tr("Delay step"), this);
-  m_delayStepGroup = new QActionGroup(delayStepMenu);
-  const QList<int> delaySteps = {40, 42, 100, 250, 500, 1000};
-  for (int step : delaySteps) {
-    QAction *action = delayStepMenu->addAction(delayStepLabel(step));
-    action->setCheckable(true);
-    action->setData(step);
+  // Connect the delay step actions declared in the UI.
+  m_delayStepGroup = new QActionGroup(ui->menuDelayStep);
+  for (QAction *action : ui->menuDelayStep->actions())
     m_delayStepGroup->addAction(action);
-  }
-  connect(m_delayStepGroup, &QActionGroup::triggered, this,
-          [this](QAction *action) { setDelayStep(action->data().toInt()); });
-  ui->menuEdit->insertMenu(ui->actionAdvancedSettings, delayStepMenu);
 
   // Initialize language menu from embedded translations.
   QSettings settings;
@@ -590,6 +581,12 @@ void MainWindow::setDelayStep(int milliseconds) {
     action->setChecked(action->data().toInt() == milliseconds);
   }
   emitStateInfo();
+}
+
+void MainWindow::delayStepSelected() {
+  QAction *action = qobject_cast<QAction *>(sender());
+  if (action)
+    setDelayStep(action->data().toInt());
 }
 
 ConfigEditor *MainWindow::configEditor() { return m_preferences; }

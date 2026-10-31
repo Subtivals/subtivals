@@ -89,6 +89,7 @@ public slots:
   void actionPause();
   void actionNext();
   void actionPrevious();
+  void delayStepSelected();
   void actionToggleHide(bool state = true);
   void actionAbout();
   void actionShowHelp();
