@@ -631,7 +631,17 @@ p, li { white-space: pre-wrap; }
         <translation>Increment del retard</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="189"/>
+        <location filename="../src/mainwindow.cpp" line="350"/>
+        <source>Language</source>
+        <translation>Idioma</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="375"/>
+        <source>The language will change when Subtivals restarts.</source>
+        <translation>L'idioma canviarà quan es reiniciï Subtivals.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="516"/>
         <source> msec</source>
         <translation> mseg</translation>
     </message>
