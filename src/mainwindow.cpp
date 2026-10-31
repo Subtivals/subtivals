@@ -525,9 +525,8 @@ void MainWindow::showEvent(QShowEvent *) {
   ui->actionShowProjectionSingleScreen->setChecked(
       settings.value("showProjectionSingleScreen", false).toBool());
   // Without projection window, show preview by default.
-  bool projectionHidden =
-      QGuiApplication::screens().size() < 2 &&
-      !ui->actionShowProjectionSingleScreen->isChecked();
+  bool projectionHidden = QGuiApplication::screens().size() < 2 &&
+                          !ui->actionShowProjectionSingleScreen->isChecked();
   bool showPreview = settings.value("showPreview", projectionHidden).toBool();
   ui->actionShowPreview->setChecked(showPreview);
   ui->actionDurationCorrection->setChecked(
