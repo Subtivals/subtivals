@@ -276,8 +276,19 @@
     <addaction name="actionHideDesktop"/>
     <addaction name="actionShowProjectionSingleScreen"/>
     <addaction name="actionEditShortcuts"/>
+    <addaction name="menuLanguage"/>
     <addaction name="actionShowRemoteOptions"/>
     <addaction name="actionAdvancedSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuLanguage">
+    <property name="title">
+     <string>Language</string>
+    </property>
+    <addaction name="actionLanguageEnglish"/>
+    <addaction name="actionLanguageCatalan"/>
+    <addaction name="actionLanguageSpanish"/>
+    <addaction name="actionLanguageFrench"/>
+    <addaction name="actionLanguageItalian"/>
    </widget>
    <widget class="QMenu" name="menuDelayStep">
     <property name="title">
@@ -698,6 +709,31 @@
    <property name="text">
     <string>Advanced settings...</string>
    </property>
+  </action>
+  <action name="actionLanguageEnglish">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>English</string></property>
+   <property name="data"><string>en</string></property>
+  </action>
+  <action name="actionLanguageCatalan">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>Català</string></property>
+   <property name="data"><string>ca_ES</string></property>
+  </action>
+  <action name="actionLanguageSpanish">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>Español</string></property>
+   <property name="data"><string>es_ES</string></property>
+  </action>
+  <action name="actionLanguageFrench">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>Français</string></property>
+   <property name="data"><string>fr_FR</string></property>
+  </action>
+  <action name="actionLanguageItalian">
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>Italiano</string></property>
+   <property name="data"><string>it_IT</string></property>
   </action>
   <action name="actionDelayStep40">
    <property name="checkable"><bool>true</bool></property>

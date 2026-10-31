@@ -22,14 +22,11 @@
 #include <QAbstractSlider>
 #include <QCheckBox>
 #include <QDesktopServices>
-#include <QDir>
 #include <QDoubleSpinBox>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileSystemWatcher>
 #include <QKeyEvent>
-#include <QLocale>
-#include <QMenu>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPainter>
@@ -341,27 +338,21 @@ MainWindow::MainWindow(QWidget *parent)
   for (QAction *action : ui->menuDelayStep->actions())
     m_delayStepGroup->addAction(action);
 
-  // Initialize language menu from embedded translations.
+  // Connect the language menu declared in the UI.
   QSettings settings;
   QString currentLocale = settings.value("Language/locale").toString();
-  QMenu *languageMenu = new QMenu(tr("Language"), this);
-  QActionGroup *languageGroup = new QActionGroup(languageMenu);
-  QStringList locales = {"en"};
-  for (const QString &file : QDir(":/i18n").entryList({"*.qm"})) {
-    locales.append(QFileInfo(file).completeBaseName());
-  }
-  for (const QString &locale : locales) {
-    QString name = QLocale(locale).nativeLanguageName();
-    name[0] = name[0].toUpper();
-    QAction *action = languageMenu->addAction(name);
-    action->setCheckable(true);
-    action->setData(locale);
-    action->setChecked(locale == currentLocale);
+  QActionGroup *languageGroup = new QActionGroup(ui->menuLanguage);
+  const QList<QAction *> languageActions = {
+      ui->actionLanguageEnglish, ui->actionLanguageCatalan,
+      ui->actionLanguageSpanish, ui->actionLanguageFrench,
+      ui->actionLanguageItalian};
+  for (QAction *action : languageActions) {
     languageGroup->addAction(action);
+    action->setChecked(action->data().toString() == currentLocale);
   }
-  // Locales without translation fallback to English.
+  // Locales without a saved preference fall back to English.
   if (!languageGroup->checkedAction()) {
-    languageGroup->actions().first()->setChecked(true);
+    ui->actionLanguageEnglish->setChecked(true);
   }
   connect(languageGroup, &QActionGroup::triggered, this,
           [this](QAction *action) {
@@ -371,7 +362,6 @@ MainWindow::MainWindow(QWidget *parent)
                 this, tr("Language"),
                 tr("The language will change when Subtivals restarts."));
           });
-  ui->menuEdit->insertMenu(ui->actionAdvancedSettings, languageMenu);
 
   // Initialize shortcuts
   m_shortcutEditor->registerAction(ui->actionPlay);
