@@ -922,6 +922,10 @@ p, li { white-space: pre-wrap; }
         <source>Recording: %1</source>
         <translation>Enregistrement : %1</translation>
     </message>
+    <message>
+        <source>Speed up/down shortcuts change speed by 10%; hold Shift to change it by 1%.</source>
+        <translation>Les raccourcis d’accélération/ralentissement changent la vitesse de 10 % ; maintenez Maj pour la changer de 1 %.</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>

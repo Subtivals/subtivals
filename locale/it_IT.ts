@@ -742,6 +742,10 @@ p, li { white-space: pre-wrap; }
         <source>Recording: %1</source>
         <translation>Registrazione: %1</translation>
     </message>
+    <message>
+        <source>Speed up/down shortcuts change speed by 10%; hold Shift to change it by 1%.</source>
+        <translation>Le scorciatoie aumenta/riduci cambiano la velocità del 10%; tieni premuto Maiusc per cambiarla dell’1%.</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>

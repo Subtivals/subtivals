@@ -870,6 +870,10 @@ p, li { white-space: pre-wrap; }
         <source>Recording: %1</source>
         <translation>Enregistrant: %1</translation>
     </message>
+    <message>
+        <source>Speed up/down shortcuts change speed by 10%; hold Shift to change it by 1%.</source>
+        <translation>Les dreceres d’accelerar/alentir canvien la velocitat un 10%; mantén premuda Maj per canviar-la un 1%.</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>
