@@ -1176,19 +1176,18 @@ void MainWindow::actionToggleProjectionSingleScreen(bool state) {
   refreshScreenActions();
   if (!state || !m_projection || !m_projection->isVisible())
     return;
-  // Move (and shrink) the main window below or above the projection window,
-  // whichever has more room.
-  const QRect proj = m_projection->geometry();
-  const QRect frame = frameGeometry();
-  if (!frame.intersects(proj))
-    return;
+  // Put the projection window at the top so the main window can sit below it.
   const QRect avail = screen()->availableGeometry();
+  QRect proj = m_projection->geometry();
+  proj.moveTop(avail.top());
+  m_projection->move(proj.topLeft());
+
+  // Move (and shrink) the main window below the projection window.
+  const QRect frame = frameGeometry();
   const int below = avail.bottom() - proj.bottom();
-  const int above = proj.top() - avail.top();
-  const int frameHeight = qMin(frame.height(), qMax(below, above));
+  const int frameHeight = qMin(frame.height(), qMax(0, below));
   resize(width(), frameHeight - (frame.height() - height()));
-  move(frame.x(),
-       below >= above ? proj.bottom() + 1 : proj.top() - frameHeight);
+  move(frame.x(), proj.bottom() + 1);
 }
 
 void MainWindow::disableSubtitleSelection() {
