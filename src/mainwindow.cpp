@@ -21,10 +21,12 @@
 
 #include <QAbstractSlider>
 #include <QCheckBox>
+#include <QDateTime>
 #include <QDesktopServices>
 #include <QDoubleSpinBox>
 #include <QFile>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QFileSystemWatcher>
 #include <QKeyEvent>
 #include <QMessageBox>
@@ -46,6 +48,7 @@
 #include "projectionwindow.h"
 #include "shortcuteditor.h"
 #include "remoteoptionsdialog.h"
+#include "recorder.h"
 #include "ui_mainwindow.h"
 #include "wizard.h"
 
@@ -199,7 +202,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_selectSubtitle(true), m_rowChanged(false), m_reloadEnabled(false),
       m_filewatcher(new QFileSystemWatcher),
       m_scriptProperties(new QLabel(this)), m_countDown(new QLabel(this)),
-      m_windowShown(false) {
+      m_windowShown(false), m_recorder(new Recorder(this)) {
   ui->setupUi(this);
   setWindowTitle(APP_NAME);
   m_defaultPalette = qApp->palette();
@@ -236,8 +239,10 @@ MainWindow::MainWindow(QWidget *parent)
   qRegisterMetaType<QList<Subtitle *>>("QList<Subtitle*>");
   connect(m_player, &Player::pulse, this, &MainWindow::playPulse);
   connect(m_player, &Player::changed, this, &MainWindow::subtitleChanged);
+  connect(m_player, &Player::changed, m_recorder, &Recorder::recordSubtitles);
   connect(m_player, &Player::changed, this, &MainWindow::disableActionNext);
   connect(m_player, &Player::autoHide, this, [this]() { actionToggleHide(); });
+  connect(ui->actionRecord, &QAction::toggled, this, &MainWindow::actionRecord);
 
   connect(ui->actionHideDesktop, &QAction::toggled, this,
           &MainWindow::hideDesktop);
@@ -295,6 +300,18 @@ MainWindow::MainWindow(QWidget *parent)
   ui->mainLayout->addWidget(m_preferences);
   ui->statusBar->addPermanentWidget(m_countDown);
   ui->statusBar->addPermanentWidget(m_scriptProperties);
+  ui->statusBar->addWidget(ui->recordingStatus);
+  m_recordingStatusTimer.setInterval(50);
+  connect(&m_recordingStatusTimer, &QTimer::timeout, this, [this]() {
+    const qint64 seconds = m_recorder->elapsed() / 1000;
+    const QString time =
+        QString("%1:%2:%3.%4")
+            .arg(seconds / 3600, 2, 10, QChar('0'))
+            .arg((seconds / 60) % 60, 2, 10, QChar('0'))
+            .arg(seconds % 60, 2, 10, QChar('0'))
+            .arg(m_recorder->elapsed() % 1000, 3, 10, QChar('0'));
+    ui->recordingStatus->setText(tr("Recording: %1").arg(time));
+  });
   connect(m_preferences, &ConfigEditor::styleOverriden, this,
           &MainWindow::showStyleOverriden);
 
@@ -1290,6 +1307,44 @@ void MainWindow::subtitleChanged(QList<Subtitle *> p_currentSubtitles) {
   m_rowChanged = false;
 }
 
+void MainWindow::actionRecord(bool recording) {
+  if (recording) {
+    const QString error = m_recorder->start();
+    if (!error.isEmpty()) {
+      ui->actionRecord->setChecked(false);
+      QMessageBox::warning(this, tr("Recording error"), error);
+    } else {
+      m_recordingStatusTimer.start();
+      ui->recordingStatus->setText(tr("Recording: %1").arg("00:00:00.000"));
+    }
+    return;
+  }
+
+  const QString temporaryFileName = m_recorder->finish();
+  m_recordingStatusTimer.stop();
+  ui->recordingStatus->clear();
+  const QString recordingName =
+      QString("%1-%2.srt")
+          .arg(QFileInfo(m_script->fileName()).completeBaseName(),
+               QDateTime::currentDateTime().toString("yyyyMMdd-HH:mm:ss"));
+  const QString fileName = QFileDialog::getSaveFileName(
+      this, tr("Save recorded subtitles"), m_lastFolder + "/" + recordingName,
+      tr("SubRip subtitles (*.srt)"));
+  if (fileName.isEmpty())
+    return;
+
+  QFile source(temporaryFileName);
+  QFile destination(fileName);
+  if (!source.open(QIODevice::ReadOnly) ||
+      !destination.open(QIODevice::WriteOnly | QIODevice::Truncate) ||
+      destination.write(source.readAll()) < 0) {
+    QMessageBox::warning(this, tr("Unable to write file"),
+                         destination.errorString());
+  } else {
+    m_lastFolder = QFileInfo(fileName).absolutePath();
+  }
+}
+
 void MainWindow::highlightSubtitles(qlonglong elapsed) {
   // Reset all
   for (int row = 0; row < ui->tableWidget->rowCount(); row++) {
@@ -1344,6 +1399,7 @@ QString MainWindow::ts2tc(int p_ts, QString format) {
 
 void MainWindow::setState(State p_state) {
   m_state = p_state;
+  ui->actionRecord->setEnabled(p_state != NODATA);
   switch (m_state) {
   case NODATA:
     ui->actionPlay->setEnabled(false);
