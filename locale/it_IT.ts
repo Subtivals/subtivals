@@ -654,6 +654,30 @@ p, li { white-space: pre-wrap; }
         <source>&lt;h1&gt;%1 %2&lt;/h1&gt;&lt;p&gt;%1, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %3&lt;/h2&gt;</source>
         <translation>&lt;h1&gt;%1 %2&lt;/h1&gt;&lt;p&gt;%1, un programma per proiettare sottotitoli.&lt;/p&gt;&lt;h2&gt;Autori&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %3&lt;/h2&gt;</translation>
     </message>
+    <message>
+        <source>Record</source>
+        <translation>Registra</translation>
+    </message>
+    <message>
+        <source>Record displayed subtitles to an SRT file</source>
+        <translation>Registra i sottotitoli visualizzati in un file SRT</translation>
+    </message>
+    <message>
+        <source>Save recorded subtitles</source>
+        <translation>Salva i sottotitoli registrati</translation>
+    </message>
+    <message>
+        <source>SubRip subtitles (*.srt)</source>
+        <translation>Sottotitoli SubRip (*.srt)</translation>
+    </message>
+    <message>
+        <source>Recording error</source>
+        <translation>Errore di registrazione</translation>
+    </message>
+    <message>
+        <source>Recording: %1</source>
+        <translation>Registrazione: %1</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>

@@ -750,6 +750,30 @@ p, li { white-space: pre-wrap; }
         <source>Remaining: %1</source>
         <translation>Restante: %1</translation>
     </message>
+    <message>
+        <source>Record</source>
+        <translation>Grabar</translation>
+    </message>
+    <message>
+        <source>Record displayed subtitles to an SRT file</source>
+        <translation>Grabar los subtítulos mostrados en un archivo SRT</translation>
+    </message>
+    <message>
+        <source>Save recorded subtitles</source>
+        <translation>Guardar los subtítulos grabados</translation>
+    </message>
+    <message>
+        <source>SubRip subtitles (*.srt)</source>
+        <translation>Subtítulos SubRip (*.srt)</translation>
+    </message>
+    <message>
+        <source>Recording error</source>
+        <translation>Error de grabación</translation>
+    </message>
+    <message>
+        <source>Recording: %1</source>
+        <translation>Grabando: %1</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>

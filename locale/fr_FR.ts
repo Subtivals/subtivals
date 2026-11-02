@@ -834,6 +834,30 @@ p, li { white-space: pre-wrap; }
         <source>&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project *.ass subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</source>
         <translation type="obsolete">&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, un programme pour projetter les sous-titres *.ass.&lt;/p&gt;&lt;h2&gt;Auteur&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</translation>
     </message>
+    <message>
+        <source>Record</source>
+        <translation>Enregistrer</translation>
+    </message>
+    <message>
+        <source>Record displayed subtitles to an SRT file</source>
+        <translation>Enregistrer les sous-titres affichés dans un fichier SRT</translation>
+    </message>
+    <message>
+        <source>Save recorded subtitles</source>
+        <translation>Enregistrer les sous-titres enregistrés</translation>
+    </message>
+    <message>
+        <source>SubRip subtitles (*.srt)</source>
+        <translation>Sous-titres SubRip (*.srt)</translation>
+    </message>
+    <message>
+        <source>Recording error</source>
+        <translation>Erreur d’enregistrement</translation>
+    </message>
+    <message>
+        <source>Recording: %1</source>
+        <translation>Enregistrement : %1</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>

@@ -782,6 +782,30 @@ p, li { white-space: pre-wrap; }
         <source>&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project *.ass subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</source>
         <translation type="obsolete">&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, un programa per projectar *.ass subtítols.&lt;/p&gt;&lt;h2&gt;Autors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</translation>
     </message>
+    <message>
+        <source>Record</source>
+        <translation>Enregistra</translation>
+    </message>
+    <message>
+        <source>Record displayed subtitles to an SRT file</source>
+        <translation>Enregistra els subtítols mostrats en un fitxer SRT</translation>
+    </message>
+    <message>
+        <source>Save recorded subtitles</source>
+        <translation>Desa els subtítols enregistrats</translation>
+    </message>
+    <message>
+        <source>SubRip subtitles (*.srt)</source>
+        <translation>Subtítols SubRip (*.srt)</translation>
+    </message>
+    <message>
+        <source>Recording error</source>
+        <translation>Error d’enregistrament</translation>
+    </message>
+    <message>
+        <source>Recording: %1</source>
+        <translation>Enregistrant: %1</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>

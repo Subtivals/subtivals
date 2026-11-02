@@ -50,6 +50,7 @@ class ConfigEditor;
 class ShortcutEditor;
 class Player;
 class RemoteOptionsDialog;
+class Recorder;
 
 namespace Ui {
   class MainWindow;
@@ -124,6 +125,7 @@ public slots:
   void refreshScreenActions();
   void actionToggleProjectionSingleScreen(bool);
   void actionShowRemoteOptions();
+  void actionRecord(bool);
 
 protected:
   bool canNext();
@@ -182,6 +184,8 @@ private:
   int m_subtitleMinDuration;
   int m_largeTextPercent;
   bool m_windowShown;
+  Recorder *m_recorder;
+  QTimer m_recordingStatusTimer;
 };
 
 #endif // MAINWINDOW_H
