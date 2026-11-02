@@ -301,13 +301,14 @@ MainWindow::MainWindow(QWidget *parent)
   ui->statusBar->addPermanentWidget(m_countDown);
   ui->statusBar->addPermanentWidget(m_scriptProperties);
   ui->statusBar->addWidget(ui->recordingStatus);
-  m_recordingStatusTimer.setInterval(500);
+  m_recordingStatusTimer.setInterval(50);
   connect(&m_recordingStatusTimer, &QTimer::timeout, this, [this]() {
     const qint64 seconds = m_recorder->elapsed() / 1000;
-    const QString time = QString("%1:%2:%3")
+    const QString time = QString("%1:%2:%3.%4")
                              .arg(seconds / 3600, 2, 10, QChar('0'))
                              .arg((seconds / 60) % 60, 2, 10, QChar('0'))
-                             .arg(seconds % 60, 2, 10, QChar('0'));
+                             .arg(seconds % 60, 2, 10, QChar('0'))
+                             .arg(m_recorder->elapsed() % 1000, 3, 10, QChar('0'));
     ui->recordingStatus->setText(tr("Recording: %1").arg(time));
   });
   connect(m_preferences, &ConfigEditor::styleOverriden, this,
@@ -1313,7 +1314,7 @@ void MainWindow::actionRecord(bool recording) {
       QMessageBox::warning(this, tr("Recording error"), error);
     } else {
       m_recordingStatusTimer.start();
-      ui->recordingStatus->setText(tr("Recording: %1").arg("00:00:00"));
+      ui->recordingStatus->setText(tr("Recording: %1").arg("00:00:00.000"));
     }
     return;
   }
