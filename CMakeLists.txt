@@ -31,6 +31,7 @@ qt_add_executable(subtivals WIN32 MACOSX_BUNDLE
   src/styleeditor.cpp src/styleeditor.h src/styleeditor.ui
   src/configeditor.cpp src/configeditor.h src/configeditor.ui
   src/player.cpp src/player.h
+  src/recorder.cpp src/recorder.h
   src/styleadvanced.cpp src/styleadvanced.h src/styleadvanced.ui
   src/shortcuteditor.cpp src/shortcuteditor.h src/shortcuteditor.ui
   src/wizard.cpp src/wizard.h src/wizard.ui

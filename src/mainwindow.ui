@@ -343,6 +343,7 @@
    <addaction name="actionPrevious"/>
    <addaction name="actionNext"/>
    <addaction name="actionStop"/>
+   <addaction name="actionRecord"/>
    <addaction name="separator"/>
    <addaction name="actionSubDelay"/>
    <addaction name="actionAddDelay"/>
@@ -350,7 +351,13 @@
    <addaction name="actionAutoHideEnded"/>
    <addaction name="actionHide"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusBar">
+   <widget class="QLabel" name="recordingStatus">
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
     <string>toolBar</string>
@@ -420,6 +427,15 @@
    <property name="shortcut">
     <string notr="true">S</string>
    </property>
+  </action>
+  <action name="actionRecord">
+   <property name="icon">
+    <iconset resource="../resources/icons.qrc">
+     <normaloff>:/icons/record.svg</normaloff>:/icons/record.svg</iconset>
+   </property>
+   <property name="checkable"><bool>true</bool></property>
+   <property name="text"><string>Record</string></property>
+   <property name="toolTip"><string>Record displayed subtitles to an SRT file</string></property>
   </action>
   <action name="actionPreferences">
    <property name="checkable">
