@@ -304,11 +304,12 @@ MainWindow::MainWindow(QWidget *parent)
   m_recordingStatusTimer.setInterval(50);
   connect(&m_recordingStatusTimer, &QTimer::timeout, this, [this]() {
     const qint64 seconds = m_recorder->elapsed() / 1000;
-    const QString time = QString("%1:%2:%3.%4")
-                             .arg(seconds / 3600, 2, 10, QChar('0'))
-                             .arg((seconds / 60) % 60, 2, 10, QChar('0'))
-                             .arg(seconds % 60, 2, 10, QChar('0'))
-                             .arg(m_recorder->elapsed() % 1000, 3, 10, QChar('0'));
+    const QString time =
+        QString("%1:%2:%3.%4")
+            .arg(seconds / 3600, 2, 10, QChar('0'))
+            .arg((seconds / 60) % 60, 2, 10, QChar('0'))
+            .arg(seconds % 60, 2, 10, QChar('0'))
+            .arg(m_recorder->elapsed() % 1000, 3, 10, QChar('0'));
     ui->recordingStatus->setText(tr("Recording: %1").arg(time));
   });
   connect(m_preferences, &ConfigEditor::styleOverriden, this,
