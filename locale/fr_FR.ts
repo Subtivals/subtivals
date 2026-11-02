@@ -834,6 +834,41 @@ p, li { white-space: pre-wrap; }
         <source>&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, a program to project *.ass subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</source>
         <translation type="obsolete">&lt;h1&gt;Subtivals&lt;/h1&gt;&lt;p&gt;Subtivals, un programme pour projetter les sous-titres *.ass.&lt;/p&gt;&lt;h2&gt;Auteur&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;</translation>
     </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="434"/>
+        <source>Record</source>
+        <translation>Enregistrer</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="435"/>
+        <source>Record displayed subtitles to an SRT file</source>
+        <translation>Enregistrer les sous-titres affichés dans un fichier SRT</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1329"/>
+        <source>Save recorded subtitles</source>
+        <translation>Enregistrer les sous-titres enregistrés</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1330"/>
+        <source>SubRip subtitles (*.srt)</source>
+        <translation>Sous-titres SubRip (*.srt)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1313"/>
+        <source>Recording error</source>
+        <translation>Erreur d’enregistrement</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="311"/>
+        <location filename="../src/mainwindow.cpp" line="1316"/>
+        <source>Recording: %1</source>
+        <translation>Enregistrement : %1</translation>
+    </message>
+    <message>
+        <source>Speed up/down shortcuts change speed by 10%; hold Shift to change it by 1%.</source>
+        <translation>Les raccourcis d’accélération/ralentissement changent la vitesse de 10 % ; maintenez Maj pour la changer de 1 %.</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>

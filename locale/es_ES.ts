@@ -750,6 +750,41 @@ p, li { white-space: pre-wrap; }
         <source>Remaining: %1</source>
         <translation>Restante: %1</translation>
     </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="434"/>
+        <source>Record</source>
+        <translation>Grabar</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="435"/>
+        <source>Record displayed subtitles to an SRT file</source>
+        <translation>Grabar los subtítulos mostrados en un archivo SRT</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1329"/>
+        <source>Save recorded subtitles</source>
+        <translation>Guardar los subtítulos grabados</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1330"/>
+        <source>SubRip subtitles (*.srt)</source>
+        <translation>Subtítulos SubRip (*.srt)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1313"/>
+        <source>Recording error</source>
+        <translation>Error de grabación</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="311"/>
+        <location filename="../src/mainwindow.cpp" line="1316"/>
+        <source>Recording: %1</source>
+        <translation>Grabando: %1</translation>
+    </message>
+    <message>
+        <source>Speed up/down shortcuts change speed by 10%; hold Shift to change it by 1%.</source>
+        <translation>Los atajos de acelerar/reducir cambian la velocidad un 10 %; mantén pulsada Mayús para cambiarla un 1 %.</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>

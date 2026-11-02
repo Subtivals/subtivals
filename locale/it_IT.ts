@@ -654,6 +654,41 @@ p, li { white-space: pre-wrap; }
         <source>&lt;h1&gt;%1 %2&lt;/h1&gt;&lt;p&gt;%1, a program to project subtitles.&lt;/p&gt;&lt;h2&gt;Authors&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %3&lt;/h2&gt;</source>
         <translation>&lt;h1&gt;%1 %2&lt;/h1&gt;&lt;p&gt;%1, un programma per proiettare sottotitoli.&lt;/p&gt;&lt;h2&gt;Autori&lt;/h2&gt;&lt;li&gt;Lilian Lefranc&lt;/li&gt;&lt;li&gt;Arnaud Rolly&lt;/li&gt;&lt;li&gt;Mathieu Leplatre&lt;/li&gt;&lt;li&gt;Emmanuel Digiaro&lt;/li&gt;&lt;h2&gt;© 2011 - %3&lt;/h2&gt;</translation>
     </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="434"/>
+        <source>Record</source>
+        <translation>Registra</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="435"/>
+        <source>Record displayed subtitles to an SRT file</source>
+        <translation>Registra i sottotitoli visualizzati in un file SRT</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1329"/>
+        <source>Save recorded subtitles</source>
+        <translation>Salva i sottotitoli registrati</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1330"/>
+        <source>SubRip subtitles (*.srt)</source>
+        <translation>Sottotitoli SubRip (*.srt)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1313"/>
+        <source>Recording error</source>
+        <translation>Errore di registrazione</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="311"/>
+        <location filename="../src/mainwindow.cpp" line="1316"/>
+        <source>Recording: %1</source>
+        <translation>Registrazione: %1</translation>
+    </message>
+    <message>
+        <source>Speed up/down shortcuts change speed by 10%; hold Shift to change it by 1%.</source>
+        <translation>Le scorciatoie aumenta/riduci cambiano la velocità del 10%; tieni premuto Maiusc per cambiarla dell’1%.</translation>
+    </message>
 </context>
 <context>
     <name>RemoteOptionsDialog</name>

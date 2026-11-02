@@ -40,6 +40,9 @@
       </item>
       <item row="0" column="2" rowspan="2">
        <widget class="QCheckBox" name="enableSpeedFactor">
+        <property name="toolTip">
+         <string>Speed up/down shortcuts change speed by 10%; hold Shift to change it by 1%.</string>
+        </property>
         <property name="text">
          <string>Adjust speed</string>
         </property>
