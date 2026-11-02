@@ -1313,7 +1313,7 @@ void MainWindow::actionRecord(bool recording) {
       QMessageBox::warning(this, tr("Recording error"), error);
     } else {
       m_recordingStatusTimer.start();
-      ui->recordingStatus->setText(tr("Recording: 00:00:00"));
+      ui->recordingStatus->setText(tr("Recording: %1").arg("00:00:00"));
     }
     return;
   }

@@ -54,8 +54,8 @@ void Recorder::writeCurrent(qint64 end) {
   QTextStream out(&m_file);
   out << m_index++ << "\n"
       << QTime(0, 0).addMSecs(int(m_currentStart)).toString("hh:mm:ss,zzz")
-      << " --> "
-      << QTime(0, 0).addMSecs(int(end)).toString("hh:mm:ss,zzz")
-      << "\n" << m_currentText << "\n\n";
+      << " --> " << QTime(0, 0).addMSecs(int(end)).toString("hh:mm:ss,zzz")
+      << "\n"
+      << m_currentText << "\n\n";
   m_currentText.clear();
 }
