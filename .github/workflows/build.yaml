@@ -5,14 +5,15 @@ on:
     branches:
       - main
       - build-mac-win
+      - racti-subs-3
     tags:
       - "*"
   pull_request:
 
 env:
   QT_VERSION: "6.8.3"
-  APP_NAME: subtivals
-  APP_LABEL: Subtivals
+  APP_NAME: ractisubs
+  APP_LABEL: Racti Subs
   BUILD_TYPE: Release
 
 jobs:
@@ -172,7 +173,7 @@ jobs:
       - name: Apply patch
         if: matrix.demo == true
         run: |
-          git show --format= --binary origin/demo > demo.patch
+          git show --format= --binary origin/racti-demo > demo.patch
           git apply --3way demo.patch
 
       - name: Install Qt
@@ -231,7 +232,7 @@ jobs:
       - name: Apply patch
         if: matrix.demo == true
         run: |
-          git show --format= --binary origin/demo > demo.patch
+          git show --format= --binary origin/racti-demo > demo.patch
           git apply --3way demo.patch
 
       - name: Install Qt
@@ -296,11 +297,11 @@ jobs:
       - name: Apply patch
         if: matrix.demo == true
         run: |
-          git show --format= --binary origin/demo > demo.patch
+          git show --format= --binary origin/racti-demo > demo.patch
           git apply --3way demo.patch
 
       - name: Get installer source
-        run: git checkout origin/win-installer -- ./win-installer.nsi
+        run: git checkout origin/win-installer-racti -- ./win-installer.nsi
 
       - name: Install Qt (MinGW)
         uses: jurplel/install-qt-action@v4
