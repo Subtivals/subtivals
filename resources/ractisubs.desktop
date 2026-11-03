@@ -1,11 +1,11 @@
 [Desktop Entry]
-Name=Subtivals
-GenericName=Subtivals
+Name=Racti Subs
+GenericName=Racti Subs
 Comment=Project subtitles
-Exec=subtivals %U
+Exec=ractisubs %U
 Terminal=false
 Type=Application
 StartupNotify=true
 MimeType=text/x-ssa;
-Icon=subtivals
+Icon=ractisubs
 Categories=Video;AudioVideoEditing;

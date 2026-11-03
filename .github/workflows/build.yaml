@@ -11,8 +11,8 @@ on:
 
 env:
   QT_VERSION: "6.8.3"
-  APP_NAME: subtivals
-  APP_LABEL: Subtivals
+  APP_NAME: ractisubs
+  APP_LABEL: Racti Subs
   BUILD_TYPE: Release
 
 jobs:
@@ -174,7 +174,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
+          git diff --binary origin/racti-subs-2...origin/racti-demo > demo.patch
           git apply demo.patch
 
       - name: Install Qt
@@ -235,7 +235,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
+          git diff --binary origin/racti-subs-2...origin/racti-demo > demo.patch
           git apply demo.patch
 
       - name: Install Qt
@@ -302,11 +302,11 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
+          git diff --binary origin/racti-subs-2...origin/racti-demo > demo.patch
           git apply demo.patch
 
       - name: Get installer source
-        run: git checkout origin/win-installer -- ./win-installer.nsi
+        run: git checkout origin/win-installer-racti -- ./win-installer.nsi
 
       - name: Install Qt (MinGW)
         uses: jurplel/install-qt-action@v4
