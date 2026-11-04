@@ -57,6 +57,7 @@ target_compile_definitions(subtivals PRIVATE
   HELP_WEBSITE="https://help.subtivals.org"
   COMMUNITY_WEBSITE="https://community.subtivals.org"
   WIZARD_ENABLED=true
+  HELP_ENABLED=true
 )
 
 target_compile_options(subtivals PRIVATE -Wall -Wextra)

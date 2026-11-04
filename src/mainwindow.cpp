@@ -205,6 +205,11 @@ MainWindow::MainWindow(QWidget *parent)
       m_windowShown(false), m_recorder(new Recorder(this)) {
   ui->setupUi(this);
   setWindowTitle(APP_NAME);
+  if (!HELP_ENABLED) {
+    ui->actionShowHelp->setVisible(false);
+    ui->actionShowHelp->setEnabled(false);
+  }
+  ui->menuAide->menuAction()->setVisible(HELP_ENABLED || WIZARD_ENABLED);
   m_defaultPalette = qApp->palette();
 
   // Precompute contrasting text colors
@@ -396,7 +401,9 @@ MainWindow::MainWindow(QWidget *parent)
   m_shortcutEditor->registerAction(ui->actionPreferences);
   m_shortcutEditor->registerAction(ui->actionShowPreview);
   m_shortcutEditor->registerAction(ui->actionEnableReload);
-  m_shortcutEditor->registerAction(ui->actionShowHelp);
+  if (HELP_ENABLED) {
+    m_shortcutEditor->registerAction(ui->actionShowHelp);
+  }
   m_shortcutEditor->registerAction(ui->actionDarkMode);
   m_shortcutEditor->registerAction(ui->actionExit);
 }
