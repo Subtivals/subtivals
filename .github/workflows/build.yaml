@@ -172,10 +172,8 @@ jobs:
       - name: Apply patch
         if: matrix.demo == true
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
-          git apply demo.patch
+          git show --format= --binary origin/demo > demo.patch
+          git apply --3way demo.patch
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -233,10 +231,8 @@ jobs:
       - name: Apply patch
         if: matrix.demo == true
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
-          git apply demo.patch
+          git show --format= --binary origin/demo > demo.patch
+          git apply --3way demo.patch
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -300,10 +296,8 @@ jobs:
       - name: Apply patch
         if: matrix.demo == true
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@users.noreply.github.com"
-          git diff --binary origin/main...origin/demo > demo.patch
-          git apply demo.patch
+          git show --format= --binary origin/demo > demo.patch
+          git apply --3way demo.patch
 
       - name: Get installer source
         run: git checkout origin/win-installer -- ./win-installer.nsi
