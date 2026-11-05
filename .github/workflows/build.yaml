@@ -21,7 +21,7 @@ jobs:
     environment: build
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -148,7 +148,7 @@ jobs:
           ldd "squashfs-root/usr/bin/${APP_NAME}"
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.APP_NAME }}-artifacts-linux
           path: "*.AppImage"
@@ -162,7 +162,7 @@ jobs:
         demo: [false, true]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -199,7 +199,7 @@ jobs:
 
       - name: Upload artifacts (demo)
         if: matrix.demo == true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.APP_NAME }}-artifacts-mac-demo
           path: "*.dmg"
@@ -207,7 +207,7 @@ jobs:
 
       - name: Upload artifacts
         if: matrix.demo == false
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.APP_NAME }}-artifacts-mac
           path: "*.zip"
@@ -221,7 +221,7 @@ jobs:
         demo: [false, true]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -258,7 +258,7 @@ jobs:
 
       - name: Upload artifacts (demo)
         if: matrix.demo == true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.APP_NAME }}-artifacts-mac-intel-demo
           path: "*.dmg"
@@ -266,7 +266,7 @@ jobs:
 
       - name: Upload artifacts
         if: matrix.demo == false
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.APP_NAME }}-artifacts-mac-intel
           path: "*.zip"
@@ -283,7 +283,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -395,7 +395,7 @@ jobs:
 
       - name: Upload artifacts (demo)
         if: matrix.demo == true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.APP_NAME }}-artifacts-win-demo
           path: "*.exe"
@@ -403,7 +403,7 @@ jobs:
 
       - name: Upload artifacts
         if: matrix.demo == false
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.APP_NAME }}-artifacts-win
           path: "*.zip"
@@ -419,7 +419,7 @@ jobs:
 
     steps:
       - name: Download built artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
 
