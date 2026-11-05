@@ -37,7 +37,7 @@ signals:
 public slots:
   void toggleHideDesktop(bool state);
   void screenResizable(bool state);
-  void changeGeometry(int, const QRect &);
+  void changeGeometry(int, const QRect &) override;
 
 protected:
   void mouseMoveEvent(QMouseEvent *e);

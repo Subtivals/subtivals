@@ -97,6 +97,8 @@ QRect ProjectionWindow::subtitlesBounds() {
 
 // Slot called when UI tells us to change geometry relative to a given screen.
 void ProjectionWindow::changeGeometry(int monitor, const QRect &r) {
+  SubtitlesForm::changeGeometry(monitor, r);
+
   const auto screens = QGuiApplication::screens();
   // Validate monitor index
   if (monitor < 0 || monitor >= screens.size()) {

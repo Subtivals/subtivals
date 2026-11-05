@@ -44,7 +44,7 @@ public:
 signals:
   void geometryChanged(QRect);
 public slots:
-  void changeGeometry(int monitor, const QRect &);
+  virtual void changeGeometry(int monitor, const QRect &);
   void addSubtitle(Subtitle *p_subtitle);
   void remSubtitle(Subtitle *p_subtitle);
   void clearSubtitles();
