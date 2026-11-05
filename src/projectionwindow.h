@@ -40,11 +40,11 @@ public slots:
   void changeGeometry(int, const QRect &) override;
 
 protected:
-  void mouseMoveEvent(QMouseEvent *e);
-  void mousePressEvent(QMouseEvent *e);
-  void mouseReleaseEvent(QMouseEvent *e);
-  void wheelEvent(QWheelEvent *e);
-  QRect subtitlesBounds();
+  void mouseMoveEvent(QMouseEvent *e) override;
+  void mousePressEvent(QMouseEvent *e) override;
+  void mouseReleaseEvent(QMouseEvent *e) override;
+  void wheelEvent(QWheelEvent *e) override;
+  QRect subtitlesBounds() override;
 
 private:
   void applyGeometry(const QRect &);
