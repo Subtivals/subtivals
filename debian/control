@@ -2,12 +2,25 @@ Source: subtivals
 Section: video
 Priority: optional
 Maintainer: Mathieu Leplatre <contact@subtivals.org>
-Build-Depends: debhelper (>= 9), cmake, qt6-base-dev, qt6-tools-dev, qt6-l10n-tools, qt6-websockets-dev, qt6-svg-dev, qt6-httpserver-dev, libxcb1-dev, libxcb-screensaver0-dev, libxcb-dpms0-dev
-Standards-Version: 3.9.6
+Build-Depends: debhelper-compat (= 13),
+ cmake,
+ qt6-base-dev (>= 6.8),
+ qt6-tools-dev,
+ qt6-l10n-tools,
+ qt6-websockets-dev,
+ qt6-svg-dev,
+ qt6-httpserver-dev,
+ libxcb1-dev,
+ libxcb-screensaver0-dev,
+ libxcb-dpms0-dev
+Standards-Version: 4.7.0
+Homepage: https://subtivals.org
+Rules-Requires-Root: no
 
 Package: subtivals
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, qt6-qpa-plugins, qt6-svg-plugins
+Recommends: qt6-wayland
 Description: A program to project subtitles (*.ass, *.srt, *.txt, *.xml).
  Subtivals is the perfect tool to add subtitles for live performances.
  It projects captions automatically with full control, and is used by

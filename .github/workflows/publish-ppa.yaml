@@ -1,0 +1,138 @@
+name: Build and Upload PPA
+
+on:
+  push:
+    tags:
+      - "*" # Upload to the stable PPA
+    branches:
+      - main # Upload snapshot to the dev PPA
+      - publish-ppa-gha # Build only (no upload) while iterating on this workflow
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: "Upload to Launchpad (tags go to stable PPA, branches to dev PPA)"
+        type: boolean
+        default: false
+
+# Upload in push order, so that Launchpad never sees an older snapshot after a newer one.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_type }}
+  cancel-in-progress: false
+
+env:
+  # Launchpad PPAs: ppa:<owner>/<name>
+  PPA_STABLE: ppa:mathieu.leplatre/subtivals
+  PPA_DEV: ppa:mathieu.leplatre/subtivals-dev
+  # Must match `Source:` in debian/control
+  SOURCE_NAME: subtivals
+  # Qt >= 6.8 is required (QHttpServer::bind()), so noble (6.4) is not supported.
+  SERIES: resolute stonking
+  DEBEMAIL: contact@mathieu-leplatre.info
+  DEBFULLNAME: Mathieu Leplatre
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # get tags
+
+      - name: Install packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends devscripts debhelper dput gnupg
+
+      - name: Import GPG key
+        env:
+          PPA_SECRET_KEY: ${{ secrets.PPA_SECRET_KEY }}
+          PPA_KEY_PASSPHRASE: ${{ secrets.PPA_KEY_PASSPHRASE }}
+        run: |
+          echo "$PPA_SECRET_KEY" | gpg --batch --import
+          mkdir -p ~/.gnupg
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          if [ -n "$PPA_KEY_PASSPHRASE" ]; then
+            printf '%s' "$PPA_KEY_PASSPHRASE" > ~/.gnupg/passphrase
+            chmod 600 ~/.gnupg/passphrase
+            echo "passphrase-file $HOME/.gnupg/passphrase" >> ~/.gnupg/gpg.conf
+          fi
+
+      - name: Build source packages
+        env:
+          PPA_KEY_ID: ${{ secrets.PPA_KEY_ID }}
+        run: |
+          set -euo pipefail
+
+          # Tags look like `2.0.3` or `2.0.0-pre8`. Debian sorts `~` before anything,
+          # so `2.0.0~pre8` < `2.0.0`.
+          if [ "$GITHUB_REF_TYPE" = tag ]; then
+            describe=$GITHUB_REF_NAME
+            tag=$GITHUB_REF_NAME
+          else
+            describe=$(git describe --tags)
+            tag=$(git describe --tags --abbrev=0)
+          fi
+          upstream=${tag//-/\~}
+          if [ "$describe" != "$tag" ]; then
+            # Untagged commit: 2.0.3-5-gabc123 -> 2.0.3+git5.abc123
+            extra=${describe#"$tag"-}
+            upstream="${upstream}+git${extra%%-*}.${extra##*-g}"
+          fi
+          echo "Upstream version: $upstream"
+
+          WORK="$RUNNER_TEMP/ppa"
+          mkdir -p "$WORK"
+
+          # Same orig tarball for every series: Launchpad rejects a different
+          # file with the same name.
+          git archive --format=tar.gz --prefix="${SOURCE_NAME}-${upstream}/" \
+            -o "$WORK/${SOURCE_NAME}_${upstream}.orig.tar.gz" HEAD
+
+          first=1
+          for series in $SERIES; do
+            dir="$WORK/$series/${SOURCE_NAME}-${upstream}"
+            mkdir -p "$dir"
+            tar -xzf "$WORK/${SOURCE_NAME}_${upstream}.orig.tar.gz" -C "$WORK/$series"
+            ln -sf "../${SOURCE_NAME}_${upstream}.orig.tar.gz" "$WORK/$series/"
+
+            cd "$dir"
+            dch --newversion "${upstream}-1~${series}1" \
+                -b --distribution "$series" --force-distribution \
+                "Automated build of ${describe} for ${series}."
+
+            # Include the orig tarball only in the first upload.
+            if [ $first = 1 ]; then sa=-sa; first=0; else sa=-sd; fi
+            debuild -S $sa -d -k"$PPA_KEY_ID"
+            cd - > /dev/null
+          done
+
+          echo "WORK=$WORK" >> "$GITHUB_ENV"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-packages
+          path: |
+            ${{ env.WORK }}/*/*.changes
+            ${{ env.WORK }}/*/*.dsc
+            ${{ env.WORK }}/*/*.debian.tar.*
+            ${{ env.WORK }}/*.orig.tar.gz
+
+      - name: Upload to stable PPA
+        if: github.ref_type == 'tag' && (github.event_name == 'push' || inputs.upload)
+        env:
+          PPA: ${{ env.PPA_STABLE }}
+        run: |
+          for changes in "$WORK"/*/*_source.changes; do
+            dput "$PPA" "$changes"
+          done
+
+      - name: Upload to dev PPA
+        if: github.ref_type == 'branch' && ((github.event_name == 'push' && github.ref_name == 'main') || inputs.upload)
+        env:
+          PPA: ${{ env.PPA_DEV }}
+        run: |
+          for changes in "$WORK"/*/*_source.changes; do
+            dput "$PPA" "$changes"
+          done
